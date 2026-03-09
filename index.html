@@ -7,87 +7,116 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <style>
+        .tab-active { color: #2563eb; border-bottom: 2px solid #2563eb; }
+    </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bg-slate-50">
 
     <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-3">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 logo-circle border border-slate-200">
-                    <span class="text-blue-600 font-bold">FBS</span>
+                <div class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 bg-white">
+                    <span class="text-blue-600 font-bold text-sm">FBS</span>
                 </div>
-                <h1 class="text-lg font-bold tracking-tight" data-i18n="title">Future Blockchain Space</h1>
+                <h1 class="text-lg font-bold tracking-tight text-slate-800">Future Blockchain Space</h1>
             </div>
             <div class="flex items-center gap-2">
-                <select onchange="changeLanguage(this.value)" class="bg-slate-100 text-xs rounded-full px-2 py-1 outline-none">
+                <select onchange="changeLanguage(this.value)" class="bg-slate-100 text-[10px] rounded-full px-2 py-1 outline-none border-none">
                     <option value="zh-CN">简体中文</option>
                     <option value="en">English</option>
                 </select>
-                <button onclick="connectWallet()" id="connectBtn" class="btn-primary text-xs font-semibold px-4 py-2 rounded-full shadow-lg" data-i18n="connect">连接钱包</button>
+                <button onclick="connectWallet()" id="connectBtn" class="bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg active:scale-95 transition">连接钱包</button>
             </div>
         </div>
     </header>
 
     <div id="modalOverlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-        <div class="p-4 border-b border-slate-100 flex justify-between items-center">
-            <h4 id="modalTitle" class="font-bold text-slate-800">标题</h4>
-            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600">✕</button>
-        </div>
-        <div id="modalContent" class="p-6">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center">
+                <h4 id="modalTitle" class="font-bold text-slate-800">标题</h4>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl">✕</button>
             </div>
+            <div id="modalContent" class="p-6"></div>
+        </div>
     </div>
-</div>
     
-    <main class="max-w-5xl mx-auto p-4 space-y-6">
-        <section class="section-card p-6 text-center">
-            <button onclick="toggleAddress()" id="walletAddr" class="text-slate-400 font-mono text-sm hover:text-blue-600">未连接钱包</button>
-            <div class="mt-8">
-                <p class="text-slate-500 text-xs font-medium" data-i18n="total_value">总资产价值</p>
-                <div class="text-4xl font-bold mt-1 text-slate-900">$ <span id="totalBalance">0.00</span></div>
+    <main class="max-w-5xl mx-auto p-4 space-y-4">
+        <section class="bg-white rounded-3xl p-8 text-center shadow-sm border border-slate-100">
+            <button onclick="toggleAddress()" id="walletAddr" class="text-slate-400 font-mono text-xs hover:text-blue-600 transition">未连接钱包</button>
+            <div class="mt-6">
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider">Estimated Total Value</p>
+                <div class="text-4xl font-black mt-1 text-slate-900 tracking-tight">$ <span id="totalBalance">0.00</span></div>
             </div>
         </section>
 
-        <section class="section-card p-5">
+        <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
             <div class="flex items-start gap-4">
-                <div class="miner-thumb flex items-center justify-center border border-slate-100 bg-slate-50 overflow-hidden">
+                <div class="w-20 h-20 rounded-2xl flex items-center justify-center border border-slate-100 bg-slate-50 overflow-hidden shrink-0">
                     <img id="minerImg" src="assets/miner.png" class="w-full h-full object-cover hidden">
-                    <span class="text-[10px] text-slate-400">矿机图</span>
+                    <span class="text-[10px] text-slate-400 font-bold">MINER</span>
                 </div>
                 <div class="flex-1">
-                    <h3 class="font-bold text-slate-800 text-sm" data-i18n="miner_title">我的矿机</h3>
-                    <div class="grid grid-cols-2 gap-y-1 text-[11px] mt-2 text-slate-500">
-                        <p>数量: <span class="text-slate-800 font-bold" id="mCount">0</span></p>
-                        <p>日产量: <span class="text-slate-800 font-bold" id="mYield">0.00</span></p>
-                        <p>期限: <span class="text-slate-800 font-bold" id="mTerm">--</span></p>
-                        <p>锁仓: <span class="text-slate-800 font-bold" id="mLocked">0.00</span></p>
+                    <h3 class="font-bold text-slate-800 text-sm">我的矿机 (My Miners)</h3>
+                    <div class="grid grid-cols-2 gap-y-1 text-[11px] mt-2 text-slate-500 font-medium">
+                        <p>数量: <span class="text-slate-900 font-bold" id="mCount">0</span></p>
+                        <p>日产量: <span class="text-slate-900 font-bold" id="mYield">0.00</span></p>
+                        <p>期限: <span class="text-slate-900 font-bold" id="mTerm">--</span></p>
+                        <p>锁仓: <span class="text-slate-900 font-bold" id="mLocked">0.00</span></p>
                     </div>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3 mt-5">
-                <button class="bg-slate-900 text-white py-2 rounded-xl text-xs font-bold" data-i18n="buy_miner">购买矿机</button>
-                <button class="bg-white border border-slate-200 py-2 rounded-xl text-xs font-bold" data-i18n="pay_fee">缴纳电费</button>
+                <button onclick="openModal('buy')" class="bg-slate-900 text-white py-3 rounded-2xl text-xs font-bold active:scale-95 transition">购买矿机</button>
+                <button onclick="openModal('fee')" class="bg-white border border-slate-200 py-3 rounded-2xl text-xs font-bold active:scale-95 transition">缴纳电费</button>
             </div>
         </section>
 
-        <section class="section-card overflow-hidden">
-            <div class="p-4 border-b border-slate-50 font-bold text-sm" data-i18n="assets_list">资产概览</div>
+        <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
+            <div class="p-4 border-b border-slate-50 font-bold text-xs text-slate-400 uppercase tracking-widest">Assets List</div>
             <div id="tokenRows" class="divide-y divide-slate-50">
                 </div>
             <div class="p-4 grid grid-cols-3 gap-2 bg-slate-50/50">
-                <button class="py-2 rounded-lg bg-white border border-slate-200 text-xs font-bold" data-i18n="recharge">充值</button>
-                <button class="py-2 rounded-lg bg-white border border-slate-200 text-xs font-bold" data-i18n="withdraw">提币</button>
-                <button class="py-2 rounded-lg bg-white border border-slate-200 text-xs font-bold" data-i18n="exchange">兑换</button>
+                <button class="py-2.5 rounded-xl bg-white border border-slate-200 text-[11px] font-bold active:bg-slate-100 transition">充值</button>
+                <button class="py-2.5 rounded-xl bg-white border border-slate-200 text-[11px] font-bold active:bg-slate-100 transition">提币</button>
+                <button class="py-2.5 rounded-xl bg-white border border-slate-200 text-[11px] font-bold active:bg-slate-100 transition">兑换</button>
             </div>
         </section>
 
-        <section class="section-card overflow-hidden">
-            <div class="p-4 border-b border-slate-50 font-bold text-sm" data-i18n="history_title">交易历史</div>
-            <div id="historyList" class="divide-y divide-slate-50 min-h-[100px] text-center py-10 text-slate-400 text-xs">
-                连接钱包同步数据...
+        <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-slate-800 text-sm">用户团队 (My Team)</h3>
+                <button onclick="copyInviteLink()" class="bg-blue-50 text-blue-600 text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-blue-100 transition">生成邀请链接</button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-50 p-4 rounded-2xl">
+                    <div class="text-[9px] text-slate-400 font-bold uppercase mb-1">我的推荐码</div>
+                    <div id="myInviteCodeDisplay" class="text-sm font-black text-blue-600 tracking-wider">----</div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl">
+                    <div class="text-[9px] text-slate-400 font-bold uppercase mb-1">直推人数</div>
+                    <div id="directNum" class="text-sm font-black text-slate-800">0</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
+            <div class="flex border-b border-slate-50">
+                <button onclick="switchHistory('tx')" id="tab-tx" class="flex-1 py-4 text-xs font-bold tab-active">交易记录</button>
+                <button onclick="switchHistory('transfer')" id="tab-transfer" class="flex-1 py-4 text-xs font-bold text-slate-400">转账记录</button>
+            </div>
+            <div id="historyList" class="divide-y divide-slate-50 min-h-[150px]">
+                <div class="flex flex-col items-center justify-center py-12 text-slate-400">
+                    <div class="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-3"></div>
+                    <p class="text-[10px] font-medium tracking-widest uppercase">Syncing Data...</p>
+                </div>
             </div>
         </section>
     </main>
+
+    <footer class="py-10 text-center">
+        <p class="text-[10px] text-slate-300 font-medium">© 2026 Future Blockchain Space. All Rights Reserved.</p>
+    </footer>
 
     <script src="languages.js"></script>
     <script src="app.js"></script>
