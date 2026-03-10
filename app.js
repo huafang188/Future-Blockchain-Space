@@ -293,7 +293,7 @@ async function submitRegister(address) {
     const code = document.getElementById('inviteCodeInput').value;
     if (!code) return alert("请输入邀请码");
 
-    const res = await fetch(`https://你的Worker域名/api/register`, {
+    const res = await fetch(`https://futureblockchainspace.nicaihongaobama.workers.dev/`, {
         method: "POST",
         body: JSON.stringify({ address, inviteCode: code })
     });
