@@ -1,3 +1,8 @@
+// languages.js
+window.switchLang = function(lang) {
+    console.log("切换语言至:", lang);
+    localStorage.setItem('fbs_lang', lang);
+
 const i18n = {
     'zh-CN': {
         title: "Future Blockchain Space",
@@ -186,3 +191,10 @@ const i18n = {
         input_amount: "Введите сумму"
     }
 };
+
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    document.getElementById('langSelect').value = savedLang;
+    // switchLang(savedLang);
+});
