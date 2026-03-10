@@ -3,34 +3,53 @@
  */
 
 // 1. 核心地址与 API 配置
-const API_BASE = "https://api.fbsfbs.fit"; // 统一使用自定义域名
+const API_BASE = "https://api.fbsfbs.fit"; 
 
 const RECEIVE_ADDRESSES = {
-    MINER: "0x8922A66C6898d9e26D9747206466795880482937",    // 矿机收款地址
-    ELECTRIC: "0x8922A66C6898d9e26D9747206466795880482937", // 电费收款地址
-    DEPOSIT: "0x8922A66C6898d9e26D9747206466795880482937"    // 账户充值地址
+    MINER: "0x8922A66C6898d9e26D9747206466795880482937",    
+    ELECTRIC: "0x8922A66C6898d9e26D9747206466795880482937", 
+    DEPOSIT: "0x8922A66C6898d9e26D9747206466795880482937"    
 };
 
-const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955"; // BSC-USDT 合约地址
+const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955"; 
+
+// BSC 网络参数配置
+const BSC_CHAIN_ID = '0x38'; // 56
+const BSC_RPC_PARAMS = {
+    chainId: BSC_CHAIN_ID,
+    chainName: 'Binance Smart Chain',
+    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    blockExplorerUrls: ['https://bscscan.com/']
+};
 
 const tokenData = {
     'FBS': { price: 0.1, logo: 'assets/fbs_logo.png' },
     'FBST': { price: 0.05, logo: 'assets/fbst_logo.png' },
     'FBSP': { price: 1.2, logo: 'assets/fbsp_logo.png' },
-    'PBSU': { price: 1.0, logo: 'assets/fbsu_logo.png' }, // 对应你截图中的 fbsu_logo.png
-    'USDT': { price: 1.0, logo: 'assets/USDT.png' },    // 注意这里是大写
-    'BNB': { price: 600, logo: 'assets/BNB.png' },      // 对应 BNB.png
-    'BTC': { price: 65000, logo: 'assets/BTC.png' },    // 对应 BTC.png
-    'ETH': { price: 3500, logo: 'assets/ETH.png' }      // 对应 ETH.png
+    'PBSU': { price: 1.0, logo: 'assets/fbsu_logo.png' }, 
+    'USDT': { price: 1.0, logo: 'assets/USDT.png' },
+    'BNB': { price: 600, logo: 'assets/BNB.png' },
+    'BTC': { price: 65000, logo: 'assets/BTC.png' },
+    'ETH': { price: 3500, logo: 'assets/ETH.png' }
 };
 
-// --- 辅助函数：获取多语言文本 ---
+// --- 辅助函数：地址格式校验 (修复 Checksum 报错的关键) ---
+function getSafeAddr(addr) {
+    try {
+        return ethers.getAddress(addr);
+    } catch (e) {
+        console.error("Invalid Address Checksum:", addr);
+        return addr;
+    }
+}
+
 function getT(key) {
     const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
     return (window.i18n && i18n[lang] && i18n[lang][key]) ? i18n[lang][key] : key;
 }
 
-// --- 2. 渲染资产列表 (修正图片显示版) ---
+// --- 2. 渲染资产列表 ---
 function renderTokens(userBalances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
@@ -68,7 +87,7 @@ function renderTokens(userBalances = {}) {
     if (totalEl) totalEl.innerText = totalAssetsValue.toFixed(2);
 }
 
-// --- 3. 矿机与电费弹窗逻辑 ---
+// --- 3. 弹窗逻辑 ---
 function openMinerModal(type) {
     const content = document.getElementById('modalContent');
     const title = document.getElementById('modalTitle');
@@ -103,7 +122,6 @@ function openMinerModal(type) {
     document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
-// --- 4. 财务操作弹窗 ---
 function openFinanceModal(type) {
     const content = document.getElementById('modalContent');
     const title = document.getElementById('modalTitle');
@@ -120,26 +138,25 @@ function openFinanceModal(type) {
                     <p class="text-[9px] text-blue-400 font-bold mb-1 uppercase">Secure Deposit Address (BSC)</p>
                     <p class="text-[11px] font-mono break-all font-bold text-blue-800">${RECEIVE_ADDRESSES.DEPOSIT}</p>
                 </div>
-                <button onclick="handleFinanceAction('recharge')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-200 active:scale-[0.98] transition-transform">
+                <button onclick="handleFinanceAction('recharge')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-200">
                     ${getT('confirm_pay')}
                 </button>
             </div>`;
-    } 
-    else if (type === 'withdraw') {
-        title.innerText = getT('withdraw');
-        content.innerHTML = `<div class="p-6 text-center"><div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🚧</div><p class="text-sm font-bold text-slate-700">Withdrawal System Update</p><button onclick="closeModal()" class="mt-6 w-full bg-slate-100 py-3 rounded-xl font-bold text-slate-600 text-sm">Close</button></div>`;
-    } 
-    else if (type === 'exchange') {
-        title.innerText = getT('exchange');
-        content.innerHTML = `<div class="p-6 text-center"><p class="text-sm font-bold text-slate-700">Exchange Coming Soon</p><button onclick="closeModal()" class="mt-4 w-full bg-slate-100 py-2 rounded-xl font-bold">Close</button></div>`;
+    } else {
+        title.innerText = "Coming Soon";
+        content.innerHTML = `<div class="p-8 text-center text-slate-500 font-bold">🚧 功能开发中...</div>`;
     }
-
     if (overlay) overlay.classList.remove('hidden');
 }
 
 // --- 5. Web3 转账执行 ---
 async function handleContractPay(businessType) {
     if(!window.ethereum) return alert("Please use a Web3 browser or Wallet");
+    
+    // 强制检查 BSC 网络
+    const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+    if (currentChainId !== BSC_CHAIN_ID) return connectWallet(); // 若网络不对，引导重新连接/切换
+
     const targetAddr = RECEIVE_ADDRESSES[businessType];
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -168,22 +185,43 @@ async function handleFinanceAction(action) {
 async function executeTransfer(signer, to, amountStr) {
     try {
         const usdtAbi = ["function transfer(address to, uint256 amount) public returns (bool)"];
-        const usdtContract = new ethers.Contract(USDT_ADDR, usdtAbi, signer);
+        // 关键：对合约地址和目标地址都使用 getSafeAddr
+        const usdtContract = new ethers.Contract(getSafeAddr(USDT_ADDR), usdtAbi, signer);
         const amount = ethers.parseUnits(amountStr, 18);
-        const tx = await usdtContract.transfer(to, amount);
+        
+        const tx = await usdtContract.transfer(getSafeAddr(to), amount);
         alert("Success! Tx Hash: " + tx.hash);
         closeModal();
     } catch (e) {
-        alert("Transaction Error: " + e.message);
+        alert("Transaction Error: " + (e.reason || e.message));
     }
 }
 
-// --- 6. 核心连接逻辑：钱包 + 飞书后端 ---
+// --- 6. 核心连接逻辑：钱包 + 强制网络 + 自动数据同步 ---
 let currentAddress = null;
 
 async function connectWallet() {
     if (!window.ethereum) return alert("请使用 Web3 浏览器或安装钱包插件");
+    
     try {
+        // 1. 强制切换到 BSC 网络
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (currentChainId !== BSC_CHAIN_ID) {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: BSC_CHAIN_ID }],
+                });
+            } catch (err) {
+                if (err.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [BSC_RPC_PARAMS],
+                    });
+                } else throw err;
+            }
+        }
+
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
@@ -199,80 +237,31 @@ async function connectWallet() {
             fetchUserData(address); // 登录成功后拉取数据
         }
     } catch (error) {
-        alert("授权失败或用户取消");
+        console.error(error);
+        alert("授权失败: " + (error.message || "User Cancelled"));
     }
 }
 
-// 检索飞书数据 (修正路径)
 async function fetchUserData(address) {
     try {
         const res = await fetch(`${API_BASE}/api/user?address=${address.toLowerCase()}`);
+        if (!res.ok) throw new Error("Server Error 500");
         const data = await res.json();
 
         if (data.newUser) {
             showRegisterModal(address);
         } else {
-            syncUIData(data); // 补全：同步老用户数据
+            syncUIData(data); 
         }
     } catch (err) {
-        console.error("API Error:", err);
-        alert("系统数据检索失败，请检查网络");
+        console.warn("Data Fetch Failed:", err);
     }
 }
 
-// 同步数据到 UI (修正：补全缺失函数)
 function syncUIData(data) {
-    if (data.balances) {
-        renderTokens(data.balances);
-    }
-    // 更新邀请人数或其他信息
+    if (data.balances) renderTokens(data.balances);
     const inviteEl = document.getElementById('inviteCount');
     if (inviteEl && data.inviteCount) inviteEl.innerText = data.inviteCount;
-}
-
-// 注册弹窗
-function showRegisterModal(address) {
-    const content = document.getElementById('modalContent');
-    const title = document.getElementById('modalTitle');
-    title.innerText = "新用户注册";
-    content.innerHTML = `
-        <div class="space-y-4">
-            <p class="text-[11px] text-slate-500 font-bold uppercase">检测到新地址，请输入邀请码绑定关系</p>
-            <input type="text" id="inviteCodeInput" placeholder="请输入推荐人邀请码" 
-                   class="w-full p-4 bg-slate-50 rounded-2xl border-none font-black text-center focus:ring-2 focus:ring-blue-500">
-            <button onclick="submitRegister('${address}')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-200">
-                立即绑定并开启
-            </button>
-        </div>`;
-    document.getElementById('modalOverlay').classList.remove('hidden');
-}
-
-// 提交注册 (修正：添加 Headers 和 JSON 格式)
-async function submitRegister(address) {
-    const code = document.getElementById('inviteCodeInput').value;
-    if (!code) return alert("请输入邀请码");
-
-    try {
-        const res = await fetch(`${API_BASE}/api/register`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                address: address.toLowerCase(), 
-                inviteCode: code 
-            })
-        });
-
-        const result = await res.json();
-        if (result.success) {
-            alert("绑定成功！");
-            closeModal();
-            fetchUserData(address); 
-        } else {
-            alert("绑定失败: " + (result.error || "邀请码无效"));
-        }
-    } catch (err) {
-        alert("注册请求失败，请检查网络");
-    }
 }
 
 // --- 7. UI 辅助逻辑 ---
@@ -302,11 +291,6 @@ function setBuyNum(n, btn) {
     document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600'));
     btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
     document.getElementById('buyTotal').innerText = `$ ${(n * 150).toFixed(2)}`;
-}
-
-function switchLang(lang) {
-    localStorage.setItem('fbs_lang', lang);
-    location.reload(); // 语言切换通常建议刷新以确保所有占位符更新
 }
 
 document.addEventListener('DOMContentLoaded', () => {
