@@ -39,6 +39,7 @@ window.onload = () => {
     if (currentAddress) {
         const el = document.getElementById('walletAddr');
         if (el) el.innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
+                el.removeAttribute('data-i18n'); 
         fetchUserData(currentAddress);
     }
     renderTokenList({}); 
@@ -76,17 +77,23 @@ function renderTokenList(balances = {}) {
 async function connectWallet() {
     if (!window.ethereum) return alert("请在钱包内打开");
     try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        currentAddress = accounts[0];
-        const msg = `FBS Login\nAddress: ${currentAddress}\nTime: ${Date.now()}`;
-        const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, currentAddress] });
-if (sig) {
-    currentAddress = address; // 确保这里拿到的是最新的 address
-    localStorage.setItem('fbs_address', currentAddress); // 💡 新增这一行：持久化存储
-    document.getElementById('walletAddr').innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
-    fetchUserData(currentAddress);
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+if (chainId !== BSC_CHAIN_ID) {
+    alert("请切换至 BSC 网络");
+    return;
 }
-    } catch (e) { console.error("Login Cancelled"); }
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0]; // 💡 建议先定义局部变量 address
+        const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
+        const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, address] });
+
+        if (sig) {
+            currentAddress = address; // 💡 赋值给全局变量
+            localStorage.setItem('fbs_address', currentAddress); 
+            document.getElementById('walletAddr').innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
+            fetchUserData(currentAddress);
+        }
+    } catch (e) { console.error("Login Cancelled", e); }
 }
 function logout() {
     localStorage.removeItem('fbs_address');
@@ -245,8 +252,13 @@ async function doRecharge() {
 }
 
 async function doChainPay(bizType) {
-    let amt = (bizType === 'MINER') ? document.getElementById('buyTotal').innerText.replace('$ ', '') : document.getElementById('elecCost').innerText.replace(' USDT', '');
-    await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], amt);
+    let rawAmt = (bizType === 'MINER') 
+        ? document.getElementById('buyTotal').innerText.replace('$ ', '') 
+        : document.getElementById('elecCost').innerText.replace(' USDT', '');
+    
+    // 确保是干净的数字字符串，且最多保留 18 位小数
+    let safeAmt = parseFloat(rawAmt).toFixed(18).replace(/\.?0+$/, ""); 
+    await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], safeAmt);
 }
 
 async function handleSignAction(type) {
