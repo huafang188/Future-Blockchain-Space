@@ -220,6 +220,26 @@ function switchLang(lang) {
     });
 }
 
+// 补充连接钱包逻辑
+async function connectWallet() {
+    if (window.ethereum) {
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const account = accounts[0];
+            const displayAddr = account.slice(0, 6) + "..." + account.slice(-4);
+            document.getElementById('walletAddr').innerText = displayAddr;
+            document.getElementById('walletAddr').classList.replace('text-slate-500', 'text-blue-600');
+            
+            // 连接后刷新余额 (这里可以根据实际 API 调整)
+            renderTokens({ 'USDT': 0, 'FBS': 0 }); 
+        } catch (error) {
+            console.error("User denied account access");
+        }
+    } else {
+        alert("Please install MetaMask or Bitget Wallet!");
+    }
+}
+
 // 页面加载初始化
 document.addEventListener('DOMContentLoaded', () => {
     renderTokens();
