@@ -154,44 +154,75 @@ function openFinanceModal(type) {
     }
 }
 
-// --- 5. 核心：强制唤起收银台的转账逻辑 ---
+
+// --- 5. 核心：真正执行转账并等待确认 ---
 async function executeTokenTransfer(contractAddr, to, amountStr) {
     try {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddr, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
         
-        // 关键点：手动指定 gasLimit，跳过浏览器的 estimateGas 预检
+        console.log("正在唤起收银台...");
+        
+        // 1. 发起请求并手动指定 Gas 限制 (强制唤起)
         const tx = await contract.transfer(to, ethers.parseUnits(amountStr, 18), {
-            gasLimit: 100000 // 手动设置一个足够的 Gas 上限
+            gasLimit: 100000 
         });
         
-        alert("交易已广播: " + tx.hash);
-        closeModal();
-    } catch (e) {
-        // 如果用户在收银台点击了取消，或者是钱包在弹窗内拦截了
-        console.error("交易中止:", e);
-        if (e.message.includes("user rejected")) {
-            alert("用户取消了支付");
+        // 💡 关键修改：显示等待状态
+        document.getElementById('modalContent').innerHTML = `
+            <div class="text-center py-10">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p class="font-bold text-slate-800">交易已广播，等待链上确认...</p>
+                <p class="text-[10px] text-slate-400 mt-2">Hash: ${tx.hash.slice(0,10)}...</p>
+            </div>`;
+
+        // 2. 💡 真正等待区块链打包确认 (通常 BSC 需要 3-6 秒)
+        const receipt = await tx.wait();
+        
+        if (receipt.status === 1) {
+            alert("✅ 支付成功！交易已记录在案。");
+            closeModal();
+            fetchUserData(currentAddress); // 支付成功后刷新一下余额
         } else {
-            alert("支付异常，请检查余额是否充足");
+            alert("❌ 链上执行失败（可能是余额不足或合约限制）");
         }
+
+    } catch (e) {
+        console.error("交易详情:", e);
+        if (e.code === 'ACTION_REJECTED' || e.message.includes("user rejected")) {
+            alert("🚫 您已取消支付");
+        } else {
+            alert("⚠️ 交易异常: " + (e.reason || "请检查余额是否充足"));
+        }
+        // 如果失败了，关闭加载动画回到初始状态
+        closeModal();
     }
 }
 
-// 原生 BNB 转账同理
+// --- 原生 BNB 转账同步修改 ---
 async function executeNativeTransfer(to, amountStr) {
     try {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
+        
         const tx = await signer.sendTransaction({
             to: to,
             value: ethers.parseEther(amountStr),
-            gasLimit: 21000 // 原生转账固定 Gas
+            gasLimit: 21000
         });
-        alert("充值成功: " + tx.hash);
+
+        // 等待打包
+        const receipt = await tx.wait();
+        if (receipt.status === 1) {
+            alert("✅ 充值成功！");
+            closeModal();
+            fetchUserData(currentAddress);
+        }
+    } catch (e) {
+        alert("充值未完成或被拒绝");
         closeModal();
-    } catch (e) { alert("交易未完成"); }
+    }
 }
 
 // --- 后续业务逻辑 ---
