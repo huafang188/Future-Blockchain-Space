@@ -70,11 +70,10 @@
                 <div class="flex-1 space-y-2">
                     <h3 class="font-black text-slate-800 text-sm italic" data-i18n="miner_name">FBS 智能矿机 S1</h3>
                     <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-500">
-                        <p><span data-i18n="m_count">数量</span>: <span class="text-slate-900 font-bold" id="mCount">0</span></p>
-                        <p><span data-i18n="m_yield">日产量</span>: <span class="text-slate-900 font-bold" id="mYield">0.00</span></p>
-                        <p><span data-i18n="m_term">期限</span>: <span class="text-slate-900 font-bold" id="mTerm">--</span></p>
-                        <p><span data-i18n="m_locked">锁仓</span>: <span class="text-slate-900 font-bold" id="mLocked">0.00</span></p>
-                    </div>
+                        <p><span data-i18n="m_count">数量</span>: <span class="text-slate-900 font-bold" id="miner_count">0</span></p>
+                        <p><span data-i18n="m_yield">日产量</span>: <span class="text-slate-900 font-bold" id="miner_daily">0.00</span></p>
+                        <p><span data-i18n="m_term">期限</span>: <span class="text-slate-900 font-bold" id="miner_deadline">--</span></p>
+                        <p><span data-i18n="m_locked">锁仓</span>: <span class="text-slate-900 font-bold" id="miner_locked">0.00</span></p>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-4 mt-6">
@@ -102,32 +101,34 @@
             <div class="flex justify-between items-center">
                 <h3 class="font-black text-slate-800 text-sm uppercase" data-i18n="team_title">我的团队</h3>
                 <div class="text-[10px] bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-bold">
-                    <span data-i18n="invite_code">邀请码</span>: <span id="myCode">---</span>
+                    <span data-i18n="invite_code">邀请码</span>: <span id="info_inviteCode">---</span>
                 </div>
             </div>
-            <div class="bg-slate-900 rounded-2xl p-4 text-white grid grid-cols-2 gap-4 shadow-xl">
-                <div>
-                    <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="direct_num">直推人数</p>
-                    <p class="text-xl font-black" id="directNum">0</p>
-                </div>
-                <div>
-                    <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="direct_sales">直推业绩</p>
-                    <p class="text-xl font-black">$ <span id="directSales">0</span></p>
-                </div>
-                <div class="pt-2 border-t border-slate-800">
-                    <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="team_num">团队人数</p>
-                    <p class="text-xl font-black" id="teamSize">0</p>
-                </div>
-                 <div class="pt-2 border-t border-slate-800">
-                    <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="total_rewards">团队业绩</p>
-                    <p class="text-xl font-black text-slate-400">$ <span id="totalRewards">0.00</span></p>
-                </div>
-                <div class="pt-2 border-t border-slate-800">
-                    <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="total_rewards">累计奖励</p>
-                    <p class="text-xl font-black text-yellow-400">$ <span id="totalRewards">0.00</span></p>
-                </div>
-            </div>
-            <p class="text-[9px] text-slate-400"><span data-i18n="inviter">我的推荐人</span>: <span id="inviterAddr">--</span></p>
+<div class="bg-slate-900 rounded-2xl p-4 text-white grid grid-cols-2 gap-4 shadow-xl">
+    <div>
+        <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="direct_num">直推人数</p>
+        <p class="text-xl font-black" id="team_directCount">0</p>
+    </div>
+    <div>
+        <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="direct_sales">直推业绩</p>
+        <p class="text-xl font-black">$ <span id="team_directSales">0</span></p>
+    </div>
+    <div class="pt-2 border-t border-slate-800">
+        <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="team_num">团队人数</p>
+        <p class="text-xl font-black" id="team_totalCount">0</p>
+    </div>
+    <div class="pt-2 border-t border-slate-800">
+        <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="team_sales">团队业绩</p>
+        <p class="text-xl font-black text-slate-400">$ <span id="team_totalSales">0.00</span></p>
+    </div>
+    <div class="pt-2 border-t border-slate-800 col-span-2">
+        <p class="text-[9px] text-slate-400 uppercase font-bold" data-i18n="total_rewards">累计奖励</p>
+        <p class="text-xl font-black text-yellow-400">$ <span id="team_totalReward">0.00</span></p>
+    </div>
+</div>
+<p class="text-[9px] text-slate-400 mt-2">
+    <span data-i18n="inviter">我的推荐人</span>: <span id="info_inviter">--</span>
+</p>
         </section>
 
         <section class="glass-card rounded-[2rem] overflow-hidden">
