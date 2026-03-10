@@ -1,5 +1,5 @@
 /**
- * Future Blockchain Space - 核心业务逻辑 (强制唤起收银台版)
+ * Future Blockchain Space - 核心业务逻辑 (全功能修复版)
  */
 
 const API_BASE = "https://api.fbsfbs.fit/api/user";
@@ -23,7 +23,7 @@ const tokenInfo = {
     'FBS': { price: 0.1, logo: 'assets/fbs_logo.png' },
     'FBST': { price: 0.05, logo: 'assets/fbst_logo.png' },
     'FBSP': { price: 1.2, logo: 'assets/fbsp_logo.png' },
-    'PBSU': { price: 1.0, logo: 'assets/fbsu_logo.png' },
+    'FBSU': { price: 1.0, logo: 'assets/fbsu.png' },
     'USDT': { price: 1.0, logo: 'assets/USDT.png' },
     'BNB': { price: 600, logo: 'assets/BNB.png' },
     'BTC': { price: 65000, logo: 'assets/BTC.png' },
@@ -35,15 +35,18 @@ let userBalances = {};
 
 // --- 2. 初始化与列表渲染 ---
 window.onload = () => {
-    // 💡 新增：如果本地有地址，直接更新 UI 并拉取数据
     if (currentAddress) {
-        const el = document.getElementById('walletAddr');
-        if (el) el.innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
-                el.removeAttribute('data-i18n'); 
+        updateWalletUI(currentAddress);
         fetchUserData(currentAddress);
     }
     renderTokenList({}); 
 };
+
+function formatTime(timestamp) {
+    if (!timestamp) return "--";
+    const date = new Date(timestamp);
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+}
 
 function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
@@ -73,129 +76,125 @@ function renderTokenList(balances = {}) {
     if (document.getElementById('totalValue')) document.getElementById('totalValue').innerText = totalVal.toFixed(2);
 }
 
-// --- 3. 钱包操作 ---
+// --- 3. 钱包与登录 ---
 async function connectWallet() {
     if (!window.ethereum) return alert("请在钱包内打开");
     try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const address = accounts[0];
-
-        // 💡 检查本地是否已经有这个地址的缓存，如果有，直接登录，不再签名
-        const savedAddr = localStorage.getItem('fbs_address');
-        if (savedAddr && savedAddr.toLowerCase() === address.toLowerCase()) {
-            currentAddress = address;
-            finishLogin(); // 执行登录后的 UI 更新
-            return;
-        }
-
-        // 只有新用户或更换账号才强制签名
-        const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
-        const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, address] });
+        const address = accounts[0]; 
         
-        if (sig) {
-            currentAddress = address;
-            localStorage.setItem('fbs_address', address);
-            finishLogin();
+        // 只有账号变了才签名
+        const savedAddr = localStorage.getItem('fbs_address');
+        if (!savedAddr || savedAddr.toLowerCase() !== address.toLowerCase()) {
+            const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
+            await window.ethereum.request({ method: 'personal_sign', params: [msg, address] });
         }
+        
+        currentAddress = address;
+        localStorage.setItem('fbs_address', address);
+        finishLogin();
     } catch (e) { console.error("Login Cancelled"); }
 }
 
-// 提取一个通用的登录成功 UI 更新函数
 function finishLogin() {
-    const el = document.getElementById('walletAddr');
-    if (el) {
-        el.innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
-        el.removeAttribute('data-i18n'); // 防止多语言包把地址翻译回去
-    }
+    updateWalletUI(currentAddress);
     fetchUserData(currentAddress);
     closeModal();
 }
-// 插入到 connectWallet 函数附近
-function handleWalletClick() {
-    if (currentAddress) {
-        // 如果已经登录，弹出确认框
-        showModal("账号管理", `
-            <div class="space-y-4 text-center">
-                <p class="text-sm text-slate-500">当前地址: ${currentAddress}</p>
-                <button onclick="logout()" class="w-full bg-red-50 text-red-600 py-4 rounded-2xl font-black">退出登录 (Logout)</button>
-                <button onclick="closeModal()" class="w-full bg-slate-100 py-4 rounded-2xl font-bold">取消</button>
-            </div>
-        `);
-        
-        // 记得触发你的多语言渲染
-        if (typeof i18nRender === 'function') i18nRender();
-    } else {
-        // 如果没登录，去执行链接逻辑
-        connectWallet();
+
+function updateWalletUI(addr) {
+    const el = document.getElementById('walletAddr');
+    if (el) {
+        el.innerText = addr.slice(0, 6) + '...' + addr.slice(-4);
+        el.removeAttribute('data-i18n');
     }
 }
 
-// 退出登录逻辑
 function logout() {
-    localStorage.removeItem('fbs_address'); // 清除本地缓存
-    currentAddress = null; // 重置变量
-    location.reload(); // 刷新页面清空所有状态
+    localStorage.removeItem('fbs_address');
+    location.reload();
 }
 
+// --- 4. 核心：读取飞书数据 ---
 async function fetchUserData(address) {
     try {
-        const res = await fetch(`${API_BASE}/api/user?address=${address.toLowerCase()}`);
+        const res = await fetch(`${API_BASE}?address=${address}`);
         const data = await res.json();
 
         if (data.newUser) {
-            showRegisterModal(address);
+            if (typeof showRegisterModal === 'function') showRegisterModal(address);
             return;
         }
 
-        // --- 1. 映射【推荐关系】数据 ---
         if (data.info) {
             updateText('info_inviteCode', data.info["推荐码"]);
             updateText('info_inviter', data.info["推荐人"]);
-            updateText('info_regTime', data.info["注册时间"]);
+            updateText('info_regTime', formatTime(data.info["注册时间"]));
         }
 
-        // --- 2. 映射【用户团队】数据 ---
-        if (data.team) {
-            updateText('team_directCount', data.team["直推人数"]);
-            updateText('team_directSales', data.team["直推业绩"]);
-            updateText('team_totalCount', data.team["团队人数"]);
-            updateText('team_totalSales', data.team["团队业绩"]);
-            updateText('team_totalReward', data.team["累计奖励"]);
-        }
+        const t = data.team || {};
+        updateText('team_directCount', t["直推人数"]);
+        updateText('team_directSales', t["直推业绩"]);
+        updateText('team_totalCount', t["团队人数"]);
+        updateText('team_totalSales', t["团队业绩"]);
+        updateText('team_totalReward', t["累计奖励"]);
 
-        // --- 3. 映射【用户矿机】数据 ---
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
-            updateText('miner_deadline', data.miner["挖矿期限"]);
+            updateText('miner_deadline', formatTime(data.miner["挖矿期限"]));
             updateText('miner_daily', data.miner["日产量"]);
             updateText('miner_locked', data.miner["锁仓数量"]);
         }
 
-        // --- 4. 映射【用户余额】数据 ---
         if (data.balances) {
             userBalances = data.balances;
-            renderTokenList(data.balances); // 渲染列表
-            // 同时更新页面上可能存在的固定余额标签
+            renderTokenList(data.balances);
             Object.keys(data.balances).forEach(token => {
                 updateText(`bal_${token}`, data.balances[token]);
             });
         }
-
-    } catch (e) {
-        console.error("数据精准加载失败:", e);
-    }
+    } catch (e) { console.error("API Error:", e); }
 }
 
-// 通用更新函数：确保数据不存在时显示 0
 function updateText(id, value) {
     const el = document.getElementById(id);
-    if (el) {
-        // 如果是数字则格式化，如果是 null 则显示 0
-        el.innerText = (value !== undefined && value !== null) ? value : "0";
+    if (el) el.innerText = (value !== undefined && value !== null) ? value : "0";
+}
+
+// --- 5. 核心交互：转账与支付逻辑 ---
+async function executeTokenTransfer(contractAddr, to, amountStr) {
+    try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const contract = new ethers.Contract(contractAddr, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
+        
+        showModal("正在处理", `<div class="p-10 text-center"><div class="animate-spin h-10 w-10 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>请在钱包确认交易并等待...</div>`);
+
+        const tx = await contract.transfer(to, ethers.parseUnits(amountStr.toString(), 18));
+        const receipt = await tx.wait();
+        
+        if (receipt.status === 1) {
+            alert("✅ 支付成功！数据同步约需1-2分钟。");
+            location.reload(); 
+        }
+    } catch (e) {
+        alert("⚠️ 交易未完成: " + (e.reason || "用户拒绝或余额不足"));
+        closeModal();
     }
 }
 
-// --- 4. 路由逻辑 (匹配 UI 按钮) ---
+async function executeNativeTransfer(to, amountStr) {
+    try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const tx = await signer.sendTransaction({ to, value: ethers.parseEther(amountStr.toString()) });
+        await tx.wait();
+        alert("✅ 充值成功！");
+        location.reload();
+    } catch (e) { alert("充值失败"); closeModal(); }
+}
+
+// --- 6. 业务路由 (弹窗逻辑) ---
 function openMinerModal(type) {
     const nums = [1, 5, 10, 15, 20, 25, 50, 100];
     if (type === 'buy') {
@@ -223,8 +222,8 @@ function openFinanceModal(type) {
         showModal("充值资产", `
             <div class="space-y-4 text-left">
                 <select id="recToken" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none">${Object.keys(CONTRACT_ADDRS).map(t => `<option value="${t}">${t}</option>`).join('')}</select>
-                <input type="number" id="recAmount" placeholder="输入充值数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none">
-                <button onclick="doRecharge()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black">确认</button>
+                <input type="number" id="recAmount" placeholder="输入数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none">
+                <button onclick="doRecharge()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black">确认充值</button>
             </div>`);
     } else if (type === 'withdraw') {
         showModal("提币申请", `
@@ -240,16 +239,11 @@ function openFinanceModal(type) {
             <div class="space-y-3">
                 <div class="p-4 bg-slate-50 rounded-2xl text-left">
                     <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>支付</span><span id="maxSwap">余额: 0</span></div>
-                    <div class="flex items-center gap-2">
-                        <input type="number" id="sFromAmt" oninput="calcSwap()" placeholder="0.0" class="w-full bg-transparent border-none font-black text-xl">
-                        <select id="sFromToken" onchange="calcSwap()" class="font-bold border-none">${options}</select>
-                    </div>
+                    <div class="flex items-center gap-2"><input type="number" id="sFromAmt" oninput="calcSwap()" placeholder="0.0" class="w-full bg-transparent border-none font-black text-xl"><select id="sFromToken" onchange="calcSwap()">${options}</select></div>
                 </div>
                 <div class="text-center">⇅</div>
                 <div class="p-4 bg-slate-50 rounded-2xl text-left">
-                    <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>预估收到</span></div>
-                    <div class="flex items-center gap-2"><input type="number" id="sToAmt" readonly class="w-full bg-transparent border-none font-black text-xl text-indigo-600">
-                    <select id="sToToken" onchange="calcSwap()" class="font-bold border-none">${options}</select></div>
+                    <div class="flex items-center gap-2"><input type="number" id="sToAmt" readonly class="w-full bg-transparent border-none font-black text-xl text-indigo-600"><select id="sToToken" onchange="calcSwap()">${options}</select></div>
                 </div>
                 <button onclick="handleSignAction('SWAP')" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black">签名兑换</button>
             </div>`);
@@ -257,77 +251,7 @@ function openFinanceModal(type) {
     }
 }
 
-// --- 5. 核心：真正执行转账并等待确认 ---
-async function executeTokenTransfer(contractAddr, to, amountStr) {
-    try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = new ethers.Contract(contractAddr, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
-        
-        console.log("正在唤起收银台...");
-        
-        // 1. 发起请求并手动指定 Gas 限制 (强制唤起)
-        const tx = await contract.transfer(to, ethers.parseUnits(amountStr, 18), {
-            gasLimit: 100000 
-        });
-        
-        // 💡 关键修改：显示等待状态
-        document.getElementById('modalContent').innerHTML = `
-            <div class="text-center py-10">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p class="font-bold text-slate-800">交易已广播，等待链上确认...</p>
-                <p class="text-[10px] text-slate-400 mt-2">Hash: ${tx.hash.slice(0,10)}...</p>
-            </div>`;
-
-        // 2. 💡 真正等待区块链打包确认 (通常 BSC 需要 3-6 秒)
-        const receipt = await tx.wait();
-        
-        if (receipt.status === 1) {
-            alert("✅ 支付成功！交易已记录在案。");
-            closeModal();
-            fetchUserData(currentAddress); // 支付成功后刷新一下余额
-        } else {
-            alert("❌ 链上执行失败（可能是余额不足或合约限制）");
-        }
-
-    } catch (e) {
-        console.error("交易详情:", e);
-        if (e.code === 'ACTION_REJECTED' || e.message.includes("user rejected")) {
-            alert("🚫 您已取消支付");
-        } else {
-            alert("⚠️ 交易异常: " + (e.reason || "请检查余额是否充足"));
-        }
-        // 如果失败了，关闭加载动画回到初始状态
-        closeModal();
-    }
-}
-
-// --- 原生 BNB 转账同步修改 ---
-async function executeNativeTransfer(to, amountStr) {
-    try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        
-        const tx = await signer.sendTransaction({
-            to: to,
-            value: ethers.parseEther(amountStr),
-            gasLimit: 21000
-        });
-
-        // 等待打包
-        const receipt = await tx.wait();
-        if (receipt.status === 1) {
-            alert("✅ 充值成功！");
-            closeModal();
-            fetchUserData(currentAddress);
-        }
-    } catch (e) {
-        alert("充值未完成或被拒绝");
-        closeModal();
-    }
-}
-
-// --- 后续业务逻辑 ---
+// --- 7. 执行动作 ---
 async function doRecharge() {
     const symbol = document.getElementById('recToken').value;
     const amount = document.getElementById('recAmount').value;
@@ -339,31 +263,23 @@ async function doChainPay(bizType) {
     let rawAmt = (bizType === 'MINER') 
         ? document.getElementById('buyTotal').innerText.replace('$ ', '') 
         : document.getElementById('elecCost').innerText.replace(' USDT', '');
-    
-    // 确保是干净的数字字符串，且最多保留 18 位小数
-    let safeAmt = parseFloat(rawAmt).toFixed(18).replace(/\.?0+$/, ""); 
-    await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], safeAmt);
+    await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], rawAmt);
 }
 
 async function handleSignAction(type) {
     try {
         const msg = `${type} Request\nTime: ${Date.now()}`;
         const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, currentAddress] });
-        if (sig) { alert("申请已签名提交"); closeModal(); }
-    } catch (e) { alert("已取消签名"); }
+        if (sig) { alert("申请已提交"); closeModal(); }
+    } catch (e) { alert("已取消"); }
 }
 
-// --- 辅助 UI ---
+// --- 8. UI 辅助逻辑 ---
 function showModal(title, html) {
     document.getElementById('modalTitle').innerText = title;
     document.getElementById('modalContent').innerHTML = html;
     document.getElementById('modalOverlay').classList.remove('hidden');
-
-    // 💡 新增：调用你外部的多语言重新渲染函数（假设函数名为 i18nRender）
-    // 这样弹窗里新生成的 HTML 才能被翻译成当前语言
-    if (typeof i18nRender === 'function') {
-        i18nRender(); 
-    }
+    if (typeof i18nRender === 'function') i18nRender();
 }
 function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
 function setBuyNum(n, btn) {
@@ -384,5 +300,5 @@ function calcSwap() {
 }
 function updateMax() {
     const t = document.getElementById('witToken').value;
-    document.getElementById('maxWit').innerText = (userBalances[t] || 0).toFixed(4);
+    document.getElementById('maxWit').innerText = (userBalances[t] || 0);
 }
