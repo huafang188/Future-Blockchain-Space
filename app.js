@@ -188,6 +188,39 @@ async function executeTokenTransfer(contractAddr, to, amountStr) {
 }
 
 // --- 其余工具函数 (渲染、计算等，保持不变) ---
+// 全局语言变量，默认先从本地缓存取，没有就默认中文
+let currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+
+/**
+ * 核心：更新全局语言显示
+ */
+function updateViewText() {
+    const data = i18n[currentLang]; // 从你的 languages.js 里的 i18n 对象取数
+    if (!data) return;
+
+    // 1. 处理所有普通文字元素
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (data[key]) {
+            // 如果是输入框，更改 placeholder
+            if (el.tagName === 'INPUT') {
+                el.placeholder = data[key];
+            } else {
+                el.innerText = data[key];
+            }
+        }
+    });
+
+    // 2. 特殊处理：更新下拉框选中的状态
+    const select = document.getElementById('langSelect');
+    if (select) select.value = currentLang;
+
+    // 3. 特殊处理：更新动态钱包地址状态
+    if (currentAddress) {
+        const connectedText = data['connected'] || 'Connected';
+        // 保持地址显示的同时更新前面的状态文字（如果需要）
+    }
+}
 function renderTokenList(balances) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
