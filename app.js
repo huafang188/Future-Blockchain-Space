@@ -1,20 +1,16 @@
 /**
- * Future Blockchain Space - 全功能安全增强版 (集成多语言与账号持久化)
+ * Future Blockchain Space - 旗舰安全美化版
+ * 功能：强制签名登录、实时账号同步、纠正电费逻辑、全自定义美化弹窗
  */
 
+// --- 基础配置 ---
 const API_BASE = "https://api.fbsfbs.fit";
-const BSC_CHAIN_ID = '0x38';
-
 const RECEIVE_ADDRS = {
     RECHARGE: "0xCfd8e926623e46fB8F54baaB9c7609808daFf9B4",
     ELECTRIC: "0xFf27899526FDA4A30411A8e2778d7F7BCb837568",
     MINER: "0xBdfFB96E30d2d5858c46374a213ee819A005256c"
 };
-
-const CONTRACT_ADDRS = {
-    'USDT': "0x55d398326f99059ff775485246999027b3197955",
-    'BNB': "NATIVE"
-};
+const CONTRACT_ADDRS = { 'USDT': "0x55d398326f99059ff775485246999027b3197955" };
 
 const tokenInfo = {
     'FBS': { price: 0.1, logo: 'assets/fbs_logo.png' },
@@ -29,217 +25,248 @@ const tokenInfo = {
 
 let currentAddress = null;
 let userBalances = {};
-// 全局语言变量，优先读取本地缓存
 let currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
 
-// --- 1. 自动初始化逻辑 ---
+// --- 1. 初始化与全局监听 ---
 window.onload = async () => {
-    // 初始化页面语言显示
     updateViewText();
-
-    // 渲染空列表占位
     renderTokenList({});
-    
-    // 如果之前登录过，尝试自动链接
-    if (localStorage.getItem('fbs_isLoggedIn') === 'true') {
-        connectWallet(true); // true 表示静默尝试
-    }
 
-    // 监听钱包账号切换
     if (window.ethereum) {
+        // 【核心】监听账号切换：换号即强制退出，要求重新签名
         window.ethereum.on('accountsChanged', (accounts) => {
-            if (accounts.length > 0) {
-                handleNewAddress(accounts[0]);
-            } else {
-                handleLogout(); 
+            if (accounts.length > 0 && accounts[0].toLowerCase() !== currentAddress?.toLowerCase()) {
+                handleLogout();
+                connectWallet(); // 重新拉起签名
+            } else if (accounts.length === 0) {
+                handleLogout();
             }
         });
-        
-        // 监听链切换（确保在 BSC 链）
-        window.ethereum.on('chainChanged', () => window.location.reload());
+
+        // 自动检查：如果之前成功签名过，尝试拉起
+        if (localStorage.getItem('fbs_isLoggedIn') === 'true') {
+            connectWallet(true);
+        }
     }
 };
 
-// --- 2. 身份与多语言逻辑 ---
-
-/**
- * 切换语言触发器
- */
-function switchLang(lang) {
-    currentLang = lang;
-    localStorage.setItem('fbs_lang', lang); 
-    updateViewText();
-    // 重新渲染代币列表以更新列表内的“余额”等翻译
-    renderTokenList(userBalances);
-}
-
-/**
- * 更新全局语言显示
- */
-function updateViewText() {
-    const data = i18n[currentLang]; 
-    if (!data) return;
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (data[key]) {
-            if (el.tagName === 'INPUT') {
-                el.placeholder = data[key];
-            } else {
-                el.innerText = data[key];
-            }
-        }
-    });
-
-    const select = document.getElementById('langSelect');
-    if (select) select.value = currentLang;
-
-    // 更新登录按钮状态
-    const walletAddrEl = document.getElementById('walletAddr');
-    if (walletAddrEl) {
-        if (!currentAddress) {
-            walletAddrEl.innerText = data['connect'] || "CONNECT WALLET";
-        } else {
-            walletAddrEl.innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
-        }
-    }
-}
-
+// --- 2. 身份验证 (签名逻辑) ---
 async function connectWallet(isAuto = false) {
-    if (!window.ethereum) return isAuto ? null : alert("请在 Web3 钱包内打开");
+    if (!window.ethereum) return isAuto ? null : customAlert("请在 Web3 浏览器中打开");
+
     try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts.length > 0) {
-            await handleNewAddress(accounts[0]);
+        const address = accounts[0];
+
+        // 【关键】强制签名：防止只连钱包不登录
+        const msg = `FBS Login Request\nWallet: ${address}\nTimestamp: ${Date.now()}`;
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [msg, address]
+        });
+
+        if (signature) {
+            currentAddress = address;
             localStorage.setItem('fbs_isLoggedIn', 'true');
+            handleNewAddress(address);
         }
     } catch (e) {
-        if (!isAuto) alert("连接已取消");
+        handleLogout();
+        if (!isAuto) customAlert("验证已取消或失败");
     }
 }
 
 async function handleNewAddress(address) {
-    currentAddress = address;
-    updateViewText(); // 更新地址显示
+    document.getElementById('walletAddr').innerText = address.slice(0, 6) + '...' + address.slice(-4);
     await fetchUserData(address);
+    updateViewText();
 }
 
 function handleLogout() {
     currentAddress = null;
     userBalances = {};
     localStorage.removeItem('fbs_isLoggedIn');
-    updateViewText();
+    document.getElementById('walletAddr').innerText = i18n[currentLang]['connect'];
     renderTokenList({});
-    alert("已退出登录 / Disconnected");
+}
+
+// --- 3. 业务逻辑 (电费计算纠正) ---
+function calcElec() {
+    const n = parseInt(document.getElementById('elecNum').value) || 0;
+    const d = parseInt(document.getElementById('elecDays').value) || 0;
+    // 逻辑：矿机数 * (天数/30) * 30 USDT
+    const cost = n * (d / 30) * 30; 
+    document.getElementById('elecCost').innerText = cost.toFixed(2) + " USDT";
 }
 
 function checkAuth() {
     if (!currentAddress) {
-        const msg = i18n[currentLang]['connect'] || "请先连接钱包";
-        alert(msg);
+        customAlert(i18n[currentLang]['connect'] || "请先连接钱包");
         connectWallet();
         return false;
     }
     return true;
 }
 
-// --- 3. 弹窗与业务逻辑 ---
+// --- 4. UI 翻译与弹窗美化 ---
+function switchLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('fbs_lang', lang);
+    updateViewText();
+    renderTokenList(userBalances);
+}
+
+function updateViewText() {
+    const data = i18n[currentLang];
+    if (!data) return;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (data[key]) {
+            el.tagName === 'INPUT' ? el.placeholder = data[key] : el.innerText = data[key];
+        }
+    });
+    const select = document.getElementById('langSelect');
+    if (select) select.value = currentLang;
+}
+
+function customAlert(msg) {
+    showModal('history_title', `<div class="py-6 text-center text-slate-200 font-bold">${msg}</div>
+    <button onclick="closeModal()" class="w-full py-4 bg-indigo-600 rounded-2xl font-black shadow-lg shadow-indigo-500/30">OK</button>`);
+}
 
 function showModal(titleKey, html) {
-    // 支持直接传入 i18n 的 Key
-    const translatedTitle = i18n[currentLang][titleKey] || titleKey;
-    document.getElementById('modalTitle').innerText = translatedTitle;
+    const title = i18n[currentLang][titleKey] || titleKey;
+    document.getElementById('modalTitle').innerText = title;
     document.getElementById('modalContent').innerHTML = html;
-    document.getElementById('modalOverlay').classList.remove('hidden');
-    
-    // 关键：动态插入内容后执行翻译扫描
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.remove('hidden');
+    overlay.style.display = 'flex'; // 确保居中
     updateViewText();
 }
 
-function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
+function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+    document.getElementById('modalOverlay').classList.add('hidden');
+}
 
+// --- 5. 弹窗路由函数 ---
 function openMinerModal(type) {
     if (!checkAuth()) return;
     const nums = [1, 5, 10, 15, 20, 25, 50, 100];
+    const days = [30, 60, 90, 180, 360];
+
     if (type === 'buy') {
         showModal('buy_miner', `
             <div class="space-y-4">
-                <div class="grid grid-cols-4 gap-2">${nums.map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border p-2 rounded-xl text-[10px] font-bold">${n}${i18n[currentLang]['m_count'] || '台'}</button>`).join('')}</div>
-                <div class="p-4 bg-blue-50 rounded-2xl flex justify-between"><span id="buyTotal" class="text-xl font-black text-blue-700">$ 0.00</span></div>
-                <button onclick="doChainPay('MINER')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg" data-i18n="confirm_pay">确认支付</button>
+                <div class="grid grid-cols-4 gap-2">
+                    ${nums.map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border border-slate-700 p-2 rounded-xl text-[10px] font-bold text-slate-300 hover:bg-indigo-600">${n}台</button>`).join('')}
+                </div>
+                <div class="p-4 bg-slate-800/80 rounded-2xl flex justify-between border border-indigo-500/30"><span id="buyTotal" class="text-xl font-black text-indigo-400">$ 0.00</span></div>
+                <button onclick="doChainPay('MINER')" class="w-full bg-indigo-600 py-4 rounded-2xl font-black shadow-lg" data-i18n="confirm_pay">立即支付</button>
             </div>`);
     } else {
-        const days = [30, 60, 90, 180, 360];
         showModal('pay_fee', `
-            <div class="space-y-4 text-left">
-                <select id="elecNum" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">${nums.map(n => `<option value="${n}">${n} ${i18n[currentLang]['m_count'] || '台'}</option>`).join('')}</select>
-                <select id="elecDays" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">${days.map(d => `<option value="${d}">${d} ${i18n[currentLang]['m_term'] || '天'}</option>`).join('')}</select>
-                <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center"><span class="text-xs text-slate-400" data-i18n="confirm_pay">需支付</span><span id="elecCost" class="text-xl font-black text-yellow-500">30.00</span></div>
-                <button onclick="doChainPay('ELECTRIC')" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-black shadow-lg" data-i18n="confirm_pay">确认支付</button>
+            <div class="space-y-4">
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-slate-500 font-bold" data-i18n="m_count">数量</label>
+                    <select id="elecNum" onchange="calcElec()" class="w-full p-4 bg-slate-800 rounded-2xl border-none outline-none text-white appearance-none cursor-pointer">
+                        ${nums.map(n => `<option value="${n}">${n} 台</option>`).join('')}
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-slate-500 font-bold" data-i18n="m_term">周期</label>
+                    <select id="elecDays" onchange="calcElec()" class="w-full p-4 bg-slate-800 rounded-2xl border-none outline-none text-white appearance-none cursor-pointer">
+                        ${days.map(d => `<option value="${d}">${d} 天</option>`).join('')}
+                    </select>
+                </div>
+                <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center border border-yellow-500/20">
+                    <span class="text-xs text-slate-400">Total</span>
+                    <span id="elecCost" class="text-xl font-black text-yellow-500">30.00 USDT</span>
+                </div>
+                <button onclick="doChainPay('ELECTRIC')" class="w-full bg-slate-100 text-slate-900 py-4 rounded-2xl font-black shadow-lg" data-i18n="confirm_pay">确认支付</button>
             </div>`);
+        calcElec();
     }
 }
 
 function openFinanceModal(type) {
     if (!checkAuth()) return;
-    const options = Object.keys(tokenInfo).map(t => `<option value="${t}">${t}</option>`).join('');
-    if (type === 'recharge') {
-        showModal('recharge', `
-            <div class="space-y-4 text-left">
-                <select id="recToken" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">${Object.keys(CONTRACT_ADDRS).map(t => `<option value="${t}">${t}</option>`).join('')}</select>
-                <input type="number" id="recAmount" data-i18n="input_amount" placeholder="输入充值数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
-                <button onclick="doRecharge()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg" data-i18n="recharge">确认</button>
+    if (type === 'exchange') {
+        showModal('exchange', `
+            <div class="space-y-4">
+                <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700">
+                    <div class="flex justify-between text-[10px] text-slate-400 mb-2">
+                        <span data-i18n="balance">余额</span>: <span id="maxSwap">0.00</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="sFromAmt" oninput="calcSwap()" placeholder="0.0" class="flex-1 bg-transparent border-none text-xl font-black outline-none text-white">
+                        <span class="font-bold text-indigo-400">USDT</span>
+                    </div>
+                </div>
+                <div class="text-center text-indigo-500 text-xl font-black">↓</div>
+                <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700">
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="sToAmt" readonly class="flex-1 bg-transparent border-none text-xl font-black text-slate-400 outline-none">
+                        <span class="font-bold text-emerald-400">FBS</span>
+                    </div>
+                </div>
+                <button onclick="handleSignAction('SWAP')" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl font-black" data-i18n="exchange">确认兑换</button>
             </div>`);
-    } else if (type === 'withdraw') {
-        showModal('withdraw', `
-            <div class="space-y-4 text-left">
-                <select id="witToken" onchange="updateMax()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">${options}</select>
-                <div class="text-[10px] font-bold text-blue-500 px-2"><span data-i18n="balance">可用余额</span>: <span id="maxWit">0.00</span></div>
-                <input type="number" id="witAmount" data-i18n="input_amount" placeholder="0.00" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
-                <button onclick="handleSignAction('WITHDRAW')" class="w-full bg-red-500 text-white py-4 rounded-2xl font-black shadow-lg" data-i18n="withdraw">签名提现</button>
-            </div>`);
-        updateMax();
+        calcSwap();
     }
 }
 
-// --- 4. 支付与链交互 ---
-
-async function executeTokenTransfer(contractAddr, to, amountStr) {
+// --- 6. 核心支付与 API ---
+async function doChainPay(biz) {
     try {
+        const amtText = (biz === 'MINER') ? document.getElementById('buyTotal').innerText : document.getElementById('elecCost').innerText;
+        const amt = amtText.replace(/[^\d.]/g, '');
+        
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const contract = new ethers.Contract(contractAddr, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
-        const tx = await contract.transfer(to, ethers.parseUnits(amountStr, 18), { gasLimit: 120000 });
+        const contract = new ethers.Contract(CONTRACT_ADDRS.USDT, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
+        
+        const tx = await contract.transfer(RECEIVE_ADDRS[biz], ethers.parseUnits(amt, 18));
         showLoadingUI(tx.hash);
-        const receipt = await tx.wait();
-        if (receipt.status === 1) {
-            alert("✅ Success!");
-            closeModal();
-            fetchUserData(currentAddress);
-        }
-    } catch (e) {
-        alert("Fail: " + (e.reason || "Check Balance"));
+        await tx.wait();
+        customAlert("✅ 交易成功");
         closeModal();
+        fetchUserData(currentAddress);
+    } catch (e) {
+        customAlert("支付失败: " + (e.reason || "用户取消"));
     }
+}
+
+function calcSwap() {
+    const amt = parseFloat(document.getElementById('sFromAmt').value) || 0;
+    document.getElementById('sToAmt').value = (amt * 10).toFixed(2); // 汇率 1:10
+    document.getElementById('maxSwap').innerText = (userBalances['USDT'] || 0).toFixed(2);
+}
+
+function showLoadingUI(hash) {
+    document.getElementById('modalContent').innerHTML = `
+        <div class="py-10 text-center space-y-4">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-indigo-500 mx-auto"></div>
+            <p class="font-black text-slate-200">正在打包区块...</p>
+            <p class="text-[9px] text-slate-500">Hash: ${hash.slice(0, 20)}...</p>
+        </div>`;
 }
 
 function renderTokenList(balances) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
     let total = 0;
-    const balanceLabel = i18n[currentLang]['balance'] || 'Balance';
-    
     container.innerHTML = Object.keys(tokenInfo).map(s => {
         const bal = parseFloat(balances[s] || 0);
         total += bal * tokenInfo[s].price;
-        return `<div class="flex items-center justify-between p-4 border-b border-slate-50">
+        return `<div class="flex items-center justify-between p-4 border-b border-slate-800/50">
             <div class="flex items-center gap-3">
-                <img src="${tokenInfo[s].logo}" class="w-7 h-7 rounded-full" onerror="this.src='https://ui-avatars.com/api/?name=${s}'">
-                <div><div class="font-bold text-xs">${s}</div><div class="text-[9px] text-slate-400">${balanceLabel}: $ ${tokenInfo[s].price}</div></div>
+                <img src="${tokenInfo[s].logo}" class="w-8 h-8 rounded-full shadow-lg shadow-indigo-500/20">
+                <div><div class="font-bold text-xs text-white">${s}</div><div class="text-[9px] text-slate-500">$ ${tokenInfo[s].price}</div></div>
             </div>
             <div class="text-right">
-                <div class="font-black text-xs">${bal.toFixed(4)}</div>
-                <div class="text-[9px] text-blue-500 font-bold">$ ${(bal * tokenInfo[s].price).toFixed(2)}</div>
+                <div class="font-black text-xs text-slate-200">${bal.toFixed(4)}</div>
+                <div class="text-[9px] text-indigo-400 font-bold">$ ${(bal * tokenInfo[s].price).toFixed(2)}</div>
             </div>
         </div>`;
     }).join('');
@@ -257,53 +284,8 @@ async function fetchUserData(addr) {
     } catch (e) { renderTokenList({}); }
 }
 
-function showLoadingUI(hash) {
-    document.getElementById('modalContent').innerHTML = `
-        <div class="py-10 text-center">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p class="font-black text-slate-800" data-i18n="history_title">Pending...</p>
-            <p class="text-[9px] text-slate-400 mt-2">Hash: ${hash.slice(0,10)}...</p>
-        </div>`;
-}
-
-// 辅助计算函数 (保持不变)
-async function doChainPay(biz) {
-    let amt = (biz === 'MINER') ? document.getElementById('buyTotal').innerText.replace('$ ', '') : document.getElementById('elecCost').innerText.replace(' USDT', '');
-    await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[biz], amt);
-}
-
-async function doRecharge() {
-    const s = document.getElementById('recToken').value, a = document.getElementById('recAmount').value;
-    await executeTokenTransfer(CONTRACT_ADDRS[s], RECEIVE_ADDRS.RECHARGE, a);
-}
-
-async function handleSignAction(type) {
-    try {
-        const msg = `${type} Request\nAccount: ${currentAddress}\nTime: ${Date.now()}`;
-        const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, currentAddress] });
-        if (sig) { alert("Success!"); closeModal(); }
-    } catch (e) { alert("Canceled"); }
-}
-
 function setBuyNum(n, btn) {
-    document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
-    btn.classList.add('bg-blue-600', 'text-white');
+    document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-indigo-600', 'text-white'));
+    btn.classList.add('bg-indigo-600', 'text-white');
     document.getElementById('buyTotal').innerText = `$ ${(n * 150).toFixed(2)}`;
-}
-
-function calcElec() {
-    const n = document.getElementById('elecNum').value, d = document.getElementById('elecDays').value;
-    document.getElementById('elecCost').innerText = (n * (d / 30) * 30).toFixed(2);
-}
-
-function calcSwap() {
-    const fT = document.getElementById('sFromToken').value, tT = document.getElementById('sToToken').value;
-    const amt = document.getElementById('sFromAmt').value || 0;
-    document.getElementById('sToAmt').value = (amt * (tokenInfo[fT].price / tokenInfo[tT].price)).toFixed(6);
-    document.getElementById('maxSwap').innerText = (i18n[currentLang]['balance'] || "余额") + ": " + (userBalances[fT] || 0);
-}
-
-function updateMax() {
-    const t = document.getElementById('witToken').value;
-    document.getElementById('maxWit').innerText = (userBalances[t] || 0).toFixed(4);
 }
