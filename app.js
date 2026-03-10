@@ -117,43 +117,63 @@ function logout() {
 
 // --- 4. 核心：读取飞书数据 ---
 async function fetchUserData(address) {
+    console.log("正在请求地址:", address);
     try {
         const res = await fetch(`${API_BASE}?address=${address}`);
         const data = await res.json();
+        console.log("收到后端原始数据:", data);
 
         if (data.newUser) {
+            console.log("新用户，准备弹窗注册...");
             if (typeof showRegisterModal === 'function') showRegisterModal(address);
             return;
         }
 
+        // 1. 渲染【基础信息】
         if (data.info) {
             updateText('info_inviteCode', data.info["推荐码"]);
             updateText('info_inviter', data.info["推荐人"]);
-            updateText('info_regTime', formatTime(data.info["注册时间"]));
+            updateText('info_regTime', data.info["注册时间"]); // JSON 里是字符串，直接显示
         }
 
-        const t = data.team || {};
-        updateText('team_directCount', t["直推人数"]);
-        updateText('team_directSales', t["直推业绩"]);
-        updateText('team_totalCount', t["团队人数"]);
-        updateText('team_totalSales', t["团队业绩"]);
-        updateText('team_totalReward', t["累计奖励"]);
-
+        // 2. 渲染【矿机数据】
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
-            updateText('miner_deadline', formatTime(data.miner["挖矿期限"]));
             updateText('miner_daily', data.miner["日产量"]);
+            updateText('miner_deadline', data.miner["挖矿期限"]);
             updateText('miner_locked', data.miner["锁仓数量"]);
         }
 
+        // 3. 渲染【团队数据】(增加防报错处理)
+        const t = data.team || {}; 
+        updateText('team_directCount', t["直推人数"] || "0");
+        updateText('team_directSales', t["直推业绩"] || "0");
+        updateText('team_totalCount', t["团队人数"] || "0");
+        updateText('team_totalSales', t["团队业绩"] || "0.00");
+        updateText('team_totalReward', t["累计奖励"] || "0.00");
+
+        // 4. 渲染【余额列表】并计算总价值
         if (data.balances) {
-            userBalances = data.balances;
+            userBalances = data.balances; // 存入全局变量供兑换/提币使用
             renderTokenList(data.balances);
+            
+            // 如果页面上有单独显示的余额 ID (如 bal_USDT)，也更新它们
             Object.keys(data.balances).forEach(token => {
                 updateText(`bal_${token}`, data.balances[token]);
             });
         }
-    } catch (e) { console.error("API Error:", e); }
+
+    } catch (e) {
+        console.error("前端渲染逻辑报错:", e);
+    }
+}
+
+// 辅助更新函数：确保找不到 ID 时不崩溃
+function updateText(id, value) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.innerText = (value !== undefined && value !== null) ? value : "0";
+    }
 }
 
 function updateText(id, value) {
