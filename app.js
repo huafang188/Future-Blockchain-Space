@@ -30,7 +30,7 @@ function getT(key) {
     return (window.i18n && i18n[lang] && i18n[lang][key]) ? i18n[lang][key] : key;
 }
 
-// --- 2. 渲染资产列表 ---
+// --- 2. 渲染资产列表 (修正图片显示版) ---
 function renderTokens(userBalances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
@@ -45,7 +45,12 @@ function renderTokens(userBalances = {}) {
         return `
             <div class="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white font-bold shadow-sm">${tokenData[symbol].logo}</div>
+                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-100 overflow-hidden shadow-sm shrink-0">
+                        <img src="${tokenData[symbol].logo}" 
+                             class="w-full h-full object-cover" 
+                             alt="${symbol}"
+                             onerror="this.src='https://ui-avatars.com/api/?name=${symbol}&background=random'">
+                    </div>
                     <div>
                         <div class="font-black text-slate-800 text-sm">${symbol}</div>
                         <div class="text-[10px] text-slate-400 font-bold">$ ${price.toLocaleString()}</div>
