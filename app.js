@@ -14,14 +14,14 @@ const RECEIVE_ADDRESSES = {
 const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955"; // BSC-USDT 合约地址
 
 const tokenData = {
-    'FBS': { price: 0.1, logo: 'F' },
-    'FBST': { price: 0.05, logo: 'T' },
-    'FBSP': { price: 1.2, logo: 'P' },
-    'PBSU': { price: 1.0, logo: 'S' },
-    'USDT': { price: 1.0, logo: 'U' },
-    'BNB': { price: 600, logo: 'B' },
-    'BTC': { price: 65000, logo: '₿' },
-    'ETH': { price: 3500, logo: 'Ξ' }
+    'FBS': { price: 0.1, logo: 'assets/fbs_logo.png' },
+    'FBST': { price: 0.05, logo: 'assets/fbst_logo.png' },
+    'FBSP': { price: 1.2, logo: 'assets/fbsp_logo.png' },
+    'PBSU': { price: 1.0, logo: 'assets/fbsu_logo.png' }, // 对应你截图中的 fbsu_logo.png
+    'USDT': { price: 1.0, logo: 'assets/USDT.png' },    // 注意这里是大写
+    'BNB': { price: 600, logo: 'assets/BNB.png' },      // 对应 BNB.png
+    'BTC': { price: 65000, logo: 'assets/BTC.png' },    // 对应 BTC.png
+    'ETH': { price: 3500, logo: 'assets/ETH.png' }      // 对应 ETH.png
 };
 
 // --- 辅助函数：获取多语言文本 ---
