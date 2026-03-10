@@ -30,6 +30,7 @@ const tokenInfo = {
     'ETH': { price: 3500, logo: 'assets/ETH.png' }
 };
 
+
 let currentAddress = localStorage.getItem('fbs_address'); 
 let userBalances = {};
 
