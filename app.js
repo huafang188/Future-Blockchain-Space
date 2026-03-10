@@ -141,11 +141,58 @@ async function fetchUserData(address) {
     try {
         const res = await fetch(`${API_BASE}/api/user?address=${address.toLowerCase()}`);
         const data = await res.json();
+
+        if (data.newUser) {
+            showRegisterModal(address);
+            return;
+        }
+
+        // --- 1. 映射【推荐关系】数据 ---
+        if (data.info) {
+            updateText('info_inviteCode', data.info["推荐码"]);
+            updateText('info_inviter', data.info["推荐人"]);
+            updateText('info_regTime', data.info["注册时间"]);
+        }
+
+        // --- 2. 映射【用户团队】数据 ---
+        if (data.team) {
+            updateText('team_directCount', data.team["直推人数"]);
+            updateText('team_directSales', data.team["直推业绩"]);
+            updateText('team_totalCount', data.team["团队人数"]);
+            updateText('team_totalSales', data.team["团队业绩"]);
+            updateText('team_totalReward', data.team["累计奖励"]);
+        }
+
+        // --- 3. 映射【用户矿机】数据 ---
+        if (data.miner) {
+            updateText('miner_count', data.miner["矿机数量"]);
+            updateText('miner_deadline', data.miner["挖矿期限"]);
+            updateText('miner_daily', data.miner["日产量"]);
+            updateText('miner_locked', data.miner["锁仓数量"]);
+        }
+
+        // --- 4. 映射【用户余额】数据 ---
         if (data.balances) {
             userBalances = data.balances;
-            renderTokenList(data.balances);
+            renderTokenList(data.balances); // 渲染列表
+            // 同时更新页面上可能存在的固定余额标签
+            Object.keys(data.balances).forEach(token => {
+                updateText(`bal_${token}`, data.balances[token]);
+            });
         }
-    } catch (e) { renderTokenList({}); }
+
+    } catch (e) {
+        console.error("数据精准加载失败:", e);
+    }
+}
+
+// 通用更新函数：确保数据不存在时显示 0
+function updateText(id, value) {
+    const el = document.getElementById(id);
+    if (el) {
+        // 如果是数字则格式化，如果是 null 则显示 0
+        el.innerText = (value !== undefined && value !== null) ? value : "0";
+    }
 }
 
 // --- 4. 路由逻辑 (匹配 UI 按钮) ---
