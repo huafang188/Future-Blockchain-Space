@@ -2,7 +2,7 @@
  * Future Blockchain Space - 核心业务逻辑 (强制唤起收银台版)
  */
 
-const API_BASE = "https://api.fbsfbs.fit";
+const API_BASE = "https://api.fbsfbs.fit/api/user";
 const BSC_CHAIN_ID = '0x38';
 
 // --- 1. 配置信息 ---
