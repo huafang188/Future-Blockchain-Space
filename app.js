@@ -221,22 +221,118 @@ function switchLang(lang) {
 }
 
 // 补充连接钱包逻辑
+let currentAddress = null;
+
 async function connectWallet() {
-    if (window.ethereum) {
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0];
-            const displayAddr = account.slice(0, 6) + "..." + account.slice(-4);
-            document.getElementById('walletAddr').innerText = displayAddr;
-            document.getElementById('walletAddr').classList.replace('text-slate-500', 'text-blue-600');
-            
-            // 连接后刷新余额 (这里可以根据实际 API 调整)
-            renderTokens({ 'USDT': 0, 'FBS': 0 }); 
-        } catch (error) {
-            console.error("User denied account access");
+    if (!window.ethereum) return alert("请使用 Web3 浏览器或安装钱包插件");
+
+    try {
+        // 1. 获取地址
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0];
+
+        // 2. 请求签名授权 (弹出签名窗口)
+        const message = `Welcome to Future Blockchain Space!\n\nTimestamp: ${Date.now()}\nWallet: ${address}`;
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [message, address],
+        });
+
+        if (signature) {
+            console.log("签名成功");
+            currentAddress = address;
+            updateWalletUI(address);
+            // 3. 签名后自动检索飞书数据
+            fetchUserData(address);
         }
+    } catch (error) {
+        console.error("授权失败:", error);
+        alert("用户取消授权");
+    }
+}
+
+// 检索飞书数据
+async function fetchUserData(address) {
+    try {
+        // 强制转小写以匹配 Worker 逻辑
+        const res = await fetch(`https://你的Worker域名/api/user?address=${address.toLowerCase()}`);
+        const data = await res.json();
+
+        if (data.newUser) {
+            // 4. 如果是新用户，弹出注册邀请码绑定框
+            showRegisterModal(address);
+        } else {
+            // 5. 老用户，同步 UI 数据
+            syncUIData(data);
+        }
+    } catch (err) {
+        alert("系统数据检索失败，请检查网络");
+    }
+}
+
+// 显示注册弹窗 (绑定邀请码)
+function showRegisterModal(address) {
+    const content = document.getElementById('modalContent');
+    const title = document.getElementById('modalTitle');
+    title.innerText = "新用户注册";
+    content.innerHTML = `
+        <div class="space-y-4">
+            <p class="text-[11px] text-slate-500 font-bold uppercase">检测到新地址，请输入邀请码绑定关系</p>
+            <input type="text" id="inviteCodeInput" placeholder="请输入推荐人邀请码" 
+                   class="w-full p-4 bg-slate-50 rounded-2xl border-none font-black text-center focus:ring-2 focus:ring-blue-500">
+            <button onclick="submitRegister('${address}')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-200">
+                立即绑定并开启
+            </button>
+        </div>
+    `;
+    document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+// 提交注册到飞书
+async function submitRegister(address) {
+    const code = document.getElementById('inviteCodeInput').value;
+    if (!code) return alert("请输入邀请码");
+
+    const res = await fetch(`https://你的Worker域名/api/register`, {
+        method: "POST",
+        body: JSON.stringify({ address, inviteCode: code })
+    });
+
+    const result = await res.json();
+    if (result.success) {
+        alert("绑定成功！");
+        closeModal();
+        fetchUserData(address); // 重新获取数据刷新 UI
     } else {
-        alert("Please install MetaMask or Bitget Wallet!");
+        alert("绑定失败: " + (result.error || "邀请码无效"));
+    }
+}
+
+// 更新钱包 UI 状态
+function updateWalletUI(address) {
+    const btn = document.getElementById('walletAddr');
+    if (address) {
+        btn.innerText = address.slice(0, 6) + "..." + address.slice(-4);
+        btn.classList.add('text-blue-600', 'border-blue-200');
+        // 变成点击可断开
+        btn.onclick = disconnectWallet;
+    } else {
+        btn.innerText = "连接钱包";
+        btn.classList.remove('text-blue-600');
+        btn.onclick = connectWallet;
+    }
+}
+
+// 断开连接
+function disconnectWallet() {
+    if (confirm("确定要退出连接吗？")) {
+        currentAddress = null;
+        updateWalletUI(null);
+        // 清空界面数据
+        renderTokens({});
+        document.getElementById('totalValue').innerText = "0.00";
+        // 可选：刷新页面彻底清空状态
+        // location.reload();
     }
 }
 
