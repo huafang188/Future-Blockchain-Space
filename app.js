@@ -77,27 +77,64 @@ function renderTokenList(balances = {}) {
 async function connectWallet() {
     if (!window.ethereum) return alert("请在钱包内打开");
     try {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-if (chainId !== BSC_CHAIN_ID) {
-    alert("请切换至 BSC 网络");
-    return;
-}
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const address = accounts[0]; // 💡 建议先定义局部变量 address
+        const address = accounts[0];
+
+        // 💡 检查本地是否已经有这个地址的缓存，如果有，直接登录，不再签名
+        const savedAddr = localStorage.getItem('fbs_address');
+        if (savedAddr && savedAddr.toLowerCase() === address.toLowerCase()) {
+            currentAddress = address;
+            finishLogin(); // 执行登录后的 UI 更新
+            return;
+        }
+
+        // 只有新用户或更换账号才强制签名
         const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
         const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, address] });
-
+        
         if (sig) {
-            currentAddress = address; // 💡 赋值给全局变量
-            localStorage.setItem('fbs_address', currentAddress); 
-            document.getElementById('walletAddr').innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
-            fetchUserData(currentAddress);
+            currentAddress = address;
+            localStorage.setItem('fbs_address', address);
+            finishLogin();
         }
-    } catch (e) { console.error("Login Cancelled", e); }
+    } catch (e) { console.error("Login Cancelled"); }
 }
+
+// 提取一个通用的登录成功 UI 更新函数
+function finishLogin() {
+    const el = document.getElementById('walletAddr');
+    if (el) {
+        el.innerText = currentAddress.slice(0, 6) + '...' + currentAddress.slice(-4);
+        el.removeAttribute('data-i18n'); // 防止多语言包把地址翻译回去
+    }
+    fetchUserData(currentAddress);
+    closeModal();
+}
+// 插入到 connectWallet 函数附近
+function handleWalletClick() {
+    if (currentAddress) {
+        // 如果已经登录，弹出确认框
+        showModal("账号管理", `
+            <div class="space-y-4 text-center">
+                <p class="text-sm text-slate-500">当前地址: ${currentAddress}</p>
+                <button onclick="logout()" class="w-full bg-red-50 text-red-600 py-4 rounded-2xl font-black">退出登录 (Logout)</button>
+                <button onclick="closeModal()" class="w-full bg-slate-100 py-4 rounded-2xl font-bold">取消</button>
+            </div>
+        `);
+        
+        // 记得触发你的多语言渲染
+        if (typeof i18nRender === 'function') i18nRender();
+    } else {
+        // 如果没登录，去执行链接逻辑
+        connectWallet();
+    }
+}
+
+// 退出登录逻辑
 function logout() {
-    localStorage.removeItem('fbs_address');
-    location.reload(); // 刷新页面清空状态
+    localStorage.removeItem('fbs_address'); // 清除本地缓存
+    currentAddress = null; // 重置变量
+    location.reload(); // 刷新页面清空所有状态
 }
 
 async function fetchUserData(address) {
