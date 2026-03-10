@@ -116,49 +116,59 @@ function logout() {
     location.reload();
 }
 
-// --- 4. 核心：读取飞书数据 ---
+// --- 4. 核心：读取后端数据 ---
 async function fetchUserData(address) {
     console.log("正在请求地址:", address);
     try {
         const res = await fetch(`${API_BASE}?address=${address}`);
+        if (!res.ok) throw new Error('网络请求失败');
+        
         const data = await res.json();
         console.log("收到后端原始数据:", data);
 
+        // 0. 处理新用户逻辑
         if (data.newUser) {
             console.log("新用户，准备弹窗注册...");
-            if (typeof showRegisterModal === 'function') showRegisterModal(address);
+            if (typeof window.showRegisterModal === 'function') {
+                window.showRegisterModal(address);
+            }
             return;
         }
 
         // 1. 渲染【基础信息】
-        if (data.info) {
-            updateText('info_inviteCode', data.info["推荐码"]);
-            updateText('info_inviter', data.info["推荐人"]);
-            updateText('info_regTime', data.info["注册时间"]); // JSON 里是字符串，直接显示
-        }
+        const info = data.info || {};
+        updateText('info_inviteCode', info["推荐码"] || "---");
+        updateText('info_inviter', info["推荐人"] || "---");
+        updateText('info_regTime', info["注册时间"] || "--");
 
         // 2. 渲染【矿机数据】
-        if (data.miner) {
-            updateText('miner_count', data.miner["矿机数量"]);
-            updateText('miner_daily', data.miner["日产量"]);
-            updateText('miner_deadline', data.miner["挖矿期限"]);
-            updateText('miner_locked', data.miner["锁仓数量"]);
-        }
+        const miner = data.miner || {};
+        updateText('miner_count', miner["矿机数量"]);
+        updateText('miner_daily', miner["日产量"]);
+        updateText('miner_deadline', miner["挖矿期限"] || "--");
+        updateText('miner_locked', miner["锁仓数量"]);
 
-        // 3. 渲染【团队数据】(增加防报错处理)
+        // 3. 渲染【团队数据】 - 即使 data.team 为 null 也能安全运行
         const t = data.team || {}; 
-        updateText('team_directCount', t["直推人数"] || "0");
-        updateText('team_directSales', t["直推业绩"] || "0");
-        updateText('team_totalCount', t["团队人数"] || "0");
-        updateText('team_totalSales', t["团队业绩"] || "0.00");
-        updateText('team_totalReward', t["累计奖励"] || "0.00");
+        updateText('team_directCount', t["直推人数"]);
+        updateText('team_directSales', t["直推业绩"]);
+        updateText('team_totalCount', t["团队人数"]);
+        updateText('team_totalSales', t["团队业绩"]);
+        updateText('team_totalReward', t["累计奖励"]);
 
-        // 4. 渲染【余额列表】并计算总价值
+        // 4. 渲染【资产列表】与计算总价值
         if (data.balances) {
-            userBalances = data.balances; // 存入全局变量供兑换/提币使用
-            renderTokenList(data.balances);
+            window.userBalances = data.balances; // 提升至全局作用域
             
-            // 如果页面上有单独显示的余额 ID (如 bal_USDT)，也更新它们
+            // 渲染代币列表行
+            if (typeof renderTokenList === 'function') {
+                renderTokenList(data.balances);
+            }
+            
+            // 更新首页总资产 (如果有计算好的 total_usd 使用后端数据)
+            updateText('totalValue', data.total_usd || "0.00");
+
+            // 单个代币余额更新 (例如页面上有 id="bal_USDT")
             Object.keys(data.balances).forEach(token => {
                 updateText(`bal_${token}`, data.balances[token]);
             });
@@ -166,20 +176,22 @@ async function fetchUserData(address) {
 
     } catch (e) {
         console.error("前端渲染逻辑报错:", e);
+        // 如果报错了，可以给用户一个友好的提示
+        // if (typeof showModal === 'function') showModal('错误', '数据加载失败，请刷新页面');
     }
 }
 
-// 辅助更新函数：确保找不到 ID 时不崩溃
+// 辅助更新函数：增强了容错，确保 value 为 0 时也能显示
 function updateText(id, value) {
     const el = document.getElementById(id);
-    if (el) {
-        el.innerText = (value !== undefined && value !== null) ? value : "0";
+    if (!el) return; // 找不到元素直接跳过，不报错
+    
+    // 逻辑：如果是 null/undefined 显示 "0" 或 "0.00"；如果是 0 则正常显示 0
+    if (value === undefined || value === null) {
+        el.innerText = id.includes('Sales') || id.includes('Reward') ? "0.00" : "0";
+    } else {
+        el.innerText = value;
     }
-}
-
-function updateText(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.innerText = (value !== undefined && value !== null) ? value : "0";
 }
 
 // --- 5. 核心交互：转账与支付逻辑 ---
