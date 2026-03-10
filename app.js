@@ -1,204 +1,226 @@
 /**
- * Future Blockchain Space - 逻辑控制中心 (Debug 增强版)
+ * Future Blockchain Space - 业务逻辑控制中心 (2026 增强版)
  */
 
-const API_BASE = "https://api.fbsfbs.fit"; 
-const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955"; 
-const BSC_CHAIN_ID = '0x38'; 
+// --- 1. 核心配置 ---
+const API_BASE = "https://api.fbsfbs.fit";
+const BSC_CHAIN_ID = '0x38';
 
-const RECEIVE_ADDRESSES = {
-    MINER: "0x8922A66C6898d9e26D9747206466795880482937",
-    ELECTRIC: "0x8922A66C6898d9e26D9747206466795880482937",
-    DEPOSIT: "0x8922A66C6898d9e26D9747206466795880482937"
+// 业务收款地址
+const RECEIVE_ADDRS = {
+    RECHARGE: "0xCfd8e926623e46fB8F54baaB9c7609808daFf9B4",
+    ELECTRIC: "0xFf27899526FDA4A30411A8e2778d7F7BCb837568",
+    MINER: "0xBdfFB96E30d2d5858c46374a213ee819A005256c"
 };
 
-const tokenData = {
-    'FBS': { price: 0.1, logo: 'assets/fbs_logo.png' },
-    'FBST': { price: 0.05, logo: 'assets/fbst_logo.png' },
-    'FBSP': { price: 1.2, logo: 'assets/fbsp_logo.png' },
-    'PBSU': { price: 1.0, logo: 'assets/fbsu_logo.png' }, 
-    'USDT': { price: 1.0, logo: 'assets/USDT.png' },
-    'BNB': { price: 600, logo: 'assets/BNB.png' },
-    'BTC': { price: 65000, logo: 'assets/BTC.png' },
-    'ETH': { price: 3500, logo: 'assets/ETH.png' }
+// 代币合约配置
+const TOKENS = {
+    'USDT': "0x55d398326f99059ff775485246999027b3197955",
+    'ETH': "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+    'BTC': "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+    'BNB': "NATIVE" // BNB 是原生代币
 };
 
 let currentAddress = null;
 
-// --- 修正后的地址格式化函数 ---
-function getSafeAddr(addr) {
-    if (!addr || typeof addr !== 'string') return "";
-    const cleanAddr = addr.toLowerCase().trim();
-    try {
-        // 尝试转换为 EIP-55 标准地址
-        return ethers.getAddress(cleanAddr);
-    } catch (e) {
-        console.warn("Checksum 转换失败，使用小写地址备选:", cleanAddr);
-        return cleanAddr; // 返回清理过的小写地址，防止流程中断
-    }
-}
-
-function getT(key) {
-    const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
-    return (window.i18n && i18n[lang] && i18n[lang][key]) ? i18n[lang][key] : key;
-}
-
-// --- 转账核心逻辑 (增加详细报错提示) ---
-async function handleContractPay(businessType) {
-    console.log("触发支付:", businessType);
-    if (!window.ethereum) return alert("未检测到钱包环境");
-
-    try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        
-        const targetAddr = RECEIVE_ADDRESSES[businessType];
-        
-        let rawAmount = "0";
-        if (businessType === 'MINER') {
-            const el = document.getElementById('buyTotal');
-            rawAmount = el ? el.innerText.replace('$ ', '') : "0";
-        } else {
-            const el = document.getElementById('feeDays');
-            rawAmount = el ? (el.value / 30 * 60).toString() : "60";
-        }
-
-        console.log(`转账详情: 目标=${targetAddr}, 金额=${rawAmount}`);
-        await executeTransfer(signer, targetAddr, rawAmount);
-    } catch (err) {
-        console.error("支付准备阶段出错:", err);
-        alert("初始化支付失败: " + err.message);
-    }
-}
-
-async function executeTransfer(signer, to, amountStr) {
-    try {
-        const safeTo = getSafeAddr(to);
-        const safeContract = getSafeAddr(USDT_ADDR);
-        
-        console.log("执行转账 - 格式化地址:", { to: safeTo, contract: safeContract });
-
-        const usdtAbi = ["function transfer(address to, uint256 amount) public returns (bool)"];
-        const usdtContract = new ethers.Contract(safeContract, usdtAbi, signer);
-        
-        const amount = ethers.parseUnits(amountStr.toString(), 18);
-        
-        // 发起转账前检查
-        console.log("正在唤起钱包确认...");
-        const tx = await usdtContract.transfer(safeTo, amount);
-        
-        alert("交易已提交! Hash: " + tx.hash);
-        closeModal();
-    } catch (e) {
-        console.error("转账执行失败:", e);
-        // 如果是余额不足，e.message 通常会包含 "insufficient funds"
-        if (e.message.includes("insufficient funds")) {
-            alert("支付失败：钱包内 BNB 或 USDT 余额不足");
-        } else {
-            alert("交易取消或失败: " + (e.reason || e.message));
-        }
-    }
-}
-
-// --- 钱包链接与网络同步 ---
+// --- 2. 链接钱包与登录签名 ---
 async function connectWallet() {
-    if (!window.ethereum) return alert("请在钱包内打开");
+    if (!window.ethereum) return alert("请在 Web3 钱包（Bitget/TP/MetaMask）内打开");
+
     try {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-        if (chainId !== BSC_CHAIN_ID) {
+        // A. 切换网络
+        try {
             await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: BSC_CHAIN_ID }],
             });
-        }
+        } catch (e) { console.warn("Network switch skipped"); }
 
+        // B. 获取账户
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        currentAddress = accounts[0];
-        updateWalletUI(currentAddress);
-        fetchUserData(currentAddress);
-    } catch (error) {
-        console.error("连接失败:", error);
-    }
-}
+        const address = accounts[0];
 
-async function fetchUserData(address) {
-    try {
-        const res = await fetch(`${API_BASE}/api/user?address=${address.toLowerCase()}`);
-        if (!res.ok) throw new Error("Server 500 Error");
-        const data = await res.json();
-        syncUIData(data);
+        // C. 登录签名 (必须输入密码后才算连接成功)
+        const msg = `Future Blockchain Space Login\nVerify: ${address}\nTime: ${Date.now()}`;
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [msg, address],
+        });
+
+        if (signature) {
+            currentAddress = address;
+            updateWalletUI(address);
+            fetchUserData(address); // 调用飞书后端
+            console.log("登录签名成功:", signature);
+        }
     } catch (err) {
-        console.warn("飞书同步失败:", err);
-        renderTokens({}); // 渲染空列表避免空白
+        alert("用户取消或链接失败: " + err.message);
     }
 }
 
-function syncUIData(data) {
-    if (data.balances) renderTokens(data.balances);
-    const invEl = document.getElementById('inviteCount');
-    if (invEl && data.inviteCount) invEl.innerText = data.inviteCount;
+// --- 3. 业务弹窗模块 ---
+
+// A. 充值弹窗
+function openRechargeModal() {
+    const content = document.getElementById('modalContent');
+    document.getElementById('modalTitle').innerText = "资产充值 (Recharge)";
+    content.innerHTML = `
+        <div class="space-y-4">
+            <label class="block text-xs font-bold text-slate-400">选择币种 (Select Token)</label>
+            <select id="rechargeToken" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none focus:ring-2 focus:ring-blue-500">
+                <option value="USDT">USDT (BSC)</option>
+                <option value="BNB">BNB (Native)</option>
+                <option value="BTC">BTC (Chain-B)</option>
+                <option value="ETH">ETH (Chain-B)</option>
+            </select>
+            <label class="block text-xs font-bold text-slate-400">输入数量 (Amount)</label>
+            <input type="number" id="rechargeAmount" placeholder="0.00" class="w-full p-4 bg-slate-50 rounded-2xl font-black text-xl border-none">
+            <button onclick="handleRecharge()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg">确认充值</button>
+        </div>`;
+    document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
-function renderTokens(userBalances = {}) {
-    const container = document.getElementById('tokenRows');
-    if (!container) return;
-    let total = 0;
-    const html = Object.keys(tokenData).map(symbol => {
-        const bal = parseFloat(userBalances[symbol] || 0);
-        const val = bal * tokenData[symbol].price;
-        total += val;
-        return `
-            <div class="flex items-center justify-between p-4 border-b border-slate-50">
-                <div class="flex items-center gap-3">
-                    <img src="${tokenData[symbol].logo}" class="w-8 h-8 rounded-full" onerror="this.src='https://ui-avatars.com/api/?name=${symbol}'">
-                    <span class="font-bold text-sm">${symbol}</span>
-                </div>
-                <div class="text-right">
-                    <div class="font-bold">${bal.toFixed(4)}</div>
-                    <div class="text-[10px] text-slate-400">$ ${val.toFixed(2)}</div>
-                </div>
-            </div>`;
-    }).join('');
-    container.innerHTML = html;
-    if (document.getElementById('totalValue')) document.getElementById('totalValue').innerText = total.toFixed(2);
+// B. 购买矿机弹窗
+function openMinerModal() {
+    const content = document.getElementById('modalContent');
+    document.getElementById('modalTitle').innerText = "购买矿机 (Buy Miner)";
+    const nums = [1, 5, 10, 15, 20, 25, 50, 100];
+    content.innerHTML = `
+        <div class="space-y-4">
+            <div class="grid grid-cols-4 gap-2">
+                ${nums.map(n => `<button onclick="updateMinerBuyUI(${n}, this)" class="buy-btn border p-2 rounded-xl text-xs font-bold">${n}台</button>`).join('')}
+            </div>
+            <div class="p-4 bg-blue-50 rounded-2xl flex justify-between items-center">
+                <span class="text-xs font-bold text-blue-400">支付代币: USDT</span>
+                <span id="buyCost" class="text-xl font-black text-blue-700">$ 0.00</span>
+            </div>
+            <button onclick="handleBuyMiner()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black">立即购买</button>
+        </div>`;
+    document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+// C. 缴纳电费弹窗
+function openElectricModal() {
+    const content = document.getElementById('modalContent');
+    document.getElementById('modalTitle').innerText = "缴纳电费 (Electric Fee)";
+    const nums = [1, 5, 10, 15, 20, 25, 50, 100];
+    const days = [30, 60, 90, 180, 360];
+    content.innerHTML = `
+        <div class="space-y-4">
+            <label class="text-[10px] font-bold text-slate-400">矿机数量 (Miners)</label>
+            <select id="elecNum" onchange="calcElectric()" class="w-full p-3 bg-slate-50 rounded-xl border-none">
+                ${nums.map(n => `<option value="${n}">${n} 台</option>`).join('')}
+            </select>
+            <label class="text-[10px] font-bold text-slate-400">缴纳天数 (Days)</label>
+            <select id="elecDays" onchange="calcElectric()" class="w-full p-3 bg-slate-50 rounded-xl border-none">
+                ${days.map(d => `<option value="${d}">${d} 天</option>`).join('')}
+            </select>
+            <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center">
+                <span class="text-xs text-slate-400">总费用 (USDT)</span>
+                <span id="elecCost" class="text-xl font-black text-yellow-500">30.00</span>
+            </div>
+            <button onclick="handlePayElectric()" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-black">确认缴纳</button>
+        </div>`;
+    document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+// --- 4. 支付执行逻辑 ---
+
+// 执行充值
+async function handleRecharge() {
+    const symbol = document.getElementById('rechargeToken').value;
+    const amount = document.getElementById('rechargeAmount').value;
+    if (!amount || amount <= 0) return alert("请输入正确数量");
+
+    if (symbol === 'BNB') {
+        await executeNativeTransfer(RECEIVE_ADDRS.RECHARGE, amount);
+    } else {
+        await executeTokenTransfer(TOKENS[symbol], RECEIVE_ADDRS.RECHARGE, amount);
+    }
+}
+
+// 执行购买矿机
+async function handleBuyMiner() {
+    const cost = document.getElementById('buyCost').innerText.replace('$ ', '');
+    if (parseFloat(cost) <= 0) return alert("请选择购买数量");
+    await executeTokenTransfer(TOKENS.USDT, RECEIVE_ADDRS.MINER, cost);
+}
+
+// 执行缴纳电费
+async function handlePayElectric() {
+    const cost = document.getElementById('elecCost').innerText;
+    await executeTokenTransfer(TOKENS.USDT, RECEIVE_ADDRS.ELECTRIC, cost);
+}
+
+// --- 5. Web3 交易底层封装 ---
+
+// 原生 BNB 转账
+async function executeNativeTransfer(to, amount) {
+    try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const tx = await signer.sendTransaction({
+            to: to,
+            value: ethers.parseEther(amount.toString())
+        });
+        alert("交易已提交: " + tx.hash);
+        closeModal();
+    } catch (e) { alert("交易失败: " + e.message); }
+}
+
+// 合约代币转账 (USDT/BTC/ETH)
+async function executeTokenTransfer(contractAddr, to, amount) {
+    try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        
+        const abi = ["function transfer(address to, uint256 amount) public returns (bool)"];
+        const contract = new ethers.Contract(contractAddr, abi, signer);
+        
+        // 注意：BSC 上的这些代币一般都是 18 位小数，如有特殊需调整
+        const parsedAmount = ethers.parseUnits(amount.toString(), 18);
+        
+        const tx = await contract.transfer(to, parsedAmount);
+        alert("支付成功! Hash: " + tx.hash);
+        closeModal();
+    } catch (e) {
+        alert("支付中止: " + (e.reason || e.message));
+    }
+}
+
+// --- 6. 辅助 UI 计算 ---
+
+function updateMinerBuyUI(n, btn) {
+    document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
+    btn.classList.add('bg-blue-600', 'text-white');
+    document.getElementById('buyCost').innerText = `$ ${(n * 150).toFixed(2)}`;
+}
+
+function calcElectric() {
+    const num = document.getElementById('elecNum').value;
+    const days = document.getElementById('elecDays').value;
+    // 费用 = 台数 * (天数 / 30) * 30
+    const total = num * (days / 30) * 30;
+    document.getElementById('elecCost').innerText = total.toFixed(2);
 }
 
 function updateWalletUI(addr) {
     const btn = document.getElementById('walletAddr');
-    if (btn) btn.innerText = addr ? addr.slice(0,6)+'...'+addr.slice(-4) : "连接钱包";
+    if (btn) btn.innerText = addr.slice(0, 6) + '...' + addr.slice(-4);
 }
 
-function openMinerModal(type) {
-    const content = document.getElementById('modalContent');
-    const title = document.getElementById('modalTitle');
-    if (type === 'buy') {
-        title.innerText = "购买矿机";
-        content.innerHTML = `
-            <div class="space-y-4">
-                <div class="grid grid-cols-3 gap-2">
-                    ${[1, 5, 10].map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border p-2 rounded-xl text-xs font-bold">${n}</button>`).join('')}
-                </div>
-                <div class="p-4 bg-slate-50 rounded-2xl flex justify-between">
-                    <span class="text-blue-600 font-bold" id="buyTotal">$ 0.00</span>
-                </div>
-                <button onclick="handleContractPay('MINER')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold">确认支付</button>
-            </div>`;
-    } else {
-        title.innerText = "缴纳电费";
-        content.innerHTML = `
-            <select id="feeDays" class="w-full p-4 bg-slate-50 rounded-2xl">
-                <option value="30">30天 ($60)</option>
-            </select>
-            <button onclick="handleContractPay('ELECTRIC')" class="w-full bg-slate-900 text-white py-4 mt-4 rounded-2xl font-bold">确认缴纳</button>`;
-    }
-    document.getElementById('modalOverlay').classList.remove('hidden');
+// 模拟飞书后端调用
+async function fetchUserData(address) {
+    try {
+        const res = await fetch(`${API_BASE}/api/user?address=${address.toLowerCase()}`);
+        const data = await res.json();
+        // 此处渲染你的资产列表
+        console.log("飞书数据同步成功:", data);
+    } catch (e) { console.warn("后端同步超时"); }
 }
 
 function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
-function setBuyNum(n, btn) {
-    document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
-    btn.classList.add('bg-blue-600', 'text-white');
-    document.getElementById('buyTotal').innerText = `$ ${(n * 150).toFixed(2)}`;
-}
 
-document.addEventListener('DOMContentLoaded', () => { renderTokens(); });
+document.addEventListener('DOMContentLoaded', () => {
+    // 初始渲染资产列表等逻辑
+});
