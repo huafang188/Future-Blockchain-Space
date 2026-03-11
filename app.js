@@ -129,7 +129,7 @@ async function postTransactionRecord(type, amount, symbol) {
             // 提交后立即刷新数据，让用户看到“已提交”出现在列表顶部
             fetchUserData(address); 
         }
-    } catch (error) {
+     catch (error) {
         console.error("提交记录失败:", error);
     }
 }
