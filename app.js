@@ -98,22 +98,20 @@ async function connectWallet() {
 /**
  * 记录交易行为到后台 (修正后的通用函数)
  */
+/**
+ * 记录交易行为到后台 (修正版)
+ */
 async function postTransactionRecord(type, amount, symbol) {
-    // 自动适配地址变量
     const address = typeof currentAddress !== 'undefined' ? currentAddress : (window.userAddress || localStorage.getItem('fbs_address'));
     
-    if (!address) {
-        console.warn("未发现钱包地址，跳过记录");
-        return;
-    }
+    if (!address) return;
 
     try {
-        // 合并后的正确 fetch 请求
-        const response = await fetch('https://api.fbsfbs.fit/api/user', {
+        await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "record_transaction", // 告诉 Worker 这是普通记录
+                action: "record_transaction",
                 address: address,
                 type: type,
                 amount: amount,
@@ -121,11 +119,10 @@ async function postTransactionRecord(type, amount, symbol) {
                 status: "已提交"
             })
         });
-        return await response.json();
     } catch (err) {
         console.error("记录失败:", err);
     }
-}
+} // <--- 确保这里只有一个结束括号
 
         if (response.ok) {
             console.log(`${type} 记录已提交`);
