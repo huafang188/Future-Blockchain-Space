@@ -191,7 +191,7 @@ const i18n = {
         input_amount: "Введите сумму"
     }
 };
-
+}
 // 页面加载时初始化
 document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
