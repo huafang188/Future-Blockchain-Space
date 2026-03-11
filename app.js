@@ -229,80 +229,102 @@ async function fetchUserData(address) {
 }
 
 /**
- * 渲染交易历史 (来自 tx_history 表)
+ * 渲染交易历史 (对应飞书：交易记录表)
  */
 function renderHistory(history) {
     const container = document.getElementById('historyList');
     if (!container) return;
 
     if (!history || history.length === 0) {
-        container.innerHTML = '<div class="p-10 text-center text-slate-300 text-xs">暂无交易记录</div>';
+        container.innerHTML = `<div class="p-10 text-center text-slate-300 text-xs" data-i18n="no_data">暂无交易记录</div>`;
+        if (window.i18nRender) i18nRender();
         return;
     }
 
-    // 映射 HTML
     const html = history.map(item => {
-        // 根据正负值决定颜色
-        const isPositive = parseFloat(item['金额'] || 0) >= 0;
-        const colorClass = isPositive ? 'text-emerald-500' : 'text-red-500';
-        const symbol = isPositive ? '+' : '';
+        // --- 核心修正：匹配飞书截图列名 ---
+        const type = item['交易类型'] || 'SYSTEM';
+        const amount = item['交易数量'] || '0';
+        const symbol = item['交易代币'] || 'FBS';
+        const time = item['交易时间'] || '';
+        const status = item['交易状态'] || '';
+
+        // 逻辑：如果是提现则显示红色
+        const isNegative = type === '提现';
+        const colorClass = isNegative ? 'text-red-500' : 'text-emerald-500';
+        const prefix = isNegative ? '-' : '+';
 
         return `
             <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                <div class="flex flex-col">
-                    <span class="font-bold text-slate-800 text-sm">${item['类型'] || '系统操作'}</span>
-                    <span class="text-[10px] text-slate-400 mt-1">${item['时间'] || ''}</span>
+                <div class="flex flex-col text-left">
+                    <span class="font-bold text-slate-800 text-sm" data-i18n="${type}">${type}</span>
+                    <span class="text-[10px] text-slate-400 mt-1">${time} | <span data-i18n="${status}">${status}</span></span>
                 </div>
                 <div class="text-right">
-                    <div class="font-black ${colorClass}">${symbol}${item['金额'] || '0.00'}</div>
-                    <div class="text-[9px] text-slate-400 font-bold uppercase">${item['币种'] || 'USDT'}</div>
+                    <div class="font-black ${colorClass}">${prefix}${amount}</div>
+                    <div class="text-[9px] text-slate-400 font-bold uppercase">${symbol}</div>
                 </div>
             </div>
         `;
     }).join('');
 
     container.innerHTML = html;
+    if (window.i18nRender) i18nRender(); // 渲染后触发翻译
 }
 
 /**
- * 渲染转账流水 (来自 transfer_log 表)
+ * 渲染转账流水 (对应飞书：转账记录表)
  */
 function renderTransfers(transfers) {
     const container = document.getElementById('transferList');
     if (!container) return;
 
     if (!transfers || transfers.length === 0) {
-        container.innerHTML = '<div class="p-10 text-center text-slate-300 text-xs">暂无转账流水</div>';
+        container.innerHTML = `<div class="p-10 text-center text-slate-300 text-xs" data-i18n="no_data">暂无转账流水</div>`;
+        if (window.i18nRender) i18nRender();
         return;
     }
 
-    const html = transfers.map(item => `
-        <div class="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
-            <div class="flex justify-between items-start mb-2">
-                <span class="bg-blue-50 text-blue-600 text-[9px] px-2 py-0.5 rounded-md font-bold uppercase">
-                    ${item['业务类型'] || 'TRANSFER'}
-                </span>
-                <span class="text-[10px] text-slate-400 font-mono">${(item['哈希'] || '').slice(0, 10)}...</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <div class="text-[10px] text-slate-500 font-medium">
-                    数量: <span class="text-slate-800 font-bold">${item['数值'] || '0'}</span>
+    const html = transfers.map(item => {
+        // --- 核心修正：匹配飞书截图列名 ---
+        const toAddr = item['接收者'] || '---';
+        const amount = item['接收数量'] || '0';
+        const type = item['接收类型'] || 'FBS';
+        const status = item['状态'] || '';
+        const time = item['转账时间'] || '';
+
+        return `
+            <div class="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm mb-2">
+                <div class="flex justify-between items-start mb-2 text-left">
+                    <span class="bg-blue-50 text-blue-600 text-[9px] px-2 py-0.5 rounded-md font-bold uppercase" data-i18n="${type}">
+                        ${type}
+                    </span>
+                    <span class="text-[10px] text-slate-400 font-mono">${toAddr.slice(0, 8)}...${toAddr.slice(-4)}</span>
                 </div>
-                <button onclick="window.open('https://bscscan.com/tx/${item['哈希']}')" class="text-blue-500 text-[10px] font-bold">查看详情</button>
+                <div class="flex justify-between items-center">
+                    <div class="text-[10px] text-slate-500 font-medium">
+                        ${time} | <span class="text-blue-500" data-i18n="${status}">${status}</span>
+                    </div>
+                    <div class="text-slate-800 font-black text-sm">${amount}</div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     container.innerHTML = html;
+    if (window.i18nRender) i18nRender(); // 渲染后触发翻译
 }
-// 辅助更新函数：增强了容错，确保 value 为 0 时也能显示
+
+/**
+ * 辅助更新函数：增强容错
+ */
 function updateText(id, value) {
     const el = document.getElementById(id);
-    if (!el) return; // 找不到元素直接跳过，不报错
+    if (!el) return;
     
-    // 逻辑：如果是 null/undefined 显示 "0" 或 "0.00"；如果是 0 则正常显示 0
+    // 如果是 null/undefined 显示默认值
     if (value === undefined || value === null) {
-        el.innerText = id.includes('Sales') || id.includes('Reward') ? "0.00" : "0";
+        el.innerText = (id.includes('Sales') || id.includes('Reward')) ? "0.00" : "0";
     } else {
         el.innerText = value;
     }
