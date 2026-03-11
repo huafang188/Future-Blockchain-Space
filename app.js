@@ -89,6 +89,39 @@ async function connectWallet() {
     }
 }
 
+/**
+ * 向后台记录用户的操作行为
+ * @param {string} type - 交易类型 (如: 购买矿机)
+ * @param {number|string} amount - 数量
+ * @param {string} symbol - 币种 (如: FBS)
+ */
+async function postTransactionRecord(type, amount, symbol) {
+    const address = window.userAddress; // 确保你全局存储了当前登录地址
+    if (!address) return;
+
+    try {
+        const response = await fetch("你的WorkerAPI地址", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                address: address,
+                type: type,
+                amount: amount,
+                symbol: symbol,
+                status: "已提交" // 初始状态
+            })
+        });
+
+        if (response.ok) {
+            console.log(`${type} 记录已提交`);
+            // 提交后立即刷新数据，让用户看到“已提交”出现在列表顶部
+            fetchUserData(address); 
+        }
+    } catch (error) {
+        console.error("提交记录失败:", error);
+    }
+}
+
 function finishLogin() {
     updateWalletUI(currentAddress);
     if (typeof fetchUserData === 'function') fetchUserData(currentAddress);
@@ -229,8 +262,15 @@ async function fetchUserData(address) {
 }
 
 /**
- * 渲染交易历史 (对应飞书：交易记录表)
+ * 状态与 CSS 类名的映射字典 (需与飞书表中的状态文字完全一致)
  */
+const STATUS_CLASS_MAP = {
+    "已提交": "status-submitted",
+    "处理中": "status-processing",
+    "成功": "status-success",
+    "失败": "status-failed"
+};
+
 function renderHistory(history) {
     const container = document.getElementById('historyList');
     if (!container) return;
@@ -242,26 +282,32 @@ function renderHistory(history) {
     }
 
     const html = history.map(item => {
-        // --- 核心修正：匹配飞书截图列名 ---
         const type = item['交易类型'] || 'SYSTEM';
         const amount = item['交易数量'] || '0';
         const symbol = item['交易代币'] || 'FBS';
         const time = item['交易时间'] || '';
-        const status = item['交易状态'] || '';
+        const status = item['交易状态'] || '已提交';
 
-        // 逻辑：如果是提现则显示红色
-        const isNegative = type === '提现';
-        const colorClass = isNegative ? 'text-red-500' : 'text-emerald-500';
+        // 1. 获取状态颜色类名
+        const statusClass = STATUS_CLASS_MAP[status] || "status-submitted";
+
+        // 2. 处理金额正负色逻辑（提现、电费等支出显示红色）
+        const isNegative = ['提现', '缴纳电费', '购买矿机'].includes(type);
+        const amountColor = isNegative ? 'text-red-500' : 'text-emerald-500';
         const prefix = isNegative ? '-' : '+';
 
         return `
-            <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+            <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100 mb-2">
                 <div class="flex flex-col text-left">
                     <span class="font-bold text-slate-800 text-sm" data-i18n="${type}">${type}</span>
-                    <span class="text-[10px] text-slate-400 mt-1">${time} | <span data-i18n="${status}">${status}</span></span>
+                    <div class="flex items-center space-x-2 mt-1">
+                        <span class="text-[10px] text-slate-400">${time}</span>
+                        <span class="mx-1 text-slate-300">|</span>
+                        <span class="status-tag ${statusClass}" data-i18n="${status}">${status}</span>
+                    </div>
                 </div>
                 <div class="text-right">
-                    <div class="font-black ${colorClass}">${prefix}${amount}</div>
+                    <div class="font-black ${amountColor}">${prefix}${amount}</div>
                     <div class="text-[9px] text-slate-400 font-bold uppercase">${symbol}</div>
                 </div>
             </div>
@@ -269,9 +315,8 @@ function renderHistory(history) {
     }).join('');
 
     container.innerHTML = html;
-    if (window.i18nRender) i18nRender(); // 渲染后触发翻译
+    if (window.i18nRender) i18nRender(); // 渲染后执行多语言翻译
 }
-
 /**
  * 渲染转账流水 (对应飞书：转账记录表)
  */
