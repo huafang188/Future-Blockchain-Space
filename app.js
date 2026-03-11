@@ -484,7 +484,7 @@ function openFinanceModal(type) {
                         <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
                     </div>
                     <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
-                           oninput="this.value = parseFloat(this.value).toFixed(4)"
+                           oninput="validateTransferAmount(this)"
                            class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1">
                 </div>
                 <button onclick="doInternalTransfer()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg">确认转账</button>
@@ -590,6 +590,7 @@ async function doInternalTransfer() {
     const symbol = document.getElementById('transToken').value;
     const amount = parseFloat(document.getElementById('transAmount').value);
     const balance = parseFloat(tokenInfo[symbol]?.balance || 0);
+    const finalAmount = amount.toFixed(4); 
 
     // 1. 基础校验
     if (!toAddr.startsWith('0x') || toAddr.length < 42) return alert("请输入正确的钱包地址");
@@ -653,4 +654,30 @@ function calcSwap() {
 function updateMax() {
     const t = document.getElementById('witToken').value;
     document.getElementById('maxWit').innerText = (userBalances[t] || 0);
+}
+
+/**
+ * 实时校验转账数量输入
+ * 允许正常输入，但限制小数点后最多 4 位，防止 toFixed(4) 锁死输入
+ */
+function validateTransferAmount(input) {
+    let val = input.value;
+    
+    // 1. 如果包含小数点
+    if (val.indexOf('.') !== -1) {
+        const parts = val.split('.');
+        // 2. 如果小数部分超过 4 位，截断它
+        if (parts[1].length > 4) {
+            input.value = parts[0] + '.' + parts[1].slice(0, 4);
+        }
+    }
+    
+    // 3. 实时检查余额并变色提醒（可选增强）
+    const symbol = document.getElementById('transToken').value;
+    const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
+    if (parseFloat(input.value) > balance) {
+        input.classList.add('text-red-500'); // 余额不足变红
+    } else {
+        input.classList.remove('text-red-500');
+    }
 }
