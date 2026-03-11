@@ -603,48 +603,41 @@ window.doInternalTransfer = async function() {
     }
 
     try {
-        // --- 第一步：强制要求钱包签名 ---
-        // 这会弹出小狐狸签名框，证明是本人操作
-        const message = `确认转账: ${amount} ${symbol} 到地址: ${toAddr}\n时间: ${new Date().toLocaleString()}`;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
+        // --- 1. 签名校验 (内部转账不耗 Gas) ---
+        const message = `确认内部转账\n转出资产: ${amount} ${symbol}\n接收地址: ${toAddr}\n时间: ${new Date().toLocaleString()}`;
+        const hexMsg = '0x' + Array.from(new TextEncoder().encode(message))
+                              .map(b => b.toString(16).padStart(2, '0')).join('');
         
-        console.log("等待用户签名...");
-        const signature = await signer.signMessage(message);
-        console.log("签名成功:", signature);
+        console.log("正在请求签名授权...");
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [hexMsg, senderAddr],
+        });
 
-        // --- 第二步：签名成功后，发送数据给 Workers ---
+        // --- 2. 签名成功后发送数据 ---
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer", // 对应 Workers 里的 if(body.action === "transfer")
+                action: "transfer",
                 address: senderAddr,
-                receiver: toAddr,
-                type: "内部转账",
+                receiver: toAddr,   // 对应 Worker 解构的 receiver
+                type: symbol,       // 根据截图，飞书“接收类型”填的是币种名
                 amount: String(amount),
                 symbol: symbol,
-                status: "成功",
-                signature: signature // 传给后台做记录备查
+                status: "成功"       // 对应截图中的“成功”状态
             })
         });
 
         const result = await response.json();
         if (result.success) {
-            alert("转账成功并已记录");
+            alert("内部转账成功");
             closeModal();
-            // 刷新数据
             if (typeof fetchUserData === 'function') fetchUserData(senderAddr);
-        } else {
-            alert("后台记录失败：" + (result.error || "未知错误"));
         }
     } catch (e) {
-        console.error("转账流程中断:", e);
-        if (e.code === 4001) {
-            alert("用户取消了签名");
-        } else {
-            alert("转账失败: " + e.message);
-        }
+        console.error("转账失败:", e);
+        if (e.code === 4001) alert("用户取消了签名");
     }
 };
 
