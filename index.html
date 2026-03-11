@@ -91,13 +91,34 @@
         <section class="glass-card rounded-[2.5rem] overflow-hidden">
             <div class="p-5 border-b border-slate-100 font-black text-[10px] text-slate-400 uppercase tracking-widest bg-white/50" data-i18n="assets_list">资产预览</div>
             <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
-<div class="grid grid-cols-2 gap-3 mt-6">
-    <button onclick="openFinanceModal('recharge')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="recharge">充值</button>
-    <button onclick="openFinanceModal('withdraw')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="withdraw">提币</button>
-    <button onclick="openFinanceModal('exchange')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="exchange">兑换</button>
-    <button onclick="openFinanceModal('transfer')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="transfer">转账</button>
-</div>
         </section>
+
+        <section class="glass-card rounded-[2.5rem] overflow-hidden">
+    <div class="p-5 border-b border-slate-100 font-black text-[10px] text-slate-400 uppercase tracking-widest bg-white/50" data-i18n="assets_list">资产预览</div>
+    <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
+</section>
+
+<div class="grid grid-cols-4 gap-3 mt-6">
+    <button onclick="openFinanceModal('recharge')" class="action-btn">
+        <div class="icon-box bg-blue-50 text-blue-500"><i class="fas fa-plus"></i></div>
+        <span data-i18n="recharge">充值</span>
+    </button>
+    
+    <button onclick="openFinanceModal('withdraw')" class="action-btn">
+        <div class="icon-box bg-orange-50 text-orange-500"><i class="fas fa-arrow-up"></i></div>
+        <span data-i18n="withdraw">提币</span>
+    </button>
+
+    <button onclick="openFinanceModal('exchange')" class="action-btn">
+        <div class="icon-box bg-emerald-50 text-emerald-500"><i class="fas fa-sync"></i></div>
+        <span data-i18n="exchange">兑换</span>
+    </button>
+
+    <button onclick="openFinanceModal('transfer')" class="action-btn">
+        <div class="icon-box bg-purple-50 text-purple-500"><i class="fas fa-paper-plane"></i></div>
+        <span data-i18n="transfer">转账</span>
+    </button>
+</div>
 
         <section class="glass-card rounded-[2.5rem] p-6 bg-slate-50/50">
             <div class="flex justify-between items-center mb-4">
