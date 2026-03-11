@@ -40,12 +40,19 @@
 
     <header class="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-100 px-4 py-3">
         <div class="max-w-xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden p-1">
-                    <img src="assets/head_logo.png" alt="Logo" class="w-full h-full object-contain">
-                </div>
-                <h1 class="text-xl font-black text-slate-800 tracking-tighter">FBS</h1>
-            </div>
+<div class="flex items-center gap-3">
+    <!-- Logo 容器：rounded-xl 已經實現了圓角矩形 -->
+    <div class="w-12 h-12 bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden p-1 flex-shrink-0">
+        <img src="assets/head_logo.png" alt="Logo" class="w-full h-full object-contain">
+    </div>
+    
+    <!-- 文字容器：使用 flex-col 讓主副標題上下排列，視覺更精緻 -->
+    <div class="flex flex-col justify-center">
+        <h1 class="text-xl font-black text-slate-800 tracking-tighter leading-tight">FBS</h1>
+        <h2 class="text-lg font-bold text-blue-600 tracking-tighter leading-tight">Future Blockchain Space</h2>
+    </div>
+</div>
+
             <select id="langSelect" onchange="if(typeof switchLang === 'function') switchLang(this.value)" class="bg-slate-100 border-none text-xs rounded-xl px-3 py-2 font-bold text-slate-700 outline-none">
                 <option value="zh-CN">简体中文</option>
                 <option value="zh-TW">繁体中文</option>
