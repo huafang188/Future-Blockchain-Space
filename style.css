@@ -214,7 +214,7 @@ body {
            transition-all active:scale-95;
 }
 
-/* 图标盒子 */
+/*图标盒子*/
 .icon-box {
     @apply w-10 h-10 rounded-2xl flex items-center justify-center mb-2 text-base shadow-inner;
 }
