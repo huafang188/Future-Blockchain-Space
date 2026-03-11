@@ -634,60 +634,58 @@ async function handleSignAction(type) {
         alert("已取消"); 
     }
 }
-async function doInternalTransfer() {
-    const toAddr = document.getElementById('transAddr').value;
-    const symbol = document.getElementById('transToken').value;
-    const amount = parseFloat(document.getElementById('transAmount').value);
-    const balance = parseFloat(window.userBalances ? (window.userBalances[symbol] || 0) : 0);
-    const finalAmount = amount.toFixed(4); 
+* 1. 内部转账函数 (修复余额读取和 API 地址)
+ */
+window.doInternalTransfer = async function() {
+    const symbol = document.getElementById('transfer_symbol')?.innerText;
+    const toAddr = document.getElementById('transfer_to_addr')?.value.trim();
+    const amountInput = document.getElementById('transfer_amount')?.value;
+    const amount = parseFloat(amountInput);
 
-    // 1. 基础校验
-    if (!toAddr.startsWith('0x') || toAddr.length < 42) return alert("请输入正确的钱包地址");
-    if (isNaN(amount) || amount <= 0) return alert("请输入转账数量");
-    
-    // 2. 余额检查
-    if (amount > balance) {
-        return alert(`余额不足！当前 ${symbol} 余额为 ${balance.toFixed(4)}`);
+    // 从全局余额表读取数据，避免 balance 为空
+    const balance = parseFloat(window.userBalances ? (window.userBalances[symbol] || 0) : 0);
+
+    if (!toAddr || isNaN(amount) || amount <= 0) {
+        alert("请输入有效的地址和数量");
+        return;
     }
 
+    if (amount > balance) {
+        alert("余额不足");
+        return;
+    }
+
+    showLoading(true);
     try {
-        // 3. 构造符合飞书“转账记录”表格式的数据
-        // 接收者, 接收类型(币种), 接收数量, 状态, 转账时间
-    const response = await fetch('https://api.fbsfbs.fit/api', {
-        method: 'POST',
+        const response = await fetch('https://api.fbsfbs.fit/api/user', {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-    action: "transfer",       // 告诉 Worker 这是转账
-    address: currentAddress,  // 发件人
-    receiver: toAddr,         // 收件人
-    type: "内部转账",          // 对应 Worker 的“交易类型”
-    amount: amount,           // 对应 Worker 的“交易数量”
-    symbol: symbol,           // 对应 Worker 的“交易代币”
-    status: "成功"             // 状态
-})
-        });
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                address: currentAddress, // 发起者
-                receiver: toAddr,        // 接收者
-                type: symbol,            // 接收类型 (如: FBS)
-                amount: amount.toFixed(4), // 接收数量
-                status: "已提交",         // 初始状态
-                time: new Date().toISOString().split('T')[0] // 转账时间 (YYYY-MM-DD)
+                action: "transfer",
+                address: currentAddress, 
+                receiver: toAddr,
+                type: "内部转账",
+                amount: amount,
+                symbol: symbol,
+                status: "成功"
             })
         });
 
-        if (response.ok) {
-            alert("转账请求已提交");
-            closeModal();
-            fetchUserData(currentAddress); // 刷新历史记录查看状态
+        const result = await response.json();
+        if (result.success || result.data) {
+            showModal("成功", "转账请求已提交");
+            closeModal('transfer_modal');
+            if (typeof loadUserData === 'function') loadUserData(currentAddress);
+        } else {
+            alert("转账失败: " + (result.error || "服务器拒绝"));
         }
-    } catch (e) {
-        console.error("转账失败:", e);
-        alert("网络请求失败");
+    } catch (err) {
+        console.error("转账异常:", err);
+        alert("网络连接失败，请检查 API");
+    } finally {
+        showLoading(false);
     }
-}
+};
 // --- 8. UI 辅助逻辑 ---
 function showModal(title, html) {
     document.getElementById('modalTitle').innerText = title;
@@ -808,54 +806,46 @@ function openBindInviterModal() {
 }
 
 /**
- * 提交绑定数据到后台
+* 2. 绑定推荐人函数 (修复变量引用)
  */
-async function submitBindInviter() {
-    const inviterId = document.getElementById('input_inviter_id').value.trim();
+window.submitBindInviter = async function() {
+    const inviterId = document.getElementById('input_inviter_id')?.value.trim();
+    const walletAddr = currentAddress || localStorage.getItem('fbs_address');
     
-    // 适配点：尝试从内存变量或本地缓存获取地址
-    const walletAddr = (typeof currentAddress !== 'undefined' && currentAddress) ? currentAddress : localStorage.getItem('fbs_address');
-    
-    // 基础验证
     if (!inviterId) {
-        alert("请输入有效的推荐人 ID");
+        alert("请输入推荐人 ID");
         return;
     }
-
     if (!walletAddr) {
-        alert("请先连接钱包"); // 对应截图中的报错提示
+        alert("请先连接钱包");
         return;
     }
 
     const now = new Date();
     const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
 
-    const payload = {
-        action: "bind_relationship", 
-        user: walletAddr,             // 使用适配后的变量名
-        inviter: inviterId,           
-        regTime: formattedTime        
-    };
-
     try {
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                action: "bind_relationship",
+                user: walletAddr,
+                inviter: inviterId,
+                regTime: formattedTime
+            })
         });
 
         const result = await response.json();
-
-        if (result.success) {
+        if (result.success || result.data) {
             if(document.getElementById('info_inviter')) document.getElementById('info_inviter').innerText = inviterId;
             if(document.getElementById('info_regTime')) document.getElementById('info_regTime').innerText = formattedTime;
-            
-            showModal("绑定成功", "推荐关系已记录，管理员审核后将分配您的专属推荐码。");
+            showModal("绑定成功", "推荐关系已记录");
         } else {
-            alert("绑定失败: " + (result.message || "未知错误"));
+            alert("绑定失败");
         }
     } catch (error) {
-        console.error("提交异常:", error);
-        alert("网络连接失败，请检查网络环境");
+        console.error("绑定异常:", error);
+        alert("提交失败");
     }
-}
+};
