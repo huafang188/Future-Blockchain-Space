@@ -755,3 +755,85 @@ function showToast(message) {
         setTimeout(() => toast.remove(), 300);
     }, 2000);
 }
+
+// --- 绑定推荐人业务逻辑 ---
+
+/**
+ * 打开绑定推荐人弹窗
+ * 风格与 copyInviteCode 保持一致
+ */
+function openBindInviterModal() {
+    // 使用项目统一的 showModal 渲染
+    showModal("绑定推荐关系", `
+        <div class="space-y-4 text-left">
+            <div class="p-2 bg-blue-50 rounded-2xl">
+                <p class="text-[10px] font-bold text-blue-600 px-1 mb-1">您的地址</p>
+                <p class="text-[10px] font-mono text-slate-500 break-all px-1">${window.userAddress || '未连接钱包'}</p>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_inviter_id">推荐人 ID (推荐码)</label>
+                <input type="text" id="input_inviter_id" placeholder="输入推荐人 ID" 
+                       class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100 transition-all">
+            </div>
+            <button onclick="submitBindInviter()" class="action-btn w-full mt-2">
+                <span data-i18n="btn_confirm">确认提交</span>
+            </button>
+        </div>
+    `);
+}
+
+/**
+ * 提交绑定数据到后台
+ * 自动处理地址、ID和提交时间
+ */
+async function submitBindInviter() {
+    const inviterId = document.getElementById('input_inviter_id').value.trim();
+    
+    // 基础验证
+    if (!inviterId) {
+        alert("请输入有效的推荐人 ID");
+        return;
+    }
+
+    if (!window.userAddress) {
+        alert("请先连接钱包");
+        return;
+    }
+
+    // 获取当前时间 (格式示例: 2026/03/11 22:05)
+    const now = new Date();
+    const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+
+    // 准备提交给飞书表格的数据载体
+    const payload = {
+        action: "bind_relationship", 
+        user: window.userAddress,     // 对应表格“用户”列
+        inviter: inviterId,           // 对应表格“推荐人”列
+        regTime: formattedTime        // 对应表格“注册时间”列
+    };
+
+    try {
+        // 使用之前配置的 API 接口 (Cloudflare Worker)
+        // 这里的 URL 请替换为你实际的接口地址
+        const response = await fetch('https://api.fbsfbs.fit/api', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // 更新 UI 显示
+            if(document.getElementById('info_inviter')) document.getElementById('info_inviter').innerText = inviterId;
+            if(document.getElementById('info_regTime')) document.getElementById('info_regTime').innerText = formattedTime;
+            
+            showModal("绑定成功", "推荐关系已记录，管理员审核后将分配您的专属推荐码。");
+        } else {
+            alert("绑定失败: " + (result.message || "未知错误"));
+        }
+    } catch (error) {
+        console.error("提交异常:", error);
+        alert("网络连接失败，请检查网络环境");
+    }
+}
