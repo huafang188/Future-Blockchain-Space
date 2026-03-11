@@ -117,40 +117,46 @@
         <section class="glass-card rounded-[2.5rem] p-6 bg-slate-50/50">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-black text-slate-800 text-xs uppercase" data-i18n="team_title">我的团队</h3>
-                <span class="text-[10px] font-black text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">ID: <span id="info_inviteCode">---</span></span>
+                <span class="text-lg font-black text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">ID: <span id="info_inviteCode">---</span></span>
             </div>
             
             <div class="bg-white rounded-[2rem] p-6 space-y-4 border border-slate-100 shadow-sm">
                 <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-50">
                     <div>
-                        <p class="text-[9px] text-slate-400 font-black uppercase mb-1" data-i18n="direct_num">直推人数</p>
+                        <p class="text-sm text-slate-400 font-black uppercase mb-1" data-i18n="direct_num">直推人数</p>
                         <p class="text-xl font-black text-slate-900" id="team_directCount">0</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-[9px] text-slate-400 font-black uppercase mb-1" data-i18n="direct_sales">直推业绩</p>
+                        <p class="text-sm text-slate-400 font-black uppercase mb-1" data-i18n="direct_sales">直推业绩</p>
                         <p class="text-xl font-black text-blue-600">$ <span id="team_directSales">0.00</span></p>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-50">
                     <div>
-                        <p class="text-[9px] text-slate-400 font-black uppercase mb-1" data-i18n="team_num">团队总人数</p>
+                        <p class="text-sm text-slate-400 font-black uppercase mb-1" data-i18n="team_num">团队总人数</p>
                         <p class="text-xl font-black text-slate-900" id="team_totalCount">0</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-[9px] text-slate-400 font-black uppercase mb-1" data-i18n="team_sales">团队总业绩</p>
+                        <p class="text-sm text-slate-400 font-black uppercase mb-1" data-i18n="team_sales">团队总业绩</p>
                         <p class="text-xl font-black text-slate-800">$ <span id="team_totalSales">0.00</span></p>
                     </div>
                 </div>
                 <div class="pt-2 text-center">
-                    <p class="text-[9px] text-yellow-700 font-black uppercase mb-1" data-i18n="total_rewards">累计奖励</p>
+                    <p class="text-lg text-yellow-700 font-black uppercase mb-1" data-i18n="total_rewards">累计奖励</p>
                     <p class="text-3xl font-black text-yellow-500" id="team_totalReward">$ 0.00</p>
                 </div>
             </div>
 
-            <div class="mt-4 flex justify-between px-2 text-[9px] text-slate-400 font-bold uppercase">
-                <span>推荐人: <span id="info_inviter" class="text-slate-600">--</span></span>
-                <span>注册时间: <span id="info_regTime" class="text-slate-600">--</span></span>
-            </div>
+<div class="mt-6 flex flex-col gap-2 px-2 text-base text-slate-400 font-bold">
+    <div class="flex justify-between border-b border-slate-50 pb-2">
+        <span>推荐人</span>
+        <span id="info_inviter" class="text-slate-800">--</span>
+    </div>
+    <div class="flex justify-between">
+        <span>注册时间</span>
+        <span id="info_regTime" class="text-slate-800">--</span>
+    </div>
+</div>
         </section>
 
 <section class="glass-card rounded-[2.5rem] p-6 space-y-4">
