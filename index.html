@@ -63,8 +63,8 @@
 
         <section class="glass-card rounded-[2.5rem] p-6 border-l-4 border-blue-600">
             <div class="flex justify-between items-center mb-5">
-                <h3 class="font-black text-slate-800 text-xs uppercase tracking-widest" data-i18n="miner_title">矿机详情</h3>
-                <span class="text-[10px] bg-emerald-100 text-emerald-600 font-black px-2 py-0.5 rounded uppercase">运行中</span>
+                <h3 class="font-black text-slate-800 text-xl uppercase tracking-widest" data-i18n="miner_title">我的矿机</h3>
+                <span class="text-[10px] bg-emerald-100 text-emerald-600 font-black px-2 py-0.5 rounded uppercase">Running</span>
             </div>
             <div class="flex gap-4 items-center mb-6">
                 <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 overflow-hidden">
@@ -92,7 +92,7 @@
         </section>
 
         <section class="glass-card rounded-[2.5rem] overflow-hidden">
-            <div class="p-5 border-b border-slate-100 font-black text-[10px] text-slate-400 uppercase tracking-widest bg-white/50" data-i18n="assets_list">资产预览</div>
+            <div class="p-5 border-b border-slate-100 font-black text-xl text-slate-400 uppercase tracking-widest bg-white/50" data-i18n="assets_list">资产预览</div>
             <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
         </section>
 
@@ -114,11 +114,15 @@
     </button>
 </div>
 
-        <section class="glass-card rounded-[2.5rem] p-6 bg-slate-50/50">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-black text-slate-800 text-xs uppercase" data-i18n="team_title">我的团队</h3>
-                <span class="text-lg font-black text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">ID: <span id="info_inviteCode">---</span></span>
-            </div>
+<section class="glass-card rounded-[2.5rem] p-6 bg-slate-50/50">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="font-black text-slate-800 text-xl uppercase" data-i18n="team_title">我的团队</h3>
+        <span onclick="copyInviteCode()" 
+              class="text-lg font-black text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200 cursor-pointer active:scale-95 transition-transform hover:bg-slate-50">
+            ID: <span id="info_inviteCode">---</span>
+        </span>
+    </div>
+</section>
             
             <div class="bg-white rounded-[2rem] p-6 space-y-4 border border-slate-100 shadow-sm">
                 <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-50">
