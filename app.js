@@ -801,3 +801,39 @@ window.showLoading = function(show) {
     if (show) loader.classList.remove('hidden');
     else loader.classList.add('hidden');
 };
+
+/**
+ * 修复：复制邀请码功能
+ * @param {string} text 要复制的文本内容
+ */
+window.copyInviteCode = function(text) {
+    if (!text || text === '--') return;
+
+    // 使用现代剪贴板 API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("邀请码已复制: " + text);
+        }).catch(err => {
+            console.error('复制失败', err);
+            // 备用方案
+            fallbackCopyText(text);
+        });
+    } else {
+        fallbackCopyText(text);
+    }
+};
+
+// 备用复制方法（针对兼容性）
+function fallbackCopyText(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+        document.execCommand('copy');
+        alert("邀请码已复制: " + text);
+    } catch (err) {
+        alert("复制失败，请手动复制");
+    }
+    document.body.removeChild(textArea);
+}
