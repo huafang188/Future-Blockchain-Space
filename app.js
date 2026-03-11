@@ -100,7 +100,18 @@ async function postTransactionRecord(type, amount, symbol) {
     if (!address) return;
 
     try {
-        const response = await fetch("你的WorkerAPI地址", {
+        const response = await fetch('https://api.fbsfbs.fit/api', {method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: "transfer",     // 必须包含 action 供 Worker 分发
+                address: currentAddress, // 发送者地址
+                receiver: toAddr,       // 接收者地址
+                type: "内部转账",
+                amount: amount,
+                symbol: symbol,
+                status: "成功"
+            })
+        });
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -627,7 +638,7 @@ async function doInternalTransfer() {
     const toAddr = document.getElementById('transAddr').value;
     const symbol = document.getElementById('transToken').value;
     const amount = parseFloat(document.getElementById('transAmount').value);
-    const balance = parseFloat(tokenInfo[symbol]?.balance || 0);
+    const balance = parseFloat(window.userBalances ? (window.userBalances[symbol] || 0) : 0);
     const finalAmount = amount.toFixed(4); 
 
     // 1. 基础校验
@@ -642,7 +653,19 @@ async function doInternalTransfer() {
     try {
         // 3. 构造符合飞书“转账记录”表格式的数据
         // 接收者, 接收类型(币种), 接收数量, 状态, 转账时间
-        const response = await fetch("你的WorkerAPI地址", {
+    const response = await fetch('https://api.fbsfbs.fit/api', {
+        method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+    action: "transfer",       // 告诉 Worker 这是转账
+    address: currentAddress,  // 发件人
+    receiver: toAddr,         // 收件人
+    type: "内部转账",          // 对应 Worker 的“交易类型”
+    amount: amount,           // 对应 Worker 的“交易数量”
+    symbol: symbol,           // 对应 Worker 的“交易代币”
+    status: "成功"             // 状态
+})
+        });
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -815,7 +838,7 @@ async function submitBindInviter() {
     };
 
     try {
-        const response = await fetch('https://api.fbsfbs.fit/api', { 
+        const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
