@@ -634,7 +634,10 @@ async function handleSignAction(type) {
         alert("已取消"); 
     }
 }
-* 1. 内部转账函数 (修复余额读取和 API 地址)
+// ==================== 核心业务逻辑修复区 (替换开始) ====================
+
+/**
+ * 1. 内部转账函数 (整合版本：修复余额判断与 API 分发)
  */
 window.doInternalTransfer = async function() {
     const symbol = document.getElementById('transfer_symbol')?.innerText;
@@ -642,8 +645,10 @@ window.doInternalTransfer = async function() {
     const amountInput = document.getElementById('transfer_amount')?.value;
     const amount = parseFloat(amountInput);
 
-    // 从全局余额表读取数据，避免 balance 为空
+    // 优先读取 window.userBalances，解决“余额不足”报错
     const balance = parseFloat(window.userBalances ? (window.userBalances[symbol] || 0) : 0);
+    // 确保有地址可用
+    const senderAddr = typeof currentAddress !== 'undefined' ? currentAddress : localStorage.getItem('fbs_address');
 
     if (!toAddr || isNaN(amount) || amount <= 0) {
         alert("请输入有效的地址和数量");
@@ -655,14 +660,19 @@ window.doInternalTransfer = async function() {
         return;
     }
 
+    if (!senderAddr) {
+        alert("请先连接钱包");
+        return;
+    }
+
     showLoading(true);
     try {
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer",
-                address: currentAddress, 
+                action: "transfer", // 关键：交给 Worker 分流到转账日志表
+                address: senderAddr, 
                 receiver: toAddr,
                 type: "内部转账",
                 amount: amount,
@@ -675,142 +685,25 @@ window.doInternalTransfer = async function() {
         if (result.success || result.data) {
             showModal("成功", "转账请求已提交");
             closeModal('transfer_modal');
-            if (typeof loadUserData === 'function') loadUserData(currentAddress);
+            // 刷新数据
+            if (typeof loadUserData === 'function') loadUserData(senderAddr);
         } else {
             alert("转账失败: " + (result.error || "服务器拒绝"));
         }
     } catch (err) {
         console.error("转账异常:", err);
-        alert("网络连接失败，请检查 API");
+        alert("网络连接失败，请检查 API 接口");
     } finally {
         showLoading(false);
     }
 };
-// --- 8. UI 辅助逻辑 ---
-function showModal(title, html) {
-    document.getElementById('modalTitle').innerText = title;
-    document.getElementById('modalContent').innerHTML = html;
-    document.getElementById('modalOverlay').classList.remove('hidden');
-    if (typeof i18nRender === 'function') i18nRender();
-}
-function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
-function setBuyNum(n, btn) {
-    document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
-    btn.classList.add('bg-blue-600', 'text-white');
-    document.getElementById('buyTotal').innerText = `$ ${(n * 150).toFixed(2)}`;
-}
-function calcElec() {
-    const n = document.getElementById('elecNum').value;
-    const d = document.getElementById('elecDays').value;
-    document.getElementById('elecCost').innerText = (n * (d / 30) * 30).toFixed(2) + " USDT";
-}
-function calcSwap() {
-    const fT = document.getElementById('sFromToken').value, tT = document.getElementById('sToToken').value;
-    const amt = document.getElementById('sFromAmt').value || 0;
-    document.getElementById('sToAmt').value = (amt * (tokenInfo[fT].price / tokenInfo[tT].price)).toFixed(6);
-    document.getElementById('maxSwap').innerText = "余额: " + (userBalances[fT] || 0);
-}
-function updateMax() {
-    const t = document.getElementById('witToken').value;
-    document.getElementById('maxWit').innerText = (userBalances[t] || 0);
-}
 
 /**
- * 实时校验转账数量输入
- * 允许正常输入，但限制小数点后最多 4 位，防止 toFixed(4) 锁死输入
- */
-function validateTransferAmount(input) {
-    let val = input.value;
-    
-    // 1. 如果包含小数点
-    if (val.indexOf('.') !== -1) {
-        const parts = val.split('.');
-        // 2. 如果小数部分超过 4 位，截断它
-        if (parts[1].length > 4) {
-            input.value = parts[0] + '.' + parts[1].slice(0, 4);
-        }
-    }
-    
-    // 3. 实时检查余额并变色提醒（可选增强）
-    const symbol = document.getElementById('transToken').value;
-    const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
-    if (parseFloat(input.value) > balance) {
-        input.classList.add('text-red-500'); // 余额不足变红
-    } else {
-        input.classList.remove('text-red-500');
-    }
-}
-
-function copyInviteCode() {
-    const codeElement = document.getElementById('info_inviteCode');
-    const code = codeElement.innerText;
-
-    if (code === "---" || !code) return; // 如果还没加载出 ID 则不执行
-
-    // 使用现代剪贴板 API
-    navigator.clipboard.writeText(code).then(() => {
-        // 复制成功后的反馈
-        showToast("ID 已复制到剪贴板");
-    }).catch(err => {
-        console.error('复制失败:', err);
-        // 备用方案：针对部分旧版浏览器
-        const input = document.createElement('input');
-        input.value = code;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        showToast("ID 已复制");
-    });
-}
-
-// 简单的提示框函数 (如果你还没有类似功能)
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = "fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-800/90 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-2xl z-[9999] backdrop-blur-md transition-opacity duration-300";
-    toast.innerText = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
-}
-
-// --- 绑定推荐人业务逻辑 ---
-
-/**
- * 打开绑定推荐人弹窗
- */
-function openBindInviterModal() {
-    // 适配点：将 window.userAddress 改为 currentAddress
-    // 增加 localStorage 读取作为备选，确保万无一失
-    const displayAddress = typeof currentAddress !== 'undefined' ? currentAddress : localStorage.getItem('fbs_address');
-    
-    showModal("绑定推荐关系", `
-        <div class="space-y-4 text-left">
-            <div class="p-2 bg-blue-50 rounded-2xl">
-                <p class="text-[10px] font-bold text-blue-600 px-1 mb-1">您的地址</p>
-                <p class="text-[10px] font-mono text-slate-500 break-all px-1">${displayAddress || '未连接钱包'}</p>
-            </div>
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_inviter_id">推荐人 ID (推荐码)</label>
-                <input type="text" id="input_inviter_id" placeholder="输入推荐人 ID" 
-                       class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100 transition-all">
-            </div>
-            <button onclick="submitBindInviter()" class="action-btn w-full mt-2">
-                <span data-i18n="btn_confirm">确认提交</span>
-            </button>
-        </div>
-    `);
-}
-
-/**
-* 2. 绑定推荐人函数 (修复变量引用)
+ * 2. 绑定推荐人函数
  */
 window.submitBindInviter = async function() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
-    const walletAddr = currentAddress || localStorage.getItem('fbs_address');
+    const walletAddr = (typeof currentAddress !== 'undefined' && currentAddress) ? currentAddress : localStorage.getItem('fbs_address');
     
     if (!inviterId) {
         alert("请输入推荐人 ID");
@@ -829,7 +722,7 @@ window.submitBindInviter = async function() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "bind_relationship",
+                action: "bind_relationship", // 关键：交给 Worker 分流到推荐表
                 user: walletAddr,
                 inviter: inviterId,
                 regTime: formattedTime
@@ -842,10 +735,12 @@ window.submitBindInviter = async function() {
             if(document.getElementById('info_regTime')) document.getElementById('info_regTime').innerText = formattedTime;
             showModal("绑定成功", "推荐关系已记录");
         } else {
-            alert("绑定失败");
+            alert("绑定失败: " + (result.message || "请求未成功"));
         }
     } catch (error) {
         console.error("绑定异常:", error);
-        alert("提交失败");
+        alert("网络连接失败");
     }
 };
+
+// ==================== 修复结束 ====================
