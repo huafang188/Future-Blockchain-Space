@@ -464,6 +464,45 @@ function openFinanceModal(type) {
         calcSwap();
     }
 }
+if (type === 'transfer') {
+        showModal("内部转账", `
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1">接收者钱包地址</label>
+                    <input type="text" id="transAddr" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1">选择代币</label>
+                    <div class="token-select-wrapper mt-1">
+                        <img id="transTokenLogo" src="./assets/fbs.png" class="token-logo-sm">
+                        <select id="transToken" onchange="updateTransUI()" class="flex-1 bg-transparent border-none font-bold">
+                            ${options}
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between px-1">
+                        <label class="text-[10px] font-bold text-slate-400">转账数量</label>
+                        <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
+                    </div>
+                    <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
+                           oninput="this.value = parseFloat(this.value).toFixed(4)"
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1">
+                </div>
+                <button onclick="doInternalTransfer()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg">确认转账</button>
+            </div>`);
+        updateTransUI(); // 初始化显示
+    }
+}
+
+// 转账弹窗联动逻辑
+function updateTransUI() {
+    const symbol = document.getElementById('transToken').value;
+    const balance = tokenInfo[symbol]?.balance || 0;
+    document.getElementById('transMax').innerText = parseFloat(balance).toFixed(4);
+    // 假设你的 logo 命名规则是 symbol.png
+    document.getElementById('transTokenLogo').src = `./assets/${symbol.toLowerCase()}.png`;
+}
 
 // --- 7. 执行动作 ---
 
@@ -537,7 +576,47 @@ async function handleSignAction(type) {
         alert("已取消"); 
     }
 }
+async function doInternalTransfer() {
+    const toAddr = document.getElementById('transAddr').value;
+    const symbol = document.getElementById('transToken').value;
+    const amount = parseFloat(document.getElementById('transAmount').value);
+    const balance = parseFloat(tokenInfo[symbol]?.balance || 0);
 
+    // 1. 基础校验
+    if (!toAddr.startsWith('0x') || toAddr.length < 42) return alert("请输入正确的钱包地址");
+    if (isNaN(amount) || amount <= 0) return alert("请输入转账数量");
+    
+    // 2. 余额检查
+    if (amount > balance) {
+        return alert(`余额不足！当前 ${symbol} 余额为 ${balance.toFixed(4)}`);
+    }
+
+    try {
+        // 3. 构造符合飞书“转账记录”表格式的数据
+        // 接收者, 接收类型(币种), 接收数量, 状态, 转账时间
+        const response = await fetch("你的WorkerAPI地址", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                address: currentAddress, // 发起者
+                receiver: toAddr,        // 接收者
+                type: symbol,            // 接收类型 (如: FBS)
+                amount: amount.toFixed(4), // 接收数量
+                status: "已提交",         // 初始状态
+                time: new Date().toISOString().split('T')[0] // 转账时间 (YYYY-MM-DD)
+            })
+        });
+
+        if (response.ok) {
+            alert("转账请求已提交");
+            closeModal();
+            fetchUserData(currentAddress); // 刷新历史记录查看状态
+        }
+    } catch (e) {
+        console.error("转账失败:", e);
+        alert("网络请求失败");
+    }
+}
 // --- 8. UI 辅助逻辑 ---
 function showModal(title, html) {
     document.getElementById('modalTitle').innerText = title;
