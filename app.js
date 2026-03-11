@@ -34,21 +34,31 @@ const tokenInfo = {
 let currentAddress = localStorage.getItem('fbs_address'); 
 let userBalances = {};
 
+// 在文件顶部声明变量
+let currentAddress = localStorage.getItem('fbs_address');
+
 // --- 2. 初始化与列表渲染 ---
 window.onload = () => {
-    if (currentAddress) {
+    const isManualLogout = localStorage.getItem('user_logout_manual');
+
+    // 只有当有地址且没有手动退出标记时才初始化
+    if (currentAddress && isManualLogout !== 'true') {
         updateWalletUI(currentAddress);
         fetchUserData(currentAddress);
+    } else {
+        resetWalletUI(); // 确保显示“连接钱包”
     }
     renderTokenList({}); 
 };
 
+// 格式化时间
 function formatTime(timestamp) {
     if (!timestamp) return "--";
     const date = new Date(timestamp);
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
 }
 
+// 渲染列表
 function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
@@ -84,7 +94,6 @@ async function connectWallet() {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const address = accounts[0]; 
         
-        // 只有账号变了才签名
         const savedAddr = localStorage.getItem('fbs_address');
         if (!savedAddr || savedAddr.toLowerCase() !== address.toLowerCase()) {
             const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
@@ -93,6 +102,10 @@ async function connectWallet() {
         
         currentAddress = address;
         localStorage.setItem('fbs_address', address);
+        
+        // 【重要修正】登录成功，清除手动退出标记
+        localStorage.removeItem('user_logout_manual');
+        
         finishLogin();
     } catch (e) { console.error("Login Cancelled"); }
 }
@@ -100,7 +113,7 @@ async function connectWallet() {
 function finishLogin() {
     updateWalletUI(currentAddress);
     fetchUserData(currentAddress);
-    closeModal();
+    if (typeof closeModal === 'function') closeModal();
 }
 
 function updateWalletUI(addr) {
@@ -108,49 +121,40 @@ function updateWalletUI(addr) {
     if (el) {
         el.innerText = addr.slice(0, 6) + '...' + addr.slice(-4);
         el.removeAttribute('data-i18n');
+        // 变为绿色已连接状态
+        el.classList.remove('bg-blue-50', 'text-blue-600');
+        el.classList.add('bg-emerald-50', 'text-emerald-600');
     }
 }
 
-function logout() {
-    localStorage.removeItem('fbs_address');
-    location.reload();
+// 新增：重置 UI 函数
+function resetWalletUI() {
+    const el = document.getElementById('walletAddr');
+    if (el) {
+        el.innerText = '连接钱包';
+        el.classList.remove('bg-emerald-50', 'text-emerald-600');
+        el.classList.add('bg-blue-50', 'text-blue-600');
+    }
 }
-// 在 app.js 中添加或修改此函数
-window.handleWalletClick = function() {
-    const addrElement = document.getElementById('walletAddr');
-    const currentAddr = addrElement.innerText.trim();
 
-    // 如果当前已经是连接状态（显示的是 0x... 地址）
-    if (currentAddr.includes('0x') || currentAddr !== '连接钱包') {
-        if (confirm("确定要退出登录并断开钱包连接吗？")) {
-            logout();
-        }
+// 【唯一且修正后的 logout】
+function logout() {
+    if (confirm("确定要退出登录并断开连接吗？")) {
+        localStorage.setItem('user_logout_manual', 'true'); // 关键：禁止刷新后自动连
+        localStorage.removeItem('fbs_address'); // 关键：名称必须对应
+        location.reload();
+    }
+}
+
+// 挂载到 window 供 HTML 调用
+window.handleWalletClick = function() {
+    const savedAddr = localStorage.getItem('fbs_address');
+    if (savedAddr) {
+        logout();
     } else {
-        // 如果是未连接状态，触发连接逻辑
-        if (typeof connectWallet === 'function') {
-            connectWallet();
-        } else {
-            console.error("未找到 connectWallet 函数");
-        }
+        connectWallet();
     }
 };
-
-// 退出登录逻辑
-function logout() {
-    console.log("正在退出登录...");
-    // 1. 清除本地缓存的地址
-    localStorage.removeItem('userAddress');
-    // 2. 恢复 UI 显示
-    const addrBtn = document.getElementById('walletAddr');
-    if (addrBtn) {
-        addrBtn.innerText = '连接钱包';
-        addrBtn.classList.remove('bg-emerald-50', 'text-emerald-600');
-        addrBtn.classList.add('bg-blue-50', 'text-blue-600');
-    }
-    // 3. 刷新页面或清空数据
-    window.location.reload(); 
-}
-
 // --- 4. 核心：读取后端数据 ---
 async function fetchUserData(address) {
     console.log("正在请求地址:", address);
