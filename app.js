@@ -97,13 +97,17 @@ async function connectWallet() {
 /**
  * 记录交易行为到后台 (修正版)
  */
+/**
+ * 记录交易行为到后台 (完整修复版)
+ */
 async function postTransactionRecord(type, amount, symbol) {
     const address = typeof currentAddress !== 'undefined' ? currentAddress : (window.userAddress || localStorage.getItem('fbs_address'));
     
     if (!address) return;
 
     try {
-        await fetch('https://api.fbsfbs.fit/api/user', {
+        // 1. 发起请求
+        const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -115,20 +119,25 @@ async function postTransactionRecord(type, amount, symbol) {
                 status: "已提交"
             })
         });
-    } catch (err) {
-        console.error("记录失败:", err);
-    }
-} // <--- 确保这里只有一个结束括号
 
+        // 2. 在同一个 try 块内处理结果
         if (response.ok) {
             console.log(`${type} 记录已提交`);
-            // 提交后立即刷新数据，让用户看到“已提交”出现在列表顶部
-            fetchUserData(address); 
+            // 确保 fetchUserData 函数存在后再调用
+            if (typeof fetchUserData === 'function') {
+                fetchUserData(address); 
+            } else if (typeof loadUserData === 'function') {
+                loadUserData(address); // 适配你文件中可能叫 loadUserData 的函数
+            }
+        } else {
+            console.error("服务器响应异常:", response.status);
         }
-     catch (error) {
+
+    } catch (error) {
+        // 3. 统一捕获网络或解析错误
         console.error("提交记录失败:", error);
     }
-}
+} // 函数结束，只有一个 }
 
 function finishLogin() {
     updateWalletUI(currentAddress);
