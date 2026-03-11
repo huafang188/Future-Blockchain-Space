@@ -38,7 +38,7 @@ let userBalances = {};
 const tokenInfo = window.tokenInfo || { 
     'USDT': { price: 1, logo: 'assets/usdt.png' } // 兜底配置防止报错
 };
-let currentAddress = localStorage.getItem('fbs_address');
+
 
 // --- 2. 立即挂载全局函数 (解决 ReferenceError 的关键) ---
 // 将此部分移到文件最上方，确保 HTML 哪怕在脚本报错前也能识别到函数
