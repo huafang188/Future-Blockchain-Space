@@ -462,9 +462,7 @@ function openFinanceModal(type) {
                 <button onclick="handleSignAction('SWAP')" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black">签名兑换</button>
             </div>`);
         calcSwap();
-    }
-}
-if (type === 'transfer') {
+    } else if (type === 'transfer') {
         showModal("内部转账", `
             <div class="space-y-4 text-left">
                 <div>
