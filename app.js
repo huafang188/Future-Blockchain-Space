@@ -493,13 +493,24 @@ function openFinanceModal(type) {
     }
 }
 
-// 转账弹窗联动逻辑
 function updateTransUI() {
     const symbol = document.getElementById('transToken').value;
-    const balance = tokenInfo[symbol]?.balance || 0;
-    document.getElementById('transMax').innerText = parseFloat(balance).toFixed(4);
-    // 假设你的 logo 命名规则是 symbol.png
-    document.getElementById('transTokenLogo').src = `./assets/${symbol.toLowerCase()}.png`;
+    const config = tokenInfo[symbol];
+
+    // 1. 获取 Logo：直接使用配置中定义的路径
+    const logoEl = document.getElementById('transTokenLogo');
+    if (logoEl && config) {
+        logoEl.src = config.logo;
+    }
+
+    // 2. 获取余额：从全局变量 window.userBalances 中读取实时数据
+    // 之前 data.balances 已被存入 window.userBalances
+    const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
+    
+    const maxEl = document.getElementById('transMax');
+    if (maxEl) {
+        maxEl.innerText = parseFloat(balance).toFixed(4);
+    }
 }
 
 // --- 7. 执行动作 ---
