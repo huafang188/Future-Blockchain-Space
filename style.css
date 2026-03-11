@@ -1,255 +1,60 @@
-/* * Future Blockchain Space - 完整样式表 
- * 风格：现代简约 / 磨砂玻璃 / 移动端优先
- */
-
-/* 引入字体 */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-
-body {
-    background-color: #f4f7fa; /* 统一为你刚才提到的背景色 */
-    color: var(--text-main);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    margin: 0;
-    padding: 0;
-    line-height: 1.5;
-    overflow-x: hidden;
-}
-
-/* 2. 布局组件 */
-/* 升级为玻璃拟态卡片 */
-.glass-card { 
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
-}
-
-/* 3. 图像与头像处理 */
-.logo-circle {
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #f1f5f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.miner-thumb {
-    width: 70px;
-    height: 70px;
-    border-radius: 12px;
-    object-fit: cover;
-    background: #f1f5f9;
-    flex-shrink: 0;
-}
-
-/* 4. 交互元素 */
-.btn-primary {
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-primary:active {
-    transform: scale(0.96);
-    background-color: var(--primary-hover);
-}
-
-.btn-primary:disabled {
-    background-color: #94a3b8;
-    cursor: not-allowed;
-}
-.立体按钮 {
-    box-shadow: 0 4px 0 #1e40af;
-    transition: all 0.1s ease;
-}
-
-.立体按钮:active {
-    box-shadow: 0 0 0 #1e40af;
-    transform: translateY(4px);
-}
-
-/* 确保按钮容器是 2列 */
-.grid-cols-2 {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-/* 代币选择器带 Logo 的样式优化 */
-.token-select-wrapper {
-    display: flex;
-    align-items: center;
-    background: #f8fafc;
-    border-radius: 1rem;
-    padding: 0.5rem 1rem;
-}
-
-.token-logo-sm {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    border-radius: 50%;
-}
-
-/* 5. 核心：收银台/弹窗样式 (解决黑乎乎的问题) */
-#modalOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background-color: rgba(255, 255, 255, 0.7); /* 白色半透明遮罩 */
-    backdrop-filter: blur(12px); /* 高级感磨砂模糊 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    transition: opacity 0.3s ease;
-}
-
-/* 对应你 JS 里的渲染结构 */
-.modal-box {
-    background: white;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 2rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-    padding: 1.5rem;
-    position: relative;
-    animation: modalSlideIn 0.3s ease-out;
-}
-
-@keyframes modalSlideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* 隐藏工具类 */
-.hidden {
-    display: none !important;
-}
-
-/* 6. 资产列表行动画 */
-#tokenRows > div {
-    transition: background 0.2s;
-}
-
-#tokenRows > div:active {
-    background-color: #f1f5f9;
-}
-
-/* 7. 加载状态动画 (用于支付等待) */
-.animate-spin {
-    width: 2rem;
-    height: 2rem;
-    border: 3px solid rgba(37, 99, 235, 0.1);
-    border-top: 3px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* 8. 多语言文本溢出保护 */
-.text-sm, .text-xs {
-    word-break: break-word; /* 防止德语、印尼语等长单词撑破布局 */
-}
-
-/* 钱包地址截断显示样式 */
-#walletAddr {
-    font-family: 'Courier New', Courier, monospace;
-    background: #f1f5f9;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-}
-/* --- 9. 交易状态标签系统 --- */
-
-.status-tag {
-    font-weight: 700;
-    font-size: 9px;
-    padding: 2px 6px;
-    border-radius: 6px;
-    text-transform: uppercase;
-    display: inline-block;
-}
-
-/* 状态颜色方案 - 增加了淡淡的背景色提高辨识度 */
-.status-submitted { 
-    color: #94a3b8; 
-    background: rgba(148, 163, 184, 0.1); 
-} 
-
-.status-processing { 
-    color: #3b82f6; 
-    background: rgba(59, 130, 246, 0.1); 
-} 
-
-.status-success { 
-    color: #10b981; 
-    background: rgba(16, 185, 129, 0.1); 
-} 
-
-.status-failed { 
-    color: #ef4444; 
-    background: rgba(239, 68, 68, 0.1); 
-}
-
-/* 独立按钮容器样式 */
+/* --- 全局科技感渐变按钮风格 --- */
 .action-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem 0.5rem; /* 对应 py-4 px-2 */
-    background: rgba(255, 255, 255, 0.7); /* 对应 bg-white/70 */
-    backdrop-filter: blur(12px); /* 对应 backdrop-blur-md */
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 2rem; /* 对应 rounded-[2rem] */
-    border: 1px solid rgba(255, 255, 255, 0.4); /* 对应 border-white/40 */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* 对应 shadow-sm */
-    transition: all 0.2s;
+    padding: 1.2rem 0.5rem;
+    /* 核心：紫色到蓝色的渐变 */
+    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    border-radius: 2rem;
+    /* 增加立体感的边框和阴影 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3), 
+                inset 0 -4px 0 rgba(0, 0, 0, 0.15); /* 底部压深，模拟厚度 */
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    outline: none;
 }
 
 .action-btn:active {
-    transform: scale(0.95); /* 对应 active:scale-95 */
+    transform: translateY(2px) scale(0.96);
+    box-shadow: 0 4px 10px -2px rgba(59, 130, 246, 0.3), 
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1); /* 点击时深度变浅 */
 }
 
-/* 图标盒子 */
+/* 图标盒子：改为半透明磨砂质感，衬托渐变底色 */
 .icon-box {
-    width: 2.5rem; /* 对应 w-10 */
-    height: 2.5rem; /* 对应 h-10 */
-    border-radius: 1rem; /* 对应 rounded-2xl */
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.5rem; /* 对应 mb-2 */
-    font-size: 1rem; /* 对应 text-base */
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05); /* 对应 shadow-inner */
+    margin-bottom: 0.6rem;
+    font-size: 1.2rem;
+    /* 磨砂白，让图标在彩色背景上很显眼 */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    color: white !important; /* 图标统一设为白色 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 按钮文字 */
+/* 按钮文字：统一改为白色，增加字间距更有高级感 */
 .action-btn span {
     font-size: 11px;
-    font-weight: 700;
-    color: #475569; /* 对应 text-slate-600 */
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* 补充网格定义 */
-.grid-cols-4 {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+/* 如果你想让之前的 btn-primary 也统一风格 */
+.btn-primary {
+    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    border-radius: 1.5rem;
+    border: none;
+    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
+    color: white;
+    font-weight: bold;
 }
