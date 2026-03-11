@@ -462,37 +462,37 @@ function openFinanceModal(type) {
                 <button onclick="handleSignAction('SWAP')" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black">签名兑换</button>
             </div>`);
         calcSwap();
-    } else if (type === 'transfer') {
-        showModal("内部转账", `
-            <div class="space-y-4 text-left">
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 ml-1">接收者钱包地址</label>
-                    <input type="text" id="transAddr" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1">
+} else if (type === 'transfer') {
+    showModal("内部转账", `
+        <div class="space-y-4 text-left">
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1">接收者钱包地址</label>
+                <input type="text" id="transAddr" placeholder="0x..." class="w-full p-4 bg-white/60 rounded-2xl font-mono text-xs border-none mt-1">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1">选择代币</label>
+                <div class="modal-selection-row mt-1">
+                    <img id="transTokenLogo" src="./assets/fbs.png" class="token-logo-sm">
+                    <select id="transToken" onchange="updateTransUI()" class="flex-1 bg-transparent border-none font-bold text-sm outline-none">
+                        ${options}
+                    </select>
                 </div>
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 ml-1">选择代币</label>
-                    <div class="token-select-wrapper mt-1">
-                        <img id="transTokenLogo" src="./assets/fbs.png" class="token-logo-sm">
-                        <select id="transToken" onchange="updateTransUI()" class="flex-1 bg-transparent border-none font-bold">
-                            ${options}
-                        </select>
-                    </div>
+            </div>
+            <div>
+                <div class="flex justify-between px-1">
+                    <label class="text-[10px] font-bold text-slate-400">转账数量</label>
+                    <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
                 </div>
-                <div>
-                    <div class="flex justify-between px-1">
-                        <label class="text-[10px] font-bold text-slate-400">转账数量</label>
-                        <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
-                    </div>
-                    <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
-                           oninput="validateTransferAmount(this)"
-                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1">
-                </div>
-                <button onclick="doInternalTransfer()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg">确认转账</button>
-            </div>`);
-        updateTransUI(); // 初始化显示
-    }
+                <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
+                        oninput="validateTransferAmount(this)"
+                        class="w-full p-4 bg-white/60 rounded-2xl font-black border-none mt-1">
+            </div>
+            <button onclick="doInternalTransfer()" class="action-btn w-full mt-4">
+                <span>确认转账</span>
+            </button>
+        </div>`);
+    updateTransUI(); 
 }
-
 function updateTransUI() {
     const symbol = document.getElementById('transToken').value;
     const config = tokenInfo[symbol];
