@@ -95,33 +95,37 @@ async function connectWallet() {
  * @param {number|string} amount - 数量
  * @param {string} symbol - 币种 (如: FBS)
  */
+/**
+ * 记录交易行为到后台 (修正后的通用函数)
+ */
 async function postTransactionRecord(type, amount, symbol) {
-    const address = window.userAddress; // 确保你全局存储了当前登录地址
-    if (!address) return;
+    // 自动适配地址变量
+    const address = typeof currentAddress !== 'undefined' ? currentAddress : (window.userAddress || localStorage.getItem('fbs_address'));
+    
+    if (!address) {
+        console.warn("未发现钱包地址，跳过记录");
+        return;
+    }
 
     try {
-        const response = await fetch('https://api.fbsfbs.fit/api', {method: 'POST',
+        // 合并后的正确 fetch 请求
+        const response = await fetch('https://api.fbsfbs.fit/api/user', {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer",     // 必须包含 action 供 Worker 分发
-                address: currentAddress, // 发送者地址
-                receiver: toAddr,       // 接收者地址
-                type: "内部转账",
-                amount: amount,
-                symbol: symbol,
-                status: "成功"
-            })
-        });
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+                action: "record_transaction", // 告诉 Worker 这是普通记录
                 address: address,
                 type: type,
                 amount: amount,
                 symbol: symbol,
-                status: "已提交" // 初始状态
+                status: "已提交"
             })
         });
+        return await response.json();
+    } catch (err) {
+        console.error("记录失败:", err);
+    }
+}
 
         if (response.ok) {
             console.log(`${type} 记录已提交`);
