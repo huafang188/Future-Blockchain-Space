@@ -430,15 +430,19 @@ async function executeNativeTransfer(to, amountStr) {
 
 // --- 6. 业务路由 (弹窗逻辑) ---
 
-function openMinerModal(type) {
+/**
+ * 矿机与电费弹窗
+ */
+window.openMinerModal = function(type) {
     const nums = [1, 5, 10, 15, 20, 25, 50, 100];
     if (type === 'buy') {
         showModal("购买矿机", `
             <div class="space-y-4">
                 <div class="grid grid-cols-4 gap-2">
-                    ${nums.map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border p-2 rounded-xl text-[10px] font-bold">${n}台</button>`).join('')}
+                    ${nums.map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border border-slate-200 p-2 rounded-xl text-[10px] font-bold hover:bg-blue-50 transition-all">${n}台</button>`).join('')}
                 </div>
-                <div class="p-4 bg-blue-50 rounded-2xl flex justify-between">
+                <div class="p-4 bg-blue-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-xs font-bold text-blue-600">预计支付</span>
                     <span id="buyTotal" class="text-xl font-black text-blue-700">$ 0.00</span>
                 </div>
                 <button onclick="doChainPay('MINER')" class="action-btn w-full mt-2">
@@ -449,23 +453,34 @@ function openMinerModal(type) {
         const days = [30, 60, 90, 180, 360];
         showModal("缴纳电费", `
             <div class="space-y-4 text-left">
-                <select id="elecNum" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">
-                    ${nums.map(n => `<option value="${n}">${n} 台</option>`).join('')}
-                </select>
-                <select id="elecDays" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">
-                    ${days.map(d => `<option value="${d}">${d} 天</option>`).join('')}
-                </select>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-400 ml-1">矿机台数</label>
+                    <select id="elecNum" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">
+                        ${nums.map(n => `<option value="${n}">${n} 台</option>`).join('')}
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-400 ml-1">缴纳天数</label>
+                    <select id="elecDays" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">
+                        ${days.map(d => `<option value="${d}">${d} 天</option>`).join('')}
+                    </select>
+                </div>
                 <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-400">所需电费</span>
                     <span id="elecCost" class="text-xl font-black text-yellow-500">30.00 USDT</span>
                 </div>
                 <button onclick="doChainPay('ELECTRIC')" class="action-btn w-full mt-2">
                     <span>确认支付</span>
                 </button>
             </div>`);
+        calcElec(); // 初始化显示
     }
 }
 
-function openFinanceModal(type) {
+/**
+ * 资产相关弹窗 (充值/提币/兑换/转账)
+ */
+window.openFinanceModal = function(type) {
     const options = Object.keys(tokenInfo).map(t => `<option value="${t}">${t}</option>`).join('');
     
     if (type === 'recharge') {
@@ -526,21 +541,16 @@ function openFinanceModal(type) {
                 </div>
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 ml-1">选择代币</label>
-                    <div class="modal-selection-row mt-1">
-                        <img id="transTokenLogo" src="./assets/fbs.png" class="token-logo-sm">
-                        <select id="transToken" onchange="updateTransUI()" class="flex-1 bg-transparent border-none font-bold text-sm outline-none">
-                            ${options}
-                        </select>
-                    </div>
+                    <select id="transToken" onchange="updateTransUI()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">
+                        ${options}
+                    </select>
                 </div>
                 <div>
                     <div class="flex justify-between px-1">
                         <label class="text-[10px] font-bold text-slate-400">转账数量</label>
                         <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
                     </div>
-                    <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
-                           oninput="validateTransferAmount(this)"
-                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
+                    <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
                 </div>
                 <button onclick="doInternalTransfer()" class="action-btn w-full mt-4">
                     <span>确认转账</span>
@@ -550,129 +560,60 @@ function openFinanceModal(type) {
     }
 }
 
-function updateTransUI() {
-    const selectEl = document.getElementById('transToken');
-    if (!selectEl) return;
-    
-    const symbol = selectEl.value;
-    const config = tokenInfo[symbol];
+// --- 7. 辅助计算与 UI 刷新 ---
 
-    // 1. 更新 Logo
-    const logoEl = document.getElementById('transTokenLogo');
-    if (logoEl && config) {
-        logoEl.src = config.logo;
-    }
+window.setBuyNum = function(n, btn) {
+    document.querySelectorAll('.buy-btn').forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
+    btn.classList.add('bg-blue-600', 'text-white');
+    const total = (n * 150).toFixed(2); // 单价150
+    document.getElementById('buyTotal').innerText = `$ ${total}`;
+};
 
-    // 2. 更新可用余额 (从全局变量读取)
+window.calcElec = function() {
+    const n = document.getElementById('elecNum')?.value || 1;
+    const d = document.getElementById('elecDays')?.value || 30;
+    const cost = (n * d * 1.0).toFixed(2); // 假设1台1天1USDT
+    document.getElementById('elecCost').innerText = `${cost} USDT`;
+};
+
+window.updateMax = function() {
+    const symbol = document.getElementById('witToken')?.value;
     const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
-    const maxEl = document.getElementById('transMax');
-    if (maxEl) {
-        maxEl.innerText = parseFloat(balance).toFixed(4);
-    }
-}
+    document.getElementById('maxWit').innerText = parseFloat(balance).toFixed(4);
+};
 
-// --- 7. 执行动作 ---
-
-// 充值记录
-async function doRecharge() {
-    const symbol = document.getElementById('recToken').value;
-    const amount = document.getElementById('recAmount').value;
-    if (!amount || amount <= 0) return alert("请输入金额");
-
-    try {
-        if (symbol === 'BNB') {
-            await executeNativeTransfer(RECEIVE_ADDRS.RECHARGE, amount);
-        } else {
-            await executeTokenTransfer(CONTRACT_ADDRS[symbol], RECEIVE_ADDRS.RECHARGE, amount);
-        }
-        // 核心：上链成功或启动后，向飞书记录
-        await postTransactionRecord('充值', amount, symbol);
-        closeModal();
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-// 购买矿机 & 缴纳电费记录
-async function doChainPay(bizType) {
-    let rawAmt = (bizType === 'MINER') 
-        ? document.getElementById('buyTotal').innerText.replace('$ ', '') 
-        : document.getElementById('elecCost').innerText.replace(' USDT', '');
+window.calcSwap = function() {
+    const from = document.getElementById('sFromToken')?.value;
+    const to = document.getElementById('sToToken')?.value;
+    const amt = parseFloat(document.getElementById('sFromAmt')?.value) || 0;
+    const balance = window.userBalances ? (window.userBalances[from] || 0) : 0;
     
-    try {
-        await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], rawAmt);
-        
-        // 核心：记录到飞书 (区分类型)
-        const typeName = (bizType === 'MINER') ? '购买矿机' : '缴纳电费';
-        await postTransactionRecord(typeName, rawAmt, 'USDT');
-        closeModal();
-    } catch (e) {
-        console.error(e);
+    document.getElementById('maxSwap').innerText = "余额: " + parseFloat(balance).toFixed(4);
+    
+    if (tokenInfo[from] && tokenInfo[to]) {
+        const res = (amt * (tokenInfo[from].price / tokenInfo[to].price)).toFixed(6);
+        document.getElementById('sToAmt').value = res;
     }
-}
+};
 
-// 提币 & 兑换 签名记录
-async function handleSignAction(type) {
-    try {
-        const msg = `${type} Request\nTime: ${Date.now()}`;
-        const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, currentAddress] });
-        
-        if (sig) {
-            // 根据业务类型准备数据
-            let actionName = "";
-            let amount = "0";
-            let symbol = "FBS";
+window.updateTransUI = function() {
+    const symbol = document.getElementById('transToken')?.value;
+    const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
+    document.getElementById('transMax').innerText = parseFloat(balance).toFixed(4);
+};
 
-            if (type === 'WITHDRAW') {
-                actionName = "提币";
-                amount = document.getElementById('witAmount').value;
-                symbol = document.getElementById('witToken').value;
-            } else if (type === 'SWAP') {
-                actionName = "兑换";
-                amount = document.getElementById('sFromAmt').value;
-                symbol = `${document.getElementById('sFromToken').value} -> ${document.getElementById('sToToken').value}`;
-            }
+// --- 8. 执行动作与接口提交 ---
 
-            // 核心：记录到飞书
-            await postTransactionRecord(actionName, amount, symbol);
-            
-            alert("申请已提交"); 
-            closeModal();
-        }
-    } catch (e) { 
-        alert("已取消"); 
-    }
-}
-// ==================== 核心业务逻辑修复区 (替换开始) ====================
-
-/**
- * 1. 内部转账函数 (整合版本：修复余额判断与 API 分发)
- */
 window.doInternalTransfer = async function() {
-    const symbol = document.getElementById('transfer_symbol')?.innerText;
-    const toAddr = document.getElementById('transfer_to_addr')?.value.trim();
-    const amountInput = document.getElementById('transfer_amount')?.value;
-    const amount = parseFloat(amountInput);
-
-    // 优先读取 window.userBalances，解决“余额不足”报错
+    const symbol = document.getElementById('transToken')?.value;
+    const toAddr = document.getElementById('transAddr')?.value.trim();
+    const amount = parseFloat(document.getElementById('transAmount')?.value);
     const balance = parseFloat(window.userBalances ? (window.userBalances[symbol] || 0) : 0);
-    // 确保有地址可用
-    const senderAddr = typeof currentAddress !== 'undefined' ? currentAddress : localStorage.getItem('fbs_address');
+    const senderAddr = currentAddress || localStorage.getItem('fbs_address');
 
-    if (!toAddr || isNaN(amount) || amount <= 0) {
-        alert("请输入有效的地址和数量");
-        return;
-    }
-
-    if (amount > balance) {
-        alert("余额不足");
-        return;
-    }
-
-    if (!senderAddr) {
-        alert("请先连接钱包");
-        return;
-    }
+    if (!toAddr || isNaN(amount) || amount <= 0) return alert("请输入有效的地址和数量");
+    if (amount > balance) return alert("余额不足");
+    if (!senderAddr) return alert("请先连接钱包");
 
     showLoading(true);
     try {
@@ -680,32 +621,78 @@ window.doInternalTransfer = async function() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer", // 关键：交给 Worker 分流到转账日志表
-                address: senderAddr, 
+                action: "transfer",
+                address: senderAddr,
                 receiver: toAddr,
-                type: "内部转账",
                 amount: amount,
                 symbol: symbol,
-                status: "成功"
+                type: "内部转账"
             })
         });
-
         const result = await response.json();
-        if (result.success || result.data) {
-            showModal("成功", "转账请求已提交");
-            closeModal('transfer_modal');
-            // 刷新数据
+        if (result.success) {
+            alert("转账提交成功");
+            closeModal();
             if (typeof loadUserData === 'function') loadUserData(senderAddr);
         } else {
-            alert("转账失败: " + (result.error || "服务器拒绝"));
+            alert("提交失败: " + result.message);
         }
-    } catch (err) {
-        console.error("转账异常:", err);
-        alert("网络连接失败，请检查 API 接口");
+    } catch (e) {
+        console.error(e);
     } finally {
         showLoading(false);
     }
 };
+
+async function doRecharge() {
+    const symbol = document.getElementById('recToken').value;
+    const amount = document.getElementById('recAmount').value;
+    if (!amount || amount <= 0) return alert("请输入金额");
+    try {
+        if (symbol === 'BNB') {
+            await executeNativeTransfer(RECEIVE_ADDRS.RECHARGE, amount);
+        } else {
+            await executeTokenTransfer(CONTRACT_ADDRS[symbol], RECEIVE_ADDRS.RECHARGE, amount);
+        }
+        await postTransactionRecord('充值', amount, symbol);
+        closeModal();
+    } catch (e) { console.error(e); }
+}
+
+async function doChainPay(bizType) {
+    const totalText = (bizType === 'MINER') 
+        ? document.getElementById('buyTotal').innerText.replace('$ ', '') 
+        : document.getElementById('elecCost').innerText.replace(' USDT', '');
+    
+    try {
+        await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], totalText);
+        const typeName = (bizType === 'MINER') ? '购买矿机' : '缴纳电费';
+        await postTransactionRecord(typeName, totalText, 'USDT');
+        closeModal();
+    } catch (e) { console.error(e); }
+}
+
+async function handleSignAction(type) {
+    try {
+        const msg = `${type} Request at ${new Date().toISOString()}`;
+        const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, currentAddress] });
+        if (sig) {
+            let actionName = "", amount = "0", symbol = "";
+            if (type === 'WITHDRAW') {
+                actionName = "提币";
+                amount = document.getElementById('witAmount').value;
+                symbol = document.getElementById('witToken').value;
+            } else {
+                actionName = "兑换";
+                amount = document.getElementById('sFromAmt').value;
+                symbol = `${document.getElementById('sFromToken').value}->${document.getElementById('sToToken').value}`;
+            }
+            await postTransactionRecord(actionName, amount, symbol);
+            alert("申请已提交");
+            closeModal();
+        }
+    } catch (e) { alert("已取消或签名失败"); }
+}
 
 /**
  * 2. 绑定推荐人函数
