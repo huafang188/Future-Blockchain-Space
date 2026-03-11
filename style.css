@@ -152,3 +152,14 @@ body {
     border-radius: 20px;
     font-size: 12px;
 }
+/* 交易状态基础样式 */
+.status-tag {
+    font-weight: 700;
+    font-size: 10px;
+}
+
+/* 状态颜色方案 */
+.status-submitted { color: #94a3b8; } /* slate-400 */
+.status-processing { color: #3b82f6; } /* blue-500 */
+.status-success    { color: #10b981; } /* emerald-500 */
+.status-failed     { color: #ef4444; } /* red-500 */
