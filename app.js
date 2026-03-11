@@ -115,6 +115,41 @@ function logout() {
     localStorage.removeItem('fbs_address');
     location.reload();
 }
+// 在 app.js 中添加或修改此函数
+window.handleWalletClick = function() {
+    const addrElement = document.getElementById('walletAddr');
+    const currentAddr = addrElement.innerText.trim();
+
+    // 如果当前已经是连接状态（显示的是 0x... 地址）
+    if (currentAddr.includes('0x') || currentAddr !== '连接钱包') {
+        if (confirm("确定要退出登录并断开钱包连接吗？")) {
+            logout();
+        }
+    } else {
+        // 如果是未连接状态，触发连接逻辑
+        if (typeof connectWallet === 'function') {
+            connectWallet();
+        } else {
+            console.error("未找到 connectWallet 函数");
+        }
+    }
+};
+
+// 退出登录逻辑
+function logout() {
+    console.log("正在退出登录...");
+    // 1. 清除本地缓存的地址
+    localStorage.removeItem('userAddress');
+    // 2. 恢复 UI 显示
+    const addrBtn = document.getElementById('walletAddr');
+    if (addrBtn) {
+        addrBtn.innerText = '连接钱包';
+        addrBtn.classList.remove('bg-emerald-50', 'text-emerald-600');
+        addrBtn.classList.add('bg-blue-50', 'text-blue-600');
+    }
+    // 3. 刷新页面或清空数据
+    window.location.reload(); 
+}
 
 // --- 4. 核心：读取后端数据 ---
 async function fetchUserData(address) {
