@@ -104,8 +104,8 @@ window.postTransactionRecord = async function(type, amount, symbol) {
         type: type,        
         amount: String(amount), // 强制转为字符串，防止飞书 API 报错
         symbol: symbol,    
-        status: "成功",     // 建议默认给“成功”，因为截图里显示的是这个状态
-        time: formattedDate // 这里的 Key 必须和 Worker 里接收的 body.time 一致
+        status: "已提交",     
+        time: formattedDate 
     };
 
     console.log("🚀 准备提交交易记录:", payload);
@@ -625,7 +625,7 @@ window.doInternalTransfer = async function() {
                 type: symbol,       // 根据截图，飞书“接收类型”填的是币种名
                 amount: String(amount),
                 symbol: symbol,
-                status: "成功"       // 对应截图中的“成功”状态
+                status: "已提交"      
             })
         });
 
