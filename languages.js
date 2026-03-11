@@ -27,11 +27,14 @@ const i18nData = {
         team_num: "团队人数",
         team_sales: "团队业绩",
         total_rewards: "累计奖励",
-        history_title: "交易历史",
         copy_addr: "复制地址",
         confirm_pay: "立即支付",
         balance: "余额",
-        input_amount: "输入数量"
+        input_amount: "输入数量",
+        history_title: "交易历史",
+        transfer_title: "转账流水",
+        loading: "加载中...",
+        no_data: "暂无数据"
     },
     'zh-TW': {
         title: "Future Blockchain Space",
@@ -62,7 +65,10 @@ const i18nData = {
         copy_addr: "複製地址",
         confirm_pay: "立即支付",
         balance: "餘額",
-        input_amount: "輸入數量"
+        input_amount: "輸入數量",
+        transfer_title: "轉賬流水",
+        loading: "載入中...",
+        no_data: "暫無數據"
     },
     'en': {
         title: "Future Blockchain Space",
@@ -93,7 +99,10 @@ const i18nData = {
         copy_addr: "Copy Address",
         confirm_pay: "Pay Now",
         balance: "Balance",
-        input_amount: "Enter Amount"
+        input_amount: "Enter Amount",
+        transfer_title: "Transfer Logs",
+        loading: "Loading...",
+        no_data: "No Data"
     },
     'ja': {
         title: "Future Blockchain Space",
@@ -124,7 +133,10 @@ const i18nData = {
         copy_addr: "アドレスコピー",
         confirm_pay: "今すぐ支払う",
         balance: "残高",
-        input_amount: "数量入力"
+        input_amount: "数量入力",
+        transfer_title: "転送ログ",
+        loading: "読み込み中...",
+        no_data: "データなし"
     },
     'ko': {
         title: "Future Blockchain Space",
@@ -155,7 +167,10 @@ const i18nData = {
         copy_addr: "주소 복사",
         confirm_pay: "결제하기",
         balance: "잔액",
-        input_amount: "수량 입력"
+        input_amount: "수량 입력",
+        transfer_title: "이체 기록",
+        loading: "로딩 중...",
+        no_data: "데이터 없음"
     },
     'ru': {
         title: "Future Blockchain Space",
@@ -186,7 +201,10 @@ const i18nData = {
         copy_addr: "Копировать",
         confirm_pay: "Оплатить",
         balance: "Баланс",
-        input_amount: "Введите сумму"
+        input_amount: "Введите сумму",
+        transfer_title: "Журнал переводов",
+        loading: "Загрузка...",
+        no_data: "Нет данных"
     }
 };
 
