@@ -85,53 +85,26 @@ async function connectWallet() {
     }
 }
 
-/**
- * 向后台记录用户的操作行为
- * @param {string} type - 交易类型 (如: 购买矿机)
- * @param {number|string} amount - 数量
- * @param {string} symbol - 币种 (如: FBS)
- */
-/**
- * 记录交易行为到后台 (修正后的通用函数)
- */
-/**
- * 记录交易行为到后台 (修正版)
- */
-/**
- * 记录交易行为到后台 (完整修复版)
- */
-/**
- * 记录交易行为到后台 (完整修复版)
- */
-/**
- * 修正版：将记录提交至后台
- * 解决了字段名不匹配和全局调用问题
- */
+
 window.postTransactionRecord = async function(type, amount, symbol) {
     const address = typeof currentAddress !== 'undefined' ? currentAddress : (window.userAddress || localStorage.getItem('fbs_address'));
     
     if (!address) {
-        console.error("未发现钱包地址，跳过记录提交");
+        console.error("未连接钱包，无法提交记录");
         return;
     }
 
-    // 核心修改：如果后端 Worker 脚本识别的是“用户”而不是“address”
-    // 我们在这里双写，确保后端一定能拿到地址
+    // 严格对应你 Worker 里的解构：const { address, type, amount, symbol, status } = body;
     const payload = {
-        action: "record_transaction",
-        address: address, // 英文备份
-        "用户": address,  // 中文适配（根据你日志中 info 对象的字段名）
-        "类型": type,
-        "数量": amount,
-        "币种": symbol,
-        type: type,      
-        amount: amount,
-        symbol: symbol,
-        status: "待审核",
-        time: new Date().toLocaleString('zh-CN', { hour12: false })
+        action: "record_transaction", 
+        address: address,  // 对应 Worker 的 address
+        type: type,        // 对应 Worker 的 type
+        amount: amount,    // 对应 Worker 的 amount
+        symbol: symbol,    // 对应 Worker 的 symbol
+        status: "待审核"    // 对应 Worker 的 status
     };
 
-    console.log("🚀 发送提交请求:", payload);
+    console.log("🚀 正在提交到 tx_history 表:", payload);
 
     try {
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
@@ -139,25 +112,12 @@ window.postTransactionRecord = async function(type, amount, symbol) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-
         const result = await response.json();
-        console.log("📥 后端返回结果:", result);
-
-        if (response.ok && (result.success || result.data)) {
-            console.log(`${type} 记录已提交`);
-            // 提交成功后延迟刷新，给 Worker 写入表格留一点时间
-            setTimeout(() => {
-                if (typeof fetchUserData === 'function') fetchUserData(address);
-                else if (typeof loadUserData === 'function') loadUserData(address);
-            }, 1000);
-        } else {
-            console.error("服务器返回错误:", result.message || response.status);
-        }
-
-    } catch (error) {
-        console.error("网络提交失败:", error);
+        console.log("📥 后端响应:", result);
+    } catch (e) {
+        console.error("提交失败:", e);
     }
-}
+};
 
 function finishLogin() {
     updateWalletUI(currentAddress);
@@ -625,40 +585,30 @@ window.doInternalTransfer = async function() {
     const symbol = document.getElementById('transToken')?.value;
     const toAddr = document.getElementById('transAddr')?.value.trim();
     const amount = parseFloat(document.getElementById('transAmount')?.value);
-    const balance = parseFloat(window.userBalances ? (window.userBalances[symbol] || 0) : 0);
     const senderAddr = currentAddress || localStorage.getItem('fbs_address');
 
     if (!toAddr || isNaN(amount) || amount <= 0) return alert("请输入有效的地址和数量");
-    if (amount > balance) return alert("余额不足");
-    if (!senderAddr) return alert("请先连接钱包");
 
-    showLoading(true);
     try {
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer",
+                action: "transfer", // 触发 Worker 的第 2 段逻辑
                 address: senderAddr,
-                receiver: toAddr,
+                receiver: toAddr,   // 必须叫 receiver，对应 Worker 的 body.receiver
+                type: "内部转账",
                 amount: amount,
                 symbol: symbol,
-                type: "内部转账"
+                status: "成功"
             })
         });
         const result = await response.json();
         if (result.success) {
-            alert("转账提交成功");
+            alert("转账成功");
             closeModal();
-            if (typeof loadUserData === 'function') loadUserData(senderAddr);
-        } else {
-            alert("提交失败: " + result.message);
         }
-    } catch (e) {
-        console.error(e);
-    } finally {
-        showLoading(false);
-    }
+    } catch (e) { console.error(e); }
 };
 
 async function doRecharge() {
