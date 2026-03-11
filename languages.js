@@ -56,6 +56,12 @@ const i18nData = {
         insufficient_balance: "余额不足！当前余额为 ",
         invalid_address: "请输入正确的钱包地址",
         enter_amount: "请输入转账数量",
+        btn_bind_inviter: "绑定我的推荐人",
+        modal_bind_title: "绑定推荐关系",
+        placeholder_inviter_id: "请输入推荐人 ID",
+        bind_success: "绑定成功",
+        bind_loading: "正在提交...",
+        btn_confirm: "确认提交"
     },
     'zh-HK': {
         title: "Future Blockchain Space",
@@ -111,6 +117,12 @@ const i18nData = {
         insufficient_balance: "餘額不足！當前餘額為 ",
         invalid_address: "請輸入正確的錢包地址",
         enter_amount: "請輸入轉帳數量",
+        btn_bind_inviter: "綁定我的推薦人",
+        modal_bind_title: "綁定推薦關係",
+        placeholder_inviter_id: "請輸入推薦人 ID",
+        bind_success: "綁定成功",
+        bind_loading: "正在提交...",
+        btn_confirm: "確認提交"
     },
     'en': {
         title: "Future Blockchain Space",
@@ -166,6 +178,12 @@ const i18nData = {
         insufficient_balance: "Insufficient balance! Current is ",
         invalid_address: "Please enter a valid address",
         enter_amount: "Please enter transfer amount",
+        btn_bind_inviter: "Bind My Inviter",
+        modal_bind_title: "Bind Relationship",
+        placeholder_inviter_id: "Enter Inviter ID",
+        bind_success: "Bound Successfully",
+        bind_loading: "Submitting...",
+        btn_confirm: "Confirm"
     },
     'ja': {
         title: "Future Blockchain Space",
@@ -221,6 +239,12 @@ const i18nData = {
         insufficient_balance: "残高不足！現在の残高は ",
         invalid_address: "有効なアドレスを入力してください",
         enter_amount: "送金数量を入力してください",
+        btn_bind_inviter: "紹介者を紐付け",
+        modal_bind_title: "紹介関係の紐付け",
+        placeholder_inviter_id: "紹介者IDを入力してください",
+        bind_success: "紐付けに成功しました",
+        bind_loading: "提出中...",
+        btn_confirm: "確認"
     },
     'ko': {
         title: "Future Blockchain Space",
@@ -276,6 +300,12 @@ const i18nData = {
         insufficient_balance: "잔액 부족! 현재 잔액은 ",
         invalid_address: "올바른 지갑 주소를 입력하세요",
         enter_amount: "이체 수량을 입력하세요",
+        btn_bind_inviter: "추천인 바인딩",
+        modal_bind_title: "추천 관계 바인딩",
+        placeholder_inviter_id: "추천인 ID를 입력하세요",
+        bind_success: "바인딩 성공",
+        bind_loading: "제출 중...",
+        btn_confirm: "확인"
     },
     'ru': {
         title: "Future Blockchain Space",
@@ -331,6 +361,12 @@ const i18nData = {
         insufficient_balance: "Недостаточно средств! Текущий баланс: ",
         invalid_address: "Введите корректный адрес кошелька",
         enter_amount: "Введите сумму перевода",
+        btn_bind_inviter: "Привязать пригласителя",
+        modal_bind_title: "Привязка отношений",
+        placeholder_inviter_id: "Введите ID пригласителя",
+        bind_success: "Привязка успешно завершена",
+        bind_loading: "Отправка...",
+        btn_confirm: "Подтвердить"
     }
 };
 
