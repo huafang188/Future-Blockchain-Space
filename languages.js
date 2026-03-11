@@ -1,9 +1,7 @@
 // languages.js
-window.switchLang = function(lang) {
-    console.log("切换语言至:", lang);
-    localStorage.setItem('fbs_lang', lang);
 
-const i18n = {
+// 1. 语言包数据（移出函数，变为全局可用）
+const i18nData = {
     'zh-CN': {
         title: "Future Blockchain Space",
         connect: "连接钱包",
@@ -191,10 +189,38 @@ const i18n = {
         input_amount: "Введите сумму"
     }
 };
-}
-// 页面加载时初始化
+
+// 2. 渲染函数（执行翻译的核心）
+window.i18nRender = function() {
+    const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    const dict = i18nData[lang];
+    if (!dict) return;
+
+    // 寻找所有标记了 data-i18n 属性的 HTML 元素
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+            // 如果是输入框，修改 placeholder；否则修改文本内容
+            if (el.tagName === 'INPUT') {
+                el.placeholder = dict[key];
+            } else {
+                el.innerText = dict[key];
+            }
+        }
+    });
+};
+
+// 3. 切换语言函数
+window.switchLang = function(lang) {
+    console.log("切换语言至:", lang);
+    localStorage.setItem('fbs_lang', lang);
+    window.i18nRender(); // 切换后立即重绘页面
+};
+
+// 4. 初始化
 document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
-    document.getElementById('langSelect').value = savedLang;
-    // switchLang(savedLang);
+    const selectEl = document.getElementById('langSelect');
+    if (selectEl) selectEl.value = savedLang;
+    window.i18nRender();
 });
