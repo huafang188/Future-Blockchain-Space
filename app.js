@@ -752,4 +752,65 @@ window.submitBindInviter = async function() {
     }
 };
 
-// ==================== 修复结束 ====================
+// ==================== UI 核心控制补丁 (直接粘到底部) ====================
+
+/**
+ * 核心弹窗函数：修复 "showModal is not defined"
+ */
+window.showModal = function(title, html) {
+    const titleEl = document.getElementById('modalTitle');
+    const contentEl = document.getElementById('modalContent');
+    const overlay = document.getElementById('modalOverlay');
+
+    if (titleEl && contentEl && overlay) {
+        titleEl.innerText = title;
+        contentEl.innerHTML = html;
+        overlay.classList.remove('hidden');
+        // 如果有国际化渲染函数则调用
+        if (typeof i18nRender === 'function') i18nRender();
+    } else {
+        console.error("找不到弹窗 HTML 元素，请检查 index.html 是否包含 modalOverlay");
+    }
+};
+
+/**
+ * 关闭弹窗
+ */
+window.closeModal = function() {
+    const overlay = document.getElementById('modalOverlay');
+    if (overlay) overlay.classList.add('hidden');
+};
+
+/**
+ * 绑定推荐人入口：修复 "openBindInviterModal is not defined"
+ */
+window.openBindInviterModal = function() {
+    const displayAddress = typeof currentAddress !== 'undefined' ? currentAddress : localStorage.getItem('fbs_address');
+    
+    showModal("绑定推荐关系", `
+        <div class="space-y-4 text-left">
+            <div class="p-4 bg-blue-50 rounded-2xl">
+                <p class="text-[10px] font-bold text-blue-600 mb-1">您的当前地址</p>
+                <p class="text-[10px] font-mono text-slate-500 break-all">${displayAddress || '未连接钱包'}</p>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1">推荐人 ID (推荐码)</label>
+                <input type="text" id="input_inviter_id" placeholder="输入推荐人 ID" 
+                       class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100 transition-all">
+            </div>
+            <button onclick="submitBindInviter()" class="action-btn w-full mt-2">
+                <span>确认提交绑定</span>
+            </button>
+        </div>
+    `);
+};
+
+/**
+ * 通用加载动画控制
+ */
+window.showLoading = function(show) {
+    const loader = document.getElementById('loadingOverlay'); // 确保 HTML 有这个 ID
+    if (!loader) return;
+    if (show) loader.classList.remove('hidden');
+    else loader.classList.add('hidden');
+};
