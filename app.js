@@ -409,104 +409,142 @@ async function executeNativeTransfer(to, amountStr) {
 }
 
 // --- 6. 业务路由 (弹窗逻辑) ---
+
 function openMinerModal(type) {
     const nums = [1, 5, 10, 15, 20, 25, 50, 100];
     if (type === 'buy') {
         showModal("购买矿机", `
             <div class="space-y-4">
-                <div class="grid grid-cols-4 gap-2">${nums.map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border p-2 rounded-xl text-[10px] font-bold">${n}台</button>`).join('')}</div>
-                <div class="p-4 bg-blue-50 rounded-2xl flex justify-between"><span id="buyTotal" class="text-xl font-black text-blue-700">$ 0.00</span></div>
-                <button onclick="doChainPay('MINER')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg">确认支付</button>
+                <div class="grid grid-cols-4 gap-2">
+                    ${nums.map(n => `<button onclick="setBuyNum(${n}, this)" class="buy-btn border p-2 rounded-xl text-[10px] font-bold">${n}台</button>`).join('')}
+                </div>
+                <div class="p-4 bg-blue-50 rounded-2xl flex justify-between">
+                    <span id="buyTotal" class="text-xl font-black text-blue-700">$ 0.00</span>
+                </div>
+                <button onclick="doChainPay('MINER')" class="action-btn w-full mt-2">
+                    <span>确认支付</span>
+                </button>
             </div>`);
     } else {
         const days = [30, 60, 90, 180, 360];
         showModal("缴纳电费", `
             <div class="space-y-4 text-left">
-                <select id="elecNum" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none">${nums.map(n => `<option value="${n}">${n} 台</option>`).join('')}</select>
-                <select id="elecDays" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none">${days.map(d => `<option value="${d}">${d} 天</option>`).join('')}</select>
-                <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center"><span id="elecCost" class="text-xl font-black text-yellow-500">30.00 USDT</span></div>
-                <button onclick="doChainPay('ELECTRIC')" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-black shadow-lg">确认支付</button>
+                <select id="elecNum" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">
+                    ${nums.map(n => `<option value="${n}">${n} 台</option>`).join('')}
+                </select>
+                <select id="elecDays" onchange="calcElec()" class="w-full p-3 bg-slate-50 rounded-xl border-none outline-none">
+                    ${days.map(d => `<option value="${d}">${d} 天</option>`).join('')}
+                </select>
+                <div class="p-4 bg-slate-900 rounded-2xl flex justify-between items-center">
+                    <span id="elecCost" class="text-xl font-black text-yellow-500">30.00 USDT</span>
+                </div>
+                <button onclick="doChainPay('ELECTRIC')" class="action-btn w-full mt-2">
+                    <span>确认支付</span>
+                </button>
             </div>`);
     }
 }
 
 function openFinanceModal(type) {
     const options = Object.keys(tokenInfo).map(t => `<option value="${t}">${t}</option>`).join('');
+    
     if (type === 'recharge') {
         showModal("充值资产", `
             <div class="space-y-4 text-left">
-                <select id="recToken" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none">${Object.keys(CONTRACT_ADDRS).map(t => `<option value="${t}">${t}</option>`).join('')}</select>
-                <input type="number" id="recAmount" placeholder="输入数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none">
-                <button onclick="doRecharge()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black">确认充值</button>
+                <select id="recToken" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">
+                    ${Object.keys(CONTRACT_ADDRS).map(t => `<option value="${t}">${t}</option>`).join('')}
+                </select>
+                <input type="number" id="recAmount" placeholder="输入数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <button onclick="doRecharge()" class="action-btn w-full mt-2">
+                    <span>确认充值</span>
+                </button>
             </div>`);
     } else if (type === 'withdraw') {
         showModal("提币申请", `
             <div class="space-y-4 text-left">
-                <select id="witToken" onchange="updateMax()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none">${options}</select>
-                <div class="text-[10px] font-bold text-blue-500">可用: <span id="maxWit">0.00</span></div>
-                <input type="number" id="witAmount" placeholder="0.00" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none">
-                <button onclick="handleSignAction('WITHDRAW')" class="w-full bg-red-500 text-white py-4 rounded-2xl font-black">签名提交</button>
+                <select id="witToken" onchange="updateMax()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">
+                    ${options}
+                </select>
+                <div class="text-[10px] font-bold text-blue-500 px-1">可用: <span id="maxWit">0.00</span></div>
+                <input type="number" id="witAmount" placeholder="0.00" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <button onclick="handleSignAction('WITHDRAW')" class="action-btn w-full mt-2 !from-red-500 !to-orange-500">
+                    <span>签名提交</span>
+                </button>
             </div>`);
         updateMax();
     } else if (type === 'exchange') {
         showModal("资产兑换", `
             <div class="space-y-3">
                 <div class="p-4 bg-slate-50 rounded-2xl text-left">
-                    <div class="flex justify-between text-[10px] font-bold text-slate-400"><span>支付</span><span id="maxSwap">余额: 0</span></div>
-                    <div class="flex items-center gap-2"><input type="number" id="sFromAmt" oninput="calcSwap()" placeholder="0.0" class="w-full bg-transparent border-none font-black text-xl"><select id="sFromToken" onchange="calcSwap()">${options}</select></div>
+                    <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                        <span>支付</span>
+                        <span id="maxSwap">余额: 0</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="sFromAmt" oninput="calcSwap()" placeholder="0.0" class="w-full bg-transparent border-none font-black text-xl outline-none">
+                        <select id="sFromToken" onchange="calcSwap()" class="bg-transparent border-none font-bold outline-none">${options}</select>
+                    </div>
                 </div>
-                <div class="text-center">⇅</div>
+                <div class="text-center text-slate-300 font-bold">⇅</div>
                 <div class="p-4 bg-slate-50 rounded-2xl text-left">
-                    <div class="flex items-center gap-2"><input type="number" id="sToAmt" readonly class="w-full bg-transparent border-none font-black text-xl text-indigo-600"><select id="sToToken" onchange="calcSwap()">${options}</select></div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="sToAmt" readonly class="w-full bg-transparent border-none font-black text-xl text-indigo-600 outline-none">
+                        <select id="sToToken" onchange="calcSwap()" class="bg-transparent border-none font-bold outline-none">${options}</select>
+                    </div>
                 </div>
-                <button onclick="handleSignAction('SWAP')" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black">签名兑换</button>
+                <button onclick="handleSignAction('SWAP')" class="action-btn w-full mt-2">
+                    <span>签名兑换</span>
+                </button>
             </div>`);
         calcSwap();
-} else if (type === 'transfer') {
-    showModal("内部转账", `
-        <div class="space-y-4 text-left">
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 ml-1">接收者钱包地址</label>
-                <input type="text" id="transAddr" placeholder="0x..." class="w-full p-4 bg-white/60 rounded-2xl font-mono text-xs border-none mt-1">
-            </div>
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 ml-1">选择代币</label>
-                <div class="modal-selection-row mt-1">
-                    <img id="transTokenLogo" src="./assets/fbs.png" class="token-logo-sm">
-                    <select id="transToken" onchange="updateTransUI()" class="flex-1 bg-transparent border-none font-bold text-sm outline-none">
-                        ${options}
-                    </select>
+    } else if (type === 'transfer') {
+        showModal("内部转账", `
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1">接收者钱包地址</label>
+                    <input type="text" id="transAddr" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none">
                 </div>
-            </div>
-            <div>
-                <div class="flex justify-between px-1">
-                    <label class="text-[10px] font-bold text-slate-400">转账数量</label>
-                    <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1">选择代币</label>
+                    <div class="modal-selection-row mt-1">
+                        <img id="transTokenLogo" src="./assets/fbs.png" class="token-logo-sm">
+                        <select id="transToken" onchange="updateTransUI()" class="flex-1 bg-transparent border-none font-bold text-sm outline-none">
+                            ${options}
+                        </select>
+                    </div>
                 </div>
-                <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
-                        oninput="validateTransferAmount(this)"
-                        class="w-full p-4 bg-white/60 rounded-2xl font-black border-none mt-1">
-            </div>
-            <button onclick="doInternalTransfer()" class="action-btn w-full mt-4">
-                <span>确认转账</span>
-            </button>
-        </div>`);
-    updateTransUI(); 
+                <div>
+                    <div class="flex justify-between px-1">
+                        <label class="text-[10px] font-bold text-slate-400">转账数量</label>
+                        <span class="text-[10px] text-blue-500 font-bold">可用: <span id="transMax">0.0000</span></span>
+                    </div>
+                    <input type="number" id="transAmount" step="0.0001" placeholder="0.0000" 
+                           oninput="validateTransferAmount(this)"
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
+                </div>
+                <button onclick="doInternalTransfer()" class="action-btn w-full mt-4">
+                    <span>确认转账</span>
+                </button>
+            </div>`);
+        updateTransUI(); 
+    }
 }
+
 function updateTransUI() {
-    const symbol = document.getElementById('transToken').value;
+    const selectEl = document.getElementById('transToken');
+    if (!selectEl) return;
+    
+    const symbol = selectEl.value;
     const config = tokenInfo[symbol];
 
-    // 1. 获取 Logo：直接使用配置中定义的路径
+    // 1. 更新 Logo
     const logoEl = document.getElementById('transTokenLogo');
     if (logoEl && config) {
         logoEl.src = config.logo;
     }
 
-    // 2. 获取余额：从全局变量 window.userBalances 中读取实时数据
-    // 之前 data.balances 已被存入 window.userBalances
+    // 2. 更新可用余额 (从全局变量读取)
     const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
-    
     const maxEl = document.getElementById('transMax');
     if (maxEl) {
         maxEl.innerText = parseFloat(balance).toFixed(4);
