@@ -94,17 +94,21 @@ window.postTransactionRecord = async function(type, amount, symbol) {
         return;
     }
 
-    // 严格对应你 Worker 里的解构：const { address, type, amount, symbol, status } = body;
+    // 获取当前日期，格式化为 2026/03/12，匹配你截图中的显示
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+
     const payload = {
         action: "record_transaction", 
-        address: address,  // 对应 Worker 的 address
-        type: type,        // 对应 Worker 的 type
-        amount: amount,    // 对应 Worker 的 amount
-        symbol: symbol,    // 对应 Worker 的 symbol
-        status: "待审核"    // 对应 Worker 的 status
+        address: address,  
+        type: type,        
+        amount: String(amount), // 强制转为字符串，防止飞书 API 报错
+        symbol: symbol,    
+        status: "成功",     // 建议默认给“成功”，因为截图里显示的是这个状态
+        time: formattedDate // 这里的 Key 必须和 Worker 里接收的 body.time 一致
     };
 
-    console.log("🚀 正在提交到 tx_history 表:", payload);
+    console.log("🚀 准备提交交易记录:", payload);
 
     try {
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
@@ -114,11 +118,14 @@ window.postTransactionRecord = async function(type, amount, symbol) {
         });
         const result = await response.json();
         console.log("📥 后端响应:", result);
+        
+        if (result.success && typeof fetchUserData === 'function') {
+            fetchUserData(address); // 提交后刷新界面数据
+        }
     } catch (e) {
         console.error("提交失败:", e);
     }
 };
-
 function finishLogin() {
     updateWalletUI(currentAddress);
     if (typeof fetchUserData === 'function') fetchUserData(currentAddress);
@@ -584,31 +591,44 @@ window.updateTransUI = function() {
 window.doInternalTransfer = async function() {
     const symbol = document.getElementById('transToken')?.value;
     const toAddr = document.getElementById('transAddr')?.value.trim();
-    const amount = parseFloat(document.getElementById('transAmount')?.value);
+    const amount = document.getElementById('transAmount')?.value; // 直接取字符串
     const senderAddr = currentAddress || localStorage.getItem('fbs_address');
 
-    if (!toAddr || isNaN(amount) || amount <= 0) return alert("请输入有效的地址和数量");
+    if (!toAddr || !amount || parseFloat(amount) <= 0) return alert("请输入有效的地址和数量");
 
     try {
+        // 增加加载状态
+        const btn = event?.target;
+        if(btn) btn.disabled = true;
+
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer", // 触发 Worker 的第 2 段逻辑
+                action: "transfer", 
                 address: senderAddr,
-                receiver: toAddr,   // 必须叫 receiver，对应 Worker 的 body.receiver
+                receiver: toAddr,   
                 type: "内部转账",
-                amount: amount,
+                amount: String(amount), // 对应 Worker 的 body.amount
                 symbol: symbol,
                 status: "成功"
             })
         });
+        
         const result = await response.json();
         if (result.success) {
-            alert("转账成功");
+            alert("转账记录已提交后台");
             closeModal();
+            if (typeof fetchUserData === 'function') fetchUserData(senderAddr);
+        } else {
+            alert("提交失败: " + (result.error || "未知原因"));
         }
-    } catch (e) { console.error(e); }
+    } catch (e) { 
+        console.error(e);
+        alert("网络请求异常");
+    } finally {
+        if(btn) btn.disabled = false;
+    }
 };
 
 async function doRecharge() {
