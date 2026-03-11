@@ -719,3 +719,39 @@ function validateTransferAmount(input) {
         input.classList.remove('text-red-500');
     }
 }
+
+function copyInviteCode() {
+    const codeElement = document.getElementById('info_inviteCode');
+    const code = codeElement.innerText;
+
+    if (code === "---" || !code) return; // 如果还没加载出 ID 则不执行
+
+    // 使用现代剪贴板 API
+    navigator.clipboard.writeText(code).then(() => {
+        // 复制成功后的反馈
+        showToast("ID 已复制到剪贴板");
+    }).catch(err => {
+        console.error('复制失败:', err);
+        // 备用方案：针对部分旧版浏览器
+        const input = document.createElement('input');
+        input.value = code;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        showToast("ID 已复制");
+    });
+}
+
+// 简单的提示框函数 (如果你还没有类似功能)
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = "fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-800/90 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-2xl z-[9999] backdrop-blur-md transition-opacity duration-300";
+    toast.innerText = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
