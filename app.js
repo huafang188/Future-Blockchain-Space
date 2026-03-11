@@ -1,7 +1,3 @@
-/**
- * Future Blockchain Space - 核心业务逻辑 (全功能修复版)
- */
-
 const API_BASE = "https://api.fbsfbs.fit/api/user";
 const BSC_CHAIN_ID = '0x38';
 
