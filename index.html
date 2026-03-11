@@ -82,10 +82,14 @@
                 <div class="flex flex-col pt-2 border-t border-slate-200"><span class="opacity-50 text-[9px]" data-i18n="m_term">到期时间</span><span id="miner_deadline" class="text-slate-900 text-[10px]">--</span></div>
                 <div class="flex flex-col pt-2 border-t border-slate-200"><span class="opacity-50 text-[9px]" data-i18n="m_locked">锁仓金额</span><span id="miner_locked" class="text-slate-900 text-sm">0.00</span></div>
             </div>
-            <div class="grid grid-cols-2 gap-4 mt-6">
-                <button onclick="openMinerModal('buy')" class="立体按钮 bg-blue-600 text-white py-4 rounded-2xl text-[10px] font-black uppercase" data-i18n="buy_miner">购买矿机</button>
-                <button onclick="openMinerModal('fee')" class="立体按钮 bg-slate-800 text-white py-4 rounded-2xl text-[10px] font-black uppercase" data-i18n="pay_fee">缴纳电费</button>
-            </div>
+<div class="grid grid-cols-2 gap-4 mt-6 px-1">
+    <button onclick="openMinerModal('buy')" class="action-btn w-full">
+        <span data-i18n="buy_miner">购买矿机</span>
+    </button>
+    <button onclick="openMinerModal('fee')" class="action-btn w-full">
+        <span data-i18n="pay_fee">缴纳电费</span>
+    </button>
+</div>
         </section>
 
         <section class="glass-card rounded-[2.5rem] overflow-hidden">
