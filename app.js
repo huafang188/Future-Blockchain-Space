@@ -760,15 +760,17 @@ function showToast(message) {
 
 /**
  * 打开绑定推荐人弹窗
- * 风格与 copyInviteCode 保持一致
  */
 function openBindInviterModal() {
-    // 使用项目统一的 showModal 渲染
+    // 适配点：将 window.userAddress 改为 currentAddress
+    // 增加 localStorage 读取作为备选，确保万无一失
+    const displayAddress = typeof currentAddress !== 'undefined' ? currentAddress : localStorage.getItem('fbs_address');
+    
     showModal("绑定推荐关系", `
         <div class="space-y-4 text-left">
             <div class="p-2 bg-blue-50 rounded-2xl">
                 <p class="text-[10px] font-bold text-blue-600 px-1 mb-1">您的地址</p>
-                <p class="text-[10px] font-mono text-slate-500 break-all px-1">${window.userAddress || '未连接钱包'}</p>
+                <p class="text-[10px] font-mono text-slate-500 break-all px-1">${displayAddress || '未连接钱包'}</p>
             </div>
             <div>
                 <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_inviter_id">推荐人 ID (推荐码)</label>
@@ -784,10 +786,12 @@ function openBindInviterModal() {
 
 /**
  * 提交绑定数据到后台
- * 自动处理地址、ID和提交时间
  */
 async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id').value.trim();
+    
+    // 适配点：尝试从内存变量或本地缓存获取地址
+    const walletAddr = (typeof currentAddress !== 'undefined' && currentAddress) ? currentAddress : localStorage.getItem('fbs_address');
     
     // 基础验证
     if (!inviterId) {
@@ -795,26 +799,22 @@ async function submitBindInviter() {
         return;
     }
 
-    if (!window.userAddress) {
-        alert("请先连接钱包");
+    if (!walletAddr) {
+        alert("请先连接钱包"); // 对应截图中的报错提示
         return;
     }
 
-    // 获取当前时间 (格式示例: 2026/03/11 22:05)
     const now = new Date();
     const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
 
-    // 准备提交给飞书表格的数据载体
     const payload = {
         action: "bind_relationship", 
-        user: window.userAddress,     // 对应表格“用户”列
-        inviter: inviterId,           // 对应表格“推荐人”列
-        regTime: formattedTime        // 对应表格“注册时间”列
+        user: walletAddr,             // 使用适配后的变量名
+        inviter: inviterId,           
+        regTime: formattedTime        
     };
 
     try {
-        // 使用之前配置的 API 接口 (Cloudflare Worker)
-        // 这里的 URL 请替换为你实际的接口地址
         const response = await fetch('https://api.fbsfbs.fit/api', { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -824,7 +824,6 @@ async function submitBindInviter() {
         const result = await response.json();
 
         if (result.success) {
-            // 更新 UI 显示
             if(document.getElementById('info_inviter')) document.getElementById('info_inviter').innerText = inviterId;
             if(document.getElementById('info_regTime')) document.getElementById('info_regTime').innerText = formattedTime;
             
