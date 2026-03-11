@@ -34,38 +34,108 @@ const tokenInfo = {
 let currentAddress = localStorage.getItem('fbs_address'); 
 let userBalances = {};
 
-// 在文件顶部声明变量
+// --- 1. 基础配置与全局变量 (确保 tokenInfo 已定义) ---
+const tokenInfo = window.tokenInfo || { 
+    'USDT': { price: 1, logo: 'assets/usdt.png' } // 兜底配置防止报错
+};
 let currentAddress = localStorage.getItem('fbs_address');
 
-// --- 2. 初始化与列表渲染 ---
+// --- 2. 立即挂载全局函数 (解决 ReferenceError 的关键) ---
+// 将此部分移到文件最上方，确保 HTML 哪怕在脚本报错前也能识别到函数
+window.handleWalletClick = function() {
+    console.log("Wallet button clicked");
+    const savedAddr = localStorage.getItem('fbs_address');
+    if (savedAddr) {
+        logout();
+    } else {
+        connectWallet();
+    }
+};
+
+// --- 3. 初始化与生命周期 ---
 window.onload = () => {
     const isManualLogout = localStorage.getItem('user_logout_manual');
-
-    // 只有当有地址且没有手动退出标记时才初始化
     if (currentAddress && isManualLogout !== 'true') {
         updateWalletUI(currentAddress);
-        fetchUserData(currentAddress);
+        // 确保 fetchUserData 在外部已定义，否则加个判断
+        if (typeof fetchUserData === 'function') fetchUserData(currentAddress);
     } else {
-        resetWalletUI(); // 确保显示“连接钱包”
+        resetWalletUI();
     }
     renderTokenList({}); 
 };
 
-// 格式化时间
+// --- 4. 钱包逻辑 ---
+async function connectWallet() {
+    if (!window.ethereum) return alert("请在钱包内打开");
+    try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0]; 
+        
+        // 签名逻辑
+        const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
+        await window.ethereum.request({ method: 'personal_sign', params: [msg, address] });
+        
+        localStorage.setItem('fbs_address', address);
+        localStorage.removeItem('user_logout_manual'); // 允许下次自动重连
+        currentAddress = address;
+        
+        finishLogin();
+    } catch (e) { 
+        console.error("Login Cancelled", e); 
+    }
+}
+
+function finishLogin() {
+    updateWalletUI(currentAddress);
+    if (typeof fetchUserData === 'function') fetchUserData(currentAddress);
+    if (typeof closeModal === 'function') closeModal();
+}
+
+function updateWalletUI(addr) {
+    const el = document.getElementById('walletAddr');
+    if (el) {
+        el.innerText = addr.slice(0, 6) + '...' + addr.slice(-4);
+        el.removeAttribute('data-i18n');
+        el.className = "cursor-pointer font-black bg-emerald-50 text-emerald-600 px-4 py-2 rounded-full text-[10px] border border-emerald-100 mb-4 inline-block";
+    }
+}
+
+function resetWalletUI() {
+    const el = document.getElementById('walletAddr');
+    if (el) {
+        el.innerText = '连接钱包';
+        el.className = "cursor-pointer font-black bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] border border-blue-100 mb-4 inline-block";
+    }
+}
+
+function logout() {
+    if (confirm("确定要退出登录并断开连接吗？")) {
+        localStorage.setItem('user_logout_manual', 'true');
+        localStorage.removeItem('fbs_address');
+        location.reload();
+    }
+}
+
+// 格式化函数
 function formatTime(timestamp) {
     if (!timestamp) return "--";
     const date = new Date(timestamp);
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
 }
 
-// 渲染列表
+// 渲染函数
 function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
     let totalVal = 0;
+    
+    // 检查 tokenInfo 是否存在，不存在则跳过渲染防止崩溃
+    if (typeof tokenInfo === 'undefined') return console.error("tokenInfo is not defined");
+
     const html = Object.keys(tokenInfo).map(symbol => {
         const bal = parseFloat(balances[symbol] || 0);
-        const price = tokenInfo[symbol].price;
+        const price = tokenInfo[symbol].price || 0;
         const val = bal * price;
         totalVal += val;
         return `
@@ -84,77 +154,9 @@ function renderTokenList(balances = {}) {
             </div>`;
     }).join('');
     container.innerHTML = html;
-    if (document.getElementById('totalValue')) document.getElementById('totalValue').innerText = totalVal.toFixed(2);
+    const totalEl = document.getElementById('totalValue');
+    if (totalEl) totalEl.innerText = totalVal.toFixed(2);
 }
-
-// --- 3. 钱包与登录 ---
-async function connectWallet() {
-    if (!window.ethereum) return alert("请在钱包内打开");
-    try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const address = accounts[0]; 
-        
-        const savedAddr = localStorage.getItem('fbs_address');
-        if (!savedAddr || savedAddr.toLowerCase() !== address.toLowerCase()) {
-            const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
-            await window.ethereum.request({ method: 'personal_sign', params: [msg, address] });
-        }
-        
-        currentAddress = address;
-        localStorage.setItem('fbs_address', address);
-        
-        // 【重要修正】登录成功，清除手动退出标记
-        localStorage.removeItem('user_logout_manual');
-        
-        finishLogin();
-    } catch (e) { console.error("Login Cancelled"); }
-}
-
-function finishLogin() {
-    updateWalletUI(currentAddress);
-    fetchUserData(currentAddress);
-    if (typeof closeModal === 'function') closeModal();
-}
-
-function updateWalletUI(addr) {
-    const el = document.getElementById('walletAddr');
-    if (el) {
-        el.innerText = addr.slice(0, 6) + '...' + addr.slice(-4);
-        el.removeAttribute('data-i18n');
-        // 变为绿色已连接状态
-        el.classList.remove('bg-blue-50', 'text-blue-600');
-        el.classList.add('bg-emerald-50', 'text-emerald-600');
-    }
-}
-
-// 新增：重置 UI 函数
-function resetWalletUI() {
-    const el = document.getElementById('walletAddr');
-    if (el) {
-        el.innerText = '连接钱包';
-        el.classList.remove('bg-emerald-50', 'text-emerald-600');
-        el.classList.add('bg-blue-50', 'text-blue-600');
-    }
-}
-
-// 【唯一且修正后的 logout】
-function logout() {
-    if (confirm("确定要退出登录并断开连接吗？")) {
-        localStorage.setItem('user_logout_manual', 'true'); // 关键：禁止刷新后自动连
-        localStorage.removeItem('fbs_address'); // 关键：名称必须对应
-        location.reload();
-    }
-}
-
-// 挂载到 window 供 HTML 调用
-window.handleWalletClick = function() {
-    const savedAddr = localStorage.getItem('fbs_address');
-    if (savedAddr) {
-        logout();
-    } else {
-        connectWallet();
-    }
-};
 // --- 4. 核心：读取后端数据 ---
 async function fetchUserData(address) {
     console.log("正在请求地址:", address);
