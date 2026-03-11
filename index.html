@@ -91,11 +91,12 @@
         <section class="glass-card rounded-[2.5rem] overflow-hidden">
             <div class="p-5 border-b border-slate-100 font-black text-[10px] text-slate-400 uppercase tracking-widest bg-white/50" data-i18n="assets_list">资产预览</div>
             <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
-            <div class="p-4 grid grid-cols-3 gap-3 bg-slate-50/50">
-                <button onclick="openFinanceModal('recharge')" class="bg-white border border-slate-200 py-3 rounded-xl text-[11px] font-bold shadow-sm active:scale-95" data-i18n="recharge">充值</button>
-                <button onclick="openFinanceModal('withdraw')" class="bg-white border border-slate-200 py-3 rounded-xl text-[11px] font-bold shadow-sm active:scale-95" data-i18n="withdraw">提币</button>
-                <button onclick="openFinanceModal('exchange')" class="bg-white border border-slate-200 py-3 rounded-xl text-[11px] font-bold shadow-sm active:scale-95" data-i18n="exchange">兑换</button>
-            </div>
+<div class="grid grid-cols-2 gap-3 mt-6">
+    <button onclick="openFinanceModal('recharge')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="recharge">充值</button>
+    <button onclick="openFinanceModal('withdraw')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="withdraw">提币</button>
+    <button onclick="openFinanceModal('exchange')" class="bg-white/80 py-3 rounded-2xl font-bold text-sm shadow-sm border border-slate-100" data-i18n="exchange">兑换</button>
+    <button onclick="openFinanceModal('transfer')" class="bg-blue-600 text-white py-3 rounded-2xl font-bold text-sm shadow-lg" data-i18n="transfer">转账</button>
+</div>
         </section>
 
         <section class="glass-card rounded-[2.5rem] p-6 bg-slate-50/50">
