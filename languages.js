@@ -34,7 +34,18 @@ const i18nData = {
         history_title: "交易历史",
         transfer_title: "转账流水",
         loading: "加载中...",
-        no_data: "暂无数据"
+        no_data: "暂无数据",
+        // 新增状态与类型
+        "已提交": "已提交",
+        "处理中": "处理中",
+        "成功": "成功",
+        "失败": "失败",
+        "充值": "充值",
+        "提币": "提币",
+        "兑换": "兑换",
+        "购买矿机": "购买矿机",
+        "缴纳电费": "缴纳电费",
+        "SYSTEM": "系统操作"
     },
     'zh-TW': {
         title: "Future Blockchain Space",
@@ -68,7 +79,18 @@ const i18nData = {
         input_amount: "輸入數量",
         transfer_title: "轉賬流水",
         loading: "載入中...",
-        no_data: "暫無數據"
+        no_data: "暫無數據",
+        // 新增状态与类型
+        "已提交": "已提交",
+        "处理中": "處理中",
+        "成功": "成功",
+        "失败": "失敗",
+        "充值": "充值",
+        "提币": "提幣",
+        "兑换": "兌換",
+        "购买矿机": "購買礦機",
+        "缴纳电费": "繳納電費",
+        "SYSTEM": "系統操作"
     },
     'en': {
         title: "Future Blockchain Space",
@@ -102,7 +124,18 @@ const i18nData = {
         input_amount: "Enter Amount",
         transfer_title: "Transfer Logs",
         loading: "Loading...",
-        no_data: "No Data"
+        no_data: "No Data",
+        // 新增状态与类型
+        "已提交": "Submitted",
+        "处理中": "Processing",
+        "成功": "Success",
+        "失败": "Failed",
+        "充值": "Deposit",
+        "提币": "Withdraw",
+        "兑换": "Exchange",
+        "购买矿机": "Buy Miner",
+        "缴纳电费": "Electricity Fee",
+        "SYSTEM": "System"
     },
     'ja': {
         title: "Future Blockchain Space",
@@ -136,7 +169,18 @@ const i18nData = {
         input_amount: "数量入力",
         transfer_title: "転送ログ",
         loading: "読み込み中...",
-        no_data: "データなし"
+        no_data: "データなし",
+        // 新增状态与类型
+        "已提交": "送信済み",
+        "处理中": "処理中",
+        "成功": "成功",
+        "失败": "失敗",
+        "充值": "入金",
+        "提币": "出金",
+        "兑换": "交換",
+        "购买矿机": "マイナー購入",
+        "缴纳电费": "電気代支払い",
+        "SYSTEM": "システム"
     },
     'ko': {
         title: "Future Blockchain Space",
@@ -170,7 +214,18 @@ const i18nData = {
         input_amount: "수량 입력",
         transfer_title: "이체 기록",
         loading: "로딩 중...",
-        no_data: "데이터 없음"
+        no_data: "데이터 없음",
+        // 新增状态与类型
+        "已提交": "제출됨",
+        "处理中": "처리 중",
+        "成功": "성공",
+        "失败": "실패",
+        "充值": "입금",
+        "提币": "출금",
+        "兑换": "환전",
+        "购买矿机": "채굴기 구매",
+        "缴纳电费": "전기료 납부",
+        "SYSTEM": "시스템"
     },
     'ru': {
         title: "Future Blockchain Space",
@@ -204,7 +259,18 @@ const i18nData = {
         input_amount: "Введите сумму",
         transfer_title: "Журнал переводов",
         loading: "Загрузка...",
-        no_data: "Нет данных"
+        no_data: "Нет данных",
+        // 新增状态与类型
+        "已提交": "Отправлено",
+        "处理中": "В процессе",
+        "成功": "Успешно",
+        "失败": "Ошибка",
+        "充值": "Депозит",
+        "提币": "Вывод",
+        "兑换": "Обмен",
+        "购买矿机": "Покупка майнера",
+        "缴纳电费": "Оплата эл-ии",
+        "SYSTEM": "Система"
     }
 };
 
