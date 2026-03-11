@@ -48,15 +48,24 @@ window.handleWalletClick = function() {
 
 // --- 3. 初始化与生命周期 ---
 window.onload = () => {
+    // 1. 优先初始化语言 (新增)
+    if (typeof window.i18nRender === 'function') {
+        window.i18nRender();
+    }
+
     const isManualLogout = localStorage.getItem('user_logout_manual');
     if (currentAddress && isManualLogout !== 'true') {
         updateWalletUI(currentAddress);
-        // 确保 fetchUserData 在外部已定义，否则加个判断
         if (typeof fetchUserData === 'function') fetchUserData(currentAddress);
     } else {
-        resetWalletUI();
+        resetWalletUI(); // 注意：resetWalletUI 内部也需要调用 i18nRender
     }
+    
+    // 渲染初始代币列表（空数据或默认样式）
     renderTokenList({}); 
+    
+    // 2. 再次确保页面所有标记了 data-i18n 的地方都被翻译 (加固)
+    if (window.i18nRender) window.i18nRender();
 };
 
 // --- 4. 钱包逻辑 ---
