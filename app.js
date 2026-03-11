@@ -588,46 +588,63 @@ window.updateTransUI = function() {
 
 // --- 8. 执行动作与接口提交 ---
 
+/**
+ * 修改后：内部转账逻辑（增加签名校验）
+ */
 window.doInternalTransfer = async function() {
     const symbol = document.getElementById('transToken')?.value;
     const toAddr = document.getElementById('transAddr')?.value.trim();
-    const amount = document.getElementById('transAmount')?.value; // 直接取字符串
-    const senderAddr = currentAddress || localStorage.getItem('fbs_address');
+    const amount = document.getElementById('transAmount')?.value;
+    const senderAddr = typeof currentAddress !== 'undefined' ? currentAddress : localStorage.getItem('fbs_address');
 
-    if (!toAddr || !amount || parseFloat(amount) <= 0) return alert("请输入有效的地址和数量");
+    if (!toAddr || !amount || parseFloat(amount) <= 0) {
+        alert("请输入有效的地址和数量");
+        return;
+    }
 
     try {
-        // 增加加载状态
-        const btn = event?.target;
-        if(btn) btn.disabled = true;
+        // --- 第一步：强制要求钱包签名 ---
+        // 这会弹出小狐狸签名框，证明是本人操作
+        const message = `确认转账: ${amount} ${symbol} 到地址: ${toAddr}\n时间: ${new Date().toLocaleString()}`;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        
+        console.log("等待用户签名...");
+        const signature = await signer.signMessage(message);
+        console.log("签名成功:", signature);
 
+        // --- 第二步：签名成功后，发送数据给 Workers ---
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer", 
+                action: "transfer", // 对应 Workers 里的 if(body.action === "transfer")
                 address: senderAddr,
-                receiver: toAddr,   
+                receiver: toAddr,
                 type: "内部转账",
-                amount: String(amount), // 对应 Worker 的 body.amount
+                amount: String(amount),
                 symbol: symbol,
-                status: "成功"
+                status: "成功",
+                signature: signature // 传给后台做记录备查
             })
         });
-        
+
         const result = await response.json();
         if (result.success) {
-            alert("转账记录已提交后台");
+            alert("转账成功并已记录");
             closeModal();
+            // 刷新数据
             if (typeof fetchUserData === 'function') fetchUserData(senderAddr);
         } else {
-            alert("提交失败: " + (result.error || "未知原因"));
+            alert("后台记录失败：" + (result.error || "未知错误"));
         }
-    } catch (e) { 
-        console.error(e);
-        alert("网络请求异常");
-    } finally {
-        if(btn) btn.disabled = false;
+    } catch (e) {
+        console.error("转账流程中断:", e);
+        if (e.code === 4001) {
+            alert("用户取消了签名");
+        } else {
+            alert("转账失败: " + e.message);
+        }
     }
 };
 
