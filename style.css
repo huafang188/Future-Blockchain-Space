@@ -208,18 +208,48 @@ body {
 
 /* 独立按钮容器样式 */
 .action-btn {
-    @apply flex flex-col items-center justify-center py-4 px-2 
-           bg-white/70 backdrop-blur-md rounded-[2rem] 
-           border border-white/40 shadow-sm 
-           transition-all active:scale-95;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0.5rem; /* 对应 py-4 px-2 */
+    background: rgba(255, 255, 255, 0.7); /* 对应 bg-white/70 */
+    backdrop-filter: blur(12px); /* 对应 backdrop-blur-md */
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 2rem; /* 对应 rounded-[2rem] */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* 对应 border-white/40 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* 对应 shadow-sm */
+    transition: all 0.2s;
+    cursor: pointer;
+    outline: none;
 }
 
-/*图标盒子*/
+.action-btn:active {
+    transform: scale(0.95); /* 对应 active:scale-95 */
+}
+
+/* 图标盒子 */
 .icon-box {
-    @apply w-10 h-10 rounded-2xl flex items-center justify-center mb-2 text-base shadow-inner;
+    width: 2.5rem; /* 对应 w-10 */
+    height: 2.5rem; /* 对应 h-10 */
+    border-radius: 1rem; /* 对应 rounded-2xl */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem; /* 对应 mb-2 */
+    font-size: 1rem; /* 对应 text-base */
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05); /* 对应 shadow-inner */
 }
 
 /* 按钮文字 */
 .action-btn span {
-    @apply text-[11px] font-bold text-slate-600;
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569; /* 对应 text-slate-600 */
+}
+
+/* 补充网格定义 */
+.grid-cols-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
