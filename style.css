@@ -1,60 +1,61 @@
-/* --- 全局科技感渐变按钮风格 --- */
+/* --- 1. 按钮回归胶囊形状 (Capsule Shape) --- */
 .action-btn {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1.2rem 0.5rem;
-    /* 核心：紫色到蓝色的渐变 */
+    padding: 0.8rem 1.5rem; /* 调整为适合胶囊形状的内边距 */
     background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
-    border-radius: 2rem;
-    /* 增加立体感的边框和阴影 */
+    border-radius: 999px; /* 强制胶囊圆角 */
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3), 
-                inset 0 -4px 0 rgba(0, 0, 0, 0.15); /* 底部压深，模拟厚度 */
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
     cursor: pointer;
+    min-width: 80px; /* 保证最小宽度 */
 }
 
-.action-btn:active {
-    transform: translateY(2px) scale(0.96);
-    box-shadow: 0 4px 10px -2px rgba(59, 130, 246, 0.3), 
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1); /* 点击时深度变浅 */
+/* 隐藏图标盒子 */
+.action-btn .icon-box {
+    display: none !important;
 }
 
-/* 图标盒子：改为半透明磨砂质感，衬托渐变底色 */
-.icon-box {
-    width: 2.8rem;
-    height: 2.8rem;
-    border-radius: 1.2rem;
+/* 按钮文字 */
+.action-btn span {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+/* --- 2. 全局容器统一：圆角矩形毛玻璃 --- */
+.glass-card, .modal-box {
+    background: rgba(255, 255, 255, 0.7); /* 半透明白 */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 2rem; /* 统一圆角矩形 */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+/* --- 3. 弹窗 UI 修正 --- */
+#modalOverlay {
+    background-color: rgba(0, 0, 0, 0.1); /* 极浅遮罩，突出模糊感 */
+    backdrop-filter: blur(8px);
+}
+
+/* 修正含有 Logo 的选择框高度一致性 */
+.modal-item-wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 0.6rem;
-    font-size: 1.2rem;
-    /* 磨砂白，让图标在彩色背景上很显眼 */
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(4px);
-    color: white !important; /* 图标统一设为白色 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 1.2rem;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    height: 56px; /* 统一固定高度 */
 }
 
-/* 按钮文字：统一改为白色，增加字间距更有高级感 */
-.action-btn span {
-    font-size: 11px;
-    font-weight: 900;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-/* 如果你想让之前的 btn-primary 也统一风格 */
-.btn-primary {
-    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
-    border-radius: 1.5rem;
-    border: none;
-    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
-    color: white;
-    font-weight: bold;
+.modal-logo-sm {
+    width: 32px; /* 缩小 Logo */
+    height: 32px;
+    margin-right: 12px;
+    object-fit: contain;
 }
