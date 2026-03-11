@@ -205,3 +205,21 @@ body {
     color: #ef4444; 
     background: rgba(239, 68, 68, 0.1); 
 }
+
+/* 独立按钮容器样式 */
+.action-btn {
+    @apply flex flex-col items-center justify-center py-4 px-2 
+           bg-white/70 backdrop-blur-md rounded-[2rem] 
+           border border-white/40 shadow-sm 
+           transition-all active:scale-95;
+}
+
+/* 图标盒子 */
+.icon-box {
+    @apply w-10 h-10 rounded-2xl flex items-center justify-center mb-2 text-base shadow-inner;
+}
+
+/* 按钮文字 */
+.action-btn span {
+    @apply text-[11px] font-bold text-slate-600;
+}
