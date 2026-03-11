@@ -1,61 +1,155 @@
-/* --- 1. 按钮回归胶囊形状 (Capsule Shape) --- */
+/* * Future Blockchain Space - 优化版完整样式表 
+ * 风格：Web3 科技感 / 淡灰毛玻璃 / 胶囊按钮
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+:root {
+    --primary: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    --bg-main: #f4f7fa;
+    --text-main: #1e293b;
+    --glass-bg: rgba(241, 245, 249, 0.9); /* 加深的淡灰色背景 */
+    --glass-border: rgba(255, 255, 255, 0.6);
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- 1. 容器组件 (毛玻璃圆角矩形) --- */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: 2rem; /* 统一圆角矩形 */
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+/* --- 2. 胶囊形状按钮 (Action Buttons) --- */
 .action-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.8rem 1.5rem; /* 调整为适合胶囊形状的内边距 */
-    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
-    border-radius: 999px; /* 强制胶囊圆角 */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.2);
-    transition: all 0.3s ease;
+    padding: 10px 20px;
+    background: var(--primary);
+    border-radius: 999px; /* 强制胶囊形状 */
+    border: none;
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
     cursor: pointer;
-    min-width: 80px; /* 保证最小宽度 */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
 }
 
-/* 隐藏图标盒子 */
+.action-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+}
+
+.action-btn span {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* 隐藏图标盒子，保持纯文字胶囊感 */
 .action-btn .icon-box {
     display: none !important;
 }
 
-/* 按钮文字 */
-.action-btn span {
-    font-size: 14px;
-    font-weight: 700;
-    color: white;
-}
-
-/* --- 2. 全局容器统一：圆角矩形毛玻璃 --- */
-.glass-card, .modal-box {
-    background: rgba(255, 255, 255, 0.7); /* 半透明白 */
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-radius: 2rem; /* 统一圆角矩形 */
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-}
-
-/* --- 3. 弹窗 UI 修正 --- */
+/* --- 3. 弹窗系统 (Modal) --- */
 #modalOverlay {
-    background-color: rgba(0, 0, 0, 0.1); /* 极浅遮罩，突出模糊感 */
-    backdrop-filter: blur(8px);
-}
-
-/* 修正含有 Logo 的选择框高度一致性 */
-.modal-item-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.2); /* 浅色遮罩 */
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 1.2rem;
-    padding: 0.8rem 1.2rem;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    margin-bottom: 1rem;
-    height: 56px; /* 统一固定高度 */
+    justify-content: center;
+    padding: 1rem;
 }
 
-.modal-logo-sm {
-    width: 32px; /* 缩小 Logo */
-    height: 32px;
-    margin-right: 12px;
+.modal-box {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    width: 100%;
+    max-width: 420px;
+    border-radius: 2.5rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+/* 核心：解决弹窗大图片问题 */
+.modal-box img {
+    max-width: 32px; /* 强制限制 Logo 尺寸 */
+    max-height: 32px;
     object-fit: contain;
+    border-radius: 8px;
+}
+
+/* 弹窗内的选择行（让 Logo 和文字水平对齐） */
+.modal-selection-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0.8rem 1.2rem;
+    border-radius: 1.2rem;
+    margin: 1rem 0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@keyframes modalSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- 4. 资产列表排版 --- */
+#tokenRows > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    transition: background 0.2s;
+}
+
+#tokenRows > div:active {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.token-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+}
+
+/* --- 5. 辅助类 --- */
+.grid-cols-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.hidden { display: none !important; }
+
+/* 响应式：针对手机端优化 */
+@media (max-width: 640px) {
+    .action-btn {
+        padding: 8px 12px;
+    }
+    .action-btn span {
+        font-size: 12px;
+    }
 }
