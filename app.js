@@ -103,44 +103,61 @@ async function connectWallet() {
 /**
  * 记录交易行为到后台 (完整修复版)
  */
-async function postTransactionRecord(type, amount, symbol) {
+/**
+ * 修正版：将记录提交至后台
+ * 解决了字段名不匹配和全局调用问题
+ */
+window.postTransactionRecord = async function(type, amount, symbol) {
     const address = typeof currentAddress !== 'undefined' ? currentAddress : (window.userAddress || localStorage.getItem('fbs_address'));
     
-    if (!address) return;
+    if (!address) {
+        console.error("未发现钱包地址，跳过记录提交");
+        return;
+    }
+
+    // 核心修改：如果后端 Worker 脚本识别的是“用户”而不是“address”
+    // 我们在这里双写，确保后端一定能拿到地址
+    const payload = {
+        action: "record_transaction",
+        address: address, // 英文备份
+        "用户": address,  // 中文适配（根据你日志中 info 对象的字段名）
+        "类型": type,
+        "数量": amount,
+        "币种": symbol,
+        type: type,      
+        amount: amount,
+        symbol: symbol,
+        status: "待审核",
+        time: new Date().toLocaleString('zh-CN', { hour12: false })
+    };
+
+    console.log("🚀 发送提交请求:", payload);
 
     try {
-        // 1. 发起请求 (所有的逻辑都必须在同一个 try 块内)
         const response = await fetch('https://api.fbsfbs.fit/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: "record_transaction",
-                address: address,
-                type: type,
-                amount: amount,
-                symbol: symbol,
-                status: "已提交"
-            })
+            body: JSON.stringify(payload)
         });
 
-        // 2. 紧接着判断结果
-        if (response.ok) {
+        const result = await response.json();
+        console.log("📥 后端返回结果:", result);
+
+        if (response.ok && (result.success || result.data)) {
             console.log(`${type} 记录已提交`);
-            // 提交后立即刷新数据，兼容两种可能的函数名
-            if (typeof fetchUserData === 'function') {
-                fetchUserData(address);
-            } else if (typeof loadUserData === 'function') {
-                loadUserData(address);
-            }
+            // 提交成功后延迟刷新，给 Worker 写入表格留一点时间
+            setTimeout(() => {
+                if (typeof fetchUserData === 'function') fetchUserData(address);
+                else if (typeof loadUserData === 'function') loadUserData(address);
+            }, 1000);
         } else {
-            console.error("服务器响应异常:", response.status);
+            console.error("服务器返回错误:", result.message || response.status);
         }
 
     } catch (error) {
-        // 3. 统一捕获网络或解析错误
-        console.error("提交记录失败:", error);
+        console.error("网络提交失败:", error);
     }
-} // 函数结束，确保这里只有一个结束大括号
+}
 
 function finishLogin() {
     updateWalletUI(currentAddress);
