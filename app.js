@@ -217,6 +217,9 @@ async function fetchUserData(address) {
                 updateText(`bal_${token}`, data.balances[token]);
             });
         }
+        renderHistory(data.history);     // 对应后端返回的 history
+        renderTransfers(data.transfers); // 对应后端返回的 transfers
+        
 
     } catch (e) {
         console.error("前端渲染逻辑报错:", e);
@@ -225,6 +228,73 @@ async function fetchUserData(address) {
     }
 }
 
+/**
+ * 渲染交易历史 (来自 tx_history 表)
+ */
+function renderHistory(history) {
+    const container = document.getElementById('historyList');
+    if (!container) return;
+
+    if (!history || history.length === 0) {
+        container.innerHTML = '<div class="p-10 text-center text-slate-300 text-xs">暂无交易记录</div>';
+        return;
+    }
+
+    // 映射 HTML
+    const html = history.map(item => {
+        // 根据正负值决定颜色
+        const isPositive = parseFloat(item['金额'] || 0) >= 0;
+        const colorClass = isPositive ? 'text-emerald-500' : 'text-red-500';
+        const symbol = isPositive ? '+' : '';
+
+        return `
+            <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                <div class="flex flex-col">
+                    <span class="font-bold text-slate-800 text-sm">${item['类型'] || '系统操作'}</span>
+                    <span class="text-[10px] text-slate-400 mt-1">${item['时间'] || ''}</span>
+                </div>
+                <div class="text-right">
+                    <div class="font-black ${colorClass}">${symbol}${item['金额'] || '0.00'}</div>
+                    <div class="text-[9px] text-slate-400 font-bold uppercase">${item['币种'] || 'USDT'}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = html;
+}
+
+/**
+ * 渲染转账流水 (来自 transfer_log 表)
+ */
+function renderTransfers(transfers) {
+    const container = document.getElementById('transferList');
+    if (!container) return;
+
+    if (!transfers || transfers.length === 0) {
+        container.innerHTML = '<div class="p-10 text-center text-slate-300 text-xs">暂无转账流水</div>';
+        return;
+    }
+
+    const html = transfers.map(item => `
+        <div class="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start mb-2">
+                <span class="bg-blue-50 text-blue-600 text-[9px] px-2 py-0.5 rounded-md font-bold uppercase">
+                    ${item['业务类型'] || 'TRANSFER'}
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">${(item['哈希'] || '').slice(0, 10)}...</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <div class="text-[10px] text-slate-500 font-medium">
+                    数量: <span class="text-slate-800 font-bold">${item['数值'] || '0'}</span>
+                </div>
+                <button onclick="window.open('https://bscscan.com/tx/${item['哈希']}')" class="text-blue-500 text-[10px] font-bold">查看详情</button>
+            </div>
+        </div>
+    `).join('');
+
+    container.innerHTML = html;
+}
 // 辅助更新函数：增强了容错，确保 value 为 0 时也能显示
 function updateText(id, value) {
     const el = document.getElementById(id);
