@@ -117,10 +117,10 @@
 <section class="glass-card rounded-[2.5rem] p-6 bg-slate-50/50">
     <div class="flex justify-between items-center mb-4">
         <h3 class="font-black text-slate-800 text-xl uppercase" data-i18n="team_title">我的团队</h3>
-        <span onclick="copyInviteCode()" 
-              class="text-lg font-black text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200 cursor-pointer active:scale-95 transition-transform hover:bg-slate-50">
-            ID: <span id="info_inviteCode">---</span>
-        </span>
+<span onclick="copyInviteCode(document.getElementById('info_inviteCode').innerText)" 
+      class="text-lg font-black text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200 cursor-pointer active:scale-95 transition-transform hover:bg-slate-50">
+    ID: <span id="info_inviteCode">---</span>
+</span>
     </div>
 
             <div class="bg-white rounded-[2rem] p-6 space-y-4 border border-slate-100 shadow-sm">
