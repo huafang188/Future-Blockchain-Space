@@ -237,22 +237,33 @@ async function fetchUserData(address) {
         updateText('team_totalSales', t["团队业绩"]);
         updateText('team_totalReward', t["累计奖励"]);
 
-        // 4. 渲染【资产列表】与计算总价值
+// 4. 渲染【资产列表】与计算总价值
         if (data.balances) {
-            window.userBalances = data.balances; // 提升至全局作用域
+            window.userBalances = data.balances; 
             
-            // 渲染代币列表行
+            // 渲染列表行
             if (typeof renderTokenList === 'function') {
                 renderTokenList(data.balances);
             }
             
-            // 更新首页总资产 (如果有计算好的 total_usd 使用后端数据)
-            updateText('totalValue', data.total_usd || "0.00");
+            // --- 核心修改：前端实时计算总价值 ---
+            let calculatedTotal = 0;
+            const prices = window.TOKEN_PRICES || { "USDT": 1, "FBS": 0.5, "BNB": 600 }; // 确保你有定义单价
 
-            // 单个代币余额更新 (例如页面上有 id="bal_USDT")
             Object.keys(data.balances).forEach(token => {
-                updateText(`bal_${token}`, data.balances[token]);
+                const balance = parseFloat(data.balances[token]) || 0;
+                const price = prices[token] || 0;
+                calculatedTotal += (balance * price);
+                
+                // 更新单个代币余额显示
+                updateText(`bal_${token}`, balance.toFixed(2));
             });
+
+            // 更新首页大数字的总资产价值
+            updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
         }
         renderHistory(data.history);     // 对应后端返回的 history
         renderTransfers(data.transfers); // 对应后端返回的 transfers
