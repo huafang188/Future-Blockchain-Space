@@ -186,41 +186,73 @@
     
     <script src="languages.js"></script>
     <script src="app.js"></script>
-
-    <footer class="mt-20 pb-10 px-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <a href="#" onclick="handleNav('market')" class="glass-card p-4 rounded-2xl text-center hover:bg-white/20 transition-all active:scale-95 group">
-            <div class="text-blue-500 mb-2 group-hover:scale-110 transition-transform text-xl">🛒</div>
-            <span class="text-xs font-bold text-slate-600 uppercase tracking-tighter" data-i18n="nav_market">市场</span>
+<footer class="mt-20 pb-10 px-6 max-w-7xl mx-auto">
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <a href="#" onclick="handleNav('market')" class="block group overflow-hidden rounded-3xl active:scale-95 transition-transform">
+            <img src="https://via.placeholder.com/600x200/007bff/ffffff?text=MARKET" 
+                 alt="Market" 
+                 class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300">
         </a>
-        <a href="#" onclick="handleNav('whitepaper')" class="glass-card p-4 rounded-2xl text-center hover:bg-white/20 transition-all active:scale-95 group">
-            <div class="text-blue-500 mb-2 group-hover:scale-110 transition-transform text-xl">📄</div>
-            <span class="text-xs font-bold text-slate-600 uppercase tracking-tighter" data-i18n="nav_wp">白皮书</span>
+        
+        <a href="#" onclick="handleNav('whitepaper')" class="block group overflow-hidden rounded-3xl active:scale-95 transition-transform">
+            <img src="https://via.placeholder.com/600x200/28a745/ffffff?text=WHITEPAPER" 
+                 alt="Whitepaper" 
+                 class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300">
         </a>
-        <a href="https://web3.bitget.com/" target="_blank" class="glass-card p-4 rounded-2xl text-center hover:bg-white/20 transition-all active:scale-95 group">
-            <div class="text-blue-500 mb-2 group-hover:scale-110 transition-transform text-xl">🦊</div>
-            <span class="text-xs font-bold text-slate-600 uppercase tracking-tighter">Bitget Wallet</span>
-        </a>
-        <a href="https://bscscan.com/" target="_blank" class="glass-card p-4 rounded-2xl text-center hover:bg-white/20 transition-all active:scale-95 group">
-            <div class="text-blue-500 mb-2 group-hover:scale-110 transition-transform text-xl">🌐</div>
-            <span class="text-xs font-bold text-slate-600 uppercase tracking-tighter">BSC 浏览器</span>
+        
+        <a href="https://bscscan.com/" target="_blank" class="block group overflow-hidden rounded-3xl active:scale-95 transition-transform">
+            <img src="https://via.placeholder.com/600x200/ffc107/333333?text=EXPLORER" 
+                 alt="Blockchain Explorer" 
+                 class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300">
         </a>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-x-6 gap-y-4 mb-8 text-slate-400">
-        <a href="https://t.me/你的链接" target="_blank" class="hover:text-blue-500 transition-colors"><i class="fab fa-telegram text-xl"></i></a>
-        <a href="https://twitter.com/你的链接" target="_blank" class="hover:text-blue-400 transition-colors"><i class="fab fa-twitter text-xl"></i></a>
-        <a href="https://github.com/你的链接" target="_blank" class="hover:text-slate-800 transition-colors"><i class="fab fa-github text-xl"></i></a>
-        <a href="https://www.binance.com/" target="_blank" class="hover:text-yellow-500 transition-colors text-xs font-bold">Binance</a>
-        <a href="https://www.okx.com/" target="_blank" class="hover:text-white bg-slate-800 px-2 rounded transition-colors text-xs font-bold">OKX</a>
-        <a href="#" class="hover:text-blue-600 transition-colors text-xs font-bold">Community</a>
+    <div class="flex items-center justify-between gap-4 mb-12 border-t border-b border-slate-100 py-6">
+        <a href="https://web3.bitget.com/" target="_blank" class="block h-8 active:scale-95 transition-transform flex-1 text-center">
+            <img src="https://img.bitgetimg.com/multiLang/web/1706692348589.png" 
+                 alt="Bitget Wallet" 
+                 class="h-full w-auto inline-block object-contain">
+        </a>
+        
+        <a href="https://www.binance.com/" target="_blank" class="block h-8 active:scale-95 transition-transform flex-1 text-center">
+            <img src="https://bin.bnbstatic.com/static/images/common/favicon.ico" 
+                 alt="Binance" 
+                 class="h-full w-auto inline-block object-contain">
+             <span class="text-yellow-500 font-bold ml-1">Binance</span> </a>
+        
+        <a href="https://www.okx.com/" target="_blank" class="block h-8 active:scale-95 transition-transform flex-1 text-center">
+            <img src="https://static.okx.com/cdn/assets/imgs/221/9E9A6C0B7B6A4E2B.png" 
+                 alt="OKX" 
+                 class="h-full w-auto inline-block object-contain">
+        </a>
     </div>
 
-    <div class="text-center">
+    <div class="mb-10 text-left">
+        <h5 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Community</h5>
+        <div class="flex items-center gap-4 text-slate-400">
+            <a href="https://t.me/你的链接" target="_blank" class="block w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center hover:bg-blue-50 hover:text-blue-500 transition-all active:scale-90">
+                <i class="fab fa-telegram text-lg"></i>
+            </a>
+            <a href="https://twitter.com/你的链接" target="_blank" class="block w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-slate-900 transition-all active:scale-90">
+                <i class="fab fa-twitter text-lg"></i>
+            </a>
+            <a href="https://github.com/你的链接" target="_blank" class="block w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all active:scale-90">
+                <i class="fab fa-github text-lg"></i>
+            </a>
+            <a href="#" target="_blank" class="block w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-slate-600 transition-all active:scale-90">
+                <i class="fas fa-users text-lg"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="text-center pt-6 border-t border-slate-100">
         <p class="text-[10px] text-slate-400 font-medium tracking-widest uppercase">
-            © 2026 FBS Blockchain Ecosystem. All Rights Reserved.
+            © 2026 Future Blockchain Space. All Rights Reserved.
         </p>
     </div>
 </footer>
+
+    
 </body>
 </html>
