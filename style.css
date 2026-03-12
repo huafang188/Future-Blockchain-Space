@@ -6,15 +6,27 @@
 
 :root {
     --primary: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
-    --bg-main: #f4f7fa;
-    --text-main: #1e293b;
-    --glass-bg: rgba(241, 245, 249, 0.9); /* 加深的淡灰色背景 */
-    --glass-border: rgba(255, 255, 255, 0.6);
+    /* 默认白天模式变量 */
+    --bg-main: #ffffff;           /* 纯白 */
+    --text-main: #1e293b;        /* 深色字 */
+    --glass-bg: rgba(255, 255, 255, 0.8); 
+    --glass-border: rgba(0, 0, 0, 0.1);
+}
+
+/* 核心：检测系统黑夜模式 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-main: #000000;       /* 纯黑 */
+        --text-main: #f1f5f9;    /* 浅色字 */
+        --glass-bg: rgba(30, 41, 59, 0.7); /* 深色半透明背景 */
+        --glass-border: rgba(255, 255, 255, 0.1);
+    }
 }
 
 body {
     background-color: var(--bg-main);
     color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease; /* 让切换时有个平滑过渡 */
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
     padding: 0;
