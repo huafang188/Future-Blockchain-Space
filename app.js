@@ -834,3 +834,54 @@ function fallbackCopyText(text) {
     }
     document.body.removeChild(textArea);
 }
+
+
+/**
+ * 全局函数：强制确保当前处于币安智能链 (BSC)
+ * 供购买矿机、电费、充值等真实上链业务调用，这部分为新增内容
+ */
+window.ensureBSCChain = async function() {
+    if (!window.ethereum) {
+        alert("未检测到环境，请在支持 Web3 的浏览器中打开");
+        return false;
+    }
+
+    const BSC_CHAIN_ID = '0x38'; // 56 的十六进制
+
+    try {
+        // 获取当前链 ID
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        
+        if (currentChainId !== BSC_CHAIN_ID) {
+            console.log("正在强制切换到 BSC 网络...");
+            try {
+                // 请求切换
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: BSC_CHAIN_ID }],
+                });
+            } catch (switchError) {
+                // 如果用户钱包没有配置 BSC，则自动添加
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: BSC_CHAIN_ID,
+                            chainName: 'BNB Smart Chain Mainnet',
+                            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                            blockExplorerUrls: ['https://bscscan.com/']
+                        }]
+                    });
+                } else {
+                    throw switchError;
+                }
+            }
+        }
+        return true;
+    } catch (error) {
+        console.error("切换网络失败:", error);
+        alert("请手动将钱包网络切换为币安智能链 (BSC)");
+        return false;
+    }
+};
