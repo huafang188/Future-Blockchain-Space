@@ -6,7 +6,7 @@ const i18nData = {
         connect: "连接钱包",
         connected: "已连接",
         total_value: "总资产价值",
-        miner_title: "我的矿机",
+        miner_title: "我的算力",
         miner_name: "FBS 智能矿机 S1",
         buy_miner: "购买矿机",
         pay_fee: "缴纳电费",
