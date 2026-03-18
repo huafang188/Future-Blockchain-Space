@@ -61,7 +61,15 @@ const i18nData = {
         placeholder_inviter_id: "请输入推荐人 ID",
         bind_success: "绑定成功",
         bind_loading: "正在提交...",
-        btn_confirm: "确认提交"
+        btn_confirm: "确认提交",
+        nav_market: "看板",
+        nav_whitepaper: "白皮书",
+        nav_bitget: "排行榜",
+        nav_explorer: "BSC 浏览器",
+        nav_community: "常用社区",
+        copy_success: "已成功复制到剪贴板",
+        copy_fail: "复制失败，请手动操作",
+        wait_audit: "申请已提交，等待审核"
     },
     'zh-HK': {
         title: "Future Blockchain Space",
@@ -122,7 +130,15 @@ const i18nData = {
         placeholder_inviter_id: "請輸入推薦人 ID",
         bind_success: "綁定成功",
         bind_loading: "正在提交...",
-        btn_confirm: "確認提交"
+        btn_confirm: "確認提交",
+        nav_market: "看板",
+  nav_whitepaper: "白皮書",
+  nav_bitget: "排行榜",
+  nav_explorer: "BSC 瀏覽器",
+  nav_community: "常用社區",
+  copy_success: "已成功複製到剪貼板",
+  copy_fail: "複製失敗，請手動操作",
+  wait_audit: "申請已提交，等待審核"
     },
     'en': {
         title: "Future Blockchain Space",
@@ -183,7 +199,15 @@ const i18nData = {
         placeholder_inviter_id: "Enter Inviter ID",
         bind_success: "Bound Successfully",
         bind_loading: "Submitting...",
-        btn_confirm: "Confirm"
+        btn_confirm: "Confirm",
+        nav_market: "Dashboard",
+  nav_whitepaper: "Whitepaper",
+  nav_bitget: "Leaderboard",
+  nav_explorer: "BSC Explorer",
+  nav_community: "Community",
+  copy_success: "Copied to clipboard",
+  copy_fail: "Copy failed, please do it manually",
+  wait_audit: "Submitted, waiting for audit"
     },
     'ja': {
         title: "Future Blockchain Space",
@@ -244,7 +268,15 @@ const i18nData = {
         placeholder_inviter_id: "紹介者IDを入力してください",
         bind_success: "紐付けに成功しました",
         bind_loading: "提出中...",
-        btn_confirm: "確認"
+        btn_confirm: "確認",
+        nav_market: "ダッシュボード",
+  nav_whitepaper: "ホワイトペーパー",
+  nav_bitget: "ランキング",
+  nav_explorer: "BSCエクスプローラー",
+  nav_community: "コミュニティ",
+  copy_success: "クリップボードにコピーしました",
+  copy_fail: "コピーに失敗しました。手動で行ってください",
+  wait_audit: "申請が送信されました。審査待ちです"
     },
     'ko': {
         title: "Future Blockchain Space",
@@ -305,7 +337,15 @@ const i18nData = {
         placeholder_inviter_id: "추천인 ID를 입력하세요",
         bind_success: "바인딩 성공",
         bind_loading: "제출 중...",
-        btn_confirm: "확인"
+        btn_confirm: "확인",
+        nav_market: "대시보드",
+  nav_whitepaper: "백서",
+  nav_bitget: "랭킹",
+  nav_explorer: "BSC 탐색기",
+  nav_community: "커뮤니티",
+  copy_success: "클립보드에 복사되었습니다",
+  copy_fail: "복사 실패, 수동으로 시도하십시오",
+  wait_audit: "신청이 제출되었습니다. 심사 대기 중입니다"
     },
     'ru': {
         title: "Future Blockchain Space",
@@ -366,7 +406,15 @@ const i18nData = {
         placeholder_inviter_id: "Введите ID пригласителя",
         bind_success: "Привязка успешно завершена",
         bind_loading: "Отправка...",
-        btn_confirm: "Подтвердить"
+        btn_confirm: "Подтвердить",
+        nav_market: "Панель",
+  nav_whitepaper: "Белая книга",
+  nav_bitget: "Рейтинг",
+  nav_explorer: "BSC Проводник",
+  nav_community: "Сообщество",
+  copy_success: "Скопировано в буфер обмена",
+  copy_fail: "Ошибка копирования, скопируйте вручную",
+  wait_audit: "Заявка подана, ожидается проверка"
     }
 };
 
