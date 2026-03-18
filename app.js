@@ -16,10 +16,10 @@ const CONTRACT_ADDRS = {
 };
 
 const tokenInfo = {
-    'FBS': { price: 0.1, logo: 'assets/fbs_logo.png' },
-    'FBST': { price: 0.05, logo: 'assets/fbst_logo.png' },
-    'FBSP': { price: 1.2, logo: 'assets/fbsp_logo.png' },
-    'FBSU': { price: 1.0, logo: 'assets/fbsu_logo.png' },
+    'FBS': { price: 0.152, logo: 'assets/fbs_logo.png' },
+    'FBST': { price: 0.00, logo: 'assets/fbst_logo.png' },
+    'FBSP': { price: 0.00, logo: 'assets/fbsp_logo.png' },
+    'FBSU': { price: 15.0, logo: 'assets/fbsu_logo.png' },
     'USDT': { price: 1.0, logo: 'assets/USDT.png' },
     'BNB': { price: 600, logo: 'assets/BNB.png' },
     'BTC': { price: 65000, logo: 'assets/BTC.png' },
