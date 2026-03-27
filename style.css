@@ -191,3 +191,27 @@ body {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* 自定义列表滚动条，增加 App 质感 */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+/* 列表条目的统一样式（如果 app.js 生成动态 HTML，请确保包含这些类） */
+.list-item {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(241, 245, 249, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
