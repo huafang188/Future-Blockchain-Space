@@ -69,7 +69,11 @@ const i18nData = {
         nav_community: "常用社区",
         copy_success: "已成功复制到剪贴板",
         copy_fail: "复制失败，请手动操作",
-        wait_audit: "申请已提交，等待审核"
+        wait_audit: "申请已提交，等待审核",
+        nav_home: "首页",
+        nav_mine: "矿场",
+        nav_market: "看板",
+        nav_me: "我的"
     },
     'zh-HK': {
         title: "Future Blockchain Space",
@@ -138,7 +142,11 @@ const i18nData = {
   nav_community: "常用社區",
   copy_success: "已成功複製到剪貼板",
   copy_fail: "複製失敗，請手動操作",
-  wait_audit: "申請已提交，等待審核"
+  wait_audit: "申請已提交，等待審核",
+        nav_home: "首頁",
+        nav_mine: "礦場",
+        nav_market: "看板",
+        nav_me: "我的"
     },
     'en': {
         title: "Future Blockchain Space",
@@ -207,7 +215,11 @@ const i18nData = {
   nav_community: "Community",
   copy_success: "Copied to clipboard",
   copy_fail: "Copy failed, please do it manually",
-  wait_audit: "Submitted, waiting for audit"
+  wait_audit: "Submitted, waiting for audit",
+        nav_home: "Home",
+        nav_mine: "Mining",
+        nav_market: "Market",
+        nav_me: "Profile"
     },
     'ja': {
         title: "Future Blockchain Space",
@@ -276,7 +288,11 @@ const i18nData = {
   nav_community: "コミュニティ",
   copy_success: "クリップボードにコピーしました",
   copy_fail: "コピーに失敗しました。手動で行ってください",
-  wait_audit: "申請が送信されました。審査待ちです"
+  wait_audit: "申請が送信されました。審査待ちです",
+        nav_home: "ホーム",
+        nav_mine: "マイニング",
+        nav_market: "ボード",
+        nav_me: "マイページ"
     },
     'ko': {
         title: "Future Blockchain Space",
@@ -345,7 +361,11 @@ const i18nData = {
   nav_community: "커뮤니티",
   copy_success: "클립보드에 복사되었습니다",
   copy_fail: "복사 실패, 수동으로 시도하십시오",
-  wait_audit: "신청이 제출되었습니다. 심사 대기 중입니다"
+  wait_audit: "신청이 제출되었습니다. 심사 대기 중입니다",
+        nav_home: "홈",
+        nav_mine: "광산",
+        nav_market: "대시보드",
+        nav_me: "내 정보"
     },
     'ru': {
         title: "Future Blockchain Space",
@@ -414,7 +434,11 @@ const i18nData = {
   nav_community: "Сообщество",
   copy_success: "Скопировано в буфер обмена",
   copy_fail: "Ошибка копирования, скопируйте вручную",
-  wait_audit: "Заявка подана, ожидается проверка"
+  wait_audit: "Заявка подана, ожидается проверка",
+        nav_home: "Главная",
+        nav_mine: "Майнинг",
+        nav_market: "Рынок",
+        nav_me: "Профиль"
     }
 };
 
