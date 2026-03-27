@@ -165,3 +165,29 @@ body {
         font-size: 12px;
     }
 }
+
+/* 导航激活状态 */
+.nav-item.active i {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 4px 6px rgba(59, 130, 246, 0.3));
+}
+
+.nav-item {
+    flex: 1;
+    color: #94a3b8; /* 默认灰色 */
+}
+
+/* 确保移动端点击没有蓝色高亮框 */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 页面切换淡入效果 */
+.page-view:not(.hidden) {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
