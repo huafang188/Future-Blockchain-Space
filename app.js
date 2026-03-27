@@ -896,3 +896,43 @@ window.ensureBSCChain = async function() {
         return false;
     }
 };
+
+/**
+ * SPA 页面切换逻辑
+ */
+window.switchPage = function(pageId) {
+    // 1. 隐藏所有页面视图
+    document.querySelectorAll('.page-view').forEach(view => {
+        view.classList.add('hidden');
+    });
+
+    // 2. 显示选中的页面
+    const activePage = document.getElementById('page-' + pageId);
+    if (activePage) {
+        activePage.classList.remove('hidden');
+        // 只有切换到对应页面时才滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 3. 更新导航栏 UI 状态
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active', 'text-blue-600');
+        item.classList.add('text-slate-400');
+    });
+    
+    const activeNav = document.getElementById('nav-' + pageId);
+    if (activeNav) {
+        activeNav.classList.add('active', 'text-blue-600');
+        activeNav.classList.remove('text-slate-400');
+    }
+
+    // 4. 特殊页面逻辑：如果切换到“我的”，刷新数据
+    if (pageId === 'user') {
+        if (typeof fetchUserData === 'function') fetchUserData();
+    }
+};
+
+// 页面加载时默认显示首页
+window.addEventListener('DOMContentLoaded', () => {
+    switchPage('home');
+});
