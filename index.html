@@ -212,24 +212,24 @@
 
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 flex justify-around items-center py-3 z-[100] px-2">
-        <button onclick="switchPage('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-home text-lg"></i>
-            <span class="text-[9px] font-black uppercase">首页</span>
-        </button>
-        <button onclick="switchPage('mine')" id="nav-mine" class="nav-item flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-microchip text-lg"></i>
-            <span class="text-[9px] font-black uppercase">矿场</span>
-        </button>
-        <button onclick="switchPage('stats')" id="nav-stats" class="nav-item flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-chart-line text-lg"></i>
-            <span class="text-[9px] font-black uppercase">看板</span>
-        </button>
-        <button onclick="switchPage('user')" id="nav-user" class="nav-item flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-user-circle text-lg"></i>
-            <span class="text-[9px] font-black uppercase">我的</span>
-        </button>
-    </nav>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 flex justify-around items-center py-3 z-[100] px-2">
+    <button onclick="switchPage('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 transition-all">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-[9px] font-black uppercase" data-i18n="nav_home">首页</span>
+    </button>
+    <button onclick="switchPage('mine')" id="nav-mine" class="nav-item flex flex-col items-center gap-1 transition-all">
+        <i class="fas fa-microchip text-lg"></i>
+        <span class="text-[9px] font-black uppercase" data-i18n="nav_mine">矿场</span>
+    </button>
+    <button onclick="switchPage('stats')" id="nav-stats" class="nav-item flex flex-col items-center gap-1 transition-all">
+        <i class="fas fa-chart-line text-lg"></i>
+        <span class="text-[9px] font-black uppercase" data-i18n="nav_market">看板</span>
+    </button>
+    <button onclick="switchPage('user')" id="nav-user" class="nav-item flex flex-col items-center gap-1 transition-all">
+        <i class="fas fa-user-circle text-lg"></i>
+        <span class="text-[9px] font-black uppercase" data-i18n="nav_me">我的</span>
+    </button>
+</nav>
 
     <script src="languages.js"></script>
     <script src="app.js"></script>
