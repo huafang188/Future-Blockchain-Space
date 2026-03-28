@@ -2,7 +2,7 @@
 // 1. 语言包数据（移出函数，变为全局可用）
 const i18nData = {
     'zh-CN': {
-        title: "Future Blockchain Space",
+        title: "NEO生态挖矿矩阵",
         connect: "连接钱包",
         connected: "已连接",
         total_value: "总资产价值",
@@ -76,7 +76,7 @@ const i18nData = {
         nav_me: "我的"
     },
     'zh-HK': {
-        title: "Future Blockchain Space",
+        title: "NEO生態挖礦矩陣",
         connect: "連接錢包",
         connected: "已連接",
         total_value: "總資產價值",
@@ -149,7 +149,7 @@ const i18nData = {
         nav_me: "我的"
     },
     'en': {
-        title: "Future Blockchain Space",
+        title: "NEO Ecological Mining Matrix",
         connect: "Connect Wallet",
         connected: "Connected",
         total_value: "Total Asset Value",
@@ -222,7 +222,7 @@ const i18nData = {
         nav_me: "Profile"
     },
     'ja': {
-        title: "Future Blockchain Space",
+        title: "NEO生態鉱業マトリックス",
         connect: "ウォレット接続",
         connected: "接続済み",
         total_value: "総資産価値",
@@ -295,7 +295,7 @@ const i18nData = {
         nav_me: "マイページ"
     },
     'ko': {
-        title: "Future Blockchain Space",
+        title: "NEO 생태 채굴 매트릭스",
         connect: "지갑 연결",
         connected: "연결됨",
         total_value: "총 자산 가치",
@@ -368,7 +368,7 @@ const i18nData = {
         nav_me: "내 정보"
     },
     'ru': {
-        title: "Future Blockchain Space",
+        title: "Экологическая матрица добычи полезных ископаемых NEO",
         connect: "Подключить кошелек",
         connected: "Подключено",
         total_value: "Общая стоимость активов",
