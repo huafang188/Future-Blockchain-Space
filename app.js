@@ -16,14 +16,16 @@ const CONTRACT_ADDRS = {
 };
 
 const tokenInfo = {
-    'FBS': { price: 0.152, logo: 'assets/fbs_logo.png' },
-    'FBST': { price: 0.00, logo: 'assets/fbst_logo.png' },
-    'FBSP': { price: 0.00, logo: 'assets/fbsp_logo.png' },
-    'FBSU': { price: 15.0, logo: 'assets/fbsu_logo.png' },
-    'USDT': { price: 1.0, logo: 'assets/USDT.png' },
-    'BNB': { price: 600, logo: 'assets/BNB.png' },
-    'BTC': { price: 65000, logo: 'assets/BTC.png' },
-    'ETH': { price: 3500, logo: 'assets/ETH.png' }
+    'NEO': { price: 0.152, logo: 'assets/neo_logo.png' },
+    'NEX': { price: 0.00,  logo: 'assets/nex_logo.png' },
+    'NET': { price: 0.00,  logo: 'assets/net_logo.png' },
+    'NEA': { price: 0.00,  logo: 'assets/nea_logo.png' },
+    'NRY': { price: 0.00,  logo: 'assets/nry_logo.png' },
+    'NCL': { price: 0.00,  logo: 'assets/ncl_logo.png' },
+    'USDT': { price: 1.0,   logo: 'assets/USDT.png' },
+    'BNB': { price: 600.0, logo: 'assets/BNB.png' },
+    'ETH': { price: 3500.0, logo: 'assets/ETH.png' },
+    'BTC': { price: 65000.0, logo: 'assets/BTC.png' }
 };
 
 
