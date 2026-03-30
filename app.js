@@ -940,13 +940,18 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+/**
+ * 1. 渲染新闻公告列表
+ * 仅由 i18nRender 调用
+ */
 function renderNews(lang) {
     const container = document.getElementById('news-container');
-    const newsList = i18nData[lang]?.news_list || [];
-    
     if (!container) return;
 
-    // 清空现有内容并只取前 5 条
+    // 从 i18nData 获取对应语言的新闻数组
+    const newsList = i18nData[lang]?.news_list || [];
+    
+    // 清空现有内容并只取前 5 条进行渲染
     container.innerHTML = newsList.slice(0, 5).map((text, index) => `
         <div class="group flex items-start gap-3 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
             <span class="text-[10px] font-black text-indigo-300 mt-1">0${index + 1}</span>
@@ -957,9 +962,54 @@ function renderNews(lang) {
     `).join('');
 }
 
-// 在你原来的切换语言函数里调用它
-function switchLang(lang) {
-    currentLang = lang;
-    updatePageContent(lang); // 原有的翻译逻辑
-    renderNews(lang);        // 新增的新闻渲染逻辑
+/**
+ * 2. 核心多语言渲染函数 (替代原来的 updatePageContent)
+ * 负责全页面的文本翻译和 UI 同步
+ */
+function i18nRender(lang) {
+    // 如果没传参，尝试从本地缓存获取，拿不到则默认中文
+    const targetLang = lang || localStorage.getItem('selectedLang') || 'zh-CN';
+    
+    if (typeof i18nData === 'undefined') {
+        console.error("i18nData 尚未加载，请确保 languages.js 在 app.js 之前引入");
+        return;
+    }
+
+    const data = i18nData[targetLang];
+    if (!data) return;
+
+    // 翻译所有带有 data-i18n 属性的普通文本
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (data[key]) el.innerText = data[key];
+    });
+
+    // 翻译带有 data-i18n-placeholder 属性的输入框
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (data[key]) el.placeholder = data[key];
+    });
+
+    // --- 同步执行新闻渲染 ---
+    renderNews(targetLang);
+    
+    // 同步顶部下拉菜单的显示状态
+    const langSelect = document.getElementById('langSelect');
+    if (langSelect) langSelect.value = targetLang;
 }
+
+/**
+ * 3. 语言切换函数 (供 HTML Select 标签调用)
+ */
+function switchLang(lang) {
+    console.log("切换语言至:", lang);
+    currentLang = lang;
+    
+    // 保存选择到本地，防止刷新后丢失
+    localStorage.setItem('selectedLang', lang);
+    
+    // 执行统一渲染
+    i18nRender(lang);
+}
+
+
