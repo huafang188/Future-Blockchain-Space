@@ -239,6 +239,26 @@ async function fetchUserData(address) {
         updateText('team_totalSales', t["团队业绩"]);
         updateText('team_totalReward', t["累计奖励"]);
 
+        // 4. 【新增】同步触发动态内容的渲染
+        const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+        
+        // 渲染看板（代币详细参数）
+        if (typeof renderStatsPage === 'function') {
+            console.log("数据获取成功，开始渲染看板内容...");
+            renderStatsPage(currentLang);
+        }
+
+        // 渲染新闻列表
+        if (typeof renderNews === 'function') {
+            renderNews(currentLang);
+        }
+
+        // 如果你有其他需要根据语言同步的 UI，也可以在这里调用 window.i18nRender();
+    } catch (err) {
+        console.error("请求失败:", err);
+    }
+}
+
 // 4. 渲染【资产列表】与计算总价值
         if (data.balances) {
             window.userBalances = data.balances; 
