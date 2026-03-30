@@ -270,7 +270,7 @@ async function fetchUserData(address) {
             
             // --- 核心修改：前端实时计算总价值 ---
             let calculatedTotal = 0;
-            const prices = window.TOKEN_PRICES || { "USDT": 1, "FBS": 0.5, "BNB": 600 }; // 确保你有定义单价
+            const prices = window.TOKEN_PRICES || { "USDT": 1, "FBS": 0.5, "BNB": 600 }; 
 
             Object.keys(data.balances).forEach(token => {
                 const balance = parseFloat(data.balances[token]) || 0;
@@ -287,15 +287,22 @@ async function fetchUserData(address) {
                 maximumFractionDigits: 2
             }));
         }
-        renderHistory(data.history);     // 对应后端返回的 history
-        renderTransfers(data.transfers); // 对应后端返回的 transfers
-        
 
-     catch (e) {
+        // 渲染历史与转账
+        if (typeof renderHistory === 'function') renderHistory(data.history);
+        if (typeof renderTransfers === 'function') renderTransfers(data.transfers);
+        
+        // 5. 【新增】触发看板渲染
+        const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+        if (typeof renderStatsPage === 'function') {
+            renderStatsPage(currentLang);
+        }
+
+    } 
+    catch (e) {
         console.error("前端渲染逻辑报错:", e);
-        // 如果报错了，可以给用户一个友好的提示
-        // if (typeof showModal === 'function') showModal('错误', '数据加载失败，请刷新页面');
     }
+} 
 /**
  * 状态与 CSS 类名的映射字典 (需与飞书表中的状态文字完全一致)
  */
