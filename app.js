@@ -1024,35 +1024,55 @@ function renderNews(lang) {
  * 负责全页面的文本翻译和 UI 同步
  */
 function i18nRender(lang) {
-    // 如果没传参，尝试从本地缓存获取，拿不到则默认中文
+    // 统一获取当前目标语言，优先级：参数 > 本地缓存 > 默认中文
     const targetLang = lang || localStorage.getItem('selectedLang') || 'zh-CN';
     
+    // 检查全局数据是否存在
     if (typeof i18nData === 'undefined') {
         console.error("i18nData 尚未加载，请确保 languages.js 在 app.js 之前引入");
         return;
     }
 
     const data = i18nData[targetLang];
-    if (!data) return;
+    if (!data) {
+        console.warn(`未找到语言包数据: ${targetLang}`);
+        return;
+    }
 
-    // 翻译所有带有 data-i18n 属性的普通文本
+    // A. 翻译所有带有 data-i18n 属性的普通文本
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (data[key]) el.innerText = data[key];
+        if (data[key]) {
+            el.innerText = data[key];
+        }
     });
 
-    // 翻译带有 data-i18n-placeholder 属性的输入框
+    // B. 翻译带有 data-i18n-placeholder 属性的输入框
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        if (data[key]) el.placeholder = data[key];
+        if (data[key]) {
+            el.placeholder = data[key];
+        }
     });
 
-    // --- 同步执行新闻渲染 ---
-    renderNews(targetLang);
+    // --- C. 同步渲染动态生成的内容 (核心修复点) ---
     
-    // 同步顶部下拉菜单的显示状态
+    // 渲染新闻公告
+    if (typeof renderNews === 'function') {
+        renderNews(targetLang);
+    }
+    
+    // 渲染代币看板 (确保切换语言时看板也跟着重绘)
+    if (typeof renderStatsPage === 'function') {
+        console.log("正在同步渲染看板多语言:", targetLang);
+        renderStatsPage(targetLang);
+    }
+
+    // D. 同步顶部下拉菜单的选择状态
     const langSelect = document.getElementById('langSelect');
-    if (langSelect) langSelect.value = targetLang;
+    if (langSelect) {
+        langSelect.value = targetLang;
+    }
 }
 
 /**
@@ -1060,13 +1080,20 @@ function i18nRender(lang) {
  */
 function switchLang(lang) {
     console.log("切换语言至:", lang);
-    currentLang = lang;
     
-    // 保存选择到本地，防止刷新后丢失
+    // 如果你在 app.js 顶部定义了全局变量 currentLang，这里会自动更新它
+    if (typeof currentLang !== 'undefined') {
+        currentLang = lang;
+    }
+    
+    // 1. 保存选择到本地，确保刷新后依然生效
     localStorage.setItem('selectedLang', lang);
     
-    // 执行统一渲染
+    // 2. 执行统一渲染逻辑
     i18nRender(lang);
+    
+    // 3. 【可选】如果需要同时给用户反馈，可以加个 Toast 或 console
+    // console.log("多语言 UI 已更新");
 }
 
 
