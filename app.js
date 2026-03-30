@@ -296,7 +296,6 @@ async function fetchUserData(address) {
         // 如果报错了，可以给用户一个友好的提示
         // if (typeof showModal === 'function') showModal('错误', '数据加载失败，请刷新页面');
     }
-}
 /**
  * 状态与 CSS 类名的映射字典 (需与飞书表中的状态文字完全一致)
  */
