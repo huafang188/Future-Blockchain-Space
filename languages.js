@@ -81,6 +81,23 @@ const i18nData = {
             "关于 NEO 节点维护的临时公告（3月30日）",
             "新功能：支持一键提取 10 种生态代币收益",
             "全球节点招募计划火热进行中，立即参与"
+        ],
+        stats_title: "代币详情与参数",
+        stats_subtitle: "代币经济学与市场数据",
+        token_labels: {
+            fullname: "全称",
+            position: "定位",
+            supply: "总供应量",
+            distribution: "分配机制",
+            mechanism: "释放机制"
+        },
+        tokens: [
+            { symbol: "NEO", name: "New Energy Ore", desc: "生态核心主币 / 挖矿核心产出", total: "1,000,000,000", dist: "挖矿产出 30% | 生态建设 20% | 团队激励 15% (锁2年) | 早期投资 15% | 社区空投 10% | 流动性 10%", mech: "挖矿线性产出，预计5年内挖完，逐年减半。" },
+            { symbol: "NEX", name: "Neo Energy Xtreme", desc: "算力加速 / 挖矿增益凭证", total: "500,000,000", dist: "高性能节点挖矿 40% | 质押NEO获得 25% | 生态合作 15% | 团队 10% | 社区激励 10%", mech: "随算力提升逐步释放，高算力节点优先产出。" },
+            { symbol: "NET", name: "Neo Energy Token", desc: "网络燃料 / Gas 费代币", total: "200,000,000", dist: "节点运行奖励 35% | 网络维护 30% | 流动性储备 20% | 社区空投 15%", mech: "燃烧+销毁机制，总量通缩。" },
+            { symbol: "NEA", name: "Neo Energy Asset", desc: "算力资产映射 / 实体矿机锚定币", total: "动态锚定实体算力规模", dist: "实体矿机映射 60% | 算力质押挖矿 25% | 生态合作 10% | 团队 5%", mech: "按算力接入量分批铸造，资产与实体算力一一对应。" },
+            { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分红 / 生态利润权益", total: "300,000,000", dist: "生态利润分红 50% | 长期持有奖励 25% | 节点贡献激励 15% | 团队储备 10%", mech: "按季度利润分配，持有即可分红，鼓励长期锁仓。" },
+            { symbol: "NCL", name: "Neo Core Link", desc: "跨链枢纽 / 生态互通媒介", total: "400,000,000", dist: "跨链节点奖励 40% | 生态合作 30% | 社区治理 15% | 团队开发 15%", mech: "跨链交互、协议对接时逐步释放。" }
         ]
     },
     'zh-HK': {
@@ -162,6 +179,23 @@ const i18nData = {
             "關於 NEO 節點維護的臨時公告（3月30日）",
             "新功能：支持一鍵提取 10 種生態代幣收益",
             "全球節點招募計劃火熱進行中，立即參與"
+        ],
+        stats_title: "代幣詳情與參數",
+        stats_subtitle: "代幣經濟學與市場數據",
+        token_labels: {
+            fullname: "全稱",
+            position: "定位",
+            supply: "總供應量",
+            distribution: "分配機制",
+            mechanism: "釋放機制"
+        },
+        tokens: [
+            { symbol: "NEO", name: "New Energy Ore", desc: "生態核心主幣 / 挖礦核心產出", total: "1,000,000,000", dist: "挖礦產出 30% | 生態建設 20% | 團隊激勵 15% (鎖2年) | 早期投資 15% | 社區空投 10% | 流動性 10%", mech: "挖礦線性產出，預計5年內挖完，逐年減半。" },
+            { symbol: "NEX", name: "Neo Energy Xtreme", desc: "算力加速 / 挖礦增益憑證", total: "500,000,000", dist: "高性能節點挖礦 40% | 質押NEO獲得 25% | 生態合作 15% | 團隊 10% | 社區激勵 10%", mech: "隨算力提升逐步釋放，高算力節點優先產出。" },
+            { symbol: "NET", name: "Neo Energy Token", desc: "網絡燃料 / Gas 費代幣", total: "200,000,000", dist: "節點運行獎勵 35% | 網絡維護 30% | 流動性儲備 20% | 社區空投 15%", mech: "燃燒+銷毀機制，總量通縮。" },
+            { symbol: "NEA", name: "Neo Energy Asset", desc: "算力資產映射 / 實體礦機錨定幣", total: "動態錨定實體算力規模", dist: "實體礦機映射 60% | 算力質押挖礦 25% | 生態合作 10% | 團隊 5%", mech: "按算力接入量分批鑄造，資產與實體算力一一對應。" },
+            { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分紅 / 生態利潤權益", total: "300,000,000", dist: "生態利潤分紅 50% | 長期持有獎勵 25% | 節點貢獻激勵 15% | 團隊儲備 10%", mech: "按季度利潤分配，持有即可分紅，鼓勵長期鎖倉。" },
+            { symbol: "NCL", name: "Neo Core Link", desc: "跨鏈樞紐 / 生態互通媒介", total: "400,000,000", dist: "跨鏈節點獎勵 40% | 生態合作 30% | 社區治理 15% | 團隊開發 15%", mech: "跨鏈交互、協議對接時逐步釋放。" }
         ]
     },
     'en': {
@@ -243,6 +277,23 @@ const i18nData = {
             "Temporary notice on NEO node maintenance (Mar 30).",
             "New Feature: One-click withdrawal for 10 ecosystem tokens.",
             "Global Node Recruitment Program is ongoing. Join now!"
+        ],
+        stats_title: "Token Details",
+        stats_subtitle: "Tokenomics & Market Data",
+        token_labels: {
+            fullname: "Full Name",
+            position: "Position",
+            supply: "Total Supply",
+            distribution: "Distribution",
+            mechanism: "Release Mechanism"
+        },
+        tokens: [
+            { symbol: "NEO", name: "New Energy Ore", desc: "Core Ecosystem Token / Mining Output", total: "1,000,000,000", dist: "Mining 30% | Eco 20% | Team 15% (2y lock) | Investors 15% | Airdrop 10% | Liquidity 10%", mech: "Linear mining output, 5-year cycle with annual halving." },
+            { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Hashrate Booster / Mining Voucher", total: "500,000,000", dist: "Node Mining 40% | NEO Staking 25% | Eco-Partners 15% | Team 10% | Community 10%", mech: "Released gradually as total hashrate increases." },
+            { symbol: "NET", name: "Neo Energy Token", desc: "Network Fuel / Gas Token", total: "200,000,000", dist: "Node Rewards 35% | Maintenance 30% | Liquidity 20% | Airdrop 15%", mech: "Burn & Deflationary mechanism via network usage." },
+            { symbol: "NEA", name: "Neo Energy Asset", desc: "Asset Mapping / Hardware Anchored", total: "Anchored to Physical Hashrate", dist: "Hardware Mapping 60% | Staking 25% | Eco 10% | Team 5%", mech: "Minted based on physical hashrate integration." },
+            { symbol: "NRY", name: "Neo Resource Yield", desc: "Dividend / Profit Rights", total: "300,000,000", dist: "Profit Sharing 50% | Long-term Holders 25% | Node Incentives 15% | Reserves 10%", mech: "Quarterly profit distribution for stakers." },
+            { symbol: "NCL", name: "Neo Core Link", desc: "Cross-chain Hub / Interop Media", total: "400,000,000", dist: "Cross-chain Node 40% | Eco-Technical 30% | Governance 15% | Dev 15%", mech: "Released via cross-chain interaction & protocol usage." }
         ]
     },
     'ja': {
@@ -324,6 +375,23 @@ const i18nData = {
             "NEOノードメンテナンスに関する臨時のお知らせ（3月30日）。",
             "新機能：10種類のトークン報酬を一括受取可能に。",
             "グローバルノード募集中、今すぐご参加ください！"
+        ],
+        stats_title: "トークンの詳細",
+        stats_subtitle: "トークノミクスと市場データ",
+        token_labels: {
+            fullname: "フルネーム",
+            position: "役割",
+            supply: "総供給量",
+            distribution: "配分",
+            mechanism: "リリース"
+        },
+        tokens: [
+            { symbol: "NEO", name: "New Energy Ore", desc: "エコシステム基軸通貨 / マイニング報酬", total: "1,000,000,000", dist: "マイニング 30% | エコ 20% | チーム 15% (2年ロック) | 投資家 15% | エアドロップ 10% | 流動性 10%", mech: "5年間の線形マイニング出力、毎年半減。" },
+            { symbol: "NEX", name: "Neo Energy Xtreme", desc: "ハッシュレート加速 / マイニング証明", total: "500,000,000", dist: "ノード報酬 40% | NEOステーキング 25% | 提携 15% | チーム 10% | コミュニティ 10%", mech: "ハッシュレートの向上に応じて段階的にリリース。" },
+            { symbol: "NET", name: "Neo Energy Token", desc: "ネットワーク燃料 / Gasトークン", total: "200,000,000", dist: "ノード報酬 35% | メンテナンス 30% | 流動性 20% | エアドロップ 15%", mech: "バーンおよびデフレメカニズム。" },
+            { symbol: "NEA", name: "Neo Energy Asset", desc: "資産マッピング / 実機マイナー固定", total: "実機ハッシュレートにペッグ", dist: "マッピング 60% | ステーキング 25% | エコ 10% | チーム 5%", mech: "物理的なハッシュレートの接続に応じて鋳造。" },
+            { symbol: "NRY", name: "Neo Resource Yield", desc: "収益配当 / エコシステム利益権", total: "300,000,000", dist: "収益配分 50% | 長期保有者 25% | ノード貢献 15% | チーム 10%", mech: "四半期ごとの利益分配、長期ロック推奨。" },
+            { symbol: "NCL", name: "Neo Core Link", desc: "クロスチェーンハブ / 相互運用", total: "400,000,000", dist: "ノード報酬 40% | 技術提携 30% | ガバナンス 15% | 開発 15%", mech: "クロスチェーン利用時に段階的にリリース。" }
         ]
     },
     'ko': {
@@ -405,6 +473,23 @@ const i18nData = {
             "NEO 노드 점검에 관한 임시 공지 (3월 30일).",
             "신기능: 10종 생태계 토큰 수익 일괄 수령 지원.",
             "글로벌 노드 모집 중, 지금 바로 참여하세요!"
+        ],
+        stats_title: "토큰 상세 정보",
+        stats_subtitle: "토큰코노믹스 및 시장 데이터",
+        token_labels: {
+            fullname: "전체 이름",
+            position: "역할",
+            supply: "총 공급량",
+            distribution: "배분",
+            mechanism: "해제 메커니즘"
+        },
+        tokens: [
+            { symbol: "NEO", name: "New Energy Ore", desc: "생태계 핵심 통화 / 채굴 산출물", total: "1,000,000,000", dist: "채굴 30% | 생태계 20% | 팀 15% (2년 락업) | 투자자 15% | 에어드랍 10% | 유동성 10%", mech: "5년 선형 채굴 산출, 매년 반감기 적용." },
+            { symbol: "NEX", name: "Neo Energy Xtreme", desc: "해시레이트 가속 / 채굴 증빙", total: "500,000,000", dist: "노드 채굴 40% | NEO 스테이킹 25% | 파트너십 15% | 팀 10% | 커뮤니티 10%", mech: "해시레이트 증가에 따라 점진적 해제." },
+            { symbol: "NET", name: "Neo Energy Token", desc: "네트워크 연료 / Gas 토큰", total: "200,000,000", dist: "노드 보상 35% | 유지보수 30% | 유동성 20% | 에어드랍 15%", mech: "소각 및 디플레이션 메커니즘." },
+            { symbol: "NEA", name: "Neo Energy Asset", desc: "자산 매핑 / 하드웨어 앵커링", total: "물리적 해시레이트에 고정", dist: "하드웨어 매핑 60% | 스테이킹 25% | 파트너십 10% | 팀 5%", mech: "물리적 해시레이트 유입에 따른 발행." },
+            { symbol: "NRY", name: "Neo Resource Yield", desc: "수익 배당 / 생태계 이익 권리", total: "300,000,000", dist: "수익 공유 50% | 장기 홀더 25% | 노드 기여 15% | 팀 10%", mech: "분기별 수익 분배, 장기 스테이킹 권장." },
+            { symbol: "NCL", name: "Neo Core Link", desc: "크로스체인 허브 / 상호운용 매체", total: "400,000,000", dist: "노드 보상 40% | 기술 협력 30% | 거버넌스 15% | 개발 15%", mech: "크로스체인 상호작용 시 점진적 해제." }
         ]
     },
     'ru': {
@@ -486,21 +571,38 @@ const i18nData = {
             "Временное уведомление о техническом обслуживании узлов NEO (30 марта).",
             "Новая функция: Вывод 10 видов токенов одним нажатием.",
             "Глобальная программа набора узлов в разгаре. Присоединяйтесь!"
+        ],
+        stats_title: "Детали токена",
+        stats_subtitle: "Токеномика и рыночные данные",
+        token_labels: {
+            fullname: "Полное имя",
+            position: "Позиция",
+            supply: "Общее предложение",
+            distribution: "Распределение",
+            mechanism: "Механизм выпуска"
+        },
+        tokens: [
+            { symbol: "NEO", name: "New Energy Ore", desc: "Ядро экосистемы / Результат майнинга", total: "1,000,000,000", dist: "Майнинг 30% | Экосистема 20% | Команда 15% (лок 2г) | Инвесторы 15% | Аирдроп 10% | Ликвидность 10%", mech: "Линейный майнинг на 5 лет с ежегодным сокращением." },
+            { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Ускоритель хешрейта / Ваучер майнинга", total: "500,000,000", dist: "Майнинг нод 40% | Стейкинг NEO 25% | Партнеры 15% | Команда 10% | Сообщество 10%", mech: "Выпуск по мере роста общей мощности сети." },
+            { symbol: "NET", name: "Neo Energy Token", desc: "Топливо сети / Gas токен", total: "200,000,000", dist: "Награды нод 35% | Обслуживание 30% | Резерв 20% | Аирдроп 15%", mech: "Сжигание и дефляционный механизм." },
+            { symbol: "NEA", name: "Neo Energy Asset", desc: "Маппинг активов / Привязка к оборудованию", total: "Привязка к физической мощности", dist: "Маппинг оборудования 60% | Стейкинг 25% | Партнеры 10% | Команда 5%", mech: "Минтинг на основе подключенной физической мощности." },
+            { symbol: "NRY", name: "Neo Resource Yield", desc: "Дивиденды / Права на прибыль", total: "300,000,000", dist: "Доля прибыли 50% | Холдеры 25% | Инсентивы нод 15% | Резервы 10%", mech: "Ежеквартальное распределение прибыли." },
+            { symbol: "NCL", name: "Neo Core Link", desc: "Кроссчейн-хаб / Взаимодействие", total: "400,000,000", dist: "Кроссчейн ноды 40% | Тех-партнеры 30% | Управление 15% | Разработка 15%", mech: "Выпуск при кроссчейн-взаимодействии." }
         ]
     }
 };
 
 // 2. 渲染函数（执行翻译的核心）
 window.i18nRender = function() {
+    // 统一获取当前语言
     const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
     const dict = i18nData[lang];
     if (!dict) return;
 
-    // 寻找所有标记了 data-i18n 属性的 HTML 元素
+    // A. 翻译所有静态标记了 data-i18n 属性的元素
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) {
-            // 如果是输入框，修改 placeholder；否则修改文本内容
             if (el.tagName === 'INPUT') {
                 el.placeholder = dict[key];
             } else {
@@ -508,16 +610,26 @@ window.i18nRender = function() {
             }
         }
     });
+
+    // B. 【关键新增】执行动态内容的渲染
+    // 这样切换语言时，新闻和看板数据会同步重新生成
+    if (typeof renderNews === 'function') {
+        renderNews(lang);
+    }
+    
+    if (typeof renderStatsPage === 'function') {
+        renderStatsPage(lang);
+    }
 };
 
-// 3. 切换语言函数
+// 3. 切换语言函数 (保持不变)
 window.switchLang = function(lang) {
     console.log("切换语言至:", lang);
     localStorage.setItem('fbs_lang', lang);
-    window.i18nRender(); // 切换后立即重绘页面
+    window.i18nRender(); 
 };
 
-// 4. 初始化
+// 4. 初始化 (保持不变)
 document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
     const selectEl = document.getElementById('langSelect');
