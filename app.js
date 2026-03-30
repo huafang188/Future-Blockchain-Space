@@ -259,16 +259,52 @@ async function fetchUserData(address) {
     }
 }
 
-// 4. 渲染【资产列表】与计算总价值
+// --- 4. 核心：读取后端数据 ---
+async function fetchUserData(address) {
+    console.log("正在请求地址:", address);
+    try {
+        const res = await fetch(`${API_BASE}?address=${address}`);
+        if (!res.ok) throw new Error('网络请求失败');
+        
+        const data = await res.json();
+        console.log("收到后端原始数据:", data);
+
+        // 0. 处理新用户逻辑
+        if (data.newUser) {
+            if (typeof window.showRegisterModal === 'function') {
+                window.showRegisterModal(address);
+            }
+            return;
+        }
+
+        // 1. 渲染【基础信息】
+        const info = data.info || {};
+        updateText('info_inviteCode', info["推荐码"] || "---");
+        updateText('info_inviter', info["推荐人"] || "---");
+        updateText('info_regTime', info["注册时间"] || "--");
+
+        // 2. 渲染【矿机数据】
+        const miner = data.miner || {};
+        updateText('miner_count', miner["矿机数量"]);
+        updateText('miner_daily', miner["日产量"]);
+        updateText('miner_deadline', miner["挖矿期限"] || "--");
+        updateText('miner_locked', miner["锁仓数量"]);
+
+        // 3. 渲染【团队数据】
+        const t = data.team || {}; 
+        updateText('team_directCount', t["直推人数"]);
+        updateText('team_directSales', t["直推业绩"]);
+        updateText('team_totalCount', t["团队人数"]);
+        updateText('team_totalSales', t["团队业绩"]);
+        updateText('team_totalReward', t["累计奖励"]);
+
+        // 4. 渲染【资产列表】与计算总价值
         if (data.balances) {
             window.userBalances = data.balances; 
-            
-            // 渲染列表行
             if (typeof renderTokenList === 'function') {
                 renderTokenList(data.balances);
             }
             
-            // --- 核心修改：前端实时计算总价值 ---
             let calculatedTotal = 0;
             const prices = window.TOKEN_PRICES || { "USDT": 1, "FBS": 0.5, "BNB": 600 }; 
 
@@ -276,30 +312,26 @@ async function fetchUserData(address) {
                 const balance = parseFloat(data.balances[token]) || 0;
                 const price = prices[token] || 0;
                 calculatedTotal += (balance * price);
-                
-                // 更新单个代币余额显示
                 updateText(`bal_${token}`, balance.toFixed(2));
             });
 
-            // 更新首页大数字的总资产价值
             updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             }));
         }
 
-        // 渲染历史与转账
+        // 5. 渲染历史与转账
         if (typeof renderHistory === 'function') renderHistory(data.history);
         if (typeof renderTransfers === 'function') renderTransfers(data.transfers);
         
-        // 5. 【新增】触发看板渲染
+        // 6. 渲染看板（代币参数）
         const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
         if (typeof renderStatsPage === 'function') {
             renderStatsPage(currentLang);
         }
 
-    } 
-    catch (e) {
+    } catch (e) {
         console.error("前端渲染逻辑报错:", e);
     }
 } 
