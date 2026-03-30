@@ -1013,3 +1013,54 @@ function switchLang(lang) {
 }
 
 
+function renderStatsPage(lang) {
+    const container = document.getElementById('token-detail-list');
+    if (!container) return;
+
+    const tokens = i18nData[lang]?.tokens || [];
+    const labels = i18nData[lang]?.token_labels || {};
+
+    container.innerHTML = tokens.map(token => `
+        <section class="glass-card rounded-[2.5rem] overflow-hidden border border-white/50 shadow-sm">
+            <div class="p-6 bg-gradient-to-br from-slate-50 to-white flex justify-between items-center border-b border-slate-50">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center font-black text-blue-600 text-lg">
+                        ${token.symbol}
+                    </div>
+                    <div>
+                        <h4 class="font-black text-slate-800 leading-none">${token.symbol}</h4>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${token.name}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-[9px] bg-blue-50 text-blue-500 px-2 py-1 rounded-full font-black uppercase tracking-widest">${labels.position}</span>
+                    <p class="text-[11px] text-slate-600 font-bold mt-1">${token.desc}</p>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4 text-[11px] font-bold">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-slate-400 uppercase text-[9px]">${labels.supply}</span>
+                        <span class="text-slate-800">${token.total}</span>
+                    </div>
+                    <div class="flex flex-col gap-1 text-right">
+                        <span class="text-slate-400 uppercase text-[9px]">${labels.mechanism}</span>
+                        <span class="text-slate-800 leading-tight">${token.mech}</span>
+                    </div>
+                </div>
+                
+                <div class="pt-4 border-t border-slate-50">
+                    <span class="text-slate-400 uppercase text-[9px] font-black">${labels.distribution}</span>
+                    <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">${token.dist}</p>
+                </div>
+
+                <div class="mt-4 h-32 bg-slate-50 rounded-2xl border border-dashed border-slate-200 flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div class="text-slate-300 text-2xl group-hover:scale-110 transition-transform">📊</div>
+                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-tighter mt-2">Chart Data Loading...</p>
+                    <div id="chart_${token.symbol}" class="absolute inset-0 pointer-events-none"></div>
+                </div>
+            </div>
+        </section>
+    `).join('');
+}
