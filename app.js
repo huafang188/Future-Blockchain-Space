@@ -1,4 +1,4 @@
-const API_BASE = "https://api.fbsfbs.fit/api/user";
+const API_BASE = "https://api.neoneo.ink/api/user";
 const BSC_CHAIN_ID = '0x38';
 
 // --- 1. 配置信息 ---
