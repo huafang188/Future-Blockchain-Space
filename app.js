@@ -104,7 +104,7 @@ window.postTransactionRecord = async function(type, amount, symbol) {
         action: "record_transaction", 
         address: address,  
         type: type,        
-        amount: String(amount), // 强制转为字符串，防止飞书 API 报错
+        amount: String(amount), // 强制转为字符串，防止飞书  报错
         symbol: symbol,    
         status: "已提交",     
         time: formattedDate 
@@ -113,7 +113,7 @@ window.postTransactionRecord = async function(type, amount, symbol) {
     console.log("🚀 准备提交交易记录:", payload);
 
     try {
-        const response = await fetch('https://api.fbsfbs.fit/api/user', {
+        const response = await fetch('https://api.neoneo.ink/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -628,7 +628,7 @@ window.doInternalTransfer = async function() {
         });
 
         // --- 2. 签名成功后发送数据 ---
-        const response = await fetch('https://api.fbsfbs.fit/api/user', {
+        const response = await fetch('https://api.neoneo.ink/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -724,7 +724,7 @@ window.submitBindInviter = async function() {
     const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
 
     try {
-        const response = await fetch('https://api.fbsfbs.fit/api/user', {
+        const response = await fetch('https://api.neoneo.ink/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
