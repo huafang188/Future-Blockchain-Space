@@ -73,7 +73,15 @@ const i18nData = {
         nav_home: "首页",
         nav_mine: "矿场",
         nav_market: "看板",
-        nav_me: "我的"
+        nav_me: "我的",
+        news_title: "公告与新闻",
+        news_list: [
+            "NEO生态挖矿矩阵正式上线，开启算力新纪元",
+            "FBS 协议 v2.0 升级完成，交易损耗降低 30%",
+            "关于 NEO 节点维护的临时公告（3月30日）",
+            "新功能：支持一键提取 10 种生态代币收益",
+            "全球节点招募计划火热进行中，立即参与"
+        ]
     },
     'zh-HK': {
         title: "NEO生態挖礦矩陣",
@@ -146,7 +154,15 @@ const i18nData = {
         nav_home: "首頁",
         nav_mine: "礦場",
         nav_market: "看板",
-        nav_me: "我的"
+        nav_me: "我的",
+        news_title: "公告與新聞",
+        news_list: [
+            "NEO生態挖礦矩陣正式上線，開啟算力新紀元",
+            "FBS 協議 v2.0 升級完成，交易損耗降低 30%",
+            "關於 NEO 節點維護的臨時公告（3月30日）",
+            "新功能：支持一鍵提取 10 種生態代幣收益",
+            "全球節點招募計劃火熱進行中，立即參與"
+        ]
     },
     'en': {
         title: "NEO Ecological Mining Matrix",
@@ -219,7 +235,15 @@ const i18nData = {
         nav_home: "Home",
         nav_mine: "Mining",
         nav_market: "Market",
-        nav_me: "Profile"
+        nav_me: "Profile",
+        news_title: "Announcements",
+        news_list: [
+            "NEO Mining Matrix is officially live!",
+            "FBS Protocol v2.0 upgrade completed, gas fees reduced by 30%.",
+            "Temporary notice on NEO node maintenance (Mar 30).",
+            "New Feature: One-click withdrawal for 10 ecosystem tokens.",
+            "Global Node Recruitment Program is ongoing. Join now!"
+        ]
     },
     'ja': {
         title: "NEO生態鉱業マトリックス",
@@ -292,7 +316,15 @@ const i18nData = {
         nav_home: "ホーム",
         nav_mine: "マイニング",
         nav_market: "ボード",
-        nav_me: "マイページ"
+        nav_me: "マイページ",
+        news_title: "お知らせとニュース",
+        news_list: [
+            "NEOエコマイニングマトリックスが正式に稼働開始！",
+            "FBSプロトコルv2.0へのアップグレード完了、手数料30%削減。",
+            "NEOノードメンテナンスに関する臨時のお知らせ（3月30日）。",
+            "新機能：10種類のトークン報酬を一括受取可能に。",
+            "グローバルノード募集中、今すぐご参加ください！"
+        ]
     },
     'ko': {
         title: "NEO 생태 채굴 매트릭스",
@@ -365,7 +397,15 @@ const i18nData = {
         nav_home: "홈",
         nav_mine: "광산",
         nav_market: "대시보드",
-        nav_me: "내 정보"
+        nav_me: "내 정보",
+        news_title: "공지 및 뉴스",
+        news_list: [
+            "NEO 에코 마이닝 매트릭스 정식 출시, 새로운 시대 개막!",
+            "FBS 프로토콜 v2.0 업그레이드 완료, 수수료 30% 절감.",
+            "NEO 노드 점검에 관한 임시 공지 (3월 30일).",
+            "신기능: 10종 생태계 토큰 수익 일괄 수령 지원.",
+            "글로벌 노드 모집 중, 지금 바로 참여하세요!"
+        ]
     },
     'ru': {
         title: "Экологическая матрица добычи полезных ископаемых NEO",
@@ -438,7 +478,15 @@ const i18nData = {
         nav_home: "Главная",
         nav_mine: "Майнинг",
         nav_market: "Рынок",
-        nav_me: "Профиль"
+        nav_me: "Профиль",
+        news_title: "Объявления и новости",
+        news_list: [
+            "Матрица майнинга NEO официально запущена!",
+            "Протокол FBS v2.0 обновлен, затраты снижены на 30%.",
+            "Временное уведомление о техническом обслуживании узлов NEO (30 марта).",
+            "Новая функция: Вывод 10 видов токенов одним нажатием.",
+            "Глобальная программа набора узлов в разгаре. Присоединяйтесь!"
+        ]
     }
 };
 
