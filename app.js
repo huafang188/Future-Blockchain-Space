@@ -938,3 +938,28 @@ window.switchPage = function(pageId) {
 window.addEventListener('DOMContentLoaded', () => {
     switchPage('home');
 });
+
+
+function renderNews(lang) {
+    const container = document.getElementById('news-container');
+    const newsList = i18nData[lang]?.news_list || [];
+    
+    if (!container) return;
+
+    // 清空现有内容并只取前 5 条
+    container.innerHTML = newsList.slice(0, 5).map((text, index) => `
+        <div class="group flex items-start gap-3 border-b border-slate-50 pb-3 last:border-0 last:pb-0">
+            <span class="text-[10px] font-black text-indigo-300 mt-1">0${index + 1}</span>
+            <p class="text-xs text-slate-600 leading-relaxed group-hover:text-indigo-600 transition-colors cursor-pointer">
+                ${text}
+            </p>
+        </div>
+    `).join('');
+}
+
+// 在你原来的切换语言函数里调用它
+function switchLang(lang) {
+    currentLang = lang;
+    updatePageContent(lang); // 原有的翻译逻辑
+    renderNews(lang);        // 新增的新闻渲染逻辑
+}
