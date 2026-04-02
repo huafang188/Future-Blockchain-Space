@@ -1108,9 +1108,15 @@ function renderStatsPage(lang) {
         <section class="glass-card rounded-[2.5rem] overflow-hidden border border-white/50 shadow-sm">
             <div class="p-6 bg-gradient-to-br from-slate-50 to-white flex justify-between items-center border-b border-slate-50">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center font-black text-blue-600 text-lg">
-                        ${token.symbol}
-                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden">
+    <img 
+        src="./assets/tokens/${token.symbol.toLowerCase()}_logo.png" 
+        alt="${token.symbol}" 
+        class="w-8 h-8 object-contain"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+    >
+    <span class="font-black text-blue-600 text-lg hidden">${token.symbol}</span>
+</div>
                     <div>
                         <h4 class="font-black text-slate-800 leading-none">${token.symbol}</h4>
                         <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${token.name}</p>
