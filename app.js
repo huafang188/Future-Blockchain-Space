@@ -1110,7 +1110,7 @@ function renderStatsPage(lang) {
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden">
     <img 
-        src="./assets/tokens/${token.symbol.toLowerCase()}_logo.png" 
+        src="./assets/${token.symbol.toLowerCase()}_logo.png" 
         alt="${token.symbol}" 
         class="w-8 h-8 object-contain"
         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
