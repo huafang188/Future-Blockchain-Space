@@ -106,7 +106,7 @@ export function renderStatsPage(lang) {
 }
 
 /**
- * 3. 渲染个人中心代币列表 (修正：严格匹配 config.js)
+ * 3. 渲染个人中心：资产代币列表
  */
 export function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
@@ -115,14 +115,18 @@ export function renderTokenList(balances = {}) {
     let totalVal = 0;
     let html = '';
 
-    // 严格按照 config.js 定义的 tokenInfo 渲染，确保顺序和图片一致
+    // 严格按照 config.js 定义的 tokenInfo 渲染
     Object.keys(tokenInfo).forEach(symbol => {
         const config = tokenInfo[symbol];
+        // 1. 获取余额 (数量)
         const balance = parseFloat(balances[symbol] || 0);
+        // 2. 获取单价
         const price = config.price || 0;
+        // 3. 计算总价值 (数量 * 单价)
         const value = (balance * price).toFixed(2);
         totalVal += parseFloat(value);
 
+        // 修正后的 HTML 结构
         html += `
         <div class="flex justify-between items-center p-4 hover:bg-slate-50/50 transition-colors">
             <div class="flex items-center gap-3">
@@ -142,8 +146,12 @@ export function renderTokenList(balances = {}) {
     });
 
     container.innerHTML = html;
+    
+    // 更新页面顶部的总资产数值
     const totalEl = document.getElementById('totalValue');
-    if (totalEl) totalEl.innerText = totalVal.toLocaleString(undefined, {minimumFractionDigits: 2});
+    if (totalEl) {
+        totalEl.innerText = totalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
 }
 
 // 渲染交易历史和转账流水保持原样，但确保已挂载到 window...
