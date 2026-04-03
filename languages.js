@@ -1,6 +1,6 @@
 
 // 1. 语言包数据（移出函数，变为全局可用）
-const i18nData = {
+window.i18nData = {
     'zh-CN': {
         title: "NEO生态挖矿矩阵",
         connect: "连接钱包",
