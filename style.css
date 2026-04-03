@@ -6,21 +6,11 @@
 
 :root {
     --primary: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
-    /* 默认白天模式变量 */
-    --bg-main: #ffffff;           /* 纯白 */
-    --text-main: #1e293b;        /* 深色字 */
-    --glass-bg: rgba(255, 255, 255, 0.8); 
-    --glass-border: rgba(0, 0, 0, 0.1);
-}
-
-/* 核心：检测系统黑夜模式 */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-main: #000000;       /* 纯黑 */
-        --text-main: #f1f5f9;    /* 浅色字 */
-        --glass-bg: rgba(30, 41, 59, 0.7); /* 深色半透明背景 */
-        --glass-border: rgba(255, 255, 255, 0.1);
-    }
+    
+    --bg-main: #ffffff;           /* 纯白背景 */
+    --text-main: #1e293b;        /* 深蓝黑文字 */
+    --glass-bg: rgba(255, 255, 255, 0.85); /* 略微调高不透明度，增加质感 */
+    --glass-border: rgba(0, 0, 0, 0.08);   /* 极其浅淡的边框 */
 }
 
 body {
@@ -83,7 +73,7 @@ body {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background-color: rgba(0, 0, 0, 0.2); /* 浅色遮罩 */
+    background-color: rgba(241, 245, 249, 0.4); /* 浅色遮罩 */
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
