@@ -20,6 +20,11 @@ function initApp() {
     window.connectWallet = connectWallet;
     window.fetchUserData = fetchUserData;
     window.renderTokenList = renderTokenList;
+    window.renderHistory = renderHistory;
+    window.renderTransfers = renderTransfers;
+
+    // ↓↓↓ 这行是修复关键：把看板渲染函数挂载到全局 ↓↓↓
+    window.renderStatsPage = renderStatsPage;
 
     window.onload = () => {
         if (window.i18nRender) window.i18nRender();
@@ -40,5 +45,7 @@ function initApp() {
         if (window.i18nRender) window.i18nRender();
     };
 }
+
+initApp();
 
 initApp();
