@@ -16,16 +16,16 @@ const CONTRACT_ADDRS = {
 };
 
 const tokenInfo = {
-    'NEO': { price: 0.152, logo: 'assets/neo_logo.png' },
-    'NEX': { price: 0.00,  logo: 'assets/nex_logo.png' },
-    'NET': { price: 0.00,  logo: 'assets/net_logo.png' },
-    'NEA': { price: 0.00,  logo: 'assets/nea_logo.png' },
-    'NRY': { price: 0.00,  logo: 'assets/nry_logo.png' },
-    'NCL': { price: 0.00,  logo: 'assets/ncl_logo.png' },
-    'USDT': { price: 1.0,   logo: 'assets/USDT.png' },
-    'BNB': { price: 600.0, logo: 'assets/BNB.png' },
-    'ETH': { price: 3500.0, logo: 'assets/ETH.png' },
-    'BTC': { price: 65000.0, logo: 'assets/BTC.png' }
+    'NEO': { price: 0.152, logo: 'assets/neo_logo.webp' },
+    'NEX': { price: 0.00,  logo: 'assets/nex_logo.webp' },
+    'NET': { price: 0.00,  logo: 'assets/net_logo.webp' },
+    'NEA': { price: 0.00,  logo: 'assets/nea_logo.webp' },
+    'NRY': { price: 0.00,  logo: 'assets/nry_logo.webp' },
+    'NCL': { price: 0.00,  logo: 'assets/ncl_logo.webp' },
+    'USDT': { price: 1.0,   logo: 'assets/USDT.webp' },
+    'BNB': { price: 600.0, logo: 'assets/BNB.webp' },
+    'ETH': { price: 3500.0, logo: 'assets/ETH.webp' },
+    'BTC': { price: 65000.0, logo: 'assets/BTC.webp' }
 };
 
 
@@ -1110,7 +1110,7 @@ function renderStatsPage(lang) {
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden">
     <img 
-        src="./assets/${token.symbol.toLowerCase()}_logo.png" 
+        src="./assets/${token.symbol.toLowerCase()}_logo.webp" 
         alt="${token.symbol}" 
         class="w-8 h-8 object-contain"
         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
