@@ -23,24 +23,33 @@ function initApp() {
     window.connectWallet = connectWallet;
     window.fetchUserData = fetchUserData;
 
-    window.onload = () => {
-        renderNews();
-        renderStatsPage();
-        renderTokenList({});
+window.onload = () => {
+    const savedLang = localStorage.getItem('fbs_lang');
+    const currentLang = savedLang || 'ru';
+    if (!savedLang) {
+        localStorage.setItem('fbs_lang', 'ru');
+    }
+    if (window.renderNews) renderNews(currentLang);
+    if (window.renderStatsPage) renderStatsPage(currentLang);
+    
+    if (window.renderTokenList) renderTokenList({});
 
-        if (window.i18nRender) window.i18nRender();
+    if (window.i18nRender) window.i18nRender(currentLang);
 
-        const currentAddress = localStorage.getItem('fbs_address');
-        const isManualLogout = localStorage.getItem('user_logout_manual');
+    const currentAddress = localStorage.getItem('fbs_address');
+    const isManualLogout = localStorage.getItem('user_logout_manual');
+    
+    if (typeof setCurrentAddress === 'function') {
         setCurrentAddress(currentAddress);
+    }
 
-        if (currentAddress && isManualLogout !== 'true') {
-            updateWalletUI(currentAddress);
-            fetchUserData(currentAddress);
-        } else {
-            resetWalletUI();
-        }
-    };
+    if (currentAddress && isManualLogout !== 'true') {
+        updateWalletUI(currentAddress);
+        fetchUserData(currentAddress);
+    } else {
+        resetWalletUI();
+    }
+};
 }
 
 initApp();
