@@ -180,7 +180,7 @@ export function renderTokenList(balances = {}) {
  * 对应 HTML 容器 ID: history-list
  */
 export function renderHistory(history = []) {
-    const container = document.getElementById('history-list');
+    const container = document.getElementById('historyList');
     if (!container) return;
 
     if (!history || history.length === 0) {
@@ -226,7 +226,7 @@ export function renderHistory(history = []) {
  * 对应 HTML 容器 ID: transfer-list
  */
 export function renderTransfers(transfers = []) {
-    const container = document.getElementById('transfer-list');
+    const container = document.getElementById('transferList');
     if (!container) return;
 
     if (!transfers || transfers.length === 0) {
