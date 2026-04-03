@@ -104,36 +104,35 @@ export function renderStatsPage(lang) {
         </div>`;
     }).join('');
 }
+
+
 /**
  * 3. 渲染个人中心：资产代币列表
- * 修复逻辑：1.获取单价 -> 2.计算总价值 -> 3.渲染到正确位置
  */
 export function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
 
-    let walletTotalAsset = 0; // 整个钱包的总资产累计
+    let totalVal = 0;
     let html = '';
 
-    // 严格按照 config.js 定义的 tokenInfo 顺序渲染
+    // 遍历 config.js 中定义的代币信息
     Object.keys(tokenInfo).forEach(symbol => {
         const config = tokenInfo[symbol];
         
-        // --- 逻辑修正点 ---
+        // --- 1. 数据计算 ---
+        const unitPrice = config.price || 0; // 单价
+        const balance = parseFloat(balances[symbol] || 0); // 数量
+        const currentTokenValue = balance * unitPrice; // 总价值
         
-        // 1. 获取该币种的【单价】 (从 config 读取)
-        const unitPrice = config.price || 0;
-        
-        // 2. 获取该币种的【持仓数量】 (从接口返回的 balances 读取)
-        const holdingAmount = parseFloat(balances[symbol] || 0);
-        
-        // 3. 计算该币种的【资产总价值】 (数量 * 单价)
-        const currentTokenValue = holdingAmount * unitPrice;
-        
-        // 累计到钱包总资产
-        walletTotalAsset += currentTokenValue;
+        totalVal += currentTokenValue;
 
-        // --- UI 渲染修正点 ---
+        // 格式化处理
+        const priceDisplay = unitPrice.toFixed(unitPrice < 1 ? 4 : 2); // 单价精度
+        const balanceDisplay = balance.toFixed(4); // 数量显示4位小数
+        const valueDisplay = currentTokenValue.toFixed(2); // 总价值显示2位小数
+
+        // --- 2. HTML 结构 (严格对应位置) ---
         html += `
         <div class="flex justify-between items-center p-4 hover:bg-slate-50/50 transition-colors">
             <div class="flex items-center gap-3">
@@ -142,30 +141,31 @@ export function renderTokenList(balances = {}) {
                 </div>
                 <div>
                     <div class="font-bold text-sm text-slate-800">${symbol}</div>
+                    
                     <div class="text-[10px] text-slate-400 font-black tracking-tight">
-                        ${holdingAmount.toFixed(4)}
+                        $${priceDisplay}
                     </div>
                 </div>
             </div>
-            
+
             <div class="text-right">
                 <div class="font-black text-sm text-slate-800">
-                    $ ${currentTokenValue.toFixed(2)}
+                    ${balanceDisplay}
                 </div>
+                
                 <div class="text-[9px] text-slate-400 font-bold">
-                    $${unitPrice.toFixed(unitPrice < 1 ? 4 : 2)}
+                    $${valueDisplay}
                 </div>
             </div>
         </div>`;
     });
 
-    // 填充列表
     container.innerHTML = html;
     
-    // 更新页面顶部总资产 (Total Assets)
+    // 更新顶部总资产 (Total Asset 依然显示所有币种的总美元价值)
     const totalEl = document.getElementById('totalValue');
     if (totalEl) {
-        totalEl.innerText = walletTotalAsset.toLocaleString(undefined, {
+        totalEl.innerText = totalVal.toLocaleString(undefined, {
             minimumFractionDigits: 2, 
             maximumFractionDigits: 2
         });
