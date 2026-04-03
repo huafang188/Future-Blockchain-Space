@@ -24,28 +24,26 @@ function initApp() {
     window.fetchUserData = fetchUserData;
 
 window.onload = () => {
-    const savedLang = localStorage.getItem('fbs_lang');
-    const currentLang = savedLang || 'ru';
-    if (!savedLang) {
-        localStorage.setItem('fbs_lang', 'ru');
-    }
-    if (window.renderNews) renderNews(currentLang);
-    if (window.renderStatsPage) renderStatsPage(currentLang);
+    const savedLang = localStorage.getItem('fbs_lang') || 'ru';
     
+    // 1. 渲染公共部分
+    if (window.renderNews) renderNews(savedLang);
+    if (window.renderStatsPage) renderStatsPage(savedLang);
+    if (window.i18nRender) window.i18nRender(savedLang);
+
+    // 2. 【新增】初始化渲染历史和流水容器，防止出现空白或旧数据
+    if (window.renderHistory) renderHistory([]); 
+    if (window.renderTransfers) renderTransfers([]);
     if (window.renderTokenList) renderTokenList({});
 
-    if (window.i18nRender) window.i18nRender(currentLang);
-
+    // 3. 处理登录逻辑
     const currentAddress = localStorage.getItem('fbs_address');
     const isManualLogout = localStorage.getItem('user_logout_manual');
     
-    if (typeof setCurrentAddress === 'function') {
-        setCurrentAddress(currentAddress);
-    }
-
     if (currentAddress && isManualLogout !== 'true') {
         updateWalletUI(currentAddress);
-        fetchUserData(currentAddress);
+        // 关键：fetchUserData 内部必须包含对 renderHistory/Transfers 的调用
+        fetchUserData(currentAddress); 
     } else {
         resetWalletUI();
     }
