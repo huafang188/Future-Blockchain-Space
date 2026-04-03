@@ -600,16 +600,21 @@ window.i18nData = {
 
 // 2. 渲染函数（执行翻译的核心）
 window.i18nRender = function() {
-    // 统一获取当前语言
     const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
-    const dict = i18nData[lang];
-    if (!dict) return;
+    // 确保从 window.i18nData 获取
+    const dict = window.i18nData ? window.i18nData[lang] : null; 
+    
+    if (!dict) {
+        console.error("未找到语言包数据:", lang);
+        return;
+    }
 
-    // A. 翻译所有静态标记了 data-i18n 属性的元素
+    // A. 翻译静态元素
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) {
-            if (el.tagName === 'INPUT') {
+            // 支持文本、Placeholder、甚至 Value
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 el.placeholder = dict[key];
             } else {
                 el.innerText = dict[key];
@@ -617,14 +622,14 @@ window.i18nRender = function() {
         }
     });
 
-    // B. 【关键新增】执行动态内容的渲染
-    // 这样切换语言时，新闻和看板数据会同步重新生成
-    if (typeof renderNews === 'function') {
-        renderNews(lang);
+    // B. 执行动态内容的渲染
+    // 确保调用时传入了最新的 dict 或 lang
+    if (typeof window.renderNews === 'function') {
+        window.renderNews(lang);
     }
     
-    if (typeof renderStatsPage === 'function') {
-        renderStatsPage(lang);
+    if (typeof window.renderStatsPage === 'function') {
+        window.renderStatsPage(lang);
     }
 };
 
