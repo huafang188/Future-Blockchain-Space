@@ -1,207 +1,172 @@
-/* * Future Blockchain Space - 优化版完整样式表 
- * 风格：Web3 科技感 / 淡灰毛玻璃 / 胶囊按钮
- */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
 
 :root {
-    --primary: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    /* 渐变色升级：更具深度的极光紫蓝 */
+    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #3b82f6 100%);
+    --primary-solid: #6366f1;
     
-    --bg-main: #ffffff;           /* 纯白背景 */
-    --text-main: #1e293b;        /* 深蓝黑文字 */
-    --glass-bg: rgba(255, 255, 255, 0.85); /* 略微调高不透明度，增加质感 */
-    --glass-border: rgba(0, 0, 0, 0.08);   /* 极其浅淡的边框 */
+    --bg-main: #f8fafc;           /* 极浅灰蓝背景，比纯白更高级 */
+    --text-main: #0f172a;        /* 更加深邃的文字颜色 */
+    --text-muted: #64748b;       /* 次要文字 */
+    
+    /* 核心毛玻璃参数 */
+    --glass-bg: rgba(255, 255, 255, 0.75); 
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
 }
 
 body {
-    background-color: var(--bg-main);
+    background: var(--bg-main);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(168, 85, 247, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
     color: var(--text-main);
-    transition: background-color 0.3s ease, color 0.3s ease; /* 让切换时有个平滑过渡 */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
     margin: 0;
-    padding: 0;
-    line-height: 1.5;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
 }
 
-/* --- 1. 容器组件 (毛玻璃圆角矩形) --- */
+/* --- 1. 高级毛玻璃卡片 (优化质感) --- */
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border-radius: 2rem; /* 统一圆角矩形 */
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-radius: 2rem;
+    /* 关键：使用双层边框模拟晶体厚度 */
     border: 1px solid var(--glass-border);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
+    box-shadow: 
+        var(--glass-shadow),
+        inset 0 1px 1px rgba(255, 255, 255, 1);
+    margin-bottom: 1.25rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* --- 2. 胶囊形状按钮 (Action Buttons) --- */
-.action-btn {
+/* --- 2. 底部导航栏 (核心需求：放大+加深) --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 1000;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 20px;
-    background: var(--primary);
-    border-radius: 999px; /* 强制胶囊形状 */
+    text-decoration: none;
+    color: #94a3b8; /* 未选中灰色 */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* 弹性动效 */
+}
+
+/* 导航激活状态 */
+.nav-item.active {
+    color: var(--primary-solid); /* 颜色加深 */
+    transform: translateY(-5px) scale(1.15); /* 向上偏移并放大 */
+}
+
+.nav-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-item.active i {
+    /* 选中的图标加一个小光晕 */
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.4));
+}
+
+.nav-item span {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- 3. Web3 胶囊按钮 --- */
+.action-btn {
+    position: relative;
+    overflow: hidden;
+    background: var(--primary-gradient);
+    border-radius: 999px;
+    padding: 12px 24px;
     border: none;
-    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    outline: none;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.4);
 }
 
 .action-btn:active {
-    transform: scale(0.95);
-    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+    transform: scale(0.96);
 }
 
 .action-btn span {
     color: white;
+    font-weight: 800;
     font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
 }
 
-/* 隐藏图标盒子，保持纯文字胶囊感 */
-.action-btn .icon-box {
-    display: none !important;
-}
-
-/* --- 3. 弹窗系统 (Modal) --- */
+/* --- 4. 弹窗系统 (更加深邃) --- */
 #modalOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background-color: rgba(241, 245, 249, 0.4); /* 浅色遮罩 */
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
+    background: rgba(15, 23, 42, 0.4); /* 深色透明遮罩，突出玻璃感 */
+    backdrop-filter: blur(12px);
 }
 
 .modal-box {
-    background: var(--glass-bg);
-    backdrop-filter: blur(25px);
-    width: 100%;
-    max-width: 420px;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 2.5rem;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
-    padding: 1.5rem;
-    position: relative;
-    animation: modalSlideIn 0.3s ease-out;
+    border: 1px solid rgba(255, 255, 255, 1);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
 }
 
-/* 核心：解决弹窗大图片问题 */
-.modal-box img {
-    max-width: 32px; /* 强制限制 Logo 尺寸 */
-    max-height: 32px;
-    object-fit: contain;
-    border-radius: 8px;
-}
-
-/* 弹窗内的选择行（让 Logo 和文字水平对齐） */
-.modal-selection-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 0.8rem 1.2rem;
-    border-radius: 1.2rem;
-    margin: 1rem 0;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-@keyframes modalSlideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* --- 4. 资产列表排版 --- */
-#tokenRows > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.25rem;
-    transition: background 0.2s;
-}
-
-#tokenRows > div:active {
-    background-color: rgba(255, 255, 255, 0.4);
-}
-
-.token-logo {
-    width: 40px;
-    height: 40px;
-    margin-right: 12px;
-}
-
-/* --- 5. 辅助类 --- */
-.grid-cols-4 {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.hidden { display: none !important; }
-
-/* 响应式：针对手机端优化 */
-@media (max-width: 640px) {
-    .action-btn {
-        padding: 8px 12px;
-    }
-    .action-btn span {
-        font-size: 12px;
-    }
-}
-
-/* 导航激活状态 */
-.nav-item.active i {
-    transform: translateY(-2px);
-    filter: drop-shadow(0 4px 6px rgba(59, 130, 246, 0.3));
-}
-
-.nav-item {
-    flex: 1;
-    color: #94a3b8; /* 默认灰色 */
-}
-
-/* 确保移动端点击没有蓝色高亮框 */
-* {
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* 页面切换淡入效果 */
-.page-view:not(.hidden) {
-    animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* 自定义列表滚动条，增加 App 质感 */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #e2e8f0;
-    border-radius: 10px;
-}
-
-/* 列表条目的统一样式（如果 app.js 生成动态 HTML，请确保包含这些类） */
+/* --- 5. 动态列表条目 --- */
 .list-item {
-    background: rgba(255, 255, 255, 0.6);
-    padding: 12px 16px;
-    border-radius: 16px;
-    border: 1px solid rgba(241, 245, 249, 1);
+    background: #ffffff;
+    padding: 16px 20px;
+    margin: 10px 0;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.2s ease;
+}
+
+.list-item:active {
+    background: #f1f5f9;
+    transform: scale(0.98);
+}
+
+/* --- 6. 辅助动效 --- */
+.page-view:not(.hidden) {
+    animation: slideUpFade 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* 滚动条美化 */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, transparent, #e2e8f0, transparent);
+    border-radius: 10px;
 }
