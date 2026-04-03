@@ -99,8 +99,8 @@ export async function fetchUserData(address) {
         }
 
         // 历史 & 转账
-        if (typeof renderHistory === 'function') renderHistory(data.history);
-        if (typeof renderTransfers === 'function') renderTransfers(data.transfers);
+        if (window.renderHistory) window.renderHistory(data.history || []);
+        if (window.renderTransfers) window.renderTransfers(data.transfers || []);
         
         // 统计面板
         const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
