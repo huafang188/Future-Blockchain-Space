@@ -175,9 +175,93 @@ export function renderTokenList(balances = {}) {
     }
 }
 
-// 渲染交易历史和转账流水保持原样，但确保已挂载到 window...
-export function renderHistory(history) { /* ...保持你的实现... */ }
-export function renderTransfers(transfers) { /* ...保持你的实现... */ }
+/**
+ * 4. 渲染交易历史 (History)
+ * 对应 HTML 容器 ID: history-list
+ */
+export function renderHistory(history = []) {
+    const container = document.getElementById('history-list');
+    if (!container) return;
+
+    if (!history || history.length === 0) {
+        container.innerHTML = `
+            <div class="p-12 text-center">
+                <div class="text-slate-200 mb-2"><i class="fa-solid fa-clock-rotate-left text-3xl"></i></div>
+                <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">No Records Found</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = history.map(item => {
+        // 根据类型判断颜色和图标 (in: 收入, out: 支出)
+        const isIn = item.type === 'in' || item.amount > 0;
+        const icon = isIn ? 'fa-arrow-down-left' : 'fa-arrow-up-right';
+        const colorClass = isIn ? 'text-emerald-500' : 'text-slate-800';
+        const bgColor = isIn ? 'bg-emerald-50' : 'bg-slate-50';
+
+        return `
+        <div class="list-item mb-3 group hover:border-blue-200 transition-all cursor-pointer">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 ${bgColor} rounded-2xl flex items-center justify-center shadow-sm border border-white/50">
+                    <i class="fa-solid ${icon} ${isIn ? 'text-emerald-500' : 'text-blue-500'} text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-black text-slate-800 tracking-tight">${item.title || 'Transaction'}</p>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">${item.date || 'Just now'}</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-sm font-black ${colorClass}">
+                    ${isIn ? '+' : '-'}${Math.abs(item.amount)}
+                </p>
+                <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">${item.status || 'Confirmed'}</p>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+/**
+ * 5. 渲染转账流水 (Transfers)
+ * 对应 HTML 容器 ID: transfer-list
+ */
+export function renderTransfers(transfers = []) {
+    const container = document.getElementById('transfer-list');
+    if (!container) return;
+
+    if (!transfers || transfers.length === 0) {
+        container.innerHTML = `
+            <div class="p-10 text-center opacity-50">
+                <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest italic">Empty Transfer Stream</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = transfers.map(tx => `
+        <div class="flex justify-between items-center p-4 rounded-2xl hover:bg-slate-50/50 transition-colors border-b border-slate-50/50 last:border-none">
+            <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] font-black text-slate-700 tracking-tighter">
+                        ${tx.address ? (tx.address.substring(0, 6) + '...' + tx.address.slice(-4)) : 'Unknown'}
+                    </span>
+                </div>
+                <span class="text-[9px] text-slate-400 uppercase font-black pl-3.5">${tx.method || 'Transfer'}</span>
+            </div>
+            <div class="text-right">
+                <span class="text-xs font-black text-blue-600">${tx.amount} ${tx.symbol || ''}</span>
+                <div class="flex items-center justify-end gap-1 mt-0.5">
+                    <i class="fa-solid fa-circle-check text-[8px] text-emerald-400"></i>
+                    <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">Success</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// --- 必须在文件末尾显式挂载到 window ---
+window.renderHistory = renderHistory;
+window.renderTransfers = renderTransfers;
 
 export function i18nRender(lang) {
     const labels = getI18nLabels(lang);
