@@ -101,33 +101,52 @@
             </div>
         </div>
 
-        <div id="page-mine" class="page-view hidden space-y-6">
-            <section class="glass-card rounded-[2.5rem] p-6 border-l-4 border-blue-600">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="font-black text-slate-800 text-xl uppercase tracking-widest" data-i18n="miner_title">我的矿机</h3>
-                    <span class="text-[10px] bg-emerald-100 text-emerald-600 font-black px-2 py-0.5 rounded uppercase">Running</span>
-                </div>
-                <div class="flex gap-4 items-center mb-6">
-                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 overflow-hidden">
-                        <img src="assets/miner_logo.webp" class="w-full h-full object-cover" alt="Miner">
-                    </div>
-<div>
-    <h3 class="font-black text-slate-800 text-sm italic uppercase" data-i18n="miner_name">FBS Smart Miner S1</h3>
-    <p class="text-[9px] text-slate-400 font-bold uppercase" data-i18n="miner_desc">高性能算力终端</p>
-</div>
-                </div>
-                <div class="grid grid-cols-2 gap-3 bg-slate-50 rounded-2xl p-4 text-[11px] font-bold">
-                    <div class="flex flex-col"><span class="opacity-50 text-[9px]" data-i18n="m_count">矿机数量</span><span id="miner_count" class="text-slate-900 text-sm">0</span></div>
-                    <div class="flex flex-col"><span class="opacity-50 text-[9px]" data-i18n="m_yield">预估日产</span><span id="miner_daily" class="text-slate-900 text-sm">0.00</span></div>
-                    <div class="flex flex-col pt-2 border-t border-slate-200"><span class="opacity-50 text-[9px]" data-i18n="m_term">到期时间</span><span id="miner_deadline" class="text-slate-900 text-[10px]">--</span></div>
-                    <div class="flex flex-col pt-2 border-t border-slate-200"><span class="opacity-50 text-[9px]" data-i18n="m_locked">锁仓金额</span><span id="miner_locked" class="text-slate-900 text-sm">0.00</span></div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mt-6 px-1">
-                    <button onclick="openMinerModal('buy')" class="action-btn w-full"><span data-i18n="buy_miner">购买矿机</span></button>
-                    <button onclick="openMinerModal('fee')" class="action-btn w-full"><span data-i18n="pay_fee">缴纳电费</span></button>
-                </div>
-            </section>
+<div id="page-mine" class="page-view hidden space-y-6">
+    <section class="glass-card p-6 border-l-4 border-blue-600">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-black text-slate-800 text-xl tracking-widest uppercase" data-i18n="miner_title">我的矿机</h3>
+            <span class="status-badge bg-emerald-500/10 text-emerald-500">Running</span>
         </div>
+
+        <div class="flex gap-4 items-center mb-6">
+            <div class="miner-avatar">
+                <img src="assets/miner_logo.webp" alt="Miner" onerror="this.src='assets/head_logo.png'">
+            </div>
+            <div>
+                <h3 class="font-black text-slate-800 text-sm italic uppercase tracking-tight" data-i18n="miner_name">FBS Smart Miner S1</h3>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" data-i18n="miner_desc">高性能算力终端</p>
+            </div>
+        </div>
+
+        <div class="data-grid">
+            <div class="data-item">
+                <span class="label" data-i18n="m_count">矿机数量</span>
+                <span id="miner_count" class="value">0</span>
+            </div>
+            <div class="data-item">
+                <span class="label" data-i18n="m_yield">预估日产</span>
+                <span id="miner_daily" class="value">0.00</span>
+            </div>
+            <div class="data-item border-t border-white/20 pt-2">
+                <span class="label" data-i18n="m_term">到期时间</span>
+                <span id="miner_deadline" class="value-small">--</span>
+            </div>
+            <div class="data-item border-t border-white/20 pt-2">
+                <span class="label" data-i18n="m_locked">锁仓金额</span>
+                <span id="miner_locked" class="value">0.00</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-6">
+            <button onclick="openMinerModal('buy')" class="action-btn">
+                <span data-i18n="buy_miner">购买矿机</span>
+            </button>
+            <button onclick="openMinerModal('fee')" class="action-btn secondary">
+                <span data-i18n="pay_fee">缴纳电费</span>
+            </button>
+        </div>
+    </section>
+</div>
 
 <div id="page-stats" class="page-view hidden space-y-6">
     <div class="px-2">
