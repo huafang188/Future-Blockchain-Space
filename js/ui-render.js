@@ -1,16 +1,19 @@
 import { tokenInfo } from './config.js';
 
-/**
- * 内部工具：安全获取多语言数据
- * 解决 i18nData 尚未加载或语言 key 不存在的问题
- */
 function getI18nLabels(lang) {
-    const currentLang = lang || localStorage.getItem('fbs_lang') || 'zh-CN';
-    // 强制检查全局变量 i18nData
+    const currentLang = lang || localStorage.getItem('fbs_lang') || 'ru';
+    
     if (window.i18nData && window.i18nData[currentLang]) {
         return window.i18nData[currentLang];
     }
-    return null; // 如果还没加载好，返回 null 触发 Loading 状态
+
+    if (window.i18nData) {
+        const availableLangs = Object.keys(window.i18nData);
+        if (availableLangs.length > 0) {
+            return window.i18nData[availableLangs[0]];
+        }
+    }
+    return null; 
 }
 
 /**
