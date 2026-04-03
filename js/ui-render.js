@@ -48,66 +48,72 @@ export function renderNews(lang) {
     `).join('');
 }
 
-/**
- * 2. 渲染看板代币详情 (修正：从 labels.tokens 渲染)
- */
 export function renderStatsPage(lang) {
     const container = document.getElementById('token-detail-list');
     if (!container) return;
 
     const labels = getI18nLabels(lang);
-    if (!labels || !labels.tokens) {
-        container.innerHTML = `<div class="p-10 text-center text-slate-400 uppercase text-[10px] font-black tracking-widest animate-pulse">Loading Market Data...</div>`;
-        return;
-    }
+    if (!labels || !labels.tokens) return;
 
     const tokens = labels.tokens;
     const tLabels = labels.token_labels || {};
 
     container.innerHTML = tokens.map(token => {
-        // 尝试从 config.js 获取对应的 logo，如果配置里没有，则回退到 symbol 命名规则
         const configLogo = tokenInfo[token.symbol]?.logo || `assets/${token.symbol.toLowerCase()}_logo.webp`;
         
         return `
-        <div class="glass-card rounded-[2rem] p-6 border-l-4 border-blue-500 shadow-sm mb-4">
-            <div class="flex justify-between items-start mb-5">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100 overflow-hidden">
+        <div class="glass-card p-5 mb-6 transition-all">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-white p-1">
                         <img src="${configLogo}" alt="${token.symbol}" class="w-full h-full object-contain" onerror="this.src='assets/head_logo.png'">
                     </div>
                     <div>
-                        <h3 class="font-black text-slate-800 text-lg tracking-tighter">${token.symbol}</h3>
-                        <p class="text-[10px] text-blue-600 font-bold uppercase tracking-widest">${token.name}</p>
+                        <h3 class="font-black text-slate-800 text-base tracking-tighter leading-none">${token.symbol}</h3>
+                        <p class="text-[9px] text-blue-500 font-black uppercase tracking-widest mt-1">${token.name}</p>
                     </div>
+                </div>
+                <div class="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-full border border-slate-100">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <span class="text-[8px] font-black text-slate-400 uppercase">Live</span>
+                </div>
+            </div>
+
+            <div class="relative w-full h-32 bg-slate-900/5 rounded-2xl mb-5 border border-white/50 overflow-hidden flex items-center justify-center group">
+                <div id="chart-${token.symbol}" class="absolute inset-0 w-full h-full"></div>
+                <div class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors cursor-pointer">
+                    <i class="fa-solid fa-chart-line mr-1"></i> Click to Load Market Chart
                 </div>
             </div>
 
             <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4 text-[11px] font-bold">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-slate-400 uppercase text-[9px] font-black">${tLabels.position || 'Position'}</span>
-                        <span class="text-slate-800 leading-tight">${token.desc}</span>
+                <div class="grid grid-cols-2 gap-3 bg-white/40 rounded-2xl p-4 border border-white/60 shadow-sm">
+                    <div class="flex flex-col gap-0.5">
+                        <span class="text-slate-400 uppercase text-[8px] font-black tracking-tight">${tLabels.position || 'Position'}</span>
+                        <span class="text-slate-800 text-[10px] font-bold leading-tight">${token.desc}</span>
                     </div>
-                    <div class="flex flex-col gap-1 text-right">
-                        <span class="text-slate-400 uppercase text-[9px] font-black">${tLabels.supply || 'Total Supply'}</span>
-                        <span class="text-slate-800">${token.total}</span>
+                    <div class="flex flex-col gap-0.5 text-right border-l border-white/60 pl-3">
+                        <span class="text-slate-400 uppercase text-[8px] font-black tracking-tight">${tLabels.supply || 'Total Supply'}</span>
+                        <span class="text-slate-800 text-xs font-black tracking-tighter">${token.total}</span>
                     </div>
                 </div>
                 
-                <div class="pt-3 border-t border-slate-50">
-                    <span class="text-slate-400 uppercase text-[9px] font-black">${tLabels.mechanism || 'Mechanism'}</span>
-                    <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">${token.mech}</p>
-                </div>
-
-                <div class="pt-3 border-t border-slate-50">
-                    <span class="text-slate-400 uppercase text-[9px] font-black">${tLabels.distribution || 'Distribution'}</span>
-                    <p class="text-[11px] text-slate-500 mt-1 leading-relaxed italic opacity-80">${token.dist}</p>
+                <div class="px-1 space-y-3">
+                    <div class="group">
+                        <span class="text-slate-400 uppercase text-[8px] font-black tracking-widest flex items-center gap-1">
+                            <i class="fa-solid fa-gears text-[7px]"></i> ${tLabels.mechanism || 'Mechanism'}
+                        </span>
+                        <p class="text-[10px] text-slate-600 mt-1 font-medium leading-relaxed">${token.mech}</p>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100/50">
+                        <span class="text-slate-400 uppercase text-[8px] font-black tracking-widest">${tLabels.distribution || 'Distribution'}</span>
+                        <p class="text-[10px] text-slate-500 mt-1 font-medium italic opacity-70 leading-relaxed">${token.dist}</p>
+                    </div>
                 </div>
             </div>
         </div>`;
     }).join('');
 }
-
 
 /**
  * 3. 渲染个人中心：资产代币列表
