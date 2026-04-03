@@ -170,3 +170,79 @@ body {
     background: linear-gradient(to bottom, transparent, #e2e8f0, transparent);
     border-radius: 10px;
 }
+
+/* 状态标签 */
+.status-badge {
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 矿机头像框 */
+.miner-avatar {
+    width: 64px;
+    height: 64px;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 1);
+    overflow: hidden;
+}
+.miner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 核心数据网格：去除了 slate-50 的沉闷感 */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.4); /* 半透明背景 */
+    padding: 16px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.data-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.data-item .label {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.data-item .value {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.data-item .value-small {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* 次要操作按钮（如果需要区分） */
+.action-btn.secondary {
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+.action-btn.secondary span {
+    color: #64748b;
+}
