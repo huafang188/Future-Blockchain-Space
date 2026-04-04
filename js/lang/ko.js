@@ -1,5 +1,5 @@
 window.i18nData = window.i18nData || {};
-window.i18nData['en'] ={
+window.i18nData['ko'] ={
         title: "NEO 생태 채굴 매트릭스",
         connect: "지갑 연결",
         connected: "연결됨",
