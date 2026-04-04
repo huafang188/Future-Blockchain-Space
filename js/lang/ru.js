@@ -1,5 +1,5 @@
 window.i18nData = window.i18nData || {};
-window.i18nData['en'] ={
+window.i18nData['ru'] ={
         title: "Экологическая матрица добычи полезных ископаемых NEO",
         connect: "Подключить кошелек",
         connected: "Подключено",
