@@ -181,25 +181,29 @@ export function renderTokenList(balances = {}) {
     }
 }
 
-/**
- * 4. 渲染交易历史 (History)
- * 对应 HTML 容器 ID: history-list
- */
 export function renderHistory(history = []) {
     const container = document.getElementById('historyList');
     if (!container) return;
 
-    if (!history || history.length === 0) {
+    // --- 核心修复：增加数组检查 ---
+    // 如果 history 根本不是数组，或者数组长度为 0
+    if (!Array.isArray(history) || history.length === 0) {
+        // 获取当前语言下的“无数据”翻译，如果没有则用默认文字
+        const lang = localStorage.getItem('fbs_lang') || 'en';
+        const noDataText = (window.i18nData && window.i18nData[lang]) 
+                           ? (window.i18nData[lang].no_data || 'No Records Found') 
+                           : 'No Records Found';
+
         container.innerHTML = `
             <div class="p-12 text-center">
                 <div class="text-slate-200 mb-2"><i class="fa-solid fa-clock-rotate-left text-3xl"></i></div>
-                <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">No Records Found</p>
+                <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">${noDataText}</p>
             </div>`;
         return;
     }
 
+    // 只有确定是数组了，才执行 map
     container.innerHTML = history.map(item => {
-        // 根据类型判断颜色和图标 (in: 收入, out: 支出)
         const isIn = item.type === 'in' || item.amount > 0;
         const icon = isIn ? 'fa-arrow-down-left' : 'fa-arrow-up-right';
         const colorClass = isIn ? 'text-emerald-500' : 'text-slate-800';
@@ -222,23 +226,24 @@ export function renderHistory(history = []) {
                 </p>
                 <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">${item.status || 'Confirmed'}</p>
             </div>
-        </div>
-        `;
+        </div>`;
     }).join('');
 }
 
-/**
- * 5. 渲染转账流水 (Transfers)
- * 对应 HTML 容器 ID: transfer-list
- */
 export function renderTransfers(transfers = []) {
     const container = document.getElementById('transferList');
     if (!container) return;
 
-    if (!transfers || transfers.length === 0) {
+    // --- 核心修复：增加数组检查 ---
+    if (!Array.isArray(transfers) || transfers.length === 0) {
+        const lang = localStorage.getItem('fbs_lang') || 'en';
+        const emptyText = (window.i18nData && window.i18nData[lang]) 
+                          ? (window.i18nData[lang].no_data || 'Empty Transfer Stream') 
+                          : 'Empty Transfer Stream';
+
         container.innerHTML = `
             <div class="p-10 text-center opacity-50">
-                <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest italic">Empty Transfer Stream</p>
+                <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest italic">${emptyText}</p>
             </div>`;
         return;
     }
@@ -261,17 +266,12 @@ export function renderTransfers(transfers = []) {
                     <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">Success</p>
                 </div>
             </div>
-        </div>
-    `).join('');
+        </div>`).join('');
 }
 
-// --- 必须在文件末尾显式挂载到 window ---
+
 window.renderHistory = renderHistory;
 window.renderTransfers = renderTransfers;
-
-
-
-// 全局挂载
 window.renderNews = renderNews;
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
