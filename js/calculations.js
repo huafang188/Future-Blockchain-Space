@@ -19,30 +19,46 @@ export function mountCalculationHandlers() {
 
     // 更新提币最大金额
     window.updateMax = function() {
-        const symbol = document.getElementById('witToken')?.value;
-        const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
+        // 关键点：强制转大写匹配
+        const symbol = document.getElementById('witToken')?.value?.toUpperCase();
+        const balance = window.userBalances ? (window.userBalances[symbol] || window.userBalances[symbol.toLowerCase()] || 0) : 0;
         document.getElementById('maxWit').innerText = parseFloat(balance).toFixed(4);
     };
 
-    // 兑换计算
+    // 兑换计算 (核心修复)
     window.calcSwap = function() {
-        const from = document.getElementById('sFromToken')?.value;
-        const to = document.getElementById('sToToken')?.value;
+        // 1. 获取并格式化币种名称
+        const from = document.getElementById('sFromToken')?.value?.toUpperCase();
+        const to = document.getElementById('sToToken')?.value?.toUpperCase();
         const amt = parseFloat(document.getElementById('sFromAmt')?.value) || 0;
-        const balance = window.userBalances ? (window.userBalances[from] || 0) : 0;
         
-        document.getElementById('maxSwap').innerText = "余额: " + parseFloat(balance).toFixed(4);
+        // 2. 余额显示修复
+        const balance = window.userBalances ? (window.userBalances[from] || window.userBalances[from.toLowerCase()] || 0) : 0;
+        const maxSwapEl = document.getElementById('maxSwap');
+        if (maxSwapEl) maxSwapEl.innerText = parseFloat(balance).toFixed(4);
         
-        if (tokenInfo[from] && tokenInfo[to]) {
-            const res = (amt * (tokenInfo[from].price / tokenInfo[to].price)).toFixed(6);
-            document.getElementById('sToAmt').value = res;
+        // 3. 使用实时价格计算汇率
+        const prices = window.currentPrices || {};
+        const fromPrice = parseFloat(prices[from]) || 0;
+        const toPrice = parseFloat(prices[to]) || 0;
+
+        const toAmtInput = document.getElementById('sToAmt');
+        if (toAmtInput) {
+            if (fromPrice > 0 && toPrice > 0) {
+                // 计算逻辑：(来源数量 * 来源单价) / 目标单价
+                const res = (amt * (fromPrice / toPrice)).toFixed(6);
+                toAmtInput.value = isNaN(res) ? "0.000000" : res;
+            } else {
+                toAmtInput.value = "0.000000";
+            }
         }
     };
 
     // 转账UI更新
     window.updateTransUI = function() {
-        const symbol = document.getElementById('transToken')?.value;
-        const balance = window.userBalances ? (window.userBalances[symbol] || 0) : 0;
-        document.getElementById('transMax').innerText = parseFloat(balance).toFixed(4);
+        const symbol = document.getElementById('transToken')?.value?.toUpperCase(); // 强制大写
+        const balance = window.userBalances ? (window.userBalances[symbol] || window.userBalances[symbol.toLowerCase()] || 0) : 0;
+        const transMaxEl = document.getElementById('transMax');
+        if (transMaxEl) transMaxEl.innerText = parseFloat(balance).toFixed(4);
     };
 }
