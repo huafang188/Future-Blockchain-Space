@@ -135,40 +135,60 @@ export async function fetchUserData(address) {
  * 3. 绑定推荐人
  */
 export async function submitBindInviter() {
+    // 1. 获取输入框的值
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
+    // 2. 获取当前钱包地址（优先从 window 取，没有则从缓存取）
     const walletAddr = window.currentAddress || localStorage.getItem('fbs_address');
     
     if (!inviterId) return alert("请输入推荐人 ID");
     if (!walletAddr) return alert("请先连接钱包");
 
+    // 生成当前日期 2026/04/04
     const now = new Date();
     const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
 
     try {
+        // 显示加载状态（如果有的话）
+        if (window.showModal) window.showModal("处理中", "正在绑定推荐关系...");
+
         const response = await fetch(API_BASE, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-            action: "bind_inviter", 
-            address: senderAddr,
-            inviterId: inviterId,
+                action: "bind_inviter", 
+                address: walletAddr, // ✅ 修复：将之前的 senderAddr 改为 walletAddr
+                inviterId: inviterId,
+                // 也可以带上格式化后的时间，虽然 Workers 也会生成
+                regTime: formattedTime 
             })
         });
 
         const result = await response.json();
-        if (result.success || result.data) {
+        
+        if (result.success) {
             // UI 立即反馈
-            updateText('info_inviter', inviterId);
-            updateText('info_regTime', formattedTime);
+            if (typeof updateText === 'function') {
+                updateText('info_inviter', inviterId);
+                updateText('info_regTime', formattedTime);
+            }
+            
             if (window.closeModal) window.closeModal();
             alert("✅ 绑定成功");
+            
             // 刷新用户数据
-            fetchUserData(walletAddr);
+            if (typeof fetchUserData === 'function') {
+                fetchUserData(walletAddr);
+            }
+            
+            // 建议：绑定成功后刷新页面以更新所有状态
+            location.reload(); 
         } else {
-            alert("绑定失败: " + (result.message || "未知错误"));
+            if (window.closeModal) window.closeModal();
+            alert("绑定失败: " + (result.message || "后端验证未通过"));
         }
     } catch (error) {
         console.error("绑定异常:", error);
+        if (window.closeModal) window.closeModal();
         alert("网络连接失败，请检查 API 配置");
     }
 }
