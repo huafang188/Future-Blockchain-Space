@@ -249,3 +249,71 @@ footer {
         padding-bottom: env(safe-area-inset-bottom, 2rem);
     }
 }
+
+/* --- 全局弹窗基础容器 --- */
+#modalOverlay {
+    background: rgba(15, 23, 42, 0.7); /* 深色半透明背景，增加对比 */
+    backdrop-filter: blur(8px); /* 磨砂玻璃效果，突出上方弹窗 */
+    z-index: 1000;
+}
+
+/* --- 弹窗主体卡片 --- */
+.modal-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* 深层阴影增加立体感 */
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+/* --- 文字清晰度优化 --- */
+#modalTitle {
+    color: #0f172a; /* 极深蓝色，比纯黑更高级且清晰 */
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 1.25rem;
+}
+
+#modalContent {
+    color: #334155; /* 次级文字颜色 */
+    line-height: 1.6;
+}
+
+/* --- 输入框边缘强化 (关键修改) --- */
+#modalContent input, 
+#modalContent select, 
+#modalContent textarea {
+    background-color: #f8fafc !important; /* 浅灰色底，区分背景 */
+    border: 2px solid #e2e8f0 !important; /* 明显的浅灰边框 */
+    color: #0f172a !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+/* 输入框聚焦状态：模拟 Web3 科技感发光 */
+#modalContent input:focus, 
+#modalContent select:focus {
+    background-color: #ffffff !important;
+    border-color: #3b82f6 !important; /* 蓝色激活边界 */
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); /* 柔和的外发光 */
+}
+
+/* 占位符颜色调整 */
+#modalContent input::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+/* --- 按钮美化 --- */
+.action-btn {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.action-btn:active {
+    transform: scale(0.98);
+}
