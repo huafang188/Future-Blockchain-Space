@@ -89,35 +89,33 @@ export async function fetchUserData(address) {
         updateText('team_totalSales', t["团队业绩"] || "0.00");
         updateText('team_totalReward', t["累计奖励"] || "0.00");
 
-        // --- E. 资产处理 (核心修复：修正重复嵌套) ---
-        if (data.balances && typeof data.balances === 'object') {
-            window.userBalances = data.balances;
-            
-            if (typeof renderTokenList === 'function') {
-                renderTokenList(data.balances);
-            }
-            
-            let calculatedTotal = 0;
+// --- E. 资产处理 ---
+if (data.balances && data.allPrices) {
+    window.userBalances = data.balances;
+    const prices = data.allPrices; // 直接使用 Worker 返回的聚合价格
+    
+    let calculatedTotal = 0;
 
-            Object.keys(data.balances).forEach(token => {
-                const balance = parseFloat(data.balances[token]) || 0;
-                
-                // 优先从 config.js 的 tokenInfo 获取价格
-                const price = tokenInfo[token] ? tokenInfo[token].price : 0;
-                
-                calculatedTotal += (balance * price);
-                
-                // 更新 UI 余额显示
-                updateText(`bal_${token}`, balance.toFixed(2));
-            });
+    Object.keys(data.balances).forEach(token => {
+        const balance = parseFloat(data.balances[token]) || 0;
+        
+        // 自动匹配：如果是 BNB 就用币安价，如果是 NEO 就用飞书价
+        const price = prices[token] || 0;
+        
+        calculatedTotal += (balance * price);
+        
+        // 更新 UI 余额
+        updateText(`bal_${token}`, balance.toFixed(2));
+        // (可选) 如果你想在列表里显示当前价格
+        updateText(`price_${token}`, price.toFixed(price < 1 ? 4 : 2));
+    });
 
-            // 更新总估值
-            updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
-        }
-
+    // 更新总估值
+    updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+}
         // --- F. 历史记录渲染 ---
         const historyList = Array.isArray(data.history) ? data.history : [];
         const transferList = Array.isArray(data.transfers) ? data.transfers : [];
