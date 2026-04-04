@@ -133,44 +133,7 @@ export function mountModalHandlers() {
         }
     };
 
-    // --- 3. 内部转账逻辑修复 (确保 symbol 大写提交) ---
-    window.doInternalTransfer = async function() {
-        const toAddr = document.getElementById('transAddr')?.value.trim();
-        const symbol = document.getElementById('transToken')?.value.toUpperCase(); // 关键修复：转大写
-        const amount = document.getElementById('transAmount')?.value;
-
-        if (!toAddr || !amount || parseFloat(amount) <= 0) {
-            alert("请输入正确的地址和数量");
-            return;
-        }
-
-        window.showLoading(true);
-        try {
-            // 注意：这里需要调用你实际的 API 提交逻辑，确保 symbol 是大写的
-            const response = await fetch('https://api.neoneo.ink/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'transfer', 
-                    address: window.currentAddress,
-                    to: toAddr,
-                    symbol: symbol, // 发送大写的 BTC/ETH 等
-                    amount: amount
-                })
-            });
-            const res = await response.json();
-            if (res.success) {
-                alert("转账提交成功");
-                window.closeModal();
-            } else {
-                alert("转账失败: " + (res.error || "未知错误"));
-            }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            window.showLoading(false);
-        }
-    };
+    
 
     // --- 4. 兑换计算逻辑修复 (处理 NaN) ---
     window.calcSwap = function() {
