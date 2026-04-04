@@ -2,11 +2,6 @@ import { API_BASE } from './config.js';
 
 /**
  * 1. 提交交易记录 (增强版：支持自定义 Action 和 额外字段)
- * @param {string} type 业务类型（如：充值、购买矿机）
- * @param {string|number} amount 数量
- * @param {string} symbol 代币符号
- * @param {string} action 对应 Worker 的逻辑分支 (重要)
- * @param {object} extraFields 额外字段（如转账时的 receiver）
  */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
     console.log("准备提交 POST:", { type, amount, symbol, action, ...extraFields });
@@ -22,14 +17,13 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     // 格式化时间为 YYYY/MM/DD HH:mm:ss 适配飞书
     const formattedDate = now.toLocaleString('zh-CN', { hour12: false }).replace(/-/g, '/'); 
 
-    // 构建发送给 Worker 的数据包
     const payload = {
-        action: action,        // 决定 Worker 去哪个表
-        address: address,      // 发起人地址
-        type: type,            // 交易类型
-        amount: String(amount),// 数量
-        symbol: symbol,        // 代币
-        ...extraFields,        // 展开额外字段（如 receiver）
+        action: action,        
+        address: address,      
+        type: type,            
+        amount: String(amount),
+        symbol: symbol,        
+        ...extraFields,        
         time: formattedDate
     };
 
@@ -44,21 +38,23 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         console.log("服务器返回结果:", result);
 
         if (result.success) {
-            // 提交成功后刷新数据
-            await fetchUserData(address); 
+            // --- 核心修复：改为弹窗后刷新页面，给飞书数据写入留出缓冲时间 ---
+            alert(`✅ ${type}申请已提交`);
+            location.reload(); 
         } else {
-            // 如果后端返回错误（如飞书字段不匹配），打印出来
             console.error("提交失败详情:", result.msg);
+            alert(`❌ 提交失败: ${result.msg || "后端验证未通过"}`);
         }
         return result;
     } catch (e) {
         console.error("提交请求异常:", e);
+        alert("网络异常，请稍后重试");
         return { success: false, error: e.message };
     }
 }
 
 /**
- * 2. 内部转账业务逻辑 (你需要确保 HTML 按钮调用的是这个函数)
+ * 2. 内部转账业务逻辑
  */
 export async function doInternalTransfer() {
     const toAddr = document.getElementById('transAddr')?.value.trim();
@@ -72,64 +68,82 @@ export async function doInternalTransfer() {
 
     if (window.showModal) window.showModal("处理中", "正在提交内部转账申请...");
 
-    // 关键修复：显式传递 action 为 "transfer"，并带上 receiver 字段
     const result = await postTransactionRecord(
         "内部转账", 
         amount, 
         symbol, 
-        "transfer", // 必须与 Worker 中的 if (body.action === "transfer") 对应
-        { receiver: toAddr } // 必须包含 receiver 字段
+        "transfer", 
+        { receiver: toAddr }
     );
 
-    if (result.success) {
-        alert("✅ 转账申请已提交");
-        if (window.closeModal) window.closeModal();
-        location.reload();
-    } else {
-        alert("❌ 转账失败: " + (result.msg || "接口响应异常"));
-        if (window.closeModal) window.closeModal();
+    if (!result.success && window.closeModal) {
+        window.closeModal();
     }
 }
 
 /**
- * 3. 获取并渲染用户数据 (保持不变)
+ * 3. 获取并渲染用户数据 (增强数据保护版)
  */
 export async function fetchUserData(address) {
     if (!address) return;
     try {
+        // 增加随机数防止浏览器缓存旧的空数据
         const res = await fetch(`${API_BASE}?address=${address}&t=${Date.now()}`);
         if (!res.ok) throw new Error('网络请求失败');
         const data = await res.json();
         
+        console.log("Worker 返回原始数据:", data);
+
+        // --- 核心保护：如果 data.balances 是空的，坚决不渲染渲染 UI，防止资产归零 ---
+        if (!data.newUser && (!data.balances || Object.keys(data.balances).length === 0)) {
+            console.warn("⚠️ 检测到飞书数据同步延迟（空余额），跳过此次渲染以保护页面显示。");
+            return; 
+        }
+
         if (data.newUser) {
             if (typeof window.showRegisterModal === 'function') window.showRegisterModal(address);
             return;
         }
 
-        // 基础信息
+        // --- 基础信息渲染 ---
         updateText('info_inviteCode', data.info?.["推荐码"]);
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // 资产与价格
+        // --- 资产与价格处理 ---
         if (data.balances && data.allPrices) {
             window.currentPrices = data.allPrices;
+            window.userBalances = data.balances; // 备份到全局方便计算页面使用
+
             const cleanPrices = {};
-            Object.keys(data.allPrices).forEach(k => cleanPrices[k.toUpperCase()] = parseFloat(data.allPrices[k]) || 0);
+            Object.keys(data.allPrices).forEach(k => {
+                cleanPrices[k.toUpperCase()] = parseFloat(data.allPrices[k]) || 0;
+            });
             
             let total = 0;
             Object.keys(data.balances).forEach(token => {
                 const bal = parseFloat(data.balances[token]) || 0;
                 const price = cleanPrices[token.toUpperCase()] || 0;
-                total += bal * price;
+                const itemValue = bal * price;
+                total += itemValue;
+
                 updateText(`bal_${token}`, bal.toFixed(4));
                 updateText(`price_${token}`, price > 0 ? `$${price.toFixed(2)}` : "---");
-                updateText(`val_${token}`, `$${(bal * price).toFixed(2)}`);
+                updateText(`val_${token}`, `$${itemValue.toFixed(2)}`);
             });
-            updateText('totalValue', total.toFixed(2));
+            
+            updateText('totalValue', total.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
         }
 
-        // 历史渲染
+        // --- 矿机/团队/记录渲染 ---
+        if (data.miner) {
+            updateText('miner_count', data.miner["矿机数量"]);
+            updateText('miner_daily', data.miner["日产量"]);
+        }
+
         if (window.renderHistory) window.renderHistory(data.history || []);
         if (window.renderTransfers) window.renderTransfers(data.transfers || []);
 
@@ -139,7 +153,7 @@ export async function fetchUserData(address) {
 }
 
 /**
- * 4. 绑定推荐人 (保持逻辑，但与 Worker 适配)
+ * 4. 绑定推荐人
  */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
@@ -170,34 +184,33 @@ export async function submitBindInviter() {
             alert("✅ 绑定成功");
             location.reload(); 
         } else {
-            alert("❌ 绑定失败: " + (result.msg || "后端校验未通过"));
+            alert("❌ 绑定失败: " + (result.msg || "推荐码无效"));
         }
     } catch (error) {
         console.error("绑定异常:", error);
-        alert("网络连接失败，请检查 API 配置");
     } finally {
         if (window.closeModal) window.closeModal();
     }
 }
 
 /**
- * 5. 通用更新文本工具函数 (保持不变)
+ * 5. 通用更新文本工具函数
  */
 export function updateText(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
     
-    if (value === undefined || value === null || value === "") {
-        const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('bal_') || id.includes('totalValue');
+    if (value === undefined || value === null || value === "" || value === "NaN") {
+        const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('bal_') || id.includes('totalValue') || id.includes('val_');
         el.innerText = isAmountField ? "0.00" : "---";
     } else {
         el.innerText = value;
     }
 }
 
-// 暴露全局变量给 HTML 按钮调用
+// 暴露全局变量
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
-window.doInternalTransfer = doInternalTransfer; // 必须暴露给 HTML 调用
+window.doInternalTransfer = doInternalTransfer;
 window.updateText = updateText;
