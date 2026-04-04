@@ -269,17 +269,7 @@ export function renderTransfers(transfers = []) {
 window.renderHistory = renderHistory;
 window.renderTransfers = renderTransfers;
 
-export function i18nRender(lang) {
-    const labels = getI18nLabels(lang);
-    if (!labels) return;
 
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (labels[key]) {
-            el.tagName === 'INPUT' ? el.placeholder = labels[key] : el.innerText = labels[key];
-        }
-    });
-}
 
 // 全局挂载
 window.renderNews = renderNews;
@@ -287,4 +277,3 @@ window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
 window.renderHistory = renderHistory;
 window.renderTransfers = renderTransfers;
-window.i18nRender = i18nRender;
