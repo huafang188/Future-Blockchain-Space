@@ -37,9 +37,8 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         console.log("服务器返回结果:", result);
 
         if (result.success) {
-            if (typeof fetchUserData === 'function') {
-                await fetchUserData(address); 
-            }
+            // 提交成功后静默刷新数据
+            await fetchUserData(address); 
         }
         return result;
     } catch (e) {
@@ -49,7 +48,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 }
 
 /**
- * 2. 获取并渲染用户数据
+ * 2. 获取并渲染用户数据 (核心修复版)
  */
 export async function fetchUserData(address) {
     if (!address) return;
@@ -59,6 +58,7 @@ export async function fetchUserData(address) {
         if (!res.ok) throw new Error('网络请求失败');
         
         const data = await res.json();
+        console.log("Worker 原始数据:", data);
 
         // --- A. 新用户逻辑 ---
         if (data.newUser) {
@@ -89,33 +89,40 @@ export async function fetchUserData(address) {
         updateText('team_totalSales', t["团队业绩"] || "0.00");
         updateText('team_totalReward', t["累计奖励"] || "0.00");
 
-// --- E. 资产处理 ---
-if (data.balances && data.allPrices) {
-    window.userBalances = data.balances;
-    const prices = data.allPrices; // 直接使用 Worker 返回的聚合价格
-    
-    let calculatedTotal = 0;
+        // --- E. 资产与价格处理 (修复重点) ---
+        if (data.balances && data.allPrices) {
+            // 1. 存入全局变量，确保 ui-render.js 能读到
+            window.currentPrices = data.allPrices;
+            window.userBalances = data.balances;
+            
+            const prices = data.allPrices;
+            let calculatedTotal = 0;
 
-    Object.keys(data.balances).forEach(token => {
-        const balance = parseFloat(data.balances[token]) || 0;
-        
-        // 自动匹配：如果是 BNB 就用币安价，如果是 NEO 就用飞书价
-        const price = prices[token] || 0;
-        
-        calculatedTotal += (balance * price);
-        
-        // 更新 UI 余额
-        updateText(`bal_${token}`, balance.toFixed(2));
-        // (可选) 如果你想在列表里显示当前价格
-        updateText(`price_${token}`, price.toFixed(price < 1 ? 4 : 2));
-    });
+            // 2. 先执行一次渲染列表，生成 DOM 结构
+            if (typeof window.renderTokenList === 'function') {
+                window.renderTokenList(data.balances);
+            }
 
-    // 更新总估值
-    updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
-}
+            // 3. 循环计算总值并精确更新具体的 ID 文本
+            Object.keys(data.balances).forEach(token => {
+                const balance = parseFloat(data.balances[token]) || 0;
+                const price = parseFloat(prices[token]) || 0;
+                
+                calculatedTotal += (balance * price);
+                
+                // 确保 UI 上的单价和余额实时反映
+                updateText(`bal_${token}`, balance.toFixed(4));
+                updateText(`price_${token}`, `$${price.toFixed(price < 1 ? 4 : 2)}`);
+                updateText(`val_${token}`, `$${(balance * price).toFixed(2)}`);
+            });
+
+            // 4. 更新总估值
+            updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+        }
+
         // --- F. 历史记录渲染 ---
         const historyList = Array.isArray(data.history) ? data.history : [];
         const transferList = Array.isArray(data.transfers) ? data.transfers : [];
@@ -123,10 +130,10 @@ if (data.balances && data.allPrices) {
         if (window.renderHistory) window.renderHistory(historyList);
         if (window.renderTransfers) window.renderTransfers(transferList);
         
-        // --- G. 统计面板刷新 ---
+        // --- G. 行情详情页渲染 ---
         const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
-        if (typeof renderStatsPage === 'function') {
-            renderStatsPage(currentLang);
+        if (typeof window.renderStatsPage === 'function') {
+            window.renderStatsPage(currentLang);
         }
 
     } catch (e) {
@@ -164,10 +171,6 @@ export async function submitBindInviter() {
         const result = await response.json();
         
         if (result.success) {
-            if (typeof updateText === 'function') {
-                updateText('info_inviter', inviterId);
-                updateText('info_regTime', formattedTime);
-            }
             if (window.closeModal) window.closeModal();
             alert("✅ 绑定成功");
             location.reload(); 
@@ -196,3 +199,9 @@ export function updateText(id, value) {
         el.innerText = value;
     }
 }
+
+// 暴露全局变量
+window.fetchUserData = fetchUserData;
+window.postTransactionRecord = postTransactionRecord;
+window.submitBindInviter = submitBindInviter;
+window.updateText = updateText;
