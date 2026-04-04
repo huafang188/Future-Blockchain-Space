@@ -111,4 +111,4 @@ window.i18nData['en'] ={
     placeholder_email: "연락처 이메일을 입력하세요",
     btn_submit_email: "제출 및 신청",
     bind_success: "제출 후 2시간 이내에 이메일로 발송됩니다."
-    },
+    };
