@@ -149,10 +149,9 @@ export async function submitBindInviter() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "bind_relationship",
-                user: walletAddr,
-                inviter: inviterId,
-                regTime: formattedTime
+            action: "bind_inviter", 
+            address: senderAddr,
+            inviterId: inviterId,
             })
         });
 
