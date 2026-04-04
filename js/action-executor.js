@@ -1,8 +1,10 @@
 import { RECEIVE_ADDRS, CONTRACT_ADDRS } from './config.js';
 import { getCurrentAddress } from './wallet-utils.js';
-import { postTransactionRecord } from './api-service.js';
+import { postTransactionRecord, fetchUserData } from './api-service.js';
 
-// 合约代币转账
+/**
+ * --- 核心逻辑：合约代币转账 (USDT等) ---
+ */
 export async function executeTokenTransfer(contractAddr, to, amountStr) {
     try {
         const provider = new ethers.BrowserProvider(window.ethereum);
@@ -24,7 +26,9 @@ export async function executeTokenTransfer(contractAddr, to, amountStr) {
     }
 }
 
-// 原生代币转账（BNB）
+/**
+ * --- 核心逻辑：原生代币转账 (BNB) ---
+ */
 export async function executeNativeTransfer(to, amountStr) {
     try {
         const provider = new ethers.BrowserProvider(window.ethereum);
@@ -39,7 +43,9 @@ export async function executeNativeTransfer(to, amountStr) {
     }
 }
 
-// 充值
+/**
+ * --- 业务：充值 ---
+ */
 export async function doRecharge() {
     const symbol = document.getElementById('recToken').value;
     const amount = document.getElementById('recAmount').value;
@@ -55,7 +61,9 @@ export async function doRecharge() {
     } catch (e) { console.error(e); }
 }
 
-// 链上支付（矿机/电费）
+/**
+ * --- 业务：链上支付（购买矿机/交电费） ---
+ */
 export async function doChainPay(bizType) {
     const totalText = (bizType === 'MINER') 
         ? document.getElementById('buyTotal').innerText.replace('$ ', '') 
@@ -69,7 +77,9 @@ export async function doChainPay(bizType) {
     } catch (e) { console.error(e); }
 }
 
-// 签名动作（提币/兑换）
+/**
+ * --- 业务：签名动作（提币/兑换） ---
+ */
 export async function handleSignAction(type) {
     try {
         const currentAddress = getCurrentAddress();
@@ -93,7 +103,9 @@ export async function handleSignAction(type) {
     } catch (e) { alert("已取消或签名失败"); }
 }
 
-// 内部转账
+/**
+ * --- 业务：内部资产转账 ---
+ */
 export async function doInternalTransfer() {
     const symbol = document.getElementById('transToken')?.value;
     const toAddr = document.getElementById('transAddr')?.value.trim();
@@ -123,8 +135,8 @@ export async function doInternalTransfer() {
                 receiver: toAddr,
                 type: symbol,
                 amount: String(amount),
-                symbol: symbol,
-                status: "已提交"
+                signature: signature,
+                message: message
             })
         });
 
@@ -140,10 +152,110 @@ export async function doInternalTransfer() {
     }
 }
 
-// 挂载全局
+/**
+ * --- 新增：转让矿机 (集成 Hex 签名逻辑) ---
+ */
+export async function doMinerTransfer() {
+    const toAddr = document.getElementById('minerT_Addr')?.value.trim();
+    const amount = document.getElementById('minerT_Amount')?.value;
+    const senderAddr = getCurrentAddress();
+
+    if (!toAddr || !amount || parseFloat(amount) <= 0) {
+        alert("请输入有效的地址和数量");
+        return;
+    }
+
+    try {
+        const message = `确认转让矿机\n转让数量: ${amount}\n接收地址: ${toAddr}\n时间: ${new Date().toLocaleString()}`;
+        const hexMsg = '0x' + Array.from(new TextEncoder().encode(message)).map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [hexMsg, senderAddr],
+        });
+
+        const response = await fetch('https://api.neoneo.ink/api/user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: "transfer_miner",
+                address: senderAddr,
+                receiver: toAddr,
+                amount: String(amount),
+                signature: signature,
+                message: message
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("✅ 矿机转让申请已提交");
+            window.closeModal();
+            fetchUserData(senderAddr);
+        } else {
+            alert("提交失败: " + result.message);
+        }
+    } catch (e) {
+        console.error("矿机转让失败:", e);
+        if (e.code === 4001) alert("用户取消了签名");
+    }
+}
+
+/**
+ * --- 新增：团队详情（提交邮箱） ---
+ */
+export async function doTeamEmailSubmit() {
+    const email = document.getElementById('team_email')?.value.trim();
+    const senderAddr = getCurrentAddress();
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailReg.test(email)) {
+        alert("请输入有效的邮箱地址");
+        return;
+    }
+
+    try {
+        const message = `激活团队高级权限\n绑定邮箱: ${email}\n用户: ${senderAddr}\n时间: ${new Date().toLocaleString()}`;
+        const hexMsg = '0x' + Array.from(new TextEncoder().encode(message)).map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [hexMsg, senderAddr],
+        });
+
+        const response = await fetch('https://api.neoneo.ink/api/user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: "bind_email",
+                address: senderAddr,
+                email: email,
+                signature: signature,
+                message: message
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("✅ 邮箱绑定成功，权限已激活");
+            window.closeModal();
+        } else {
+            alert("提交失败: " + result.message);
+        }
+    } catch (e) {
+        console.error("邮箱绑定失败:", e);
+        if (e.code === 4001) alert("用户取消了签名");
+    }
+}
+
+/**
+ * --- 核心：挂载到全局作用域 ---
+ */
 export function mountActionExecutors() {
     window.doRecharge = doRecharge;
     window.doChainPay = doChainPay;
     window.handleSignAction = handleSignAction;
     window.doInternalTransfer = doInternalTransfer;
+    window.doMinerTransfer = doMinerTransfer; // 挂载新功能
+    window.doTeamEmailSubmit = doTeamEmailSubmit; // 挂载新功能
 }
