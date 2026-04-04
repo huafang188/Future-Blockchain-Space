@@ -1,7 +1,5 @@
 import { API_BASE } from './config.js';
-
-// 提交交易记录
-export async function postTransactionRecord(type, amount, symbol) {
+export async function postTransactionRecord(type, amount, symbol, action = "record_transaction") {
     const address = window.currentAddress || window.userAddress || localStorage.getItem('fbs_address');
     
     if (!address) {
@@ -13,7 +11,7 @@ export async function postTransactionRecord(type, amount, symbol) {
     const formattedDate = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
 
     const payload = {
-        action: "record_transaction",
+        action: action,
         address: address,
         type: type,
         amount: String(amount),
@@ -31,22 +29,25 @@ export async function postTransactionRecord(type, amount, symbol) {
         const result = await response.json();
         
         if (result.success && typeof fetchUserData === 'function') {
-            fetchUserData(address);
+            setTimeout(() => fetchUserData(address), 1000);
         }
+        return result;
     } catch (e) {
         console.error("提交失败:", e);
+        return { success: false, error: e.message };
     }
 }
 
-// 获取用户数据
 export async function fetchUserData(address) {
+    if (!address) return;
+    
     try {
         const res = await fetch(`${API_BASE}?address=${address}`);
         if (!res.ok) throw new Error('网络请求失败');
         
         const data = await res.json();
 
-        // 新用户弹窗
+        // --- A. 新用户逻辑 ---
         if (data.newUser) {
             if (typeof window.showRegisterModal === 'function') {
                 window.showRegisterModal(address);
@@ -54,30 +55,32 @@ export async function fetchUserData(address) {
             return;
         }
 
-        // 基础信息
+        // --- B. 基础信息渲染 ---
         const info = data.info || {};
         updateText('info_inviteCode', info["推荐码"] || "---");
         updateText('info_inviter', info["推荐人"] || "---");
         updateText('info_regTime', info["注册时间"] || "--");
 
-        // 矿机
+        // --- C. 矿机信息渲染 ---
         const miner = data.miner || {};
-        updateText('miner_count', miner["矿机数量"]);
-        updateText('miner_daily', miner["日产量"]);
+        updateText('miner_count', miner["矿机数量"] || "0");
+        updateText('miner_daily', miner["日产量"] || "0.00");
         updateText('miner_deadline', miner["挖矿期限"] || "--");
-        updateText('miner_locked', miner["锁仓数量"]);
+        updateText('miner_locked', miner["锁仓数量"] || "0.00");
 
-        // 团队
+        // --- D. 团队信息渲染 ---
         const t = data.team || {};
-        updateText('team_directCount', t["直推人数"]);
-        updateText('team_directSales', t["直推业绩"]);
-        updateText('team_totalCount', t["团队人数"]);
-        updateText('team_totalSales', t["团队业绩"]);
-        updateText('team_totalReward', t["累计奖励"]);
+        updateText('team_directCount', t["直推人数"] || "0");
+        updateText('team_directSales', t["直推业绩"] || "0.00");
+        updateText('team_totalCount', t["团队人数"] || "0");
+        updateText('team_totalSales', t["团队业绩"] || "0.00");
+        updateText('team_totalReward', t["累计奖励"] || "0.00");
 
-        // 资产
-        if (data.balances) {
+        // --- E. 资产处理 (核心修复：增加空值和类型保护) ---
+        if (data.balances && typeof data.balances === 'object') {
             window.userBalances = data.balances;
+            
+            // 渲染资产列表页
             if (typeof renderTokenList === 'function') {
                 renderTokenList(data.balances);
             }
@@ -89,31 +92,38 @@ export async function fetchUserData(address) {
                 const balance = parseFloat(data.balances[token]) || 0;
                 const price = prices[token] || 0;
                 calculatedTotal += (balance * price);
+                // 更新首页的小余额显示
                 updateText(`bal_${token}`, balance.toFixed(2));
             });
 
+            // 更新总估值
             updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             }));
         }
 
-        // 历史 & 转账
-        if (window.renderHistory) window.renderHistory(data.history || []);
-        if (window.renderTransfers) window.renderTransfers(data.transfers || []);
+        // --- F. 历史记录渲染 (核心修复：强制转为数组) ---
+        const historyList = Array.isArray(data.history) ? data.history : [];
+        const transferList = Array.isArray(data.transfers) ? data.transfers : [];
+
+        if (window.renderHistory) window.renderHistory(historyList);
+        if (window.renderTransfers) window.renderTransfers(transferList);
         
-        // 统计面板
+        // --- G. 统计面板刷新 ---
         const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
         if (typeof renderStatsPage === 'function') {
             renderStatsPage(currentLang);
         }
 
     } catch (e) {
-        console.error("前端渲染逻辑报错:", e);
+        console.error("fetchUserData 渲染链路报错:", e);
     }
 }
 
-// 绑定推荐人
+/**
+ * 3. 绑定推荐人
+ */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     const walletAddr = window.currentAddress || localStorage.getItem('fbs_address');
@@ -138,25 +148,33 @@ export async function submitBindInviter() {
 
         const result = await response.json();
         if (result.success || result.data) {
-            if(document.getElementById('info_inviter')) document.getElementById('info_inviter').innerText = inviterId;
-            if(document.getElementById('info_regTime')) document.getElementById('info_regTime').innerText = formattedTime;
-            window.showModal("绑定成功", "推荐关系已记录");
+            // UI 立即反馈
+            updateText('info_inviter', inviterId);
+            updateText('info_regTime', formattedTime);
+            if (window.closeModal) window.closeModal();
+            alert("✅ 绑定成功");
+            // 刷新用户数据
+            fetchUserData(walletAddr);
         } else {
-            alert("绑定失败: " + (result.message || "请求未成功"));
+            alert("绑定失败: " + (result.message || "未知错误"));
         }
     } catch (error) {
         console.error("绑定异常:", error);
-        alert("网络连接失败");
+        alert("网络连接失败，请检查 API 配置");
     }
 }
 
-// 通用更新文本
+/**
+ * 4. 通用更新文本工具函数
+ */
 export function updateText(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
     
-    if (value === undefined || value === null) {
-        el.innerText = (id.includes('Sales') || id.includes('Reward')) ? "0.00" : "0";
+    if (value === undefined || value === null || value === "") {
+        // 如果是业绩类字段，空值显示 0.00
+        const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('bal_') || id.includes('totalValue');
+        el.innerText = isAmountField ? "0.00" : "0";
     } else {
         el.innerText = value;
     }
