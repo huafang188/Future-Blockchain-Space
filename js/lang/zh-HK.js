@@ -111,4 +111,4 @@ window.i18nData['en'] ={
     placeholder_email: "請輸入您的聯繫郵箱",
     btn_submit_email: "提交並申請",
     bind_success: "提交後兩小時內發送至您的郵箱"
-    },
+    };
