@@ -1,16 +1,22 @@
-// 基础API地址
+/**
+ * 基础配置
+ */
 export const API_BASE = "https://api.neoneo.ink/api/user";
 // BSC链ID
 export const BSC_CHAIN_ID = '0x38';
 
-// 收款地址配置
+/**
+ * 收款地址配置
+ */
 export const RECEIVE_ADDRS = {
     RECHARGE: "0xCfd8e926623e46fB8F54baaB9c7609808daFf9B4",
     ELECTRIC: "0xFf27899526FDA4A30411A8e2778d7F7BCb837568",
     MINER: "0xBdfFB96E30d2d5858c46374a213ee819A005256c"
 };
 
-// 合约地址配置
+/**
+ * 合约地址配置
+ */
 export const CONTRACT_ADDRS = {
     'USDT': "0x55d398326f99059ff775485246999027b3197955",
     'ETH': "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
@@ -18,21 +24,59 @@ export const CONTRACT_ADDRS = {
     'BNB': "NATIVE"
 };
 
-
-export const tokenInfo = {
-    'NEO': { logo: 'assets/neo_logo.webp' },
-    'NEX': { logo: 'assets/nex_logo.webp' },
-    'NET': { logo: 'assets/net_logo.webp' },
-    'NEA': { logo: 'assets/nea_logo.webp' },
-    'NRY': { logo: 'assets/nry_logo.webp' },
-    'NCL': { logo: 'assets/ncl_logo.webp' },
-    'USDT': { logo: 'assets/USDT.webp' },
-    'BNB': { logo: 'assets/BNB.webp' },
-    'ETH': { logo: 'assets/ETH.webp' },
-    'BTC': { logo: 'assets/BTC.webp' }
+/**
+ * 代币视觉配置与 K 线链接
+ * 注：chartUrl 填入你在飞书多维表格仪表盘中“发布到 Web”获取的链接
+ */
+export const tokenConfig = {
+    'NEO': { 
+        logo: 'assets/neo_logo.webp',
+        chartUrl: '' // TODO: 填入飞书 NEO K线链接
+    },
+    'NEX': { 
+        logo: 'assets/nex_logo.webp',
+        chartUrl: '' // TODO: 填入飞书 NEX K线链接
+    },
+    'NET': { 
+        logo: 'assets/net_logo.webp',
+        chartUrl: '' 
+    },
+    'NEA': { 
+        logo: 'assets/nea_logo.webp',
+        chartUrl: '' 
+    },
+    'NRY': { 
+        logo: 'assets/nry_logo.webp',
+        chartUrl: '' 
+    },
+    'NCL': { 
+        logo: 'assets/ncl_logo.webp',
+        chartUrl: '' 
+    },
+    'USDT': { 
+        logo: 'assets/USDT.webp',
+        chartUrl: '' 
+    },
+    'BNB': { 
+        logo: 'assets/BNB.webp',
+        chartUrl: '' 
+    },
+    'ETH': { 
+        logo: 'assets/ETH.webp',
+        chartUrl: '' 
+    },
+    'BTC': { 
+        logo: 'assets/BTC.webp',
+        chartUrl: '' 
+    }
 };
 
-// 交易状态样式映射
+// 保持向下兼容，如果其他地方引用了 tokenInfo
+export const tokenInfo = tokenConfig;
+
+/**
+ * 交易状态样式映射
+ */
 export const STATUS_CLASS_MAP = {
     "已提交": "status-submitted",
     "处理中": "status-processing",
