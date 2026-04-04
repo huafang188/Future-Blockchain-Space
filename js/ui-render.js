@@ -1,5 +1,8 @@
-import { tokenInfo } from './config.js';
+import { tokenConfig } from './config.js';
 
+/**
+ * 辅助函数：获取国际化标签
+ */
 function getI18nLabels(lang) {
     const currentLang = lang || localStorage.getItem('fbs_lang') || 'en';
     if (window.i18nData && window.i18nData[currentLang]) {
@@ -12,7 +15,9 @@ function getI18nLabels(lang) {
     return null;
 }
 
-
+/**
+ * 1. 渲染公告/新闻
+ */
 export function renderNews(lang) {
     const container = document.getElementById('news-container');
     if (!container) return;
@@ -41,7 +46,7 @@ export function renderNews(lang) {
 }
 
 /**
- * 2. 渲染行情/详情页
+ * 2. 渲染行情/详情页 (集成实时 K 线)
  */
 export function renderStatsPage(lang) {
     const container = document.getElementById('token-detail-list');
@@ -54,8 +59,11 @@ export function renderStatsPage(lang) {
     const tLabels = labels.token_labels || {};
 
     container.innerHTML = tokens.map(token => {
-        const configLogo = tokenInfo[token.symbol]?.logo || `assets/${token.symbol.toLowerCase()}_logo.webp`;
-        
+        // 优先从 tokenConfig 获取 logo 和 图表链接
+        const config = tokenConfig[token.symbol] || {};
+        const configLogo = config.logo || `assets/${token.symbol.toLowerCase()}_logo.webp`;
+        const chartUrl = config.chartUrl || ""; 
+
         return `
         <div class="glass-card p-5 mb-6 transition-all">
             <div class="flex justify-between items-start mb-4">
@@ -74,11 +82,20 @@ export function renderStatsPage(lang) {
                 </div>
             </div>
 
-            <div class="relative w-full h-32 bg-slate-900/5 rounded-2xl mb-5 border border-white/50 overflow-hidden flex items-center justify-center group">
-                <div id="chart-${token.symbol}" class="absolute inset-0 w-full h-full"></div>
-                <div class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors cursor-pointer">
-                    <i class="fa-solid fa-chart-line mr-1"></i> Market Chart
-                </div>
+            <div class="relative w-full h-48 bg-slate-900/5 rounded-2xl mb-5 border border-white/50 overflow-hidden flex items-center justify-center shadow-inner">
+                ${chartUrl ? `
+                    <iframe 
+                        src="${chartUrl}" 
+                        style="width: 100%; height: 100%; border: none; border-radius: 16px;"
+                        allowtransparency="true"
+                        loading="lazy">
+                    </iframe>
+                ` : `
+                    <div class="flex flex-col items-center opacity-20">
+                        <i class="fa-solid fa-chart-line text-2xl mb-2"></i>
+                        <span class="text-[8px] font-black tracking-[0.2em]">MARKET CHART</span>
+                    </div>
+                `}
             </div>
 
             <div class="space-y-4">
@@ -111,18 +128,24 @@ export function renderStatsPage(lang) {
 }
 
 /**
- * 3. 渲染资产代币列表
+ * 3. 渲染资产代币列表 (数据驱动版)
  */
 export function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
 
+    // 优先从全局 window 变量获取从 Worker 返回的实时价格
+    const livePrices = window.currentPrices || {}; 
+
     let totalVal = 0;
     let html = '';
 
-    Object.keys(tokenInfo).forEach(symbol => {
-        const config = tokenInfo[symbol];
-        const unitPrice = config.price || 0;
+    // 按照 config.js 定义的代币顺序进行渲染
+    Object.keys(tokenConfig).forEach(symbol => {
+        const config = tokenConfig[symbol];
+        
+        // 核心：单价取自联网实时数据，若无则显示 0
+        const unitPrice = livePrices[symbol] || 0; 
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         totalVal += currentTokenValue;
@@ -135,25 +158,32 @@ export function renderTokenList(balances = {}) {
                 </div>
                 <div>
                     <div class="font-bold text-sm text-slate-800">${symbol}</div>
-                    <div class="text-[10px] text-slate-400 font-black tracking-tight">$${unitPrice.toFixed(unitPrice < 1 ? 4 : 2)}</div>
+                    <div class="text-[10px] text-slate-400 font-black tracking-tight" id="price_${symbol}">
+                        $${unitPrice.toFixed(unitPrice < 1 ? 4 : 2)}
+                    </div>
                 </div>
             </div>
             <div class="text-right">
-                <div class="font-black text-sm text-slate-800">${balance.toFixed(4)}</div>
-                <div class="text-[9px] text-slate-400 font-bold">$${currentTokenValue.toFixed(2)}</div>
+                <div class="font-black text-sm text-slate-800" id="bal_${symbol}">${balance.toFixed(4)}</div>
+                <div class="text-[9px] text-slate-400 font-bold" id="val_${symbol}">$${currentTokenValue.toFixed(2)}</div>
             </div>
         </div>`;
     });
 
     container.innerHTML = html;
+    
+    // 更新页面顶部的总资产显示
     const totalEl = document.getElementById('totalValue');
     if (totalEl) {
-        totalEl.innerText = totalVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        totalEl.innerText = totalVal.toLocaleString(undefined, { 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+        });
     }
 }
 
 /**
- * 4. 渲染交易历史 (核心修复版)
+ * 4. 渲染交易历史
  */
 export function renderHistory(history = []) {
     const container = document.getElementById('historyList');
@@ -167,7 +197,6 @@ export function renderHistory(history = []) {
     }
 
     container.innerHTML = history.map(item => {
-        // 自动适配中文/英文键名
         const type = item['交易类型'] || item.type || 'Transaction';
         const amount = parseFloat(item['交易数量'] || item.amount || 0);
         const symbol = item['交易代币'] || item.symbol || '';
@@ -235,7 +264,7 @@ export function renderTransfers(transfers = []) {
     }).join('');
 }
 
-
+// 绑定到 window 以便外部脚本调用
 window.renderNews = renderNews;
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
