@@ -111,4 +111,4 @@ window.i18nData['en'] ={
     placeholder_email: "メールアドレスを入力してください",
     btn_submit_email: "申請する",
     bind_success: "提出後2時間以内にメールに送信されます。"
-    },
+    };
