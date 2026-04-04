@@ -1,7 +1,7 @@
 import { API_BASE } from './config.js';
 
 /**
- * 1. 提交交易记录 (增强版：支持自定义 Action 和 额外字段)
+ * 1. 提交交易记录
  */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
     console.log("准备提交 POST:", { type, amount, symbol, action, ...extraFields });
@@ -14,7 +14,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     }
 
     const now = new Date();
-    // 格式化时间为 YYYY/MM/DD HH:mm:ss 适配飞书
     const formattedDate = now.toLocaleString('zh-CN', { hour12: false }).replace(/-/g, '/'); 
 
     const payload = {
@@ -38,9 +37,16 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         console.log("服务器返回结果:", result);
 
         if (result.success) {
-            // --- 核心修复：改为弹窗后刷新页面，给飞书数据写入留出缓冲时间 ---
+            // --- 核心修复：删掉 location.reload() ---
             alert(`✅ ${type}申请已提交`);
-            location.reload(); 
+            
+            // 执行局部数据刷新，不刷新页面
+            if (window.fetchUserData) {
+                window.fetchUserData(address); 
+            }
+            // 如果有弹窗，关闭它
+            if (window.closeModal) window.closeModal();
+
         } else {
             console.error("提交失败详情:", result.msg);
             alert(`❌ 提交失败: ${result.msg || "后端验证未通过"}`);
@@ -57,6 +63,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
  * 2. 内部转账业务逻辑
  */
 export async function doInternalTransfer() {
+    // 增加 event 防止冒泡（虽然这里没传 e，但在调用处最好传一下）
     const toAddr = document.getElementById('transAddr')?.value.trim();
     const amount = document.getElementById('transAmount')?.value;
     const symbol = document.getElementById('transToken')?.value?.toUpperCase() || "USDT";
@@ -66,8 +73,6 @@ export async function doInternalTransfer() {
         return;
     }
 
-    if (window.showModal) window.showModal("处理中", "正在提交内部转账申请...");
-
     const result = await postTransactionRecord(
         "内部转账", 
         amount, 
@@ -76,9 +81,7 @@ export async function doInternalTransfer() {
         { receiver: toAddr }
     );
 
-    if (!result.success && window.closeModal) {
-        window.closeModal();
-    }
+    // 注意：这里的 closeModal 逻辑已经移入 postTransactionRecord 的成功回调中
 }
 
 /**
@@ -87,16 +90,14 @@ export async function doInternalTransfer() {
 export async function fetchUserData(address) {
     if (!address) return;
     try {
-        // 增加随机数防止浏览器缓存旧的空数据
         const res = await fetch(`${API_BASE}?address=${address}&t=${Date.now()}`);
         if (!res.ok) throw new Error('网络请求失败');
         const data = await res.json();
         
         console.log("Worker 返回原始数据:", data);
 
-        // --- 核心保护：如果 data.balances 是空的，坚决不渲染渲染 UI，防止资产归零 ---
         if (!data.newUser && (!data.balances || Object.keys(data.balances).length === 0)) {
-            console.warn("⚠️ 检测到飞书数据同步延迟（空余额），跳过此次渲染以保护页面显示。");
+            console.warn("⚠️ 检测到飞书数据同步延迟（空余额），跳过此次渲染。");
             return; 
         }
 
@@ -105,15 +106,14 @@ export async function fetchUserData(address) {
             return;
         }
 
-        // --- 基础信息渲染 ---
+        // --- 渲染逻辑开始 ---
         updateText('info_inviteCode', data.info?.["推荐码"]);
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // --- 资产与价格处理 ---
         if (data.balances && data.allPrices) {
             window.currentPrices = data.allPrices;
-            window.userBalances = data.balances; // 备份到全局方便计算页面使用
+            window.userBalances = data.balances;
 
             const cleanPrices = {};
             Object.keys(data.allPrices).forEach(k => {
@@ -138,7 +138,6 @@ export async function fetchUserData(address) {
             }));
         }
 
-        // --- 矿机/团队/记录渲染 ---
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
             updateText('miner_daily', data.miner["日产量"]);
@@ -166,8 +165,6 @@ export async function submitBindInviter() {
     const formattedTime = now.toLocaleString('zh-CN', { hour12: false }).replace(/-/g, '/'); 
 
     try {
-        if (window.showModal) window.showModal("处理中", "正在绑定推荐关系...");
-
         const response = await fetch(API_BASE, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -182,14 +179,14 @@ export async function submitBindInviter() {
         const result = await response.json();
         if (result.success) {
             alert("✅ 绑定成功");
-            location.reload(); 
+            // --- 核心修复：删掉 location.reload() ---
+            if (window.fetchUserData) window.fetchUserData(walletAddr);
+            if (window.closeModal) window.closeModal();
         } else {
             alert("❌ 绑定失败: " + (result.msg || "推荐码无效"));
         }
     } catch (error) {
         console.error("绑定异常:", error);
-    } finally {
-        if (window.closeModal) window.closeModal();
     }
 }
 
