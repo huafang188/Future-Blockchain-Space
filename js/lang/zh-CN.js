@@ -112,4 +112,4 @@ window.i18nData['zh-CN'] ={
     placeholder_email: "请输入您的联系邮箱",
     btn_submit_email: "提交并申请",
     bind_success: "提交后两小时内发送至您的邮箱"
-    },
+    };
