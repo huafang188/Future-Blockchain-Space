@@ -111,4 +111,4 @@ window.i18nData['en'] ={
     placeholder_email: "Введите ваш контактный Email",
     btn_submit_email: "Отправить и запросить",
     bind_success: "Данные будут отправлены на ваш Email в течение 2 часов."
-    },
+    };
