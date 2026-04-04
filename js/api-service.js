@@ -1,6 +1,9 @@
-import { API_BASE } from './config.js';
+import { API_BASE, tokenInfo } from './config.js';
+
+/**
+ * 1. 提交交易记录
+ */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction") {
-    // 增加调试日志，确认函数是否被调用
     console.log("准备提交 POST:", { type, amount, symbol, action });
 
     const address = window.currentAddress || window.userAddress || localStorage.getItem('fbs_address');
@@ -11,7 +14,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     }
 
     const now = new Date();
-    // 格式化：2026-04-04 15:30:00 (飞书表格对这种格式支持更好)
     const formattedDate = now.toLocaleString(); 
 
     const payload = {
@@ -20,12 +22,11 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         type: type,
         amount: String(amount),
         symbol: symbol,
-        status: "已完成", // 修改为已完成
+        status: "已完成",
         time: formattedDate
     };
 
     try {
-        // 使用 await 确保请求发出
         const response = await fetch(API_BASE, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         console.log("服务器返回结果:", result);
 
         if (result.success) {
-            // 只有成功了才去尝试刷新数据
             if (typeof fetchUserData === 'function') {
                 await fetchUserData(address); 
             }
@@ -48,6 +48,9 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     }
 }
 
+/**
+ * 2. 获取并渲染用户数据
+ */
 export async function fetchUserData(address) {
     if (!address) return;
     
@@ -86,40 +89,36 @@ export async function fetchUserData(address) {
         updateText('team_totalSales', t["团队业绩"] || "0.00");
         updateText('team_totalReward', t["累计奖励"] || "0.00");
 
-        // --- E. 资产处理 (核心修复：增加空值和类型保护) ---
+        // --- E. 资产处理 (核心修复：修正重复嵌套) ---
         if (data.balances && typeof data.balances === 'object') {
             window.userBalances = data.balances;
             
-            // 渲染资产列表页
-if (data.balances && typeof data.balances === 'object') {
-    window.userBalances = data.balances;
-    
-    if (typeof renderTokenList === 'function') {
-        renderTokenList(data.balances);
-    }
-    
-    let calculatedTotal = 0;
+            if (typeof renderTokenList === 'function') {
+                renderTokenList(data.balances);
+            }
+            
+            let calculatedTotal = 0;
 
-    Object.keys(data.balances).forEach(token => {
-        const balance = parseFloat(data.balances[token]) || 0;
-        
-        // --- 修改点：优先从 tokenInfo 获取价格，如果没有则默认为 0 ---
-        const price = tokenInfo[token] ? tokenInfo[token].price : 0;
-        
-        calculatedTotal += (balance * price);
-        
-        // 更新 UI 余额
-        updateText(`bal_${token}`, balance.toFixed(2));
-    });
+            Object.keys(data.balances).forEach(token => {
+                const balance = parseFloat(data.balances[token]) || 0;
+                
+                // 优先从 config.js 的 tokenInfo 获取价格
+                const price = tokenInfo[token] ? tokenInfo[token].price : 0;
+                
+                calculatedTotal += (balance * price);
+                
+                // 更新 UI 余额显示
+                updateText(`bal_${token}`, balance.toFixed(2));
+            });
 
-    // 更新总估值
-    updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
-}
+            // 更新总估值
+            updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }));
+        }
 
-        // --- F. 历史记录渲染 (核心修复：强制转为数组) ---
+        // --- F. 历史记录渲染 ---
         const historyList = Array.isArray(data.history) ? data.history : [];
         const transferList = Array.isArray(data.transfers) ? data.transfers : [];
 
@@ -141,20 +140,16 @@ if (data.balances && typeof data.balances === 'object') {
  * 3. 绑定推荐人
  */
 export async function submitBindInviter() {
-    // 1. 获取输入框的值
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
-    // 2. 获取当前钱包地址（优先从 window 取，没有则从缓存取）
     const walletAddr = window.currentAddress || localStorage.getItem('fbs_address');
     
     if (!inviterId) return alert("请输入推荐人 ID");
     if (!walletAddr) return alert("请先连接钱包");
 
-    // 生成当前日期 2026/04/04
     const now = new Date();
     const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
 
     try {
-        // 显示加载状态（如果有的话）
         if (window.showModal) window.showModal("处理中", "正在绑定推荐关系...");
 
         const response = await fetch(API_BASE, {
@@ -162,9 +157,8 @@ export async function submitBindInviter() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 action: "bind_inviter", 
-                address: walletAddr, // ✅ 修复：将之前的 senderAddr 改为 walletAddr
+                address: walletAddr,
                 inviterId: inviterId,
-                // 也可以带上格式化后的时间，虽然 Workers 也会生成
                 regTime: formattedTime 
             })
         });
@@ -172,21 +166,12 @@ export async function submitBindInviter() {
         const result = await response.json();
         
         if (result.success) {
-            // UI 立即反馈
             if (typeof updateText === 'function') {
                 updateText('info_inviter', inviterId);
                 updateText('info_regTime', formattedTime);
             }
-            
             if (window.closeModal) window.closeModal();
             alert("✅ 绑定成功");
-            
-            // 刷新用户数据
-            if (typeof fetchUserData === 'function') {
-                fetchUserData(walletAddr);
-            }
-            
-            // 建议：绑定成功后刷新页面以更新所有状态
             location.reload(); 
         } else {
             if (window.closeModal) window.closeModal();
@@ -207,7 +192,6 @@ export function updateText(id, value) {
     if (!el) return;
     
     if (value === undefined || value === null || value === "") {
-        // 如果是业绩类字段，空值显示 0.00
         const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('bal_') || id.includes('totalValue');
         el.innerText = isAmountField ? "0.00" : "0";
     } else {
