@@ -125,13 +125,13 @@ export async function handleSignAction(type) {
 }
 
 /**
- * --- 业务：内部资产转账 ---
+ * --- 业务：内部资产转账 (修复提交失败问题) ---
  */
 export async function doInternalTransfer() {
-    const symbol = document.getElementById('transToken')?.value;
+    const symbol = document.getElementById('transToken')?.value?.toUpperCase(); // 1. 确保大写以匹配价格逻辑
     const toAddr = document.getElementById('transAddr')?.value.trim();
     const amount = document.getElementById('transAmount')?.value;
-    const senderAddr = getCurrentAddress();
+    const senderAddr = window.currentAddress || localStorage.getItem('fbs_address');
 
     if (!toAddr || !amount || parseFloat(amount) <= 0) {
         alert("请输入有效的地址和数量");
@@ -139,44 +139,55 @@ export async function doInternalTransfer() {
     }
 
     try {
+        // 构造签名消息
         const message = `确认内部转账\n转出资产: ${amount} ${symbol}\n接收地址: ${toAddr}\n时间: ${new Date().toLocaleString()}`;
         const hexMsg = '0x' + Array.from(new TextEncoder().encode(message)).map(b => b.toString(16).padStart(2, '0')).join('');
         
+        // 唤起钱包签名
         const signature = await window.ethereum.request({
             method: 'personal_sign',
             params: [hexMsg, senderAddr],
         });
 
         window.showModal("转账中", `<div class="p-10 text-center">正在处理内部网络划转...</div>`);
-        const response = await fetch('https://api.neoneo.ink/api/user', {
+
+        // --- 关键修改点：使用 API_BASE 且确保 action 匹配 Worker 逻辑 ---
+        const response = await fetch('https://api.neoneo.ink/', { // 建议去掉 /api/user 除非 Worker 明确配置了该路由
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action: "transfer",
-                address: senderAddr,
-                receiver: toAddr,
-                type: symbol,
-                amount: String(amount),
-                signature: signature,
-                message: message
+                action: "transfer",       // 确保 Worker 的 switch-case 中有 "transfer"
+                address: senderAddr,      // 发送者
+                receiver: toAddr,         // 接收者
+                symbol: symbol,           // 币种 (强制大写)
+                amount: String(amount),   // 数量
+                signature: signature,     // 签名密文
+                message: message          // 原始消息用于校验
             })
         });
 
         const result = await response.json();
+        
         if (result.success) {
             alert("✅ 内部转账成功");
             window.closeModal();
-            location.reload();
+            // 静默刷新数据，不要暴力 reload 提升体验
+            if (window.fetchUserData) window.fetchUserData(senderAddr);
+            location.reload(); 
         } else {
-            alert("转账失败: " + result.message);
+            alert("转账失败: " + (result.message || result.error || "未知错误"));
             window.closeModal();
         }
     } catch (e) {
-        console.error("转账失败:", e);
-        if (e.code === 4001) alert("用户取消了签名");
+        console.error("转账请求异常:", e);
+        if (e.code === 4001) {
+            alert("用户取消了钱包签名");
+        } else {
+            alert("提交失败，请检查网络或 API 配置");
+        }
+        window.closeModal();
     }
 }
-
 /**
  * --- 业务：转让矿机 ---
  */
