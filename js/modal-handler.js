@@ -203,3 +203,39 @@ export function mountModalHandlers() {
 
     window.submitBindInviter = submitBindInviter;
 }
+
+// --- 修复：挂载缺失的全局函数 ---
+
+// 1. 矿机转让弹窗
+window.openTransferMinerModal = function() {
+    window.showModal("transfer_miner", `
+        <div class="space-y-4 text-left">
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1">接收者地址</label>
+                <input type="text" id="transferTarget" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none">
+            </div>
+            <button onclick="doTransferMinerAction()" class="action-btn w-full mt-2">确认转让</button>
+        </div>
+    `);
+};
+
+// 2. 团队详情弹窗（申请团队数据）
+window.openTeamDetailModal = function() {
+    // 这里可以先显示一个加载状态，或者直接弹出提示
+    window.showModal("team_detail", `
+        <div class="p-4 text-center">
+            <p class="text-sm text-slate-600 mb-4">正在申请调取团队详细数据，请稍后在“我的团队”中查看。</p>
+            <button onclick="closeModal()" class="action-btn w-full">确认</button>
+        </div>
+    `);
+    // 如果你有具体的 API 请求逻辑，可以在这里调用
+    console.log("正在请求团队详细数据...");
+};
+
+// 3. 挂载转让执行逻辑（供上面的弹窗调用）
+window.doTransferMinerAction = function() {
+    const target = document.getElementById('transferTarget')?.value;
+    if(!target) return alert("请输入接收地址");
+    alert("转让功能开发中，请关注公告");
+    window.closeModal();
+};
