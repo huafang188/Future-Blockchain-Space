@@ -89,40 +89,46 @@ export async function fetchUserData(address) {
         updateText('team_totalSales', t["团队业绩"] || "0.00");
         updateText('team_totalReward', t["累计奖励"] || "0.00");
 
-        // --- E. 资产与价格处理 (修复重点) ---
-        if (data.balances && data.allPrices) {
-            // 1. 存入全局变量，确保 ui-render.js 能读到
-            window.currentPrices = data.allPrices;
-            window.userBalances = data.balances;
-            
-            const prices = data.allPrices;
-            let calculatedTotal = 0;
+// --- E. 资产与价格处理 (优化修复) ---
+if (data.balances && data.allPrices) {
+    window.currentPrices = data.allPrices;
+    window.userBalances = data.balances;
+    
+    let calculatedTotal = 0;
 
-            // 2. 先执行一次渲染列表，生成 DOM 结构
-            if (typeof window.renderTokenList === 'function') {
-                window.renderTokenList(data.balances);
-            }
+    if (typeof window.renderTokenList === 'function') {
+        window.renderTokenList(data.balances);
+    }
 
-            // 3. 循环计算总值并精确更新具体的 ID 文本
-            Object.keys(data.balances).forEach(token => {
-                const balance = parseFloat(data.balances[token]) || 0;
-                const price = parseFloat(prices[token]) || 0;
-                
-                calculatedTotal += (balance * price);
-                
-                // 确保 UI 上的单价和余额实时反映
-                updateText(`bal_${token}`, balance.toFixed(4));
-                updateText(`price_${token}`, `$${price.toFixed(price < 1 ? 4 : 2)}`);
-                updateText(`val_${token}`, `$${(balance * price).toFixed(2)}`);
-            });
+    // 统一处理：将 prices 的键名全部转为大写，防止后端返回 btc 而前端找 BTC
+    const cleanPrices = {};
+    Object.keys(data.allPrices).forEach(k => {
+        cleanPrices[k.toUpperCase()] = parseFloat(data.allPrices[k]) || 0;
+    });
 
-            // 4. 更新总估值
-            updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
-        }
+    Object.keys(data.balances).forEach(token => {
+        const upToken = token.toUpperCase().trim(); // 强制转大写并去空格
+        
+        // 关键点：从 cleanPrices 里取值
+        const balance = parseFloat(data.balances[token]) || 0;
+        const price = cleanPrices[upToken] || 0; 
+        
+        const itemValue = balance * price;
+        calculatedTotal += itemValue;
+        
+        // 更新 UI
+        updateText(`bal_${token}`, balance.toFixed(4));
+        // 如果价格为 0，给个特殊的显示，方便调试
+        const priceDisplay = price > 0 ? `$${price.toFixed(price < 1 ? 4 : 2)}` : "Fetching...";
+        updateText(`price_${token}`, priceDisplay);
+        updateText(`val_${token}`, `$${itemValue.toFixed(2)}`);
+    });
 
+    updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+}
         // --- F. 历史记录渲染 ---
         const historyList = Array.isArray(data.history) ? data.history : [];
         const transferList = Array.isArray(data.transfers) ? data.transfers : [];
