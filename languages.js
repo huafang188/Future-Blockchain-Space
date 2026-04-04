@@ -99,7 +99,21 @@ window.i18nData = {
             { symbol: "NEA", name: "Neo Energy Asset", desc: "算力资产映射 / 实体矿机锚定币", total: "动态锚定实体算力规模", dist: "实体矿机映射 60% | 算力质押挖矿 25% | 生态合作 10% | 团队 5%", mech: "按算力接入量分批铸造，资产与实体算力一一对应。" },
             { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分红 / 生态利润权益", total: "300,000,000", dist: "生态利润分红 50% | 长期持有奖励 25% | 节点贡献激励 15% | 团队储备 10%", mech: "按季度利润分配，持有即可分红，鼓励长期锁仓。" },
             { symbol: "NCL", name: "Neo Core Link", desc: "跨链枢纽 / 生态互通媒介", total: "400,000,000", dist: "跨链节点奖励 40% | 生态合作 30% | 社区治理 15% | 团队开发 15%", mech: "跨链交互、协议对接时逐步释放。" }
-        ]
+        ],
+        transfer_miner: "转让矿机",
+    miner_transfer_title: "内部转让矿机",
+    receiver_address: "接收者钱包地址",
+    miner_count: "转让数量",
+    btn_transfer_now: "立即转让矿机",
+    sign_to_confirm: "请在钱包中签名以确认身份",
+    transfer_request_submitted: "转让申请已提交",
+    
+    team_detail: "申请团队数据",
+    modal_team_title: "请不要频繁提交，正常每天可申请一次",
+    team_detail_desc: "请提交您的邮箱账号，我们会将您的团队数据发送至您的邮箱",
+    placeholder_email: "请输入您的联系邮箱",
+    btn_submit_email: "提交并申请",
+    bind_success: "提交后两小时内发送至您的邮箱"
     },
     'zh-HK': {
         title: "NEO生態挖礦矩陣",
@@ -198,7 +212,21 @@ window.i18nData = {
             { symbol: "NEA", name: "Neo Energy Asset", desc: "算力資產映射 / 實體礦機錨定幣", total: "動態錨定實體算力規模", dist: "實體礦機映射 60% | 算力質押挖礦 25% | 生態合作 10% | 團隊 5%", mech: "按算力接入量分批鑄造，資產與實體算力一一對應。" },
             { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分紅 / 生態利潤權益", total: "300,000,000", dist: "生態利潤分紅 50% | 長期持有獎勵 25% | 節點貢獻激勵 15% | 團隊儲備 10%", mech: "按季度利潤分配，持有即可分紅，鼓勵長期鎖倉。" },
             { symbol: "NCL", name: "Neo Core Link", desc: "跨鏈樞紐 / 生態互通媒介", total: "400,000,000", dist: "跨鏈節點獎勵 40% | 生態合作 30% | 社區治理 15% | 團隊開發 15%", mech: "跨鏈交互、協議對接時逐步釋放。" }
-        ]
+        ],
+        transfer_miner: "轉讓礦機",
+    miner_transfer_title: "內部轉讓礦機",
+    receiver_address: "接收者錢包地址",
+    miner_count: "轉讓數量",
+    btn_transfer_now: "立即轉讓礦機",
+    sign_to_confirm: "請在錢包中簽名以確認身份",
+    transfer_request_submitted: "轉讓申請已提交",
+    
+    team_detail: "申請團隊數據",
+    modal_team_title: "請不要頻繁提交，正常每天可申請一次",
+    team_detail_desc: "請提交您的郵箱帳號，我們會將您的團隊數據發送至您的郵箱",
+    placeholder_email: "請輸入您的聯繫郵箱",
+    btn_submit_email: "提交並申請",
+    bind_success: "提交後兩小時內發送至您的郵箱"
     },
     'en': {
         title: "NEO Ecological Mining Matrix",
@@ -297,7 +325,21 @@ window.i18nData = {
             { symbol: "NEA", name: "Neo Energy Asset", desc: "Asset Mapping / Hardware Anchored", total: "Anchored to Physical Hashrate", dist: "Hardware Mapping 60% | Staking 25% | Eco 10% | Team 5%", mech: "Minted based on physical hashrate integration." },
             { symbol: "NRY", name: "Neo Resource Yield", desc: "Dividend / Profit Rights", total: "300,000,000", dist: "Profit Sharing 50% | Long-term Holders 25% | Node Incentives 15% | Reserves 10%", mech: "Quarterly profit distribution for stakers." },
             { symbol: "NCL", name: "Neo Core Link", desc: "Cross-chain Hub / Interop Media", total: "400,000,000", dist: "Cross-chain Node 40% | Eco-Technical 30% | Governance 15% | Dev 15%", mech: "Released via cross-chain interaction & protocol usage." }
-        ]
+        ],
+        transfer_miner: "Transfer",
+    miner_transfer_title: "Transfer Miner",
+    receiver_address: "Receiver Address",
+    miner_count: "Amount",
+    btn_transfer_now: "Transfer Now",
+    sign_to_confirm: "Please sign in your wallet to confirm",
+    transfer_request_submitted: "Transfer request submitted",
+    
+    team_detail: "Request Team Data",
+    modal_team_title: "Please do not submit frequently. Usually once a day.",
+    team_detail_desc: "Please submit your email address, and we will send your team data to your inbox.",
+    placeholder_email: "Enter your contact email",
+    btn_submit_email: "Submit & Request",
+    bind_success: "Data will be sent to your email within 2 hours after submission."
     },
     'ja': {
         title: "NEO生態鉱業マトリックス",
@@ -396,7 +438,21 @@ window.i18nData = {
             { symbol: "NEA", name: "Neo Energy Asset", desc: "資産マッピング / 実機マイナー固定", total: "実機ハッシュレートにペッグ", dist: "マッピング 60% | ステーキング 25% | エコ 10% | チーム 5%", mech: "物理的なハッシュレートの接続に応じて鋳造。" },
             { symbol: "NRY", name: "Neo Resource Yield", desc: "収益配当 / エコシステム利益権", total: "300,000,000", dist: "収益配分 50% | 長期保有者 25% | ノード貢献 15% | チーム 10%", mech: "四半期ごとの利益分配、長期ロック推奨。" },
             { symbol: "NCL", name: "Neo Core Link", desc: "クロスチェーンハブ / 相互運用", total: "400,000,000", dist: "ノード報酬 40% | 技術提携 30% | ガバナンス 15% | 開発 15%", mech: "クロスチェーン利用時に段階的にリリース。" }
-        ]
+        ],
+        transfer_miner: "マイナー転送",
+    miner_transfer_title: "マイナーの内部転送",
+    receiver_address: "受信者アドレス",
+    miner_count: "転送数量",
+    btn_transfer_now: "今すぐ転送",
+    sign_to_confirm: "ウォレットで署名して本人確認を行ってください",
+    transfer_request_submitted: "転送リクエストが送信されました",
+    
+    team_detail: "チームデータの申請",
+    modal_team_title: "頻繁な申請はご遠慮ください。通常、1日1回までです。",
+    team_detail_desc: "メールアドレスを入力してください。チームデータをメールでお送りします。",
+    placeholder_email: "メールアドレスを入力してください",
+    btn_submit_email: "申請する",
+    bind_success: "提出後2時間以内にメールに送信されます。"
     },
     'ko': {
         title: "NEO 생태 채굴 매트릭스",
@@ -495,7 +551,21 @@ window.i18nData = {
             { symbol: "NEA", name: "Neo Energy Asset", desc: "자산 매핑 / 하드웨어 앵커링", total: "물리적 해시레이트에 고정", dist: "하드웨어 매핑 60% | 스테이킹 25% | 파트너십 10% | 팀 5%", mech: "물리적 해시레이트 유입에 따른 발행." },
             { symbol: "NRY", name: "Neo Resource Yield", desc: "수익 배당 / 생태계 이익 권리", total: "300,000,000", dist: "수익 공유 50% | 장기 홀더 25% | 노드 기여 15% | 팀 10%", mech: "분기별 수익 분배, 장기 스테이킹 권장." },
             { symbol: "NCL", name: "Neo Core Link", desc: "크로스체인 허브 / 상호운용 매체", total: "400,000,000", dist: "노드 보상 40% | 기술 협력 30% | 거버넌스 15% | 개발 15%", mech: "크로스체인 상호작용 시 점진적 해제." }
-        ]
+        ],
+        transfer_miner: "채굴기 전송",
+    miner_transfer_title: "채굴기 내부 전송",
+    receiver_address: "수신자 지갑 주소",
+    miner_count: "전송 수량",
+    btn_transfer_now: "지금 전송하기",
+    sign_to_confirm: "본인 확인을 위해 지갑에서 서명해 주세요",
+    transfer_request_submitted: "전송 요청이 제출되었습니다",
+    
+    team_detail: "팀 데이터 신청",
+    modal_team_title: "자주 제출하지 마세요. 보통 하루에 한 번 신청 가능합니다.",
+    team_detail_desc: "이메일 계정을 제출해 주시면 팀 데이터를 이메일로 보내드립니다.",
+    placeholder_email: "연락처 이메일을 입력하세요",
+    btn_submit_email: "제출 및 신청",
+    bind_success: "제출 후 2시간 이내에 이메일로 발송됩니다."
     },
     'ru': {
         title: "Экологическая матрица добычи полезных ископаемых NEO",
@@ -594,7 +664,21 @@ window.i18nData = {
             { symbol: "NEA", name: "Neo Energy Asset", desc: "Маппинг активов / Привязка к оборудованию", total: "Привязка к физической мощности", dist: "Маппинг оборудования 60% | Стейкинг 25% | Партнеры 10% | Команда 5%", mech: "Минтинг на основе подключенной физической мощности." },
             { symbol: "NRY", name: "Neo Resource Yield", desc: "Дивиденды / Права на прибыль", total: "300,000,000", dist: "Доля прибыли 50% | Холдеры 25% | Инсентивы нод 15% | Резервы 10%", mech: "Ежеквартальное распределение прибыли." },
             { symbol: "NCL", name: "Neo Core Link", desc: "Кроссчейн-хаб / Взаимодействие", total: "400,000,000", dist: "Кроссчейн ноды 40% | Тех-партнеры 30% | Управление 15% | Разработка 15%", mech: "Выпуск при кроссчейн-взаимодействии." }
-        ]
+        ],
+        transfer_miner: "Перевод",
+    miner_transfer_title: "Внутренний перевод майнера",
+    receiver_address: "Адрес получателя",
+    miner_count: "Количество",
+    btn_transfer_now: "Перевести сейчас",
+    sign_to_confirm: "Пожалуйста, подпишите в кошельке для подтверждения",
+    transfer_request_submitted: "Запрос на перевод отправлен",
+    
+    team_detail: "Запросить данные команды",
+    modal_team_title: "Пожалуйста, не отправляйте запросы часто. Обычно раз в день.",
+    team_detail_desc: "Укажите ваш Email, и мы отправим данные вашей команды на почту.",
+    placeholder_email: "Введите ваш контактный Email",
+    btn_submit_email: "Отправить и запросить",
+    bind_success: "Данные будут отправлены на ваш Email в течение 2 часов."
     }
 };
 
