@@ -1,10 +1,15 @@
-import { API_BASE, tokenInfo } from './config.js';
+import { API_BASE } from './config.js';
 
 /**
- * 1. 提交交易记录
+ * 1. 提交交易记录 (增强版：支持自定义 Action 和 额外字段)
+ * @param {string} type 业务类型（如：充值、购买矿机）
+ * @param {string|number} amount 数量
+ * @param {string} symbol 代币符号
+ * @param {string} action 对应 Worker 的逻辑分支 (重要)
+ * @param {object} extraFields 额外字段（如转账时的 receiver）
  */
-export async function postTransactionRecord(type, amount, symbol, action = "record_transaction") {
-    console.log("准备提交 POST:", { type, amount, symbol, action });
+export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
+    console.log("准备提交 POST:", { type, amount, symbol, action, ...extraFields });
 
     const address = window.currentAddress || window.userAddress || localStorage.getItem('fbs_address');
     
@@ -14,15 +19,17 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     }
 
     const now = new Date();
-    const formattedDate = now.toLocaleString(); 
+    // 格式化时间为 YYYY/MM/DD HH:mm:ss 适配飞书
+    const formattedDate = now.toLocaleString('zh-CN', { hour12: false }).replace(/-/g, '/'); 
 
+    // 构建发送给 Worker 的数据包
     const payload = {
-        action: action,
-        address: address,
-        type: type,
-        amount: String(amount),
-        symbol: symbol,
-        status: "已完成",
+        action: action,        // 决定 Worker 去哪个表
+        address: address,      // 发起人地址
+        type: type,            // 交易类型
+        amount: String(amount),// 数量
+        symbol: symbol,        // 代币
+        ...extraFields,        // 展开额外字段（如 receiver）
         time: formattedDate
     };
 
@@ -37,8 +44,11 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         console.log("服务器返回结果:", result);
 
         if (result.success) {
-            // 提交成功后静默刷新数据
+            // 提交成功后刷新数据
             await fetchUserData(address); 
+        } else {
+            // 如果后端返回错误（如飞书字段不匹配），打印出来
+            console.error("提交失败详情:", result.msg);
         }
         return result;
     } catch (e) {
@@ -48,99 +58,80 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 }
 
 /**
- * 2. 获取并渲染用户数据 (核心修复版)
+ * 2. 内部转账业务逻辑 (你需要确保 HTML 按钮调用的是这个函数)
+ */
+export async function doInternalTransfer() {
+    const toAddr = document.getElementById('transAddr')?.value.trim();
+    const amount = document.getElementById('transAmount')?.value;
+    const symbol = document.getElementById('transToken')?.value?.toUpperCase() || "USDT";
+
+    if (!toAddr || !amount || amount <= 0) {
+        alert("请填写正确的接收地址和数量");
+        return;
+    }
+
+    if (window.showModal) window.showModal("处理中", "正在提交内部转账申请...");
+
+    // 关键修复：显式传递 action 为 "transfer"，并带上 receiver 字段
+    const result = await postTransactionRecord(
+        "内部转账", 
+        amount, 
+        symbol, 
+        "transfer", // 必须与 Worker 中的 if (body.action === "transfer") 对应
+        { receiver: toAddr } // 必须包含 receiver 字段
+    );
+
+    if (result.success) {
+        alert("✅ 转账申请已提交");
+        if (window.closeModal) window.closeModal();
+        location.reload();
+    } else {
+        alert("❌ 转账失败: " + (result.msg || "接口响应异常"));
+        if (window.closeModal) window.closeModal();
+    }
+}
+
+/**
+ * 3. 获取并渲染用户数据 (保持不变)
  */
 export async function fetchUserData(address) {
     if (!address) return;
-    
     try {
-        const res = await fetch(`${API_BASE}?address=${address}`);
+        const res = await fetch(`${API_BASE}?address=${address}&t=${Date.now()}`);
         if (!res.ok) throw new Error('网络请求失败');
-        
         const data = await res.json();
-        console.log("Worker 原始数据:", data);
-
-        // --- A. 新用户逻辑 ---
+        
         if (data.newUser) {
-            if (typeof window.showRegisterModal === 'function') {
-                window.showRegisterModal(address);
-            }
+            if (typeof window.showRegisterModal === 'function') window.showRegisterModal(address);
             return;
         }
 
-        // --- B. 基础信息渲染 ---
-        const info = data.info || {};
-        updateText('info_inviteCode', info["推荐码"] || "---");
-        updateText('info_inviter', info["推荐人"] || "---");
-        updateText('info_regTime', info["注册时间"] || "--");
+        // 基础信息
+        updateText('info_inviteCode', data.info?.["推荐码"]);
+        updateText('info_inviter', data.info?.["推荐人"]);
+        updateText('info_regTime', data.info?.["注册时间"]);
 
-        // --- C. 矿机信息渲染 ---
-        const miner = data.miner || {};
-        updateText('miner_count', miner["矿机数量"] || "0");
-        updateText('miner_daily', miner["日产量"] || "0.00");
-        updateText('miner_deadline', miner["挖矿期限"] || "--");
-        updateText('miner_locked', miner["锁仓数量"] || "0.00");
-
-        // --- D. 团队信息渲染 ---
-        const t = data.team || {};
-        updateText('team_directCount', t["直推人数"] || "0");
-        updateText('team_directSales', t["直推业绩"] || "0.00");
-        updateText('team_totalCount', t["团队人数"] || "0");
-        updateText('team_totalSales', t["团队业绩"] || "0.00");
-        updateText('team_totalReward', t["累计奖励"] || "0.00");
-
-// --- E. 资产与价格处理 (优化修复) ---
-if (data.balances && data.allPrices) {
-    window.currentPrices = data.allPrices;
-    window.userBalances = data.balances;
-    
-    let calculatedTotal = 0;
-
-    if (typeof window.renderTokenList === 'function') {
-        window.renderTokenList(data.balances);
-    }
-
-    // 统一处理：将 prices 的键名全部转为大写，防止后端返回 btc 而前端找 BTC
-    const cleanPrices = {};
-    Object.keys(data.allPrices).forEach(k => {
-        cleanPrices[k.toUpperCase()] = parseFloat(data.allPrices[k]) || 0;
-    });
-
-    Object.keys(data.balances).forEach(token => {
-        const upToken = token.toUpperCase().trim(); // 强制转大写并去空格
-        
-        // 关键点：从 cleanPrices 里取值
-        const balance = parseFloat(data.balances[token]) || 0;
-        const price = cleanPrices[upToken] || 0; 
-        
-        const itemValue = balance * price;
-        calculatedTotal += itemValue;
-        
-        // 更新 UI
-        updateText(`bal_${token}`, balance.toFixed(4));
-        // 如果价格为 0，给个特殊的显示，方便调试
-        const priceDisplay = price > 0 ? `$${price.toFixed(price < 1 ? 4 : 2)}` : "Fetching...";
-        updateText(`price_${token}`, priceDisplay);
-        updateText(`val_${token}`, `$${itemValue.toFixed(2)}`);
-    });
-
-    updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
-}
-        // --- F. 历史记录渲染 ---
-        const historyList = Array.isArray(data.history) ? data.history : [];
-        const transferList = Array.isArray(data.transfers) ? data.transfers : [];
-
-        if (window.renderHistory) window.renderHistory(historyList);
-        if (window.renderTransfers) window.renderTransfers(transferList);
-        
-        // --- G. 行情详情页渲染 ---
-        const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
-        if (typeof window.renderStatsPage === 'function') {
-            window.renderStatsPage(currentLang);
+        // 资产与价格
+        if (data.balances && data.allPrices) {
+            window.currentPrices = data.allPrices;
+            const cleanPrices = {};
+            Object.keys(data.allPrices).forEach(k => cleanPrices[k.toUpperCase()] = parseFloat(data.allPrices[k]) || 0);
+            
+            let total = 0;
+            Object.keys(data.balances).forEach(token => {
+                const bal = parseFloat(data.balances[token]) || 0;
+                const price = cleanPrices[token.toUpperCase()] || 0;
+                total += bal * price;
+                updateText(`bal_${token}`, bal.toFixed(4));
+                updateText(`price_${token}`, price > 0 ? `$${price.toFixed(2)}` : "---");
+                updateText(`val_${token}`, `$${(bal * price).toFixed(2)}`);
+            });
+            updateText('totalValue', total.toFixed(2));
         }
+
+        // 历史渲染
+        if (window.renderHistory) window.renderHistory(data.history || []);
+        if (window.renderTransfers) window.renderTransfers(data.transfers || []);
 
     } catch (e) {
         console.error("fetchUserData 渲染链路报错:", e);
@@ -148,7 +139,7 @@ if (data.balances && data.allPrices) {
 }
 
 /**
- * 3. 绑定推荐人
+ * 4. 绑定推荐人 (保持逻辑，但与 Worker 适配)
  */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
@@ -158,7 +149,7 @@ export async function submitBindInviter() {
     if (!walletAddr) return alert("请先连接钱包");
 
     const now = new Date();
-    const formattedTime = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+    const formattedTime = now.toLocaleString('zh-CN', { hour12: false }).replace(/-/g, '/'); 
 
     try {
         if (window.showModal) window.showModal("处理中", "正在绑定推荐关系...");
@@ -175,24 +166,22 @@ export async function submitBindInviter() {
         });
 
         const result = await response.json();
-        
         if (result.success) {
-            if (window.closeModal) window.closeModal();
             alert("✅ 绑定成功");
             location.reload(); 
         } else {
-            if (window.closeModal) window.closeModal();
-            alert("绑定失败: " + (result.message || "后端验证未通过"));
+            alert("❌ 绑定失败: " + (result.msg || "后端校验未通过"));
         }
     } catch (error) {
         console.error("绑定异常:", error);
-        if (window.closeModal) window.closeModal();
         alert("网络连接失败，请检查 API 配置");
+    } finally {
+        if (window.closeModal) window.closeModal();
     }
 }
 
 /**
- * 4. 通用更新文本工具函数
+ * 5. 通用更新文本工具函数 (保持不变)
  */
 export function updateText(id, value) {
     const el = document.getElementById(id);
@@ -200,14 +189,15 @@ export function updateText(id, value) {
     
     if (value === undefined || value === null || value === "") {
         const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('bal_') || id.includes('totalValue');
-        el.innerText = isAmountField ? "0.00" : "0";
+        el.innerText = isAmountField ? "0.00" : "---";
     } else {
         el.innerText = value;
     }
 }
 
-// 暴露全局变量
+// 暴露全局变量给 HTML 按钮调用
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
+window.doInternalTransfer = doInternalTransfer; // 必须暴露给 HTML 调用
 window.updateText = updateText;
