@@ -111,4 +111,4 @@ window.i18nData['en'] ={
     placeholder_email: "Enter your contact email",
     btn_submit_email: "Submit & Request",
     bind_success: "Data will be sent to your email within 2 hours after submission."
-    },
+    };
