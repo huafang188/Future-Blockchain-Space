@@ -147,6 +147,46 @@ export function mountModalHandlers() {
         `);
     };
 
+    // 在 mountModalHandlers 函数内部添加
+
+// --- 4. 转让矿机弹窗 ---
+window.openTransferMinerModal = function() {
+    window.showModal("miner_transfer_title", `
+        <div class="space-y-4 text-left">
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="receiver_address">接收者钱包地址</label>
+                <input type="text" id="minerT_Addr" placeholder="0x..." 
+                       class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="miner_count">转让数量</label>
+                <input type="number" id="minerT_Amount" step="1" placeholder="1" 
+                       class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
+            </div>
+            <p class="text-[9px] text-orange-500 font-bold px-1" data-i18n="sign_to_confirm">请在钱包中签名以确认身份</p>
+            <button onclick="handleMinerTransfer()" class="action-btn w-full mt-2" data-i18n="btn_transfer_now">立即转让矿机</button>
+        </div>
+    `);
+};
+
+// --- 5. 团队详情/激活邮箱弹窗 ---
+window.openTeamDetailModal = function() {
+    window.showModal("modal_team_title", `
+        <div class="space-y-4 text-left">
+            <div class="p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
+                <p class="text-xs text-indigo-700 leading-relaxed" data-i18n="team_detail_desc">绑定邮箱后即可解锁团队详细报表与实时通知功能。</p>
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_email">电子邮箱</label>
+                <input type="email" id="team_email" placeholder="example@mail.com" 
+                       class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none mt-1 outline-none">
+            </div>
+            <button onclick="handleTeamEmailSubmit()" class="action-btn w-full mt-2 !from-indigo-600 !to-blue-600" data-i18n="btn_submit_email">提交并激活</button>
+        </div>
+    `);
+};
+
+    
     // --- 4. 弹窗基础控制 (核心修改) ---
     window.showModal = function(titleKey, html) {
         const titleEl = document.getElementById('modalTitle');
