@@ -1,31 +1,23 @@
 import { tokenInfo } from './config.js';
 
 function getI18nLabels(lang) {
-    const currentLang = lang || localStorage.getItem('fbs_lang') || 'ru';
-    
+    const currentLang = lang || localStorage.getItem('fbs_lang') || 'en';
     if (window.i18nData && window.i18nData[currentLang]) {
         return window.i18nData[currentLang];
     }
-
     if (window.i18nData) {
         const availableLangs = Object.keys(window.i18nData);
-        if (availableLangs.length > 0) {
-            return window.i18nData[availableLangs[0]];
-        }
+        if (availableLangs.length > 0) return window.i18nData[availableLangs[0]];
     }
-    return null; 
+    return null;
 }
 
-/**
- * 1. 渲染首页公告
- */
+
 export function renderNews(lang) {
     const container = document.getElementById('news-container');
     if (!container) return;
 
     const labels = getI18nLabels(lang);
-    
-    // 如果数据还没准备好，显示加载中，不要报错
     if (!labels) {
         container.innerHTML = `<div class="animate-pulse flex flex-col gap-2"><div class="h-3 bg-slate-100 rounded w-3/4"></div></div>`;
         return;
@@ -33,7 +25,7 @@ export function renderNews(lang) {
 
     const newsList = labels.news_list || [];
     if (newsList.length === 0) {
-        container.innerHTML = `<div class="p-4 text-center text-slate-400 text-[10px] italic">暂无公告</div>`;
+        container.innerHTML = `<div class="p-4 text-center text-slate-400 text-[10px] italic">暂无公告 / No News</div>`;
         return;
     }
 
@@ -48,6 +40,9 @@ export function renderNews(lang) {
     `).join('');
 }
 
+/**
+ * 2. 渲染行情/详情页
+ */
 export function renderStatsPage(lang) {
     const container = document.getElementById('token-detail-list');
     if (!container) return;
@@ -82,7 +77,7 @@ export function renderStatsPage(lang) {
             <div class="relative w-full h-32 bg-slate-900/5 rounded-2xl mb-5 border border-white/50 overflow-hidden flex items-center justify-center group">
                 <div id="chart-${token.symbol}" class="absolute inset-0 w-full h-full"></div>
                 <div class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors cursor-pointer">
-                    <i class="fa-solid fa-chart-line mr-1"></i> Click to Load Market Chart
+                    <i class="fa-solid fa-chart-line mr-1"></i> Market Chart
                 </div>
             </div>
 
@@ -116,7 +111,7 @@ export function renderStatsPage(lang) {
 }
 
 /**
- * 3. 渲染个人中心：资产代币列表
+ * 3. 渲染资产代币列表
  */
 export function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
@@ -125,23 +120,13 @@ export function renderTokenList(balances = {}) {
     let totalVal = 0;
     let html = '';
 
-    // 遍历 config.js 中定义的代币信息
     Object.keys(tokenInfo).forEach(symbol => {
         const config = tokenInfo[symbol];
-        
-        // --- 1. 数据计算 ---
-        const unitPrice = config.price || 0; // 单价
-        const balance = parseFloat(balances[symbol] || 0); // 数量
-        const currentTokenValue = balance * unitPrice; // 总价值
-        
+        const unitPrice = config.price || 0;
+        const balance = parseFloat(balances[symbol] || 0);
+        const currentTokenValue = balance * unitPrice;
         totalVal += currentTokenValue;
 
-        // 格式化处理
-        const priceDisplay = unitPrice.toFixed(unitPrice < 1 ? 4 : 2); // 单价精度
-        const balanceDisplay = balance.toFixed(4); // 数量显示4位小数
-        const valueDisplay = currentTokenValue.toFixed(2); // 总价值显示2位小数
-
-        // --- 2. HTML 结构 (严格对应位置) ---
         html += `
         <div class="flex justify-between items-center p-4 hover:bg-slate-50/50 transition-colors">
             <div class="flex items-center gap-3">
@@ -150,128 +135,107 @@ export function renderTokenList(balances = {}) {
                 </div>
                 <div>
                     <div class="font-bold text-sm text-slate-800">${symbol}</div>
-                    
-                    <div class="text-[10px] text-slate-400 font-black tracking-tight">
-                        $${priceDisplay}
-                    </div>
+                    <div class="text-[10px] text-slate-400 font-black tracking-tight">$${unitPrice.toFixed(unitPrice < 1 ? 4 : 2)}</div>
                 </div>
             </div>
-
             <div class="text-right">
-                <div class="font-black text-sm text-slate-800">
-                    ${balanceDisplay}
-                </div>
-                
-                <div class="text-[9px] text-slate-400 font-bold">
-                    $${valueDisplay}
-                </div>
+                <div class="font-black text-sm text-slate-800">${balance.toFixed(4)}</div>
+                <div class="text-[9px] text-slate-400 font-bold">$${currentTokenValue.toFixed(2)}</div>
             </div>
         </div>`;
     });
 
     container.innerHTML = html;
-    
-    // 更新顶部总资产 (Total Asset 依然显示所有币种的总美元价值)
     const totalEl = document.getElementById('totalValue');
     if (totalEl) {
-        totalEl.innerText = totalVal.toLocaleString(undefined, {
-            minimumFractionDigits: 2, 
-            maximumFractionDigits: 2
-        });
+        totalEl.innerText = totalVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 }
 
+/**
+ * 4. 渲染交易历史 (核心修复版)
+ */
 export function renderHistory(history = []) {
     const container = document.getElementById('historyList');
     if (!container) return;
 
-    // --- 核心修复：增加数组检查 ---
-    // 如果 history 根本不是数组，或者数组长度为 0
     if (!Array.isArray(history) || history.length === 0) {
-        // 获取当前语言下的“无数据”翻译，如果没有则用默认文字
         const lang = localStorage.getItem('fbs_lang') || 'en';
-        const noDataText = (window.i18nData && window.i18nData[lang]) 
-                           ? (window.i18nData[lang].no_data || 'No Records Found') 
-                           : 'No Records Found';
-
-        container.innerHTML = `
-            <div class="p-12 text-center">
-                <div class="text-slate-200 mb-2"><i class="fa-solid fa-clock-rotate-left text-3xl"></i></div>
-                <p class="text-[10px] text-slate-400 uppercase font-black tracking-widest">${noDataText}</p>
-            </div>`;
+        const noDataText = (window.i18nData && window.i18nData[lang]) ? (window.i18nData[lang].no_data || 'No Records') : 'No Records';
+        container.innerHTML = `<div class="p-12 text-center text-slate-400 uppercase text-[10px] font-black tracking-widest">${noDataText}</div>`;
         return;
     }
 
-    // 只有确定是数组了，才执行 map
     container.innerHTML = history.map(item => {
-        const isIn = item.type === 'in' || item.amount > 0;
-        const icon = isIn ? 'fa-arrow-down-left' : 'fa-arrow-up-right';
-        const colorClass = isIn ? 'text-emerald-500' : 'text-slate-800';
-        const bgColor = isIn ? 'bg-emerald-50' : 'bg-slate-50';
+        // 自动适配中文/英文键名
+        const type = item['交易类型'] || item.type || 'Transaction';
+        const amount = parseFloat(item['交易数量'] || item.amount || 0);
+        const symbol = item['交易代币'] || item.symbol || '';
+        const status = item['交易状态'] || item.status || 'Success';
+        const time = item['交易时间'] || item.time || item.date || '--';
+        
+        const isIn = amount > 0 || type.includes('充值') || type.includes('奖励');
 
         return `
         <div class="list-item mb-3 group hover:border-blue-200 transition-all cursor-pointer">
             <div class="flex items-center gap-4">
-                <div class="w-10 h-10 ${bgColor} rounded-2xl flex items-center justify-center shadow-sm border border-white/50">
-                    <i class="fa-solid ${icon} ${isIn ? 'text-emerald-500' : 'text-blue-500'} text-xs"></i>
+                <div class="w-10 h-10 ${isIn ? 'bg-emerald-50' : 'bg-blue-50'} rounded-2xl flex items-center justify-center shadow-sm border border-white/50">
+                    <i class="fa-solid ${isIn ? 'fa-arrow-down-left text-emerald-500' : 'fa-arrow-up-right text-blue-500'} text-xs"></i>
                 </div>
                 <div>
-                    <p class="text-xs font-black text-slate-800 tracking-tight">${item.title || 'Transaction'}</p>
-                    <p class="text-[9px] text-slate-400 font-bold uppercase">${item.date || 'Just now'}</p>
+                    <p class="text-xs font-black text-slate-800 tracking-tight">${type}</p>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">${time}</p>
                 </div>
             </div>
             <div class="text-right">
-                <p class="text-sm font-black ${colorClass}">
-                    ${isIn ? '+' : '-'}${Math.abs(item.amount)}
-                </p>
-                <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">${item.status || 'Confirmed'}</p>
+                <p class="text-sm font-black ${isIn ? 'text-emerald-500' : 'text-slate-800'}">${isIn ? '+' : ''}${amount} ${symbol}</p>
+                <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">${status}</p>
             </div>
         </div>`;
     }).join('');
 }
 
+/**
+ * 5. 渲染转账记录
+ */
 export function renderTransfers(transfers = []) {
     const container = document.getElementById('transferList');
     if (!container) return;
 
-    // --- 核心修复：增加数组检查 ---
     if (!Array.isArray(transfers) || transfers.length === 0) {
-        const lang = localStorage.getItem('fbs_lang') || 'en';
-        const emptyText = (window.i18nData && window.i18nData[lang]) 
-                          ? (window.i18nData[lang].no_data || 'Empty Transfer Stream') 
-                          : 'Empty Transfer Stream';
-
-        container.innerHTML = `
-            <div class="p-10 text-center opacity-50">
-                <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest italic">${emptyText}</p>
-            </div>`;
+        container.innerHTML = `<div class="p-10 text-center opacity-50 text-[9px] text-slate-400 uppercase font-black">Empty Stream</div>`;
         return;
     }
 
-    container.innerHTML = transfers.map(tx => `
+    container.innerHTML = transfers.map(tx => {
+        const addr = tx['接收者'] || tx.address || tx.receiver || 'Unknown';
+        const amount = tx['接收数量'] || tx.amount || '0';
+        const symbol = tx['接收类型'] || tx.symbol || '';
+        const time = tx['转账时间'] || tx.time || '--';
+
+        return `
         <div class="flex justify-between items-center p-4 rounded-2xl hover:bg-slate-50/50 transition-colors border-b border-slate-50/50 last:border-none">
             <div class="flex flex-col gap-1">
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
                     <span class="text-[10px] font-black text-slate-700 tracking-tighter">
-                        ${tx.address ? (tx.address.substring(0, 6) + '...' + tx.address.slice(-4)) : 'Unknown'}
+                        ${addr.length > 10 ? (addr.substring(0, 6) + '...' + addr.slice(-4)) : addr}
                     </span>
                 </div>
-                <span class="text-[9px] text-slate-400 uppercase font-black pl-3.5">${tx.method || 'Transfer'}</span>
+                <span class="text-[9px] text-slate-400 uppercase font-black pl-3.5">${time}</span>
             </div>
             <div class="text-right">
-                <span class="text-xs font-black text-blue-600">${tx.amount} ${tx.symbol || ''}</span>
+                <span class="text-xs font-black text-blue-600">${amount} ${symbol}</span>
                 <div class="flex items-center justify-end gap-1 mt-0.5">
                     <i class="fa-solid fa-circle-check text-[8px] text-emerald-400"></i>
-                    <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">Success</p>
+                    <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">Confirmed</p>
                 </div>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 }
 
 
-window.renderHistory = renderHistory;
-window.renderTransfers = renderTransfers;
 window.renderNews = renderNews;
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
