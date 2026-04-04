@@ -1,14 +1,9 @@
 import { tokenInfo, CONTRACT_ADDRS } from './config.js';
-import { submitBindInviter } from './api-service.js';
+import { submitBindInviter, postTransactionRecord } from './api-service.js'; // 确保导入了提交函数
 
-/**
- * 挂载弹窗核心函数
- * 修复了大小写敏感导致的 NaN 和数据提交错误问题
- */
 export function mountModalHandlers() {
     
     // --- 辅助：统一生成大写的币种选项 ---
-    // 确保 value 始终是大写，以匹配 Worker 的 allPrices 键名
     const options = Object.keys(tokenInfo)
         .map(t => `<option value="${t.toUpperCase()}">${t.toUpperCase()}</option>`)
         .join('');
@@ -53,11 +48,54 @@ export function mountModalHandlers() {
                     </div>
                     <button onclick="doChainPay('ELECTRIC')" class="action-btn w-full mt-2" data-i18n="confirm_pay">确认支付</button>
                 </div>`);
-            window.calcElec();
+            if(window.calcElec) window.calcElec();
         }
     };
 
-    // --- 2. 资产相关弹窗 ---
+    // --- 2. 矿机转让弹窗 (修复后的逻辑) ---
+    window.openTransferMinerModal = function() {
+        // 从页面获取当前拥有的矿机总数，用于显示 MAX
+        const maxMiners = document.getElementById('miner_count_display')?.innerText || "0";
+        
+        window.showModal("miner_transfer_title", `
+            <div class="space-y-4 text-left">
+                <p class="text-[10px] text-amber-500 font-bold px-1" data-i18n="sign_to_confirm">请在钱包中签名以确认身份</p>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="receiver_address">接收者钱包地址</label>
+                    <input type="text" id="tmAddr" placeholder="0x..." 
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100">
+                </div>
+                <div>
+                    <div class="flex justify-between px-1">
+                        <label class="text-[10px] font-bold text-slate-400" data-i18n="miner_count">转让数量</label>
+                        <span class="text-[10px] text-blue-500 font-bold">MAX: ${maxMiners}</span>
+                    </div>
+                    <input type="number" id="tmAmount" placeholder="0" 
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
+                </div>
+                <button onclick="doTransferMinerAction()" class="action-btn w-full mt-4" data-i18n="btn_transfer_now">立即转让矿机</button>
+            </div>
+        `);
+    };
+
+    // --- 3. 申请团队数据弹窗 (修复后的逻辑) ---
+    window.openTeamDetailModal = function() {
+        window.showModal("modal_team_title", `
+            <div class="space-y-4 text-left">
+                <div class="p-4 bg-blue-50 rounded-2xl">
+                    <p class="text-[11px] text-blue-600 font-medium" data-i18n="team_detail_desc">请提交您的邮箱账号，我们会将您的团队数据发送至您的邮箱</p>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_email">请输入您的联系邮箱</label>
+                    <input type="email" id="teamEmail" placeholder="example@mail.com" 
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100">
+                </div>
+                <button onclick="doSubmitTeamEmail()" class="action-btn w-full mt-2" data-i18n="btn_submit_email">提交并申请</button>
+            </div>
+        `);
+    };
+
+    // --- 4. 资产相关弹窗 (充值/提现/兑换/转账) ---
     window.openFinanceModal = function(type) {
         if (type === 'recharge') {
             window.showModal("recharge", `
@@ -105,7 +143,6 @@ export function mountModalHandlers() {
                     </div>
                     <button onclick="handleSignAction('SWAP')" class="action-btn w-full mt-2" data-i18n="exchange">签名兑换</button>
                 </div>`);
-            // 确保 calcSwap 已定义后再调用
             if(window.calcSwap) window.calcSwap();
         } else if (type === 'transfer') {
             window.showModal("internal_transfer", `
@@ -133,52 +170,65 @@ export function mountModalHandlers() {
         }
     };
 
+    // --- 5. 核心逻辑执行函数 ---
     
+    // 执行矿机转让
+    window.doTransferMinerAction = async function() {
+        const toAddr = document.getElementById('tmAddr')?.value.trim();
+        const amount = document.getElementById('tmAmount')?.value;
+        const sender = window.currentAddress || localStorage.getItem('fbs_address');
 
-    // --- 4. 兑换计算逻辑修复 (处理 NaN) ---
-    window.calcSwap = function() {
-        const fromToken = document.getElementById('sFromToken')?.value?.toUpperCase();
-        const toToken = document.getElementById('sToToken')?.value?.toUpperCase();
-        const fromInput = document.getElementById('sFromAmt');
-        const toInput = document.getElementById('sToAmt');
-        
-        // window.currentPrices 来源于 Worker 的 allPrices
-        const prices = window.currentPrices || {}; 
+        if (!toAddr || !amount || parseInt(amount) <= 0) return alert("请检查地址和数量");
 
-        if (!fromToken || !toToken || !prices[fromToken] || !prices[toToken]) {
-            if (toInput) toInput.value = "0.00";
-            return;
-        }
-
-        const amount = parseFloat(fromInput.value) || 0;
-        // 公式：(输入的数量 * 来源币价格) / 目标币价格
-        const result = (amount * prices[fromToken]) / prices[toToken];
-        
-        if (toInput) {
-            // 修复 NaN，如果计算失败则显示 0.0000
-            toInput.value = isNaN(result) ? "0.0000" : result.toFixed(4); 
+        try {
+            window.showLoading(true);
+            // 内部转让通常需要签名确认身份
+            const message = `Transfer Miner\nTo: ${toAddr}\nAmount: ${amount}\nTime: ${Date.now()}`;
+            const signature = await window.ethereum.request({ method: 'personal_sign', params: [message, sender] });
+            
+            const result = await postTransactionRecord("矿机转让", amount, "MINER", "miner_transfer", { 
+                receiver: toAddr,
+                signature: signature 
+            });
+            
+            if (result.success) {
+                alert("转让申请已提交 (transfer_request_submitted)");
+                window.closeModal();
+                if(window.refreshData) window.refreshData(); // 刷新页面数据
+            }
+        } catch (e) {
+            console.error("转让失败:", e);
+            alert("操作取消或失败");
+        } finally {
+            window.showLoading(false);
         }
     };
 
-    // --- 5. 其他弹窗保持不变 (仅确保 ID 和逻辑一致) ---
-    window.openBindInviterModal = function() {
-        const displayAddress = window.currentAddress || localStorage.getItem('fbs_address');
-        window.showModal("modal_bind_title", `
-            <div class="space-y-4 text-left">
-                <div class="p-4 bg-blue-50 rounded-2xl">
-                    <p class="text-[10px] font-bold text-blue-600 mb-1" data-i18n="copy_addr">您的当前地址</p>
-                    <p class="text-[10px] font-mono text-slate-500 break-all">${displayAddress || 'Disconnected'}</p>
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_inviter_id">推荐人 ID (推荐码)</label>
-                    <input type="text" id="input_inviter_id" placeholder="输入推荐人 ID" 
-                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100 transition-all">
-                </div>
-                <button onclick="submitBindInviter()" class="action-btn w-full mt-2" data-i18n="btn_confirm">确认提交绑定</button>
-            </div>
-        `);
+    // 执行团队邮件申请
+    window.doSubmitTeamEmail = async function() {
+        const email = document.getElementById('teamEmail')?.value.trim();
+        const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!email || !emailReg.test(email)) return alert("请输入正确的邮箱格式");
+
+        window.showLoading(true);
+        try {
+            const result = await postTransactionRecord("申请团队数据", "0", "INFO", "request_team_data", { 
+                email: email 
+            });
+            
+            if (result.success) {
+                alert("提交成功：预计在两小时内发送至您的邮箱 (bind_success)");
+                window.closeModal();
+            }
+        } catch (e) {
+            console.error("提交异常:", e);
+        } finally {
+            window.showLoading(false);
+        }
     };
 
+    // --- 通用弹窗控制 ---
     window.showModal = function(titleKey, html) {
         const titleEl = document.getElementById('modalTitle');
         const contentEl = document.getElementById('modalContent');
@@ -201,41 +251,6 @@ export function mountModalHandlers() {
         if (loader) show ? loader.classList.remove('hidden') : loader.classList.add('hidden');
     };
 
+    // 绑定初始化的导入函数
     window.submitBindInviter = submitBindInviter;
 }
-
-// --- 修复：挂载缺失的全局函数 ---
-
-// 1. 矿机转让弹窗
-window.openTransferMinerModal = function() {
-    window.showModal("transfer_miner", `
-        <div class="space-y-4 text-left">
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 ml-1">接收者地址</label>
-                <input type="text" id="transferTarget" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none">
-            </div>
-            <button onclick="doTransferMinerAction()" class="action-btn w-full mt-2">确认转让</button>
-        </div>
-    `);
-};
-
-// 2. 团队详情弹窗（申请团队数据）
-window.openTeamDetailModal = function() {
-    // 这里可以先显示一个加载状态，或者直接弹出提示
-    window.showModal("team_detail", `
-        <div class="p-4 text-center">
-            <p class="text-sm text-slate-600 mb-4">正在申请调取团队详细数据，请稍后在“我的团队”中查看。</p>
-            <button onclick="closeModal()" class="action-btn w-full">确认</button>
-        </div>
-    `);
-    // 如果你有具体的 API 请求逻辑，可以在这里调用
-    console.log("正在请求团队详细数据...");
-};
-
-// 3. 挂载转让执行逻辑（供上面的弹窗调用）
-window.doTransferMinerAction = function() {
-    const target = document.getElementById('transferTarget')?.value;
-    if(!target) return alert("请输入接收地址");
-    alert("转让功能开发中，请关注公告");
-    window.closeModal();
-};
