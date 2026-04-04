@@ -236,3 +236,16 @@ body {
     font-weight: 700;
     color: var(--text-main);
 }
+footer {
+    /* 增加一个向下的透明渐变，让页面底部收尾更柔和 */
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5));
+    /* 如果你的背景有模糊效果，这里也可以加上 */
+    backdrop-filter: blur(5px);
+}
+
+/* 针对移动端优化，确保不会紧贴屏幕底部 */
+@media (max-width: 640px) {
+    footer {
+        padding-bottom: env(safe-area-inset-bottom, 2rem);
+    }
+}
