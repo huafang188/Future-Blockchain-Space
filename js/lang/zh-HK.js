@@ -1,5 +1,5 @@
 window.i18nData = window.i18nData || {};
-window.i18nData['en'] ={
+window.i18nData['zh-HK'] ={
         title: "NEO生態挖礦矩陣",
         connect: "連接錢包",
         connected: "已連接",
