@@ -1,14 +1,18 @@
 import { API_BASE } from './config.js';
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction") {
+    // 增加调试日志，确认函数是否被调用
+    console.log("准备提交 POST:", { type, amount, symbol, action });
+
     const address = window.currentAddress || window.userAddress || localStorage.getItem('fbs_address');
     
     if (!address) {
         console.error("未连接钱包，无法提交记录");
-        return;
+        return { success: false, error: "No wallet address" };
     }
 
     const now = new Date();
-    const formattedDate = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')}`;
+    // 格式化：2026-04-04 15:30:00 (飞书表格对这种格式支持更好)
+    const formattedDate = now.toLocaleString(); 
 
     const payload = {
         action: action,
@@ -16,24 +20,30 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         type: type,
         amount: String(amount),
         symbol: symbol,
-        status: "已提交",
+        status: "已完成", // 修改为已完成
         time: formattedDate
     };
 
     try {
+        // 使用 await 确保请求发出
         const response = await fetch(API_BASE, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-        const result = await response.json();
         
-        if (result.success && typeof fetchUserData === 'function') {
-            setTimeout(() => fetchUserData(address), 1000);
+        const result = await response.json();
+        console.log("服务器返回结果:", result);
+
+        if (result.success) {
+            // 只有成功了才去尝试刷新数据
+            if (typeof fetchUserData === 'function') {
+                await fetchUserData(address); 
+            }
         }
         return result;
     } catch (e) {
-        console.error("提交失败:", e);
+        console.error("提交请求异常:", e);
         return { success: false, error: e.message };
     }
 }
