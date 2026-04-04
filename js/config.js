@@ -18,18 +18,18 @@ export const CONTRACT_ADDRS = {
     'BNB': "NATIVE"
 };
 
-// 代币信息（价格、logo）
+
 export const tokenInfo = {
-    'NEO': { price: 0.152, logo: 'assets/neo_logo.webp' },
-    'NEX': { price: 1.00,  logo: 'assets/nex_logo.webp' },
-    'NET': { price: 2.00,  logo: 'assets/net_logo.webp' },
-    'NEA': { price: 3.00,  logo: 'assets/nea_logo.webp' },
-    'NRY': { price: 4.00,  logo: 'assets/nry_logo.webp' },
-    'NCL': { price: 5.00,  logo: 'assets/ncl_logo.webp' },
-    'USDT': { price: 1.0,   logo: 'assets/USDT.webp' },
-    'BNB': { price: 6.0, logo: 'assets/BNB.webp' },
-    'ETH': { price: 7.0, logo: 'assets/ETH.webp' },
-    'BTC': { price: 8.0, logo: 'assets/BTC.webp' }
+    'NEO': { logo: 'assets/neo_logo.webp' },
+    'NEX': { logo: 'assets/nex_logo.webp' },
+    'NET': { logo: 'assets/net_logo.webp' },
+    'NEA': { logo: 'assets/nea_logo.webp' },
+    'NRY': { logo: 'assets/nry_logo.webp' },
+    'NCL': { logo: 'assets/ncl_logo.webp' },
+    'USDT': { logo: 'assets/USDT.webp' },
+    'BNB': { logo: 'assets/BNB.webp' },
+    'ETH': { logo: 'assets/ETH.webp' },
+    'BTC': { logo: 'assets/BTC.webp' }
 };
 
 // 交易状态样式映射
