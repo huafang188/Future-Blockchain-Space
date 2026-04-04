@@ -3,7 +3,7 @@ import { submitBindInviter, postTransactionRecord } from './api-service.js';
 
 /**
  * 挂载弹窗核心函数
- * 解决问题：防止点击刷新、对齐多语言Key、修复矿机转让与团队申请逻辑
+ * 彻底修复：1. 局部语言渲染（不再清空全局数据） 2. 绑定推荐人逻辑 3. 防止表单刷新
  */
 export function mountModalHandlers() {
     
@@ -12,7 +12,38 @@ export function mountModalHandlers() {
         .map(t => `<option value="${t.toUpperCase()}">${t.toUpperCase()}</option>`)
         .join('');
 
-    // --- 1. 矿机/电费弹窗 ---
+    // --- 1. 注册/绑定推荐人弹窗 (核心修复) ---
+    window.showRegisterModal = function() {
+        window.showModal("modal_register_title", `
+            <div class="space-y-4 text-left">
+                <div class="p-4 bg-amber-50 rounded-2xl">
+                    <p class="text-[11px] text-amber-600 font-medium" data-i18n="register_desc">检测到新用户，请输入推荐人ID以激活账户</p>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="input_inviter_id">推荐人 ID</label>
+                    <input type="text" id="input_inviter_id" placeholder="888888" 
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none focus:ring-2 focus:ring-amber-100">
+                </div>
+                <button type="button" onclick="window.doSubmitBindInviter(event)" class="action-btn w-full mt-2 !from-amber-500 !to-orange-500" data-i18n="btn_confirm_bind">确认绑定</button>
+            </div>
+        `);
+    };
+
+    window.doSubmitBindInviter = async function(e) {
+        if(e) e.preventDefault();
+        const inviterId = document.getElementById('input_inviter_id')?.value.trim();
+        if (!inviterId) return alert("请输入推荐码");
+        
+        window.showLoading(true);
+        try {
+            // 调用 api-service.js 中的方法
+            await submitBindInviter(); 
+        } finally {
+            window.showLoading(false);
+        }
+    };
+
+    // --- 2. 矿机/电费弹窗 ---
     window.openMinerModal = function(type) {
         const nums = [1, 5, 10, 15, 20, 25, 50, 100];
         if (type === 'buy') {
@@ -56,7 +87,7 @@ export function mountModalHandlers() {
         }
     };
 
-    // --- 2. 矿机转让弹窗 (修复点：接收者地址 + 数量) ---
+    // --- 3. 矿机转让 ---
     window.openTransferMinerModal = function() {
         const max = document.getElementById('miner_count')?.innerText || "0";
         window.showModal("miner_transfer_title", `
@@ -64,7 +95,7 @@ export function mountModalHandlers() {
                 <p class="text-[10px] text-amber-500 font-bold px-1" data-i18n="sign_to_confirm">请在钱包中签名以确认身份</p>
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="receiver_address">接收者钱包地址</label>
-                    <input type="text" id="tmAddr" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100">
+                    <input type="text" id="tmAddr" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none">
                 </div>
                 <div>
                     <div class="flex justify-between px-1">
@@ -73,23 +104,7 @@ export function mountModalHandlers() {
                     </div>
                     <input type="number" id="tmAmount" placeholder="0" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
                 </div>
-                <button type="button" onclick="doTransferMinerAction(event)" class="action-btn w-full mt-4" data-i18n="btn_transfer_now">立即转让矿机</button>
-            </div>
-        `);
-    };
-
-    // --- 3. 申请团队数据弹窗 (修复点：提交邮箱) ---
-    window.openTeamDetailModal = function() {
-        window.showModal("modal_team_title", `
-            <div class="space-y-4 text-left">
-                <div class="p-4 bg-blue-50 rounded-2xl">
-                    <p class="text-[11px] text-blue-600 font-medium" data-i18n="team_detail_desc">请提交您的邮箱账号，我们会将您的团队数据发送至您的邮箱</p>
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="placeholder_email">请输入您的联系邮箱</label>
-                    <input type="email" id="teamEmail" placeholder="example@mail.com" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none mt-1 outline-none focus:ring-2 focus:ring-blue-100">
-                </div>
-                <button type="button" onclick="doSubmitTeamEmail(event)" class="action-btn w-full mt-2" data-i18n="btn_submit_email">提交并申请</button>
+                <button type="button" onclick="window.doTransferMinerAction(event)" class="action-btn w-full mt-4" data-i18n="btn_transfer_now">立即转让矿机</button>
             </div>
         `);
     };
@@ -139,82 +154,40 @@ export function mountModalHandlers() {
         } else if (type === 'transfer') {
             window.showModal("internal_transfer", `
                 <div class="space-y-4 text-left">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="receiver_address">接收者钱包地址</label>
-                        <input type="text" id="transAddr" placeholder="0x..." class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none mt-1 outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 ml-1" data-i18n="select_token">选择代币</label>
-                        <select id="transToken" onchange="updateTransUI()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">${options}</select>
-                    </div>
-                    <input type="number" id="transAmount" placeholder="0.00" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-4 outline-none">
+                    <input type="text" id="transAddr" placeholder="接收者地址" class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-xs border-none outline-none">
+                    <select id="transToken" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none outline-none">${options}</select>
+                    <input type="number" id="transAmount" placeholder="0.00" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                     <button type="button" onclick="doInternalTransfer()" class="action-btn w-full mt-4" data-i18n="confirm_transfer">确认转账</button>
                 </div>`);
-            if(window.updateTransUI) window.updateTransUI();
         }
     };
 
-    // --- 5. 执行逻辑 (彻底解决点击刷新) ---
-
-    window.doTransferMinerAction = async function(e) {
-        if(e) e.preventDefault(); // 拦截事件防止刷新
-        const toAddr = document.getElementById('tmAddr')?.value.trim();
-        const amount = document.getElementById('tmAmount')?.value;
-        const sender = window.currentAddress || localStorage.getItem('fbs_address');
-
-        if (!toAddr || !amount || amount <= 0) return alert("请检查地址和数量");
-
-        window.showLoading(true);
-        try {
-            // 签名逻辑保持与提现一致
-            const msg = `Transfer Miner: ${amount}\nTo: ${toAddr}\nTime: ${Date.now()}`;
-            const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, sender] });
-            
-            const res = await postTransactionRecord("转让矿机", amount, "MINER", "miner_transfer", { 
-                receiver: toAddr, 
-                signature: sig 
-            });
-            
-            if (res.success) {
-                alert("申请已提交 (transfer_request_submitted)");
-                window.closeModal();
-            }
-        } catch (err) {
-            console.error("转让失败", err);
-        } finally {
-            window.showLoading(false);
-        }
-    };
-
-    window.doSubmitTeamEmail = async function(e) {
-        if(e) e.preventDefault(); // 拦截事件防止刷新
-        const email = document.getElementById('teamEmail')?.value.trim();
-        const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
-        if (!emailReg.test(email)) return alert("请输入有效邮箱");
-
-        window.showLoading(true);
-        try {
-            const res = await postTransactionRecord("申请团队数据", "0", "INFO", "request_team_data", { email: email });
-            if (res.success) {
-                alert("提交成功 (bind_success)");
-                window.closeModal();
-            }
-        } finally {
-            window.showLoading(false);
-        }
-    };
-
-    // --- 6. 通用 UI 控制 ---
+    // --- 5. 通用 UI 控制 (修复数据消失的关键) ---
     window.showModal = function(titleKey, html) {
         const titleEl = document.getElementById('modalTitle');
         const contentEl = document.getElementById('modalContent');
         const overlay = document.getElementById('modalOverlay');
+        
         if (titleEl && contentEl && overlay) {
             titleEl.setAttribute('data-i18n', titleKey);
             contentEl.innerHTML = html;
             overlay.classList.remove('hidden');
-            if (window.i18nRender) window.i18nRender();
+
+            // --- 核心修复：局部翻译 ---
+            // 不要直接调用 window.i18nRender()，那会导致全身重绘
+            if (typeof window.i18nRender === 'function') {
+                // 仅翻译弹窗内的 [data-i18n] 元素
+                const modalItems = overlay.querySelectorAll('[data-i18n]');
+                modalItems.forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    // 假设你的翻译数据存在 window.langData 中
+                    const translation = window.allLangs ? window.allLangs[localStorage.getItem('language') || 'en'][key] : null;
+                    if (translation) {
+                        if (el.tagName === 'INPUT') el.placeholder = translation;
+                        else el.innerText = translation;
+                    }
+                });
+            }
         }
     };
 
@@ -228,5 +201,19 @@ export function mountModalHandlers() {
         if (loader) show ? loader.classList.remove('hidden') : loader.classList.add('hidden');
     };
 
-    window.submitBindInviter = submitBindInviter;
+    // 将方法显式挂载到 window 供 onclick 调用
+    window.doTransferMinerAction = async function(e) {
+        if(e) e.preventDefault();
+        const toAddr = document.getElementById('tmAddr')?.value.trim();
+        const amount = document.getElementById('tmAmount')?.value;
+        const sender = window.currentAddress || localStorage.getItem('fbs_address');
+        if (!toAddr || !amount || amount <= 0) return alert("Check Input");
+        window.showLoading(true);
+        try {
+            const msg = `Transfer: ${amount} to ${toAddr}`;
+            const sig = await window.ethereum.request({ method: 'personal_sign', params: [msg, sender] });
+            const res = await postTransactionRecord("转让矿机", amount, "MINER", "transfer", { receiver: toAddr, signature: sig });
+            if (res.success) { alert("Success"); window.closeModal(); }
+        } finally { window.showLoading(false); }
+    };
 }
