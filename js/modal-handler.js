@@ -164,7 +164,7 @@ window.openTransferMinerModal = function() {
                        class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none mt-1 outline-none">
             </div>
             <p class="text-[9px] text-orange-500 font-bold px-1" data-i18n="sign_to_confirm">请在钱包中签名以确认身份</p>
-            <button onclick="handleMinerTransfer()" class="action-btn w-full mt-2" data-i18n="btn_transfer_now">立即转让矿机</button>
+            <button onclick="doMinerTransfer()" class="action-btn w-full mt-2" data-i18n="btn_transfer_now">立即转让矿机</button>
         </div>
     `);
 };
@@ -181,7 +181,7 @@ window.openTeamDetailModal = function() {
                 <input type="email" id="team_email" placeholder="example@mail.com" 
                        class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-none mt-1 outline-none">
             </div>
-            <button onclick="handleTeamEmailSubmit()" class="action-btn w-full mt-2 !from-indigo-600 !to-blue-600" data-i18n="btn_submit_email">提交并激活</button>
+            <button onclick="doTeamEmailSubmit()" class="action-btn w-full mt-2 !from-indigo-600 !to-blue-600" data-i18n="btn_submit_email">提交并激活</button>
         </div>
     `);
 };
