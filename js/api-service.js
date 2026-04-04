@@ -91,27 +91,33 @@ export async function fetchUserData(address) {
             window.userBalances = data.balances;
             
             // 渲染资产列表页
-            if (typeof renderTokenList === 'function') {
-                renderTokenList(data.balances);
-            }
-            
-            let calculatedTotal = 0;
-            const prices = window.TOKEN_PRICES || { "USDT": 1, "FBS": 0.5, "BNB": 600 };
+if (data.balances && typeof data.balances === 'object') {
+    window.userBalances = data.balances;
+    
+    if (typeof renderTokenList === 'function') {
+        renderTokenList(data.balances);
+    }
+    
+    let calculatedTotal = 0;
 
-            Object.keys(data.balances).forEach(token => {
-                const balance = parseFloat(data.balances[token]) || 0;
-                const price = prices[token] || 0;
-                calculatedTotal += (balance * price);
-                // 更新首页的小余额显示
-                updateText(`bal_${token}`, balance.toFixed(2));
-            });
+    Object.keys(data.balances).forEach(token => {
+        const balance = parseFloat(data.balances[token]) || 0;
+        
+        // --- 修改点：优先从 tokenInfo 获取价格，如果没有则默认为 0 ---
+        const price = tokenInfo[token] ? tokenInfo[token].price : 0;
+        
+        calculatedTotal += (balance * price);
+        
+        // 更新 UI 余额
+        updateText(`bal_${token}`, balance.toFixed(2));
+    });
 
-            // 更新总估值
-            updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
-        }
+    // 更新总估值
+    updateText('totalValue', calculatedTotal.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }));
+}
 
         // --- F. 历史记录渲染 (核心修复：强制转为数组) ---
         const historyList = Array.isArray(data.history) ? data.history : [];
