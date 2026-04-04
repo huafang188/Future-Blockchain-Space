@@ -1,5 +1,5 @@
 window.i18nData = window.i18nData || {};
-window.i18nData['en'] ={
+window.i18nData['ja'] ={
         title: "NEO生態鉱業マトリックス",
         connect: "ウォレット接続",
         connected: "接続済み",
