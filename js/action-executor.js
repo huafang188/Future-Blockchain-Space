@@ -120,38 +120,41 @@ export async function handleSignAction(type) {
 }
 
 /**
- * --- 业务：内部资产转账 ---
+
+ * 转账逻辑
  */
 export async function doInternalTransfer() {
     const symbol = document.getElementById('transToken')?.value?.toUpperCase();
     const toAddr = document.getElementById('transAddr')?.value.trim();
     const amount = document.getElementById('transAmount')?.value;
-    const senderAddr = getCurrentAddress();
+    const senderAddr = window.currentAddress || localStorage.getItem('fbs_address');
 
-    if (!toAddr || !amount) return alert("请完整填写转账信息");
+    if (!toAddr || !amount || parseFloat(amount) <= 0) return alert("请完整填写转账信息");
 
     try {
         const message = `确认内部转账\n资产: ${amount} ${symbol}\n接收: ${toAddr}\n时间: ${new Date().toLocaleString()}`;
         const hexMsg = '0x' + Array.from(new TextEncoder().encode(message)).map(b => b.toString(16).padStart(2, '0')).join('');
         const signature = await window.ethereum.request({ method: 'personal_sign', params: [hexMsg, senderAddr] });
 
-        window.showModal("处理中", "正在提交转账请求...");
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: "transfer",
-                address: senderAddr,
+        if (!signature) return;
+
+        window.showModal("处理中", "正在安全提交转账请求...");
+
+        const result = await postTransactionRecord(
+            "内部转账", 
+            amount, 
+            symbol, 
+            "transfer", 
+            { 
                 receiver: toAddr,
-                symbol: symbol,
-                amount: String(amount),
-                signature: signature
-            })
-        });
-        const res = await response.json();
-        if (res.success) { alert("✅ 转账成功"); location.reload(); }
-        else { alert("转账失败: " + res.error); window.closeModal(); }
-    } catch (e) { console.error(e); }
+                signature: signature 
+            }
+        );
+    } catch (e) { 
+        console.error("转账异常:", e);
+        alert("用户取消或交易失败");
+        if (window.closeModal) window.closeModal();
+    }
 }
 
 /**
