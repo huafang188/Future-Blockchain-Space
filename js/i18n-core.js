@@ -1,29 +1,43 @@
+/**
+ * i18n-core.js - 统一翻译与渲染核心
+ * 职责：管理语言状态、执行 DOM 替换、触发动态组件重绘
+ */
 
-// 1. 渲染函数（执行翻译的核心）
+// 1. 核心渲染函数
 window.i18nRender = function() {
     const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
     
-    // 从全局变量 i18nData 中获取对应语言包
+    // 获取语言包数据
     const dict = window.i18nData ? window.i18nData[lang] : null; 
     
     if (!dict) {
-        console.warn("未找到语言包数据，请检查语言文件是否加载:", lang);
+        console.error(`[i18n] 找不到语言包数据: ${lang}。请检查 js/lang/${lang}.js 是否正确加载。`);
         return;
     }
 
-    // A. 翻译带有 data-i18n 属性的静态元素
-    document.querySelectorAll('[data-i18n]').forEach(el => {
+    console.log(`[i18n] 正在执行页面渲染，语言: ${lang}`);
+
+    // --- A. 静态元素翻译 ---
+    const i18nElements = document.querySelectorAll('[data-i18n]');
+    i18nElements.forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
+        const translation = dict[key];
+
+        if (translation !== undefined) {
+            // 处理输入框的 placeholder
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                el.placeholder = dict[key];
+                el.placeholder = translation;
             } else {
-                el.innerText = dict[key];
+                // 处理普通文本
+                el.innerText = translation;
             }
+        } else {
+            console.warn(`[i18n] 语言包 [${lang}] 中缺少 Key: "${key}"`);
         }
     });
 
-    // B. 执行动态内容的渲染（如公告、代币列表）
+    // --- B. 动态组件渲染 ---
+    // 强制触发业务逻辑中的渲染函数，确保数组类数据（如公告、代币详情）同步更新
     if (typeof window.renderNews === 'function') {
         window.renderNews(lang);
     }
@@ -31,21 +45,41 @@ window.i18nRender = function() {
     if (typeof window.renderStatsPage === 'function') {
         window.renderStatsPage(lang);
     }
-};
 
-// 2. 切换语言函数
-window.switchLang = function(lang) {
-    console.log("切换语言至:", lang);
-    localStorage.setItem('fbs_lang', lang);
-    window.i18nRender(); 
-};
+    // 如果你有底部导航或其他由 JS 生成的 UI，也在这里统一触发
+    if (typeof window.renderNavigation === 'function') {
+        window.renderNavigation(lang);
+    }
 
-// 3. 初始化加载
-document.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    // --- C. 同步下拉框状态 ---
     const selectEl = document.getElementById('langSelect');
-    if (selectEl) selectEl.value = savedLang;
+    if (selectEl && selectEl.value !== lang) {
+        selectEl.value = lang;
+    }
+};
+
+// 2. 统一切换语言入口
+window.switchLang = function(lang) {
+    if (!lang) return;
     
-    // 延迟一小会儿执行，确保所有语言包 script 加载完毕
+    console.log(`[i18n] 切换语言至: ${lang}`);
+    
+    // 更新本地缓存
+    localStorage.setItem('fbs_lang', lang);
+    
+    // 执行渲染
     window.i18nRender();
+    
+    // 发送全局自定义事件（可选，方便其他 type="module" 的脚本监听）
+    window.dispatchEvent(new CustomEvent('onLanguageChanged', { detail: lang }));
+};
+
+// 3. 页面加载初始化
+document.addEventListener('DOMContentLoaded', () => {
+    // 稍微延迟 50ms 执行
+    // 理由：确保 DOM 树已经完全构建，且所有 type="module" 的渲染脚本已完成初始填充
+    setTimeout(() => {
+        const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+        window.switchLang(savedLang); 
+    }, 50);
 });
