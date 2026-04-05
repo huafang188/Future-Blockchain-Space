@@ -24,11 +24,14 @@ import { mountCalculationHandlers } from './calculations.js';
 import { mountActionExecutors } from './action-executor.js';
 
 /**
- * 1. 核心挂载器：将所有模块化函数暴露给全局 (window)
- * 这样 HTML 里的 onclick="doRecharge()" 才能正常工作
+ * 1. 全局挂载器
+ * 核心：将所有分散在模块中的函数强制导出给 window 变量
+ * 解决 HTML 中 onclick="..." 找不到函数的问题
  */
 function mountAllGlobals() {
-    // API 与渲染类
+    console.log("[Init] 开始挂载全局函数...");
+
+    // A. 基础 API 与 UI 渲染函数挂载
     window.updateText = updateText;
     window.fetchUserData = fetchUserData;
     window.postTransactionRecord = postTransactionRecord;
@@ -40,85 +43,88 @@ function mountAllGlobals() {
     window.renderStatsPage = renderStatsPage;
     window.renderNews = renderNews;
 
-    // 运行各模块的内部挂载逻辑
-    mountWalletClickHandler();     // 钱包点击处理
-    mountModalHandlers();          // 弹窗控制
-    mountCalculationHandlers();    // 计算器逻辑
-    mountActionExecutors();        // 业务执行逻辑 (充值/提币/转让等)
+    // B. 执行各模块的挂载函数 (执行内部的 window.xxx = ... 赋值)
+    mountWalletClickHandler();     // 挂载钱包点击 (wallet-utils)
+    mountModalHandlers();          // 挂载弹窗与复制逻辑 (modal-handler)
+    mountCalculationHandlers();    // 挂载计算器逻辑 (calculations)
+    mountActionExecutors();        // 挂载业务交互逻辑 (action-executor)
+
+    console.log("[Init] 全局函数挂载完成");
 }
 
 /**
- * 2. 初始化应用程序
+ * 2. 应用程序初始化入口
  */
 function initApp() {
-    console.log("[Init] 正在初始化模块挂载...");
-    
-    // 执行全局挂载
+    // 立即执行挂载，确保在 DOM 加载前函数已就绪
     mountAllGlobals();
 
-    // 页面加载完成后的逻辑
     window.addEventListener('load', () => {
-        console.log("[Init] 页面加载完成，开始检查状态...");
+        console.log("[App] 页面加载完成，检查初始状态...");
         
-        // A. 读取本地配置
+        // 1. 读取语言并初始化翻译
         const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+        if (window.i18nRender) {
+            window.i18nRender(savedLang);
+        }
+
+        // 2. 预渲染静态组件 (公告、看板)
+        if (window.renderNews) renderNews(savedLang);
+        if (window.renderStatsPage) renderStatsPage(savedLang);
+
+        // 3. 登录态恢复与数据自动拉取
         const currentAddress = localStorage.getItem('fbs_address');
         const isManualLogout = localStorage.getItem('user_logout_manual');
 
-        // B. 静态 UI 预渲染 (公告、行情、语言包)
-        if (window.i18nRender) window.i18nRender(savedLang);
-        if (window.renderNews) window.renderNews(savedLang);
-        if (window.renderStatsPage) window.renderStatsPage(savedLang);
-
-        // C. 登录态自动重连
         if (currentAddress && isManualLogout !== 'true') {
-            console.log(`[Init] 检测到已连接地址: ${currentAddress}`);
+            console.log(`[App] 自动连接地址: ${currentAddress}`);
             
-            // 更新钱包按钮 UI
+            // 更新导航栏钱包 UI
             updateWalletUI(currentAddress);
             
-            // 核心：从飞书拉取该地址的所有动态数据 (资产、团队、记录)
+            // 核心：调用 api-service 里的 fetchUserData
+            // 该函数内部包含了价格标准化逻辑，解决价格不显示的问题
             fetchUserData(currentAddress); 
             
         } else {
-            console.log("[Init] 用户未连接或已手动登出");
+            console.log("[App] 当前处于未登录状态");
             resetWalletUI();
             
-            // 初始清空列表，显示“请连接钱包”
+            // 初始清空列表，显示空状态
             if (window.renderHistory) window.renderHistory([]); 
+            if (window.renderTransfers) window.renderTransfers([]);
             if (window.renderTokenList) window.renderTokenList({});
         }
     });
 
     /**
-     * 3. 钱包环境监听 (MetaMask / TrustWallet / Bitget)
+     * 3. 监听钱包账号与链的变化
      */
     if (window.ethereum) {
-        // 监听账号切换
+        // 账号切换
         window.ethereum.on('accountsChanged', (accounts) => {
-            console.log("[Wallet] 账号已切换");
+            console.log("[Wallet] 检测到账号变更");
             if (accounts.length > 0) {
                 const newAddr = accounts[0];
                 localStorage.setItem('fbs_address', newAddr);
                 localStorage.setItem('user_logout_manual', 'false');
-                location.reload(); // 刷新以重新加载飞书数据
+                location.reload(); // 账号切换属于重大变更，建议 reload 确保内存干净
             } else {
-                // 用户在插件中手动断开连接
                 localStorage.removeItem('fbs_address');
                 localStorage.setItem('user_logout_manual', 'true');
                 location.reload();
             }
         });
 
-        // 监听链切换 (如从 ETH 切换到 BSC)
+        // 链切换 (监听是否离开 BSC)
         window.ethereum.on('chainChanged', () => {
-            console.log("[Wallet] 网络已切换");
+            console.log("[Wallet] 检测到网络变更");
             location.reload();
         });
     } else {
-        console.warn("[Wallet] 未检测到以太坊环境，请在 Web3 钱包浏览器中打开");
+        console.warn("[App] 未检测到 Web3 环境，请在 DApp 浏览器中访问");
     }
 }
 
-// --- 启动程序 ---
+// 启动
 initApp();
