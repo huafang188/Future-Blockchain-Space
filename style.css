@@ -317,3 +317,60 @@ footer {
 .action-btn:active {
     transform: scale(0.98);
 }
+
+/* 导航总容器 */
+.nav-container {
+    margin: 15px auto;
+    padding: 20px 10px;
+    background: rgba(255, 255, 255, 0.05); /* 适配深色/科技感背景 */
+    backdrop-filter: blur(10px);
+    border-radius: 16px; /* 圆角矩形 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 4格栅格布局 */
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px 5px;
+}
+
+/* 单个导航项 */
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* 点击反馈 */
+.nav-item:active {
+    transform: scale(0.92);
+    opacity: 0.8;
+}
+
+/* 图标样式 */
+.nav-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb); /* 默认科技蓝渐变 */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* 文字样式 */
+.nav-text {
+    font-size: 12px;
+    color: #cbd5e1;
+    text-align: center;
+    font-weight: 500;
+    white-space: nowrap;
+}
