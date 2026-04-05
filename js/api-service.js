@@ -1,18 +1,22 @@
 import { API_BASE } from './config.js';
 
 /**
- * 1. 提交交易记录 (通用 POST 函数)
+ * 1. 提交交易/申请记录到后端 (POST)
+ * @param {string} type - 交易类型描述 (如: '充值', '提币')
+ * @param {number|string} amount - 数量
+ * @param {string} symbol - 币种 (如: 'USDT')
+ * @param {string} action - Worker 路由标识 (如: 'bind_inviter', 'record_transaction')
+ * @param {object} extraFields - 额外字段 (如: signature, email)
  */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
-    console.log("准备提交数据:", { type, amount, symbol, action, ...extraFields });
-
-    const address = window.currentAddress || localStorage.getItem('fbs_address');
+    const address = localStorage.getItem('fbs_address');
     
     if (!address) {
-        alert("未连接钱包，无法提交记录");
-        return { success: false, error: "No wallet address" };
+        alert("请先连接钱包");
+        return { success: false };
     }
 
+    // 构造发送给 Worker 的标准 Payload
     const payload = {
         action: action,        
         address: address,      
@@ -21,6 +25,8 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         symbol: symbol,        
         ...extraFields
     };
+
+    console.log(`[API] 正在提交 ${action}:`, payload);
 
     try {
         const response = await fetch(API_BASE, {
@@ -32,123 +38,97 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         const result = await response.json();
 
         if (result.success) {
-            // 成功提示
-            alert(`✅ ${type}申请已成功提交`);
-            
-            // 局部数据刷新：不刷新页面，直接重拉数据
-            if (window.fetchUserData) {
-                window.fetchUserData(address); 
-            }
-            // 如果有弹窗，关闭它
-            if (window.closeModal) window.closeModal();
-
+            console.log(`[API] ${type} 提交成功`);
+            // 提交成功后，自动拉取最新数据，更新 UI
+            fetchUserData(address);
+            return result;
         } else {
-            alert(`❌ 提交失败: ${result.msg || "服务器拒绝"}`);
+            alert(`提交失败: ${result.msg || "服务器拒绝"}`);
+            return result;
         }
-        return result;
     } catch (e) {
-        console.error("提交异常:", e);
-        alert("网络连接失败，请检查 API 地址");
+        console.error("[API] 提交异常:", e);
+        alert("网络连接失败，请检查 Worker 配置");
         return { success: false, error: e.message };
     }
 }
 
 /**
- * 2. 获取并渲染用户数据 (核心渲染逻辑)
+ * 2. 获取用户完整数据并渲染 UI (GET)
+ * @param {string} address - 钱包地址
  */
 export async function fetchUserData(address) {
     if (!address) return;
     
     try {
-        // 加上时间戳防止浏览器缓存
-        const res = await fetch(`${API_BASE}?address=${address}&t=${Date.now()}`);
-        if (!res.ok) throw new Error('Network response was not ok');
-        const data = await res.json();
+        console.log(`[API] 正在拉取用户数据: ${address}`);
+        const res = await fetch(`${API_BASE}?address=${address.toLowerCase()}&t=${Date.now()}`);
+        if (!res.ok) throw new Error('网络响应异常');
         
-        console.log("收到后端整合数据:", data);
+        const data = await res.json();
+        console.log("[API] 收到后端数据:", data);
 
-        // A. 新用户处理：弹出注册/绑定邀请弹窗
+        // A. 新用户逻辑：弹出绑定邀请码弹窗
         if (data.newUser) {
-            if (typeof window.showRegisterModal === 'function') {
-                window.showRegisterModal(address);
+            if (window.openBindInviterModal) {
+                window.openBindInviterModal();
             }
             return;
         }
 
-        // B. 基础资料渲染 (对齐飞书字段名)
+        // B. 基础资料 (对应 HTML: info_inviteCode, info_inviter 等)
         updateText('info_inviteCode', data.info?.["推荐码"]);
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // C. 团队数据渲染 (关键修复：对齐 HTML 中的 ID)
+        // C. 团队数据渲染 (关键修复：对应 HTML ID)
         if (data.team) {
-            updateText('direct_count', data.team["直推人数"]);
-            updateText('direct_sales', data.team["直推业绩"]);
-            updateText('team_count', data.team["团队人数"]);
-            updateText('team_sales', data.team["团队业绩"]);
-            updateText('total_reward', data.team["累计奖励"]);
+            updateText('team_directCount', data.team["直推人数"]);
+            updateText('team_directSales', data.team["直推业绩"]);
+            updateText('team_totalCount', data.team["团队人数"]);
+            updateText('team_totalSales', data.team["团队业绩"]);
+            updateText('team_totalReward', data.team["累计奖励"]);
         }
 
-        // D. 资产与实时币价渲染
-        if (data.balances && data.allPrices) {
-            window.currentPrices = data.allPrices; // 全局存一份备查
-            
-            const cleanPrices = {};
-            Object.keys(data.allPrices).forEach(k => {
-                cleanPrices[k.toUpperCase()] = parseFloat(data.allPrices[k]) || 0;
-            });
-            
-            let totalValueUSD = 0;
-            // 遍历用户余额表中的所有代币列
-            Object.keys(data.balances).forEach(token => {
-                const bal = parseFloat(data.balances[token]) || 0;
-                const price = cleanPrices[token.toUpperCase()] || 0;
-                const itemValue = bal * price;
-                
-                totalValueUSD += itemValue;
-
-                // 动态寻找页面上的余额、价格、价值标签
-                updateText(`bal_${token}`, bal.toFixed(4));
-                updateText(`price_${token}`, price > 0 ? `$${price.toFixed(4)}` : "---");
-                updateText(`val_${token}`, `$${itemValue.toFixed(2)}`);
-            });
-            
-            // 总资产价值格式化
-            updateText('totalValue', totalValueUSD.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }));
-        }
-
-        // E. 矿机状态渲染
+        // D. 矿机数据渲染
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
             updateText('miner_daily', data.miner["日产量"]);
+            updateText('miner_deadline', data.miner["到期时间"]);
+            updateText('miner_locked', data.miner["锁仓金额"]);
         }
 
-        // F. 历史记录列表渲染 (调用 ui-render.js 中的函数)
+        // E. 资产与实时币价渲染
+        if (data.balances && data.allPrices) {
+            window.currentPrices = data.allPrices; // 存入全局供 calculations.js 使用
+            
+            // 如果 ui-render.js 加载了，调用它渲染资产列表
+            if (window.renderTokenList) {
+                window.renderTokenList(data.balances);
+            }
+        }
+
+        // F. 历史记录渲染
         if (window.renderHistory) window.renderHistory(data.history || []);
         if (window.renderTransfers) window.renderTransfers(data.transfers || []);
 
     } catch (e) {
-        console.error("fetchUserData 渲染失败:", e);
+        console.error("[API] 数据拉取或渲染失败:", e);
     }
 }
 
 /**
- * 3. 绑定邀请人
+ * 3. 辅助：绑定推荐人
  */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
-    const walletAddr = window.currentAddress || localStorage.getItem('fbs_address');
+    if (!inviterId) return alert("请输入推荐码");
     
-    if (!inviterId) return alert("请输入推荐人 ID");
-    
-    // 生成自己的随机邀请码 (或者由后端生成)
+    // 生成一个随机的本地邀请码
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const res = await postTransactionRecord(
-        "绑定邀请", 
+        "绑定关系", 
         "0", 
         "INFO", 
         "bind_inviter", 
@@ -156,29 +136,37 @@ export async function submitBindInviter() {
     );
     
     if (res.success) {
-        // 绑定成功后关闭弹窗并刷新
+        alert("绑定成功！");
         if (window.closeModal) window.closeModal();
     }
 }
 
 /**
- * 4. 通用文本更新工具 (防止出现 undefined/NaN)
+ * 4. 统一文本更新工具
+ * 自动处理 0, null, undefined 的显示
  */
 export function updateText(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
     
-    // 处理各种无效值
-    if (value === undefined || value === null || value === "" || value === "NaN" || value === 0 || value === "0") {
-        // 如果是金额类字段，默认显示 0.00，否则显示 ---
-        const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('bal_') || id.includes('totalValue');
-        el.innerText = isAmountField ? "0.00" : (value === 0 || value === "0" ? "0" : "---");
+    const isAmount = id.includes('Sales') || id.includes('Reward') || id.includes('totalValue') || id.includes('bal_');
+    
+    if (value === undefined || value === null || value === "" || value === "NaN") {
+        el.innerText = isAmount ? "0.00" : "---";
+        return;
+    }
+
+    if (isAmount && !isNaN(value)) {
+        el.innerText = parseFloat(value).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     } else {
         el.innerText = value;
     }
 }
 
-// 暴露到全局，方便 HTML 里的 onclick 调用
+// --- 全局挂载，确保 HTML 里的 onclick 能找到这些函数 ---
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
