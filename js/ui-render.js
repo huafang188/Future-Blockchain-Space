@@ -1,13 +1,14 @@
 import { tokenConfig } from './config.js';
 
 /**
- * 辅助函数：获取国际化标签
+ * 辅助函数：获取国际化标签数据
  */
 function getI18nLabels(lang) {
     const currentLang = lang || localStorage.getItem('fbs_lang') || 'en';
     if (window.i18nData && window.i18nData[currentLang]) {
         return window.i18nData[currentLang];
     }
+    // Fallback: 如果没有匹配语言，尝试取第一个可用语言
     if (window.i18nData) {
         const availableLangs = Object.keys(window.i18nData);
         if (availableLangs.length > 0) return window.i18nData[availableLangs[0]];
@@ -16,7 +17,7 @@ function getI18nLabels(lang) {
 }
 
 /**
- * 1. 渲染公告/新闻
+ * 1. 渲染公告/新闻列表
  */
 export function renderNews(lang) {
     const container = document.getElementById('news-container');
@@ -24,21 +25,21 @@ export function renderNews(lang) {
 
     const labels = getI18nLabels(lang);
     if (!labels) {
-        container.innerHTML = `<div class="animate-pulse flex flex-col gap-2"><div class="h-3 bg-slate-100 rounded w-3/4"></div></div>`;
+        container.innerHTML = `<div class="animate-pulse space-y-2"><div class="h-4 bg-slate-100 rounded w-3/4"></div><div class="h-4 bg-slate-100 rounded w-1/2"></div></div>`;
         return;
     }
 
     const newsList = labels.news_list || [];
     if (newsList.length === 0) {
-        container.innerHTML = `<div class="p-4 text-center text-slate-400 text-[10px] italic">暂无公告 / No News</div>`;
+        container.innerHTML = `<div class="p-4 text-center text-slate-400 text-[10px] italic">No Announcements</div>`;
         return;
     }
 
     container.innerHTML = newsList.map(newsText => `
-        <div class="bg-white/50 p-3 rounded-xl border border-slate-50 hover:bg-white transition-colors shadow-sm">
+        <div class="bg-white/50 p-3 rounded-xl border border-slate-50 hover:bg-white transition-all shadow-sm">
             <p class="text-xs font-bold text-slate-800 leading-relaxed">${newsText}</p>
             <div class="flex items-center gap-2 mt-2">
-                <span class="w-1 h-1 bg-indigo-400 rounded-full"></span>
+                <span class="w-1 h-1 bg-blue-400 rounded-full"></span>
                 <p class="text-[9px] text-slate-400 uppercase font-black tracking-tighter">Official Update</p>
             </div>
         </div>
@@ -46,7 +47,7 @@ export function renderNews(lang) {
 }
 
 /**
- * 2. 渲染行情/详情页 (集成实时 K 线)
+ * 2. 渲染行情详情页 (包含嵌入式 K 线图表)
  */
 export function renderStatsPage(lang) {
     const container = document.getElementById('token-detail-list');
@@ -59,16 +60,15 @@ export function renderStatsPage(lang) {
     const tLabels = labels.token_labels || {};
 
     container.innerHTML = tokens.map(token => {
-        // 优先从 tokenConfig 获取 logo 和 图表链接
         const config = tokenConfig[token.symbol] || {};
         const configLogo = config.logo || `assets/${token.symbol.toLowerCase()}_logo.webp`;
         const chartUrl = config.chartUrl || ""; 
 
         return `
-        <div class="glass-card p-5 mb-6 transition-all">
+        <div class="glass-card p-5 mb-6 transition-all border border-white/60">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-white p-1">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border p-1">
                         <img src="${configLogo}" alt="${token.symbol}" class="w-full h-full object-contain" onerror="this.src='assets/head_logo.png'">
                     </div>
                     <div>
@@ -84,16 +84,11 @@ export function renderStatsPage(lang) {
 
             <div class="relative w-full h-48 bg-slate-900/5 rounded-2xl mb-5 border border-white/50 overflow-hidden flex items-center justify-center shadow-inner">
                 ${chartUrl ? `
-                    <iframe 
-                        src="${chartUrl}" 
-                        style="width: 100%; height: 100%; border: none; border-radius: 16px;"
-                        allowtransparency="true"
-                        loading="lazy">
-                    </iframe>
+                    <iframe src="${chartUrl}" style="width: 100%; height: 100%; border: none;" allowtransparency="true" loading="lazy"></iframe>
                 ` : `
                     <div class="flex flex-col items-center opacity-20">
                         <i class="fa-solid fa-chart-line text-2xl mb-2"></i>
-                        <span class="text-[8px] font-black tracking-[0.2em]">MARKET CHART</span>
+                        <span class="text-[8px] font-black tracking-widest">MARKET CHART UNAVAILABLE</span>
                     </div>
                 `}
             </div>
@@ -111,7 +106,7 @@ export function renderStatsPage(lang) {
                 </div>
                 
                 <div class="px-1 space-y-3">
-                    <div class="group">
+                    <div>
                         <span class="text-slate-400 uppercase text-[8px] font-black tracking-widest flex items-center gap-1">
                             <i class="fa-solid fa-gears text-[7px]"></i> ${tLabels.mechanism || 'Mechanism'}
                         </span>
@@ -128,30 +123,31 @@ export function renderStatsPage(lang) {
 }
 
 /**
- * 3. 渲染资产代币列表 (数据驱动版)
+ * 3. 渲染钱包资产列表 (动态计算价值)
  */
 export function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
 
-    // 优先从全局 window 变量获取从 Worker 返回的实时价格
+    // 从全局变量获取 Worker 抓取的实时价格
     const livePrices = window.currentPrices || {}; 
 
-    let totalVal = 0;
+    let totalValUSD = 0;
     let html = '';
 
-    // 按照 config.js 定义的代币顺序进行渲染
+    // 遍历 tokenConfig 确保显示顺序一致
     Object.keys(tokenConfig).forEach(symbol => {
         const config = tokenConfig[symbol];
         
-        // 核心：单价取自联网实时数据，若无则显示 0
-        const unitPrice = livePrices[symbol] || 0; 
+        // 获取单价 (不区分大小写)
+        const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0; 
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
-        totalVal += currentTokenValue;
+        
+        totalValUSD += currentTokenValue;
 
         html += `
-        <div class="flex justify-between items-center p-4 hover:bg-slate-50/50 transition-colors">
+        <div class="flex justify-between items-center p-4 hover:bg-slate-50/50 transition-colors border-b border-slate-50 last:border-none">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100 p-1">
                     <img src="${config.logo}" alt="${symbol}" class="w-full h-full object-contain" onerror="this.src='assets/head_logo.png'">
@@ -172,10 +168,10 @@ export function renderTokenList(balances = {}) {
 
     container.innerHTML = html;
     
-    // 更新页面顶部的总资产显示
+    // 同步更新页面顶部的总资产数值显示
     const totalEl = document.getElementById('totalValue');
     if (totalEl) {
-        totalEl.innerText = totalVal.toLocaleString(undefined, { 
+        totalEl.innerText = totalValUSD.toLocaleString(undefined, { 
             minimumFractionDigits: 2, 
             maximumFractionDigits: 2 
         });
@@ -183,7 +179,7 @@ export function renderTokenList(balances = {}) {
 }
 
 /**
- * 4. 渲染交易历史
+ * 4. 渲染交易流水 (充值/提现/奖励等)
  */
 export function renderHistory(history = []) {
     const container = document.getElementById('historyList');
@@ -192,7 +188,7 @@ export function renderHistory(history = []) {
     if (!Array.isArray(history) || history.length === 0) {
         const lang = localStorage.getItem('fbs_lang') || 'en';
         const noDataText = (window.i18nData && window.i18nData[lang]) ? (window.i18nData[lang].no_data || 'No Records') : 'No Records';
-        container.innerHTML = `<div class="p-12 text-center text-slate-400 uppercase text-[10px] font-black tracking-widest">${noDataText}</div>`;
+        container.innerHTML = `<div class="p-12 text-center text-slate-400 uppercase text-[10px] font-black tracking-widest opacity-40">${noDataText}</div>`;
         return;
     }
 
@@ -201,23 +197,24 @@ export function renderHistory(history = []) {
         const amount = parseFloat(item['交易数量'] || item.amount || 0);
         const symbol = item['交易代币'] || item.symbol || '';
         const status = item['交易状态'] || item.status || 'Success';
-        const time = item['交易时间'] || item.time || item.date || '--';
+        const time = item['交易时间'] || item.time || '--';
         
-        const isIn = amount > 0 || type.includes('充值') || type.includes('奖励');
+        // 判断资金流向渲染颜色
+        const isPositive = amount > 0 || type.includes('充值') || type.includes('奖励') || type.includes('收益');
 
         return `
-        <div class="list-item mb-3 group hover:border-blue-200 transition-all cursor-pointer">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 ${isIn ? 'bg-emerald-50' : 'bg-blue-50'} rounded-2xl flex items-center justify-center shadow-sm border border-white/50">
-                    <i class="fa-solid ${isIn ? 'fa-arrow-down-left text-emerald-500' : 'fa-arrow-up-right text-blue-500'} text-xs"></i>
+        <div class="flex items-center justify-between p-4 mb-2 bg-white/50 rounded-2xl border border-slate-50 hover:border-blue-100 transition-all">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 ${isPositive ? 'bg-emerald-50' : 'bg-blue-50'} rounded-xl flex items-center justify-center border border-white">
+                    <i class="fa-solid ${isPositive ? 'fa-arrow-down-left text-emerald-500' : 'fa-arrow-up-right text-blue-500'} text-[10px]"></i>
                 </div>
                 <div>
-                    <p class="text-xs font-black text-slate-800 tracking-tight">${type}</p>
-                    <p class="text-[9px] text-slate-400 font-bold uppercase">${time}</p>
+                    <p class="text-[11px] font-black text-slate-800 tracking-tight">${type}</p>
+                    <p class="text-[8px] text-slate-400 font-bold uppercase">${time}</p>
                 </div>
             </div>
             <div class="text-right">
-                <p class="text-sm font-black ${isIn ? 'text-emerald-500' : 'text-slate-800'}">${isIn ? '+' : ''}${amount} ${symbol}</p>
+                <p class="text-xs font-black ${isPositive ? 'text-emerald-500' : 'text-slate-800'}">${isPositive ? '+' : ''}${amount} ${symbol}</p>
                 <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">${status}</p>
             </div>
         </div>`;
@@ -225,14 +222,14 @@ export function renderHistory(history = []) {
 }
 
 /**
- * 5. 渲染转账记录
+ * 5. 渲染团队转账/内部流水
  */
 export function renderTransfers(transfers = []) {
     const container = document.getElementById('transferList');
     if (!container) return;
 
     if (!Array.isArray(transfers) || transfers.length === 0) {
-        container.innerHTML = `<div class="p-10 text-center opacity-50 text-[9px] text-slate-400 uppercase font-black">Empty Stream</div>`;
+        container.innerHTML = `<div class="p-10 text-center opacity-30 text-[9px] text-slate-400 uppercase font-black">Streaming Empty</div>`;
         return;
     }
 
@@ -248,7 +245,7 @@ export function renderTransfers(transfers = []) {
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
                     <span class="text-[10px] font-black text-slate-700 tracking-tighter">
-                        ${addr.length > 10 ? (addr.substring(0, 6) + '...' + addr.slice(-4)) : addr}
+                        ${addr.length > 12 ? (addr.substring(0, 6) + '...' + addr.slice(-4)) : addr}
                     </span>
                 </div>
                 <span class="text-[9px] text-slate-400 uppercase font-black pl-3.5">${time}</span>
@@ -264,7 +261,7 @@ export function renderTransfers(transfers = []) {
     }).join('');
 }
 
-// 绑定到 window 以便外部脚本调用
+// 全局挂载，方便外部调用
 window.renderNews = renderNews;
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
