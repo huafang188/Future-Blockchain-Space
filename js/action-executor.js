@@ -47,7 +47,7 @@ async function ensureBSCNetwork() {
 }
 
 /**
- * 💸 逻辑 A：链上真实转账 (充值、购买矿机、缴电费)
+ * 💸 逻辑 A：链上真实转账 (用于：充值、购买矿机、缴电费)
  */
 async function executeOnChainTransfer(bizType, tokenSymbol, amount, targetAddr) {
     if (!await ensureBSCNetwork()) return;
@@ -57,7 +57,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, amount, targetAddr) 
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
 
-        if (window.showModal) window.showModal("modal_processing", "请在钱包内确认转账并等待区块确认...");
+        if (window.showModal) window.showModal("modal_processing", "正在唤起钱包，请确认交易...");
 
         let tx;
         if (tokenSymbol === 'BNB') {
@@ -71,27 +71,31 @@ async function executeOnChainTransfer(bizType, tokenSymbol, amount, targetAddr) 
             const contract = new ethers.Contract(contractAddr, [
                 "function transfer(address to, uint256 amount) public returns (bool)"
             ], signer);
-            // 假设 BSC 上这些代币都是 18 位精度
+            // BSC 代币通常为 18 位精度
             tx = await contract.transfer(targetAddr, ethers.parseUnits(amount.toString(), 18));
         }
 
         const receipt = await tx.wait();
         if (receipt.status === 1) {
-            // 链上成功后，提交记录给飞书
+            // 链上确认成功后，向后台提交数据
             const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-            await postTransactionRecord(typeMap[bizType] || bizType, amount, tokenSymbol, "record_transaction");
-            alert("✅ 支付成功，数据已同步至后台");
-            location.reload();
+            
+            // --- 关键修改：提交后不再 reload，依靠 postTransactionRecord 内部刷新数据 ---
+            const res = await postTransactionRecord(typeMap[bizType] || bizType, amount, tokenSymbol, "record_transaction");
+            if (res.success) {
+                alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已同步`);
+                if (window.closeModal) window.closeModal();
+            }
         }
     } catch (e) {
         console.error(e);
-        alert("❌ 交易取消或失败: " + (e.reason || "Wallet Error"));
+        alert("❌ 交易已取消或链上失败: " + (e.reason || "Wallet Error"));
         if (window.closeModal) window.closeModal();
     }
 }
 
 /**
- * ✍️ 逻辑 B：钱包签名并提交数据 (提现、兑换、绑定、申请)
+ * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定关系、团队申请、矿机/内部转账)
  */
 async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
     if (!await ensureBSCNetwork()) return;
@@ -100,6 +104,7 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
+        // 构造签名消息，增加随机时间戳防止重放
         const msg = `Future Space Action\nType: ${bizType}\nAmount: ${amount}\nToken: ${symbol}\nTime: ${Date.now()}`;
         const signature = await window.ethereum.request({ 
             method: 'personal_sign', 
@@ -107,16 +112,19 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         });
 
         if (signature) {
-            if (window.showModal) window.showModal("modal_submitting", "签名成功，正在提交申请...");
+            if (window.showModal) window.showModal("modal_submitting", "签名已确认，正在提交后台审核...");
+            
+            // --- 关键修改：提交后不再 reload ---
             const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, ...extraFields });
             if (res.success) {
-                alert("✅ 申请已成功提交，请等待后台审核");
-                location.reload();
+                alert(`✅ ${bizType}申请已成功提交`);
+                if (window.closeModal) window.closeModal();
             }
         }
     } catch (e) {
         console.error(e);
         alert("操作已取消");
+        if (window.closeModal) window.closeModal();
     }
 }
 
@@ -124,7 +132,7 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
 // 🚀 全局函数挂载 (供 HTML 按钮调用)
 // ==========================================
 
-// 1. 充值按钮
+// 1. 充值功能
 window.doRecharge = async function() {
     const symbol = document.getElementById('recToken')?.value;
     const amount = document.getElementById('recAmount')?.value;
@@ -132,7 +140,7 @@ window.doRecharge = async function() {
     await executeOnChainTransfer("RECHARGE", symbol, amount, RECEIVE_ADDRS.RECHARGE);
 };
 
-// 2. 购买矿机 & 缴纳电费 (支付类)
+// 2. 购买矿机 & 缴纳电费
 window.doChainPay = async function(bizType) {
     let amount = 0;
     if (bizType === 'MINER') {
@@ -163,11 +171,11 @@ window.doExchangeSignature = async function() {
     await executeSignatureAction("兑换", fromAmt, `${fromT}->${toT}`, "record_transaction");
 };
 
-// 5. 绑定推荐人 (签名)
+// 5. 绑定推荐人签名
 window.doSubmitBindInviter = async function() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     if (!inviterId) return alert("请输入推荐码");
-    // 生成随机邀请码给当前用户 (后端处理时可以替换)
+    // 生成随机邀请码给当前用户
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
     await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
         inviterId: inviterId, 
@@ -175,14 +183,14 @@ window.doSubmitBindInviter = async function() {
     });
 };
 
-// 6. 申请团队数据 (签名)
+// 6. 申请团队数据签名
 window.doTeamEmailSubmit = async function() {
     const email = document.getElementById('team_email')?.value.trim();
     if (!email || !email.includes('@')) return alert("请输入有效邮箱");
     await executeSignatureAction("团队申请", "0", "INFO", "bind_email", { email: email });
 };
 
-// 7. 转让矿机 (签名)
+// 7. 转让矿机签名
 window.doMinerTransfer = async function() {
     const receiver = document.getElementById('minerT_Addr')?.value.trim();
     const amount = document.getElementById('minerT_Amount')?.value;
@@ -190,7 +198,7 @@ window.doMinerTransfer = async function() {
     await executeSignatureAction("矿机转让", amount, "MINER", "transfer_miner", { receiver: receiver });
 };
 
-// 8. 内部转账 (签名)
+// 8. 内部转账签名
 window.doInternalTransfer = async function() {
     const to = document.getElementById('transAddr')?.value.trim();
     const symbol = document.getElementById('transToken')?.value;
@@ -200,8 +208,8 @@ window.doInternalTransfer = async function() {
 };
 
 /**
- * 初始化挂载函数
+ * 初始化检查挂载
  */
 export function mountActionExecutors() {
-    console.log("[Executors] 链上逻辑挂载完成，环境: BSC");
+    console.log("[Executors] 所有业务逻辑已就绪，已取消全局刷新模式");
 }
