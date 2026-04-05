@@ -12,6 +12,38 @@ export function mountModalHandlers() {
             .join('');
     };
 
+    // --- 0. 辅助功能：复制功能修复 ---
+    window.copyInviteCode = function(text) {
+        if (!text || text === '---') {
+            alert("暂无数据可复制");
+            return;
+        }
+        
+        // 使用兼容性最强的 textarea 方案
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; // 避免滚动
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert("✅ 已复制: " + text);
+            } else {
+                alert("复制失败，请尝试长按手动复制");
+            }
+        } catch (err) {
+            console.error('复制出错', err);
+            alert("复制异常，请尝试手动复制");
+        }
+        
+        document.body.removeChild(textArea);
+    };
+
     // --- 0. 辅助功能：更新弹窗内的代币图片 ---
     window.updateModalLogo = function(selectId, imgId) {
         const symbol = document.getElementById(selectId)?.value;
@@ -221,7 +253,6 @@ export function mountModalHandlers() {
             // 触发局部多语言渲染
             if (window.i18nRender) {
                 const currentLang = localStorage.getItem('fbs_lang') || 'en';
-                // 这里调用 i18nRender 可以重新扫描 DOM
                 window.i18nRender(currentLang);
             }
         }
@@ -234,4 +265,6 @@ export function mountModalHandlers() {
             overlay.classList.remove('flex');
         }
     };
+
+    console.log("[Modal] 弹窗管理与复制功能挂载成功");
 }
