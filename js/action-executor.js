@@ -1,222 +1,207 @@
-import { RECEIVE_ADDRS, CONTRACT_ADDRS, API_BASE } from './config.js';
-import { postTransactionRecord, fetchUserData } from './api-service.js';
+import { RECEIVE_ADDRS, CONTRACT_ADDRS, BSC_CHAIN_ID } from './config.js';
+import { postTransactionRecord } from './api-service.js';
 
 /**
- * 辅助：将文字转为 Hex 格式（确保钱包签名兼容性）
+ * 🛠️ 辅助：将文字转为钱包兼容的 Hex 格式
  */
-const StringToHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
+const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
 
 /**
- * 核心：获取当前激活的钱包地址 (解决授权过期问题)
+ * 🔒 核心：强制切换/添加 币安智能链 (BSC)
  */
-async function getActiveAddress() {
-    if (!window.ethereum) return null;
-    try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        return accounts[0] || null;
-    } catch (e) {
-        return null;
+async function ensureBSCNetwork() {
+    if (!window.ethereum) {
+        alert("请在 Web3 钱包浏览器中打开");
+        return false;
     }
-}
-
-/**
- * --- 底层：ERC20 代币转账 (USDT 等) ---
- */
-async function executeTokenTransfer(contractAddr, to, amountStr) {
     try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = new ethers.Contract(contractAddr, [
-            "function transfer(address to, uint256 amount) public returns (bool)"
-        ], signer);
-        
-        // 弹出等待提示
-        if (window.showModal) window.showModal("modal_processing", "请在钱包中确认交易...");
-
-        const decimals = 18; 
-        const tx = await contract.transfer(to, ethers.parseUnits(amountStr.toString(), decimals));
-        const receipt = await tx.wait();
-        
-        return receipt.status === 1;
-    } catch (e) {
-        console.error("Transfer Error:", e);
-        alert("交易失败或取消: " + (e.reason || e.message));
-        if (window.closeModal) window.closeModal();
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (currentChainId !== BSC_CHAIN_ID) {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: BSC_CHAIN_ID }],
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: BSC_CHAIN_ID,
+                            chainName: 'Binance Smart Chain',
+                            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                            blockExplorerUrls: ['https://bscscan.com/']
+                        }]
+                    });
+                } else {
+                    throw switchError;
+                }
+            }
+        }
+        return true;
+    } catch (error) {
+        alert("请切换至 BSC 网络后再进行操作");
         return false;
     }
 }
 
 /**
- * --- 业务 1：充值 ---
+ * 💸 逻辑 A：链上真实转账 (充值、购买矿机、缴电费)
  */
-export async function doRecharge() {
-    const symbol = document.getElementById('recToken')?.value.toUpperCase();
-    const amount = document.getElementById('recAmount')?.value;
-    if (!amount || amount <= 0) return alert("请输入金额");
-    
-    const tokenAddr = CONTRACT_ADDRS[symbol];
-    if (!tokenAddr) return alert("暂不支持该代币");
+async function executeOnChainTransfer(bizType, tokenSymbol, amount, targetAddr) {
+    if (!await ensureBSCNetwork()) return;
 
-    const success = await executeTokenTransfer(tokenAddr, RECEIVE_ADDRS.RECHARGE, amount);
-    if (success) {
-        if (window.showModal) window.showModal("modal_syncing", "支付成功，正在记录账单...");
-        // 成功后提交飞书记录
-        await postTransactionRecord('充值', amount, symbol, "recharge");
-        alert("✅ 充值记录已提交");
-        location.reload(); 
-    }
-}
-
-/**
- * --- 业务 2：支付 (购买矿机/交电费) ---
- */
-export async function doChainPay(bizType) {
-    const totalText = (bizType === 'MINER') 
-        ? document.getElementById('buyTotal')?.innerText.replace('$ ', '') 
-        : document.getElementById('elecCost')?.innerText.replace(' USDT', '');
-    
-    if(!totalText || parseFloat(totalText) <= 0) return alert("金额计算错误");
-
-    const success = await executeTokenTransfer(CONTRACT_ADDRS.USDT, RECEIVE_ADDRS[bizType], totalText);
-    if (success) {
-        const typeName = (bizType === 'MINER') ? '购买矿机' : '缴纳电费';
-        await postTransactionRecord(typeName, totalText, 'USDT', "record_transaction");
-        alert(`✅ ${typeName}成功！`);
-        location.reload();
-    }
-}
-
-/**
- * --- 业务 3：签名授权操作 (提币/兑换) ---
- */
-export async function handleSignAction(type) {
     try {
-        const address = await getActiveAddress();
-        if(!address) return alert("请先连接钱包");
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
 
-        let typeName = "", amount = "0", symbol = "";
-        if (type === 'WITHDRAW') {
-            typeName = "提币";
-            amount = document.getElementById('witAmount')?.value;
-            symbol = document.getElementById('witToken')?.value.toUpperCase();
+        if (window.showModal) window.showModal("modal_processing", "请在钱包内确认转账并等待区块确认...");
+
+        let tx;
+        if (tokenSymbol === 'BNB') {
+            tx = await signer.sendTransaction({
+                to: targetAddr,
+                value: ethers.parseEther(amount.toString())
+            });
         } else {
-            typeName = "兑换";
-            amount = document.getElementById('sFromAmt')?.value;
-            const fromT = document.getElementById('sFromToken')?.value.toUpperCase();
-            const toT = document.getElementById('sToToken')?.value.toUpperCase();
-            symbol = `${fromT}->${toT}`;
+            const contractAddr = CONTRACT_ADDRS[tokenSymbol];
+            if (!contractAddr) throw new Error("不支持的代币合约");
+            const contract = new ethers.Contract(contractAddr, [
+                "function transfer(address to, uint256 amount) public returns (bool)"
+            ], signer);
+            // 假设 BSC 上这些代币都是 18 位精度
+            tx = await contract.transfer(targetAddr, ethers.parseUnits(amount.toString(), 18));
         }
 
-        if(!amount || amount <= 0) return alert("请输入数量");
-
-        const msg = `Action: ${typeName}\nAmount: ${amount}\nToken: ${symbol}\nTime: ${Date.now()}`;
-        const signature = await window.ethereum.request({ 
-            method: 'personal_sign', 
-            params: [StringToHex(msg), address] 
-        });
-        
-        if (signature) {
-            await postTransactionRecord(typeName, amount, symbol, "record_transaction", { signature });
-            alert("✅ 申请已提交后台审核");
+        const receipt = await tx.wait();
+        if (receipt.status === 1) {
+            // 链上成功后，提交记录给飞书
+            const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
+            await postTransactionRecord(typeMap[bizType] || bizType, amount, tokenSymbol, "record_transaction");
+            alert("✅ 支付成功，数据已同步至后台");
             location.reload();
         }
-    } catch (e) { 
+    } catch (e) {
         console.error(e);
-        alert("操作已取消"); 
+        alert("❌ 交易取消或失败: " + (e.reason || "Wallet Error"));
+        if (window.closeModal) window.closeModal();
     }
 }
 
 /**
- * --- 业务 4：内部转账 (资产划转) ---
+ * ✍️ 逻辑 B：钱包签名并提交数据 (提现、兑换、绑定、申请)
  */
-export async function doInternalTransfer() {
-    const symbol = document.getElementById('transToken')?.value?.toUpperCase();
-    const toAddr = document.getElementById('transAddr')?.value.trim();
-    const amount = document.getElementById('transAmount')?.value;
-
-    if (!toAddr || !amount || parseFloat(amount) <= 0) return alert("请完整填写转账信息");
+async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
+    if (!await ensureBSCNetwork()) return;
 
     try {
-        const address = await getActiveAddress();
-        const msg = `Transfer: ${amount} ${symbol}\nTo: ${toAddr}\nTime: ${Date.now()}`;
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0];
+
+        const msg = `Future Space Action\nType: ${bizType}\nAmount: ${amount}\nToken: ${symbol}\nTime: ${Date.now()}`;
         const signature = await window.ethereum.request({ 
             method: 'personal_sign', 
-            params: [StringToHex(msg), address] 
+            params: [toHex(msg), address] 
         });
 
         if (signature) {
-            await postTransactionRecord("内部转账", amount, symbol, "transfer", { 
-                receiver: toAddr, 
-                signature: signature 
-            });
-            alert("✅ 内部转账成功");
-            location.reload();
+            if (window.showModal) window.showModal("modal_submitting", "签名成功，正在提交申请...");
+            const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, ...extraFields });
+            if (res.success) {
+                alert("✅ 申请已成功提交，请等待后台审核");
+                location.reload();
+            }
         }
-    } catch (e) { alert("操作已取消"); }
+    } catch (e) {
+        console.error(e);
+        alert("操作已取消");
+    }
 }
 
-/**
- * --- 业务 5：转让矿机记录 ---
- */
-export async function doMinerTransfer() {
-    const toAddr = document.getElementById('minerT_Addr')?.value.trim();
-    const amount = document.getElementById('minerT_Amount')?.value;
+// ==========================================
+// 🚀 全局函数挂载 (供 HTML 按钮调用)
+// ==========================================
 
-    if (!toAddr || !amount) return alert("请填写接收地址和数量");
+// 1. 充值按钮
+window.doRecharge = async function() {
+    const symbol = document.getElementById('recToken')?.value;
+    const amount = document.getElementById('recAmount')?.value;
+    if (!amount || amount <= 0) return alert("请输入正确金额");
+    await executeOnChainTransfer("RECHARGE", symbol, amount, RECEIVE_ADDRS.RECHARGE);
+};
 
-    try {
-        const address = await getActiveAddress();
-        const msg = `Transfer Miner\nQty: ${amount}\nTo: ${toAddr}`;
-        const signature = await window.ethereum.request({ 
-            method: 'personal_sign', 
-            params: [StringToHex(msg), address] 
-        });
+// 2. 购买矿机 & 缴纳电费 (支付类)
+window.doChainPay = async function(bizType) {
+    let amount = 0;
+    if (bizType === 'MINER') {
+        amount = document.getElementById('buyTotal')?.innerText.replace('$ ', '');
+    } else {
+        amount = document.getElementById('elecCost')?.innerText.replace(' USDT', '');
+    }
+    
+    if (!amount || parseFloat(amount) <= 0) return alert("金额计算错误");
+    const target = (bizType === 'MINER') ? RECEIVE_ADDRS.MINER : RECEIVE_ADDRS.ELECTRIC;
+    await executeOnChainTransfer(bizType, "USDT", amount, target);
+};
 
-        if (signature) {
-            await postTransactionRecord("转让矿机", amount, "MINER", "transfer_miner", { 
-                receiver: toAddr, 
-                signature: signature 
-            });
-            alert("✅ 矿机转让成功");
-            location.reload();
-        }
-    } catch (e) { alert("操作已取消"); }
-}
+// 3. 提币签名
+window.doWithdrawSignature = async function() {
+    const symbol = document.getElementById('witToken')?.value;
+    const amount = document.getElementById('witAmount')?.value;
+    if (!amount || parseFloat(amount) <= 0) return alert("请输入有效数量");
+    await executeSignatureAction("提现", amount, symbol, "record_transaction");
+};
 
-/**
- * --- 业务 6：绑定邮箱 / 激活团队 ---
- */
-export async function doTeamEmailSubmit() {
+// 4. 兑换签名
+window.doExchangeSignature = async function() {
+    const fromT = document.getElementById('sFromToken')?.value;
+    const toT = document.getElementById('sToToken')?.value;
+    const fromAmt = document.getElementById('sFromAmt')?.value;
+    if (!fromAmt || parseFloat(fromAmt) <= 0) return alert("请输入兑出数量");
+    await executeSignatureAction("兑换", fromAmt, `${fromT}->${toT}`, "record_transaction");
+};
+
+// 5. 绑定推荐人 (签名)
+window.doSubmitBindInviter = async function() {
+    const inviterId = document.getElementById('input_inviter_id')?.value.trim();
+    if (!inviterId) return alert("请输入推荐码");
+    // 生成随机邀请码给当前用户 (后端处理时可以替换)
+    const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
+        inviterId: inviterId, 
+        myInviteCode: myCode 
+    });
+};
+
+// 6. 申请团队数据 (签名)
+window.doTeamEmailSubmit = async function() {
     const email = document.getElementById('team_email')?.value.trim();
     if (!email || !email.includes('@')) return alert("请输入有效邮箱");
+    await executeSignatureAction("团队申请", "0", "INFO", "bind_email", { email: email });
+};
 
-    try {
-        const address = await getActiveAddress();
-        const msg = `Bind Email: ${email}\nAddr: ${address}`;
-        const signature = await window.ethereum.request({ 
-            method: 'personal_sign', 
-            params: [StringToHex(msg), address] 
-        });
+// 7. 转让矿机 (签名)
+window.doMinerTransfer = async function() {
+    const receiver = document.getElementById('minerT_Addr')?.value.trim();
+    const amount = document.getElementById('minerT_Amount')?.value;
+    if (!receiver || !amount) return alert("请填写接收者和数量");
+    await executeSignatureAction("矿机转让", amount, "MINER", "transfer_miner", { receiver: receiver });
+};
 
-        if (signature) {
-            await postTransactionRecord("申请团队数据", "0", "INFO", "bind_email", { 
-                email: email, 
-                signature: signature 
-            });
-            alert("✅ 申请成功，请等待激活");
-            if (window.closeModal) window.closeModal();
-        }
-    } catch (e) { alert("操作已取消"); }
-}
+// 8. 内部转账 (签名)
+window.doInternalTransfer = async function() {
+    const to = document.getElementById('transAddr')?.value.trim();
+    const symbol = document.getElementById('transToken')?.value;
+    const amount = document.getElementById('transAmount')?.value;
+    if (!to || !amount) return alert("信息不完整");
+    await executeSignatureAction("内部转账", amount, symbol, "transfer", { receiver: to });
+};
 
 /**
- * --- 统一挂载至全局 ---
+ * 初始化挂载函数
  */
 export function mountActionExecutors() {
-    window.doRecharge = doRecharge;
-    window.doChainPay = doChainPay;
-    window.handleSignAction = handleSignAction;
-    window.doInternalTransfer = doInternalTransfer;
-    window.doMinerTransfer = doMinerTransfer;
-    window.doTeamEmailSubmit = doTeamEmailSubmit; 
+    console.log("[Executors] 链上逻辑挂载完成，环境: BSC");
 }
