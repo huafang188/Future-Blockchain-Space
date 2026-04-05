@@ -2,7 +2,6 @@
  * 基础配置
  */
 export const API_BASE = "https://api.neoneo.ink/api/user";
-// BSC链ID
 export const BSC_CHAIN_ID = '0x38';
 
 /**
@@ -15,68 +14,44 @@ export const RECEIVE_ADDRS = {
 };
 
 /**
- * 合约地址配置
+ * 合约地址与精度配置 (Decimals)
+ * BSC链上这些主流币大多是 18 位
  */
 export const CONTRACT_ADDRS = {
     'USDT': "0x55d398326f99059ff775485246999027b3197955",
     'ETH': "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
     'BTC': "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
-    'BNB': "NATIVE"
+    'BNB': "NATIVE" // 原生代币
+};
+
+// 精度映射，防止 action-executor 转账金额算错
+export const TOKEN_DECIMALS = {
+    'USDT': 18,
+    'ETH': 18,
+    'BTC': 18,
+    'BNB': 18,
+    'NEO': 18,
+    'NEX': 18
 };
 
 /**
- * 代币视觉配置与 K 线链接
- * 注：chartUrl 填入你在飞书多维表格仪表盘中“发布到 Web”获取的链接
+ * 代币视觉配置
  */
 export const tokenConfig = {
-    'NEO': { 
-        logo: 'assets/neo_logo.webp',
-        chartUrl: '' // TODO: 填入飞书 NEO K线链接
-    },
-    'NEX': { 
-        logo: 'assets/nex_logo.webp',
-        chartUrl: '' // TODO: 填入飞书 NEX K线链接
-    },
-    'NET': { 
-        logo: 'assets/net_logo.webp',
-        chartUrl: '' 
-    },
-    'NEA': { 
-        logo: 'assets/nea_logo.webp',
-        chartUrl: '' 
-    },
-    'NRY': { 
-        logo: 'assets/nry_logo.webp',
-        chartUrl: '' 
-    },
-    'NCL': { 
-        logo: 'assets/ncl_logo.webp',
-        chartUrl: '' 
-    },
-    'USDT': { 
-        logo: 'assets/USDT.webp',
-        chartUrl: '' 
-    },
-    'BNB': { 
-        logo: 'assets/BNB.webp',
-        chartUrl: '' 
-    },
-    'ETH': { 
-        logo: 'assets/ETH.webp',
-        chartUrl: '' 
-    },
-    'BTC': { 
-        logo: 'assets/BTC.webp',
-        chartUrl: '' 
-    }
+    'NEO': { logo: 'assets/neo_logo.webp', chartUrl: '' },
+    'NEX': { logo: 'assets/nex_logo.webp', chartUrl: '' },
+    'NET': { logo: 'assets/net_logo.webp', chartUrl: '' },
+    'NEA': { logo: 'assets/nea_logo.webp', chartUrl: '' },
+    'NRY': { logo: 'assets/nry_logo.webp', chartUrl: '' },
+    'NCL': { logo: 'assets/ncl_logo.webp', chartUrl: '' },
+    'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
+    'BNB': { logo: 'assets/BNB.webp', chartUrl: '' },
+    'ETH': { logo: 'assets/ETH.webp', chartUrl: '' },
+    'BTC': { logo: 'assets/BTC.webp', chartUrl: '' }
 };
 
-// 保持向下兼容，如果其他地方引用了 tokenInfo
 export const tokenInfo = tokenConfig;
 
-/**
- * 交易状态样式映射
- */
 export const STATUS_CLASS_MAP = {
     "已提交": "status-submitted",
     "处理中": "status-processing",
