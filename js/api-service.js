@@ -94,8 +94,8 @@ export async function fetchUserData(address) {
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
             updateText('miner_daily', data.miner["日产量"]);
-            updateText('miner_deadline', data.miner["到期时间"]);
-            updateText('miner_locked', data.miner["锁仓金额"]);
+            updateText('miner_deadline', data.miner["挖矿期限"]);
+            updateText('miner_locked', data.miner["锁仓数量"]);
         }
 
         // E. 资产与实时币价渲染
