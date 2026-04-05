@@ -4,9 +4,22 @@ import { postTransactionRecord, fetchUserData } from './api-service.js';
 
 /**
  * 辅助工具：将文本转为 Hex 格式
- * 解决 4001 报错的核心：部分钱包要求 personal_sign 的参数必须是 Hex 字符串
  */
 const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+/**
+ * 核心修复：强制获取当前活动账户，确保权限激活
+ * 替代之前的 getCurrentAddress() 缓存逻辑
+ */
+async function getActiveAddress() {
+    try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        return accounts[0];
+    } catch (e) {
+        console.error("获取账户失败:", e);
+        return null;
+    }
+}
 
 /**
  * --- 核心逻辑：合约代币转账 (针对 BSC 链优化) ---
@@ -17,10 +30,8 @@ export async function executeTokenTransfer(contractAddr, to, amountStr, symbol =
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddr, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
         
-        // 显示加载模态框，防止重复点击
         window.showModal("modal_processing", `<div class="p-10 text-center"><div class="animate-spin h-10 w-10 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>请在钱包确认交易并等待...</div>`);
 
-        // BSC 链上的 USDT/ETH/BTC 映射代币均为 18 位精度
         const decimals = 18; 
         const parsedAmount = ethers.parseUnits(amountStr.toString(), decimals);
         
@@ -65,7 +76,6 @@ export async function doRecharge() {
     
     try {
         let success = false;
-        // 判断是否为原生代币
         if (symbol === 'BNB' || CONTRACT_ADDRS[symbol] === 'NATIVE') {
             success = await executeNativeTransfer(RECEIVE_ADDRS.RECHARGE, amount);
         } else {
@@ -106,12 +116,13 @@ export async function doChainPay(bizType) {
 }
 
 /**
- * --- 业务 3：提币与兑换签名 (核心修复) ---
+ * --- 业务 3：提币与兑换签名 ---
  */
 export async function handleSignAction(type) {
     try {
-        const currentAddress = getCurrentAddress();
-        if(!currentAddress) return alert("请先连接钱包");
+        // 实时获取地址，确保权限
+        const currentAddress = await getActiveAddress();
+        if(!currentAddress) return alert("请先连接并授权钱包");
 
         let actionName = "", amount = "0", symbol = "";
         
@@ -129,11 +140,10 @@ export async function handleSignAction(type) {
 
         if(!amount || parseFloat(amount) <= 0) return alert("数量填写不完整");
 
-        // 构造签名消息：加入随机 Timestamp 防止重放攻击并确保 Hex 唯一性
         const msg = `Future Space Request\nType: ${actionName}\nValue: ${amount} ${symbol}\nTime: ${Date.now()}`;
         const hexMsg = toHex(msg);
 
-        // 发起签名
+        // 使用实时地址发起签名
         const signature = await window.ethereum.request({ 
             method: 'personal_sign', 
             params: [hexMsg, currentAddress] 
@@ -158,12 +168,16 @@ export async function doInternalTransfer() {
     const symbol = document.getElementById('transToken')?.value?.toUpperCase();
     const toAddr = document.getElementById('transAddr')?.value.trim();
     const amount = document.getElementById('transAmount')?.value;
-    const senderAddr = getCurrentAddress();
 
     if (!toAddr || !amount || parseFloat(amount) <= 0) return alert("请完整输入收款地址和金额");
-    if (toAddr.toLowerCase() === senderAddr.toLowerCase()) return alert("不能转账给自己");
 
     try {
+        // 实时获取地址
+        const senderAddr = await getActiveAddress();
+        if(!senderAddr) return alert("请先授权钱包连接");
+
+        if (toAddr.toLowerCase() === senderAddr.toLowerCase()) return alert("不能转账给自己");
+
         const msg = `Internal Transfer Confirmation\nTo: ${toAddr}\nAmount: ${amount} ${symbol}\nRef: ${Math.random().toString(36).substring(7)}`;
         const hexMsg = toHex(msg);
         
@@ -189,7 +203,7 @@ export async function doInternalTransfer() {
         }
     } catch (e) { 
         console.error("转账处理异常:", e);
-        alert(e.code === 4001 ? "您已取消签名" : "转账失败，请确保资产充足");
+        alert(e.code === 4001 ? "您已取消签名" : "处理失败，请检查钱包状态");
         if (window.closeModal) window.closeModal();
     }
 }
@@ -199,11 +213,12 @@ export async function doInternalTransfer() {
  */
 export async function doTeamEmailSubmit() {
     const email = document.getElementById('team_email')?.value.trim();
-    const senderAddr = getCurrentAddress();
-    
     if (!email || !email.includes('@')) return alert("请输入格式正确的邮箱");
 
     try {
+        const senderAddr = await getActiveAddress();
+        if(!senderAddr) return alert("请先授权钱包连接");
+
         const msg = `Active Account Binding\nEmail: ${email}\nUser: ${senderAddr}`;
         const hexMsg = toHex(msg);
         
@@ -234,7 +249,7 @@ export async function doTeamEmailSubmit() {
         }
     } catch (e) { 
         console.error(e);
-        alert("用户取消操作");
+        alert("操作取消");
     }
 }
 
