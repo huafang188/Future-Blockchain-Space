@@ -126,37 +126,58 @@ window.openExchangeModal = function() {
         window.showModal("exchange", `
             <div class="space-y-3">
                 <!-- 兑出区域 -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase mb-2 ml-1">兑出资产</p>
-                    <div class="flex items-center gap-2">
-                        <img id="swapFromLogo" src="${tokenConfig['USDT'].logo}" class="w-7 h-7 object-contain">
-                        <!-- flex-1 确保输入框占据最大剩余空间 -->
-                        <input type="number" id="sFromAmt" oninput="window.calcSwap()" placeholder="0.0" class="flex-1 bg-transparent font-black text-xl outline-none border-none">
-                        <!-- w-24 强制把选择框宽度限制在约 96px，不再宽得离谱 -->
-                        <select id="sFromToken" onchange="window.updateModalLogo('sFromToken','swapFromLogo')" class="w-24 font-bold bg-white py-1.5 px-2 rounded-xl border-none outline-none shadow-sm text-sm">
-                            ${getLogoOptions('USDT')}
-                        </select>
+                <div class="p-5 bg-slate-50 rounded-[2rem] border border-slate-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1">兑出资产</span>
+                        <span class="text-[10px] font-bold text-indigo-500 mr-1 cursor-pointer" onclick="window.fillMax('sFromToken','sFromAmt')">最大可用</span>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <!-- 左侧：Logo 和 下拉框合并成一个“币种选择按钮” -->
+                        <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
+                            <img id="swapFromLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
+                            <select id="sFromToken" onchange="window.updateModalLogo('sFromToken','swapFromLogo')" 
+                                    class="bg-transparent font-bold text-sm outline-none border-none cursor-pointer appearance-none">
+                                ${getLogoOptions('USDT')}
+                            </select>
+                            <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
+                        </div>
+                        
+                        <!-- 右侧：宽大的输入框，文字右对齐 -->
+                        <input type="number" id="sFromAmt" oninput="window.calcSwap()" placeholder="0" 
+                               class="flex-1 min-w-0 bg-transparent font-black text-2xl text-right outline-none border-none p-0 text-slate-800">
                     </div>
                 </div>
 
-                <div class="text-center -my-4 relative z-10">
-                    <div class="w-8 h-8 bg-white rounded-full shadow-sm border border-slate-50 flex items-center justify-center mx-auto text-slate-300">⇅</div>
+                <!-- 中间装饰箭头 -->
+                <div class="flex justify-center -my-6 relative z-10">
+                    <div class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-50 text-indigo-500">
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </div>
                 </div>
 
                 <!-- 兑入区域 -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase mb-2 ml-1">预计兑入</p>
-                    <div class="flex items-center gap-2">
-                        <img id="swapToLogo" src="${tokenConfig['NEO'].logo}" class="w-7 h-7 object-contain">
-                        <input type="number" id="sToAmt" readonly placeholder="0.00" class="flex-1 bg-transparent font-black text-xl text-indigo-600 outline-none border-none">
-                        <!-- w-24 同样限制这里的宽度 -->
-                        <select id="sToToken" onchange="window.updateModalLogo('sToToken','swapToLogo')" class="w-24 font-bold bg-white py-1.5 px-2 rounded-xl border-none outline-none shadow-sm text-sm">
-                            ${getLogoOptions('NEO')}
-                        </select>
+                <div class="p-5 bg-slate-50 rounded-[2rem] border border-slate-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1">预计兑入</span>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <!-- 左侧：Logo 和 下拉框合并 -->
+                        <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
+                            <img id="swapToLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
+                            <select id="sToToken" onchange="window.updateModalLogo('sToToken','swapToLogo')" 
+                                    class="bg-transparent font-bold text-sm outline-none border-none cursor-pointer appearance-none">
+                                ${getLogoOptions('NEO')}
+                            </select>
+                            <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
+                        </div>
+                        
+                        <!-- 右侧：展示框，文字右对齐 -->
+                        <input type="number" id="sToAmt" readonly placeholder="0" 
+                               class="flex-1 min-w-0 bg-transparent font-black text-2xl text-right outline-none border-none p-0 text-indigo-600">
                     </div>
                 </div>
                 
-                <button type="button" onclick="window.doExchangeSignature()" class="action-btn w-full mt-2">提交兑换签名</button>
+                <button type="button" onclick="window.doExchangeSignature()" class="action-btn w-full mt-4">提交兑换签名</button>
             </div>`);
     };
 
