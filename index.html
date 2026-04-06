@@ -171,38 +171,38 @@
         </div>
 
 <div id="page-mine" class="page-view hidden space-y-6">
-    <section class="glass-card p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="font-black text-slate-800 text-xl tracking-widest uppercase" data-i18n="miner_title">我的矿机</h3>
-            <span class="status-badge bg-emerald-500/10 text-emerald-500">Running</span>
+    <section class="miner-card">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Miner Status</span>
+            <span class="bg-emerald-50 text-emerald-500 px-3 py-1 rounded-full text-[9px] font-bold border border-emerald-100">Running</span>
         </div>
 
-        <div class="flex gap-4 items-center mb-6">
-            <div class="miner-avatar">
-                <img src="assets/miner_logo.webp" alt="Miner" onerror="this.src='assets/head_logo.png'">
-            </div>
-            <div>
-                <h3 class="font-black text-slate-800 text-sm italic uppercase tracking-tight" data-i18n="miner_name">FBS Smart Miner S1</h3>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" data-i18n="miner_desc">高性能算力终端</p>
+        <div class="miner-header">
+            <img src="assets/miner_photo.webp" class="miner-img-small" onerror="this.src='assets/head_logo.png'">
+            <div class="miner-info-text">
+                <h3 data-i18n="miner_name">阿瓦隆 1066 智能矿机</h3>
+                <p>每台矿机算力 = 30TH/S，功耗 1500W</p>
+                <p class="mt-2 text-indigo-500 font-bold">FBS Smart Miner S1</p>
             </div>
         </div>
 
-        <div class="data-grid">
-            <div class="data-item">
-                <span class="label" data-i18n="m_count">矿机数量</span>
-                <span id="miner_count" class="value">0</span>
+        <!-- 数据展示：2x2 网格 -->
+        <div class="miner-stats-grid">
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="m_count">数量</span>
+                <span id="miner_count" class="stat-value">0</span>
             </div>
-            <div class="data-item">
-                <span class="label" data-i18n="m_yield">预估日产</span>
-                <span id="miner_daily" class="value">0.00</span>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="m_yield">日产量</span>
+                <span id="miner_daily" class="stat-value">0.00</span>
             </div>
-            <div class="data-item border-t border-white/20 pt-2">
-                <span class="label" data-i18n="m_term">到期时间</span>
-                <span id="miner_deadline" class="value-small">--</span>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="m_term">期限</span>
+                <span id="miner_deadline" class="stat-value">--</span>
             </div>
-            <div class="data-item border-t border-white/20 pt-2">
-                <span class="label" data-i18n="m_locked">锁仓金额</span>
-                <span id="miner_locked" class="value">0.00</span>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="m_locked">锁仓</span>
+                <span id="miner_locked" class="stat-value">0.00</span>
             </div>
         </div>
 
