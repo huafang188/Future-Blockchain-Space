@@ -4,7 +4,7 @@
 :root {
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #3b82f6 100%);
     --primary-solid: #6366f1;
-    --bg-main: #f2f2f7; /* 更接近 iOS 的背景色 */
+    --bg-main: #f2f2f7; 
     --text-main: #1c1c1e;
     --text-muted: #8e8e93;
     
@@ -20,16 +20,16 @@ body {
         radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.03) 0px, transparent 50%);
     color: var(--text-main);
-    /* 2. 优化为现代 Apple 字体栈 */
+    /* 优化为现代 Apple 字体栈 */
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
     margin: 0;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.015em; /* 苹果字体特有的微紧凑感 */
+    letter-spacing: -0.015em;
 }
 
-/* --- 1. 轻盈化卡片 --- */
+/* --- 1. 卡片样式 --- */
 .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(15px) saturate(180%);
@@ -41,7 +41,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* --- 2. 核心：液态玻璃悬浮导航 --- */
+/* --- 2. 悬浮导航 (Pill Style) --- */
 .nav-wrapper {
     position: fixed;
     bottom: 24px;
@@ -56,7 +56,7 @@ body {
     background: var(--nav-glass-bg);
     backdrop-filter: blur(24px) saturate(200%);
     -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border-radius: 999px; /* 导航栏大胶囊 */
+    border-radius: 999px;
     border: 0.5px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -80,27 +80,14 @@ body {
     color: var(--primary-solid);
 }
 
-.nav-item i {
-    font-size: 19px;
-    margin-bottom: 3px;
-}
-
-.nav-item span {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-}
-
-/* --- 3. 字体粗细全局轻量化 (Apple Style) --- */
-/* 将原本过粗的权重统一降级 */
+/* --- 3. 字体粗细轻量化 --- */
 .font-black, .font-extrabold { font-weight: 600 !important; }
 .font-bold { font-weight: 500 !important; }
-.font-medium { font-weight: 400 !important; }
 
-/* --- 4. 提交类按钮：全圆角胶囊样式 (Pill Style) --- */
+/* --- 4. 提交按钮：全圆角胶囊 --- */
 .action-btn {
     background: var(--primary-gradient);
-    border-radius: 999px !important; /* 强制全圆角胶囊 */
+    border-radius: 999px !important;
     padding: 12px 28px;
     border: none;
     box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.3);
@@ -116,23 +103,7 @@ body {
     filter: brightness(0.9);
 }
 
-.action-btn span {
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0.01em;
-}
-
-/* 购买弹窗中的小按钮也改为胶囊状 */
-.buy-btn {
-    border-radius: 999px !important;
-    border: 1px solid #e5e7eb;
-    padding: 8px 16px;
-    background: white;
-    font-weight: 500;
-}
-
-/* --- 5. 首页宫格样式：严格保持原样不改动 --- */
+/* --- 5. 首页宫格优化：4 个一排 --- */
 .nav-container {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 28px;
@@ -140,27 +111,82 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
+.nav-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important; /* 强制 4 列 */
+    gap: 16px 4px;
+}
+
 .nav-icon {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     background: #fff;
-    border-radius: 14px; /* 保持原有的圆角矩形 */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border-radius: 14px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     color: var(--primary-solid);
     font-size: 20px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.nav-text {
-    font-size: 11px;
-    color: #64748b;
-    font-weight: 500;
+/* --- 6. 矿机展示部分优化 --- */
+/* 矿机图标改为圆角矩形 */
+.miner-avatar, 
+.miner-avatar img,
+[id^="page-mine"] .w-16.h-16 { 
+    border-radius: 18px !important; 
+    overflow: hidden;
 }
 
-/* 隐藏所有默认滚动条，保持页面整洁 */
+/* 数据网格增加内分割线 */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    position: relative;
+}
+
+/* 增加垂直和水平分割线 */
+.data-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* 移除最后两个条目的底边框 */
+.data-item:nth-last-child(-n+2) {
+    border-bottom: none;
+}
+
+/* 增加中间的垂直分割线 */
+.data-item:nth-child(odd) {
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* --- 7. 数据行分割线 (资产、流水、团队资料) --- */
+/* 为 ID 为 info_inviter 等所在的资料行增加分割线 */
+.flex.justify-between.border-b {
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 资产列表条目分割线 */
+#tokenRows > div {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    padding: 12px 0;
+}
+
+#tokenRows > div:last-child {
+    border-bottom: none;
+}
+
+/* 历史记录/流水条目分割线 */
+#historyList > div, 
+#transferList > div {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    padding: 10px 0;
+}
+
+/* 隐藏默认滚动条 */
 ::-webkit-scrollbar {
     display: none;
 }
