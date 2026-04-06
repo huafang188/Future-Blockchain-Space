@@ -96,15 +96,36 @@ export function mountModalHandlers() {
     };
 
     // --- 5. 金融模块 (充值/提现/兑换/内转) ---
-    window.openRechargeModal = function() {
+window.openRechargeModal = function() {
         window.showModal("recharge", `
-            <div class="space-y-4 text-left">
-                <select id="recToken" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
-                    <option value="USDT">USDT (BSC)</option>
-                    <option value="BNB">BNB (Native)</option>
-                </select>
-                <input type="number" id="recAmount" placeholder="充值金额" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
-                <button type="button" onclick="window.doRecharge()" class="action-btn w-full mt-2">去钱包支付</button>
+            <div class="space-y-4">
+                <!-- 1. 选择充值资产区块 (上方) -->
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1">选择充值资产</p>
+                    <div class="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                        <!-- 这里的 recLogo 会随着下拉框选择而自动切换 -->
+                        <img id="recLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
+                        <select id="recToken" onchange="window.updateModalLogo('recToken','recLogo')" 
+                                class="flex-1 bg-transparent font-black text-base outline-none border-none cursor-pointer appearance-none">
+                            <option value="USDT">USDT (BSC)</option>
+                            <option value="BNB">BNB (Native)</option>
+                            <option value="ETH">ETH (BSC-Wrapped)</option>
+                            <option value="BTC">BTC (BSC-Wrapped)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+                    </div>
+                </div>
+
+                <!-- 2. 数量输入区块 (下方) -->
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <div class="flex justify-between items-center mb-2 ml-1">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">充值数量</p>
+                    </div>
+                    <input type="number" id="recAmount" placeholder="0.00" 
+                           class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
+                </div>
+
+                <button type="button" onclick="window.doRecharge()" class="action-btn w-full mt-2">确认前往钱包支付</button>
             </div>`);
     };
 
