@@ -5,7 +5,6 @@ let fetchController = null;
 
 /**
  * 1. 提交交易/申请记录到后端 (POST)
- * 涵盖：充值、提现、兑换、团队申请、矿机转让、内部转账
  */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
     const address = localStorage.getItem('fbs_address');
@@ -24,8 +23,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         ...extraFields
     };
 
-    console.log(`[API] 发起 POST 请求 [${action}]:`, payload);
-
     try {
         const response = await fetch(API_BASE, {
             method: 'POST',
@@ -37,10 +34,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 
         if (result.success || result.code === 0) {
             console.log(`[API] ${type} 提交成功`);
-            
-            // 局部刷新数据，不重载页面
             await fetchUserData(address); 
-            
             if (window.closeModal) window.closeModal();
             return { success: true, data: result };
         } else {
@@ -48,7 +42,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
             return { success: false };
         }
     } catch (e) {
-        // 捕获页面刷新导致的异常，静默处理
         if (e.message === 'Failed to fetch') return { success: false };
         console.error("[API] 提交异常:", e);
         return { success: false, error: e.message };
@@ -57,21 +50,16 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 
 /**
  * 2. 获取用户完整数据并同步 UI (GET)
- * 涵盖：资产、单价、团队业绩、矿机状态、历史流水
  */
 export async function fetchUserData(address) {
     if (!address) return;
 
-    // --- 核心防护：如果上一个请求没跑完，直接中止它，防止 Failed to fetch ---
     if (fetchController) fetchController.abort();
     fetchController = new AbortController();
     const { signal } = fetchController;
     
     try {
-        console.log(`[API] 开始同步用户全量数据: ${address}`);
         const cleanAddr = address.toLowerCase().trim();
-        
-        // 增加时间戳 t= 解决浏览器缓存问题
         const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
         
         if (!res.ok) throw new Error(`Network Error: ${res.status}`);
@@ -79,13 +67,17 @@ export async function fetchUserData(address) {
         const data = await res.json();
         console.log("[API] 收到完整后端包:", data);
 
-        // A. 新用户逻辑 (弹出绑定)
+        // --- 核心修复：取消新用户自动弹窗 ---
         if (data.newUser) {
-            if (window.openBindInviterModal) window.openBindInviterModal();
+            console.log("[API] 检测到新用户，等待用户手动绑定推荐人");
+            // 不再自动执行 window.openBindInviterModal()
+            // 初始化基础 UI 显示
+            updateText('info_inviteCode', '---');
+            updateText('info_inviter', '---');
             return;
         }
 
-        // B. 价格 Key 标准化 (将 neo 转为 NEO)
+        // 价格标准化
         if (data.allPrices) {
             const normalizedPrices = {};
             Object.keys(data.allPrices).forEach(key => {
@@ -94,15 +86,14 @@ export async function fetchUserData(address) {
             window.currentPrices = normalizedPrices; 
         }
 
-        // 存储余额供 calculations.js 计算器逻辑使用
         window.userBalances = data.balances || {};
 
-        // C. 渲染基础资料 (对齐 HTML ID)
+        // 基础资料
         updateText('info_inviteCode', data.info?.["推荐码"]);
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // D. 渲染团队数据 (对应 HTML ID)
+        // 团队数据
         if (data.team) {
             updateText('team_directCount', data.team["直推人数"]);
             updateText('team_directSales', data.team["直推业绩"]);
@@ -111,34 +102,30 @@ export async function fetchUserData(address) {
             updateText('team_totalReward', data.team["累计奖励"]);
         }
 
-        // E. 渲染矿机数据 (严格对齐飞书截图列名)
+        // 矿机数据
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
             updateText('miner_daily', data.miner["日产量"]);
-            updateText('miner_deadline', data.miner["挖矿期限"]); // 期限
-            updateText('miner_locked', data.miner["锁仓数量"]);   // 锁仓
+            updateText('miner_deadline', data.miner["挖矿期限"]); 
+            updateText('miner_locked', data.miner["锁仓数量"]);
         }
 
-        // F. 触发 UI 组件渲染 (ui-render.js)
-        // 渲染资产预览列表
+        // 渲染列表
         if (window.renderTokenList) window.renderTokenList(data.balances || {});
-        // 渲染交易历史列表
         if (window.renderHistory) window.renderHistory(data.history || []);
-        // 渲染转账流水列表
         if (window.renderTransfers) window.renderTransfers(data.transfers || []);
 
     } catch (e) {
-        // 核心防护：如果是取消请求或刷新页面，不作为错误处理
         if (e.name === 'AbortError' || e.message === 'Failed to fetch') {
             console.warn("[API] 请求被中止 (正常操作)");
         } else {
-            console.error("[API] 真实的获取数据失败:", e);
+            console.error("[API] 数据同步失败:", e);
         }
     }
 }
 
 /**
- * 3. 辅助：提交绑定推荐人请求
+ * 3. 辅助：绑定推荐人
  */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
@@ -155,18 +142,17 @@ export async function submitBindInviter() {
     );
     
     if (res.success) {
-        alert("✅ 账户已激活");
+        alert("✅ 账户已成功激活");
     }
 }
 
 /**
- * 4. 统一文本与数值更新工具 (Apple 轻量化格式)
+ * 4. 数值更新工具
  */
 export function updateText(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
     
-    // 金额/数量类字段列表
     const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('totalValue') || 
                           id.includes('bal_') || id.includes('val_') || id.includes('price_') || 
                           id.includes('locked') || id.includes('daily') || id.includes('Count');
@@ -178,9 +164,7 @@ export function updateText(id, value) {
 
     if (isAmountField && !isNaN(value)) {
         let num = parseFloat(value);
-        // 单价保留4位，其它金额保留2位
         let decimalPlaces = id.includes('price_') ? 4 : 2;
-        
         el.innerText = num.toLocaleString('en-US', {
             minimumFractionDigits: decimalPlaces,
             maximumFractionDigits: decimalPlaces
@@ -190,7 +174,6 @@ export function updateText(id, value) {
     }
 }
 
-// 暴露到全局，确保 HTML 里的 onclick="fetchUserData()" 能找到
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
