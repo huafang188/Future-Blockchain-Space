@@ -16,7 +16,8 @@ async function ensureBSCNetwork() {
     }
     try {
         const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
-        if (currentChainId !== BSC_CHAIN_ID) {
+        // 兼容处理：有些钱包返回十进制 '56'，有些返回十六进制 '0x38'
+        if (currentChainId !== BSC_CHAIN_ID && currentChainId !== '56') {
             try {
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
@@ -48,54 +49,87 @@ async function ensureBSCNetwork() {
 
 /**
  * 💸 逻辑 A：链上真实转账 (用于：充值、购买矿机、缴电费)
+ * 增加：金额清洗与余额预检查逻辑
  */
-async function executeOnChainTransfer(bizType, tokenSymbol, amount, targetAddr) {
+async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr) {
     if (!await ensureBSCNetwork()) return;
 
     try {
+        // --- 1. 金额强力清洗：只保留数字和小数点 ---
+        const cleanAmount = String(rawAmount).replace(/[^\d.]/g, '');
+        if (!cleanAmount || isNaN(parseFloat(cleanAmount))) {
+            throw new Error("无效的金额格式");
+        }
+
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        const address = await signer.getAddress();
+        const userAddress = await signer.getAddress();
 
-        if (window.showModal) window.showModal("modal_processing", "正在唤起钱包，请确认交易...");
+        if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
         let tx;
         if (tokenSymbol === 'BNB') {
+            // 原生代币检查
+            const bnbBalance = await provider.getBalance(userAddress);
+            const amountInWei = ethers.parseEther(cleanAmount);
+            if (bnbBalance < amountInWei) throw new Error("您的钱包 BNB 余额不足");
+
             tx = await signer.sendTransaction({
                 to: targetAddr,
-                value: ethers.parseEther(amount.toString())
+                value: amountInWei
             });
         } else {
+            // 合约代币 (USDT等)
             const contractAddr = CONTRACT_ADDRS[tokenSymbol];
             if (!contractAddr) throw new Error("不支持的代币合约");
+            
             const contract = new ethers.Contract(contractAddr, [
-                "function transfer(address to, uint256 amount) public returns (bool)"
+                "function transfer(address to, uint256 amount) public returns (bool)",
+                "function balanceOf(address owner) view returns (uint256)"
             ], signer);
-            // BSC 代币通常为 18 位精度
-            tx = await contract.transfer(targetAddr, ethers.parseUnits(amount.toString(), 18));
+
+            // 预检查代币余额
+            const balance = await contract.balanceOf(userAddress);
+            const amountToPay = ethers.parseUnits(cleanAmount, 18);
+            
+            if (balance < amountToPay) {
+                throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 数量不足`);
+            }
+
+            if (window.showModal) window.showModal("modal_processing", "正在等待钱包确认...");
+            tx = await contract.transfer(targetAddr, amountToPay);
         }
 
         const receipt = await tx.wait();
         if (receipt.status === 1) {
-            // 链上确认成功后，向后台提交数据
             const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-            
-            // --- 关键修改：提交后不再 reload，依靠 postTransactionRecord 内部刷新数据 ---
-            const res = await postTransactionRecord(typeMap[bizType] || bizType, amount, tokenSymbol, "record_transaction");
+            // 提交成功记录到后台，不刷新页面
+            const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
             if (res.success) {
-                alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已同步`);
+                alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新`);
                 if (window.closeModal) window.closeModal();
             }
         }
     } catch (e) {
-        console.error(e);
-        alert("❌ 交易已取消或链上失败: " + (e.reason || "Wallet Error"));
+        console.error("[Executors] 交易异常详情:", e);
+        
+        // 解析更加友好的错误信息
+        let msg = e.message || "未知错误";
+        if (e.code === 'ACTION_REJECTED' || msg.includes("user rejected")) {
+            msg = "您已取消交易签名";
+        } else if (msg.includes("insufficient funds")) {
+            msg = "手续费 (BNB) 不足";
+        } else if (e.action === 'estimateGas') {
+            msg = "Gas 预估失败，请确保钱包有足够代币和 BNB 手续费";
+        }
+
+        alert("❌ 交易失败: " + msg);
         if (window.closeModal) window.closeModal();
     }
 }
 
 /**
- * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定关系、团队申请、矿机/内部转账)
+ * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定、团队、矿机转让、内转)
  */
 async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
     if (!await ensureBSCNetwork()) return;
@@ -104,7 +138,6 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
-        // 构造签名消息，增加随机时间戳防止重放
         const msg = `Future Space Action\nType: ${bizType}\nAmount: ${amount}\nToken: ${symbol}\nTime: ${Date.now()}`;
         const signature = await window.ethereum.request({ 
             method: 'personal_sign', 
@@ -112,9 +145,7 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         });
 
         if (signature) {
-            if (window.showModal) window.showModal("modal_submitting", "签名已确认，正在提交后台审核...");
-            
-            // --- 关键修改：提交后不再 reload ---
+            if (window.showModal) window.showModal("modal_submitting", "签名成功，正在同步后台...");
             const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, ...extraFields });
             if (res.success) {
                 alert(`✅ ${bizType}申请已成功提交`);
@@ -122,60 +153,67 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             }
         }
     } catch (e) {
-        console.error(e);
-        alert("操作已取消");
+        console.error("[Executors] 签名异常:", e);
+        if (e.code === 4001) {
+            alert("您已取消签名授权");
+        } else {
+            alert("签名操作失败，请重试");
+        }
         if (window.closeModal) window.closeModal();
     }
 }
 
 // ==========================================
-// 🚀 全局函数挂载 (供 HTML 按钮调用)
+// 🚀 全局映射挂载
 // ==========================================
 
-// 1. 充值功能
+// 1. 充值
 window.doRecharge = async function() {
     const symbol = document.getElementById('recToken')?.value;
     const amount = document.getElementById('recAmount')?.value;
-    if (!amount || amount <= 0) return alert("请输入正确金额");
+    if (!amount || parseFloat(amount) <= 0) return alert("请输入正确金额");
     await executeOnChainTransfer("RECHARGE", symbol, amount, RECEIVE_ADDRS.RECHARGE);
 };
 
 // 2. 购买矿机 & 缴纳电费
 window.doChainPay = async function(bizType) {
-    let amount = 0;
+    let rawValue = "";
     if (bizType === 'MINER') {
-        amount = document.getElementById('buyTotal')?.innerText.replace('$ ', '');
+        rawValue = document.getElementById('buyTotal')?.innerText || "0";
     } else {
-        amount = document.getElementById('elecCost')?.innerText.replace(' USDT', '');
+        rawValue = document.getElementById('elecCost')?.innerText || "0";
     }
     
-    if (!amount || parseFloat(amount) <= 0) return alert("金额计算错误");
+    // 清洗掉 $ 或 USDT 字符
+    const amount = rawValue.replace(/[^\d.]/g, '');
+    if (!amount || parseFloat(amount) <= 0) return alert("金额计算异常，请重试");
+
     const target = (bizType === 'MINER') ? RECEIVE_ADDRS.MINER : RECEIVE_ADDRS.ELECTRIC;
+    // 强制使用 USDT 支付
     await executeOnChainTransfer(bizType, "USDT", amount, target);
 };
 
-// 3. 提币签名
+// 3. 提币
 window.doWithdrawSignature = async function() {
     const symbol = document.getElementById('witToken')?.value;
     const amount = document.getElementById('witAmount')?.value;
-    if (!amount || parseFloat(amount) <= 0) return alert("请输入有效数量");
+    if (!amount || parseFloat(amount) <= 0) return alert("请输入提现数量");
     await executeSignatureAction("提现", amount, symbol, "record_transaction");
 };
 
-// 4. 兑换签名
+// 4. 兑换
 window.doExchangeSignature = async function() {
     const fromT = document.getElementById('sFromToken')?.value;
     const toT = document.getElementById('sToToken')?.value;
     const fromAmt = document.getElementById('sFromAmt')?.value;
-    if (!fromAmt || parseFloat(fromAmt) <= 0) return alert("请输入兑出数量");
+    if (!fromAmt || parseFloat(fromAmt) <= 0) return alert("请输入兑换数量");
     await executeSignatureAction("兑换", fromAmt, `${fromT}->${toT}`, "record_transaction");
 };
 
-// 5. 绑定推荐人签名
+// 5. 绑定推荐人
 window.doSubmitBindInviter = async function() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     if (!inviterId) return alert("请输入推荐码");
-    // 生成随机邀请码给当前用户
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
     await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
         inviterId: inviterId, 
@@ -183,33 +221,30 @@ window.doSubmitBindInviter = async function() {
     });
 };
 
-// 6. 申请团队数据签名
+// 6. 申请团队数据
 window.doTeamEmailSubmit = async function() {
     const email = document.getElementById('team_email')?.value.trim();
     if (!email || !email.includes('@')) return alert("请输入有效邮箱");
     await executeSignatureAction("团队申请", "0", "INFO", "bind_email", { email: email });
 };
 
-// 7. 转让矿机签名
+// 7. 转让矿机
 window.doMinerTransfer = async function() {
     const receiver = document.getElementById('minerT_Addr')?.value.trim();
     const amount = document.getElementById('minerT_Amount')?.value;
-    if (!receiver || !amount) return alert("请填写接收者和数量");
+    if (!receiver || !amount || parseFloat(amount) <= 0) return alert("请填写接收地址和数量");
     await executeSignatureAction("矿机转让", amount, "MINER", "transfer_miner", { receiver: receiver });
 };
 
-// 8. 内部转账签名
+// 8. 内部转账
 window.doInternalTransfer = async function() {
     const to = document.getElementById('transAddr')?.value.trim();
     const symbol = document.getElementById('transToken')?.value;
     const amount = document.getElementById('transAmount')?.value;
-    if (!to || !amount) return alert("信息不完整");
+    if (!to || !amount || parseFloat(amount) <= 0) return alert("转账信息不完整");
     await executeSignatureAction("内部转账", amount, symbol, "transfer", { receiver: to });
 };
 
-/**
- * 初始化检查挂载
- */
 export function mountActionExecutors() {
-    console.log("[Executors] 所有业务逻辑已就绪，已取消全局刷新模式");
+    console.log("[Executors] 核心交易逻辑已挂载 (含余额预检与金额清洗)");
 }
