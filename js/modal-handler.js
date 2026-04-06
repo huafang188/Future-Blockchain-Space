@@ -181,13 +181,41 @@ window.openExchangeModal = function() {
             </div>`);
     };
 
-    window.openInternalTransferModal = function() {
+window.openInternalTransferModal = function() {
         window.showModal("internal_transfer", `
-            <div class="space-y-4 text-left">
-                <input type="text" id="transAddr" placeholder="接收地址" class="w-full p-4 bg-slate-50 rounded-2xl outline-none border-none text-[11px] font-mono">
-                <select id="transToken" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border-none">${getLogoOptions('USDT')}</select>
-                <input type="number" id="transAmount" placeholder="转账数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border-none">
-                <button type="button" onclick="window.doInternalTransfer()" class="action-btn w-full mt-2">确认内转签名</button>
+            <div class="space-y-4">
+                <!-- 1. 接收地址区块 -->
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">接收者地址</p>
+                    <input type="text" id="transAddr" placeholder="请输入 0x 地址" 
+                           class="w-full bg-transparent font-mono text-[11px] outline-none border-none p-0 text-slate-800">
+                </div>
+
+                <!-- 2. 选择资产区块 (上方) -->
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1">转账资产</p>
+                    <div class="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                        <!-- 这里的 transLogo 会随下拉框改变 -->
+                        <img id="transLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
+                        <select id="transToken" onchange="window.updateModalLogo('transToken','transLogo')" 
+                                class="flex-1 bg-transparent font-black text-base outline-none border-none cursor-pointer appearance-none">
+                            ${getLogoOptions('USDT')}
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+                    </div>
+                </div>
+
+                <!-- 3. 数量输入区块 (下方) -->
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <div class="flex justify-between items-center mb-2 ml-1">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">转账数量</p>
+                        <span class="text-[10px] font-bold text-indigo-500 cursor-pointer" onclick="window.fillMax('transToken','transAmount')">全部转出</span>
+                    </div>
+                    <input type="number" id="transAmount" placeholder="0.00" 
+                           class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
+                </div>
+
+                <button type="button" onclick="window.doInternalTransfer()" class="action-btn w-full mt-2">确认提交签名</button>
             </div>`);
     };
 
