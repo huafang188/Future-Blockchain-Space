@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* 1. 字体引入：保留 Inter 作为非 Apple 设备的优雅降级 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #3b82f6 100%);
     --primary-solid: #6366f1;
-    --bg-main: #f8fafc;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
+    --bg-main: #f2f2f7; /* 更接近 iOS 的背景色 */
+    --text-main: #1c1c1e;
+    --text-muted: #8e8e93;
     
     /* 液态玻璃参数 */
-    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-bg: rgba(255, 255, 255, 0.8);
     --glass-border: rgba(255, 255, 255, 0.5);
     --nav-glass-bg: rgba(255, 255, 255, 0.75);
 }
@@ -16,24 +17,26 @@
 body {
     background: var(--bg-main);
     background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.03) 0px, transparent 50%);
     color: var(--text-main);
-    font-family: 'Inter', -apple-system, sans-serif;
+    /* 2. 优化为现代 Apple 字体栈 */
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
     margin: 0;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    letter-spacing: -0.01em; /* 紧凑字符间距，更现代 */
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.015em; /* 苹果字体特有的微紧凑感 */
 }
 
 /* --- 1. 轻盈化卡片 --- */
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
     border-radius: 24px;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.04);
+    border: 0.5px solid var(--glass-border);
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03);
     margin-bottom: 1rem;
     transition: all 0.3s ease;
 }
@@ -41,11 +44,11 @@ body {
 /* --- 2. 核心：液态玻璃悬浮导航 --- */
 .nav-wrapper {
     position: fixed;
-    bottom: 24px; /* 距离底部 24px 悬浮 */
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 48px); /* 左右留间距 */
-    max-width: 440px; /* 限制最大宽度 */
+    width: calc(100% - 48px);
+    max-width: 440px;
     z-index: 1000;
 }
 
@@ -53,10 +56,9 @@ body {
     background: var(--nav-glass-bg);
     backdrop-filter: blur(24px) saturate(200%);
     -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border-radius: 32px; /* 圆润胶囊 */
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.12), 
-                inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    border-radius: 999px; /* 导航栏大胶囊 */
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -69,64 +71,68 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #94a3b8;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    color: #8e8e93;
+    transition: all 0.3s ease;
     flex: 1;
-    position: relative;
 }
 
 .nav-item.active {
     color: var(--primary-solid);
 }
 
-.nav-item.active::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    width: 4px;
-    height: 4px;
-    background: var(--primary-solid);
-    border-radius: 50%;
-}
-
 .nav-item i {
-    font-size: 18px;
-    margin-bottom: 4px;
+    font-size: 19px;
+    margin-bottom: 3px;
 }
 
 .nav-item span {
     font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: 500;
+    letter-spacing: 0.02em;
 }
 
-/* --- 3. 字体粗细微调 --- */
-.font-black { font-weight: 700 !important; } /* 强制降权 */
-.font-extrabold { font-weight: 700 !important; }
-.font-bold { font-weight: 600 !important; }
+/* --- 3. 字体粗细全局轻量化 (Apple Style) --- */
+/* 将原本过粗的权重统一降级 */
+.font-black, .font-extrabold { font-weight: 600 !important; }
+.font-bold { font-weight: 500 !important; }
+.font-medium { font-weight: 400 !important; }
 
-/* --- 4. 按钮优化 --- */
+/* --- 4. 提交类按钮：全圆角胶囊样式 (Pill Style) --- */
 .action-btn {
     background: var(--primary-gradient);
-    border-radius: 18px;
-    padding: 14px 24px;
+    border-radius: 999px !important; /* 强制全圆角胶囊 */
+    padding: 12px 28px;
     border: none;
-    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.3);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.action-btn:active { transform: scale(0.96); }
+.action-btn:active {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+}
 
 .action-btn span {
     color: white;
     font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.02em;
+    font-size: 14px;
+    letter-spacing: 0.01em;
 }
 
-/* --- 5. 首页宫格优化 --- */
+/* 购买弹窗中的小按钮也改为胶囊状 */
+.buy-btn {
+    border-radius: 999px !important;
+    border: 1px solid #e5e7eb;
+    padding: 8px 16px;
+    background: white;
+    font-weight: 500;
+}
+
+/* --- 5. 首页宫格样式：严格保持原样不改动 --- */
 .nav-container {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 28px;
@@ -138,15 +144,23 @@ body {
     width: 42px;
     height: 42px;
     background: #fff;
-    border-radius: 14px;
+    border-radius: 14px; /* 保持原有的圆角矩形 */
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     color: var(--primary-solid);
     font-size: 20px;
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-text {
     font-size: 11px;
     color: #64748b;
     font-weight: 500;
+}
+
+/* 隐藏所有默认滚动条，保持页面整洁 */
+::-webkit-scrollbar {
+    display: none;
 }
