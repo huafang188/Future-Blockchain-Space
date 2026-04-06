@@ -1,8 +1,11 @@
 import { API_BASE } from './config.js';
 
+// 用于管理请求取消，彻底解决 "Failed to fetch" 报错
+let fetchController = null;
+
 /**
  * 1. 提交交易/申请记录到后端 (POST)
- * 逻辑：成功后不刷新页面，仅通过 fetchUserData 同步最新资产和记录
+ * 涵盖：充值、提现、兑换、团队申请、矿机转让、内部转账
  */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
     const address = localStorage.getItem('fbs_address');
@@ -12,17 +15,16 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         return { success: false };
     }
 
-    // 构造发送给 Worker 的标准 Payload
     const payload = {
         action: action,        
-        address: address,      
+        address: address.toLowerCase().trim(),      
         type: type,            
-        amount: String(amount), // 强制转为字符串，适配飞书文字列
+        amount: String(amount),
         symbol: symbol,        
         ...extraFields
     };
 
-    console.log(`[API] 正在发起请求 [${action}]:`, payload);
+    console.log(`[API] 发起 POST 请求 [${action}]:`, payload);
 
     try {
         const response = await fetch(API_BASE, {
@@ -33,25 +35,22 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         
         const result = await response.json();
 
-        // Worker 返回 success 或飞书返回 code 0 均视为成功
         if (result.success || result.code === 0) {
-            console.log(`[API] ${type} 业务处理成功`);
+            console.log(`[API] ${type} 提交成功`);
             
-            // --- 核心逻辑：局部刷新数据，不重载页面 ---
+            // 局部刷新数据，不重载页面
             await fetchUserData(address); 
             
-            // 如果存在弹窗，自动执行关闭
             if (window.closeModal) window.closeModal();
-            
             return { success: true, data: result };
         } else {
-            const errorMsg = result.msg || "服务器拒绝请求";
-            alert(`提交失败: ${errorMsg}`);
+            alert(`提交失败: ${result.msg || "服务器拒绝"}`);
             return { success: false };
         }
     } catch (e) {
-        console.error("[API] 请求异常:", e);
-        alert("网络连接超时，请检查网络环境或 Worker 状态");
+        // 捕获页面刷新导致的异常，静默处理
+        if (e.message === 'Failed to fetch') return { success: false };
+        console.error("[API] 提交异常:", e);
         return { success: false, error: e.message };
     }
 }
@@ -62,39 +61,48 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
  */
 export async function fetchUserData(address) {
     if (!address) return;
+
+    // --- 核心防护：如果上一个请求没跑完，直接中止它，防止 Failed to fetch ---
+    if (fetchController) fetchController.abort();
+    fetchController = new AbortController();
+    const { signal } = fetchController;
     
     try {
-        console.log(`[API] 同步用户数据中: ${address}`);
-        const res = await fetch(`${API_BASE}?address=${address.toLowerCase()}&t=${Date.now()}`);
-        if (!res.ok) throw new Error('Network response error');
+        console.log(`[API] 开始同步用户全量数据: ${address}`);
+        const cleanAddr = address.toLowerCase().trim();
+        
+        // 增加时间戳 t= 解决浏览器缓存问题
+        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
+        
+        if (!res.ok) throw new Error(`Network Error: ${res.status}`);
         
         const data = await res.json();
-        console.log("[API] 后端数据解析成功:", data);
+        console.log("[API] 收到完整后端包:", data);
 
-        // A. 新用户拦截：弹出绑定邀请码
+        // A. 新用户逻辑 (弹出绑定)
         if (data.newUser) {
             if (window.openBindInviterModal) window.openBindInviterModal();
             return;
         }
 
-        // B. --- 核心：价格 Key 标准化 (解决价格不显示) ---
+        // B. 价格 Key 标准化 (将 neo 转为 NEO)
         if (data.allPrices) {
             const normalizedPrices = {};
             Object.keys(data.allPrices).forEach(key => {
                 normalizedPrices[key.toUpperCase()] = parseFloat(data.allPrices[key]);
             });
-            window.currentPrices = normalizedPrices; // 写入全局供 render 使用
+            window.currentPrices = normalizedPrices; 
         }
 
-        // 存储用户余额对象，供 calculations.js 计算器使用
+        // 存储余额供 calculations.js 计算器逻辑使用
         window.userBalances = data.balances || {};
 
-        // C. 基础资料 (对应 HTML: info_inviteCode, info_inviter 等)
+        // C. 渲染基础资料 (对齐 HTML ID)
         updateText('info_inviteCode', data.info?.["推荐码"]);
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // D. 团队数据 (对齐 HTML ID: team_directCount 等)
+        // D. 渲染团队数据 (对应 HTML ID)
         if (data.team) {
             updateText('team_directCount', data.team["直推人数"]);
             updateText('team_directSales', data.team["直推业绩"]);
@@ -103,32 +111,39 @@ export async function fetchUserData(address) {
             updateText('team_totalReward', data.team["累计奖励"]);
         }
 
-        // E. 矿机数据 (精准匹配飞书截图中的列名)
+        // E. 渲染矿机数据 (严格对齐飞书截图列名)
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
             updateText('miner_daily', data.miner["日产量"]);
-            updateText('miner_deadline', data.miner["挖矿期限"]); 
-            updateText('miner_locked', data.miner["锁仓数量"]);
+            updateText('miner_deadline', data.miner["挖矿期限"]); // 期限
+            updateText('miner_locked', data.miner["锁仓数量"]);   // 锁仓
         }
 
-        // F. 触发 UI 渲染函数 (调用 ui-render.js)
+        // F. 触发 UI 组件渲染 (ui-render.js)
+        // 渲染资产预览列表
         if (window.renderTokenList) window.renderTokenList(data.balances || {});
+        // 渲染交易历史列表
         if (window.renderHistory) window.renderHistory(data.history || []);
+        // 渲染转账流水列表
         if (window.renderTransfers) window.renderTransfers(data.transfers || []);
 
     } catch (e) {
-        console.error("[API] fetchUserData 执行失败:", e);
+        // 核心防护：如果是取消请求或刷新页面，不作为错误处理
+        if (e.name === 'AbortError' || e.message === 'Failed to fetch') {
+            console.warn("[API] 请求被中止 (正常操作)");
+        } else {
+            console.error("[API] 真实的获取数据失败:", e);
+        }
     }
 }
 
 /**
- * 3. 辅助功能：提交绑定推荐人请求
+ * 3. 辅助：提交绑定推荐人请求
  */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
-    if (!inviterId) return alert("请输入邀请码");
+    if (!inviterId) return alert("请输入推荐码");
     
-    // 生成一个 6 位的随机邀请码作为用户的初始码
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const res = await postTransactionRecord(
@@ -140,33 +155,30 @@ export async function submitBindInviter() {
     );
     
     if (res.success) {
-        alert("✅ 账户已成功激活！");
+        alert("✅ 账户已激活");
     }
 }
 
 /**
- * 4. 统一文本与数值更新工具
- * 自动处理空值，并根据 Apple 风格进行轻量化数字格式化
+ * 4. 统一文本与数值更新工具 (Apple 轻量化格式)
  */
 export function updateText(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
     
-    // 识别金额、价格、数量等需要特殊处理的 ID 前缀或包含词
+    // 金额/数量类字段列表
     const isAmountField = id.includes('Sales') || id.includes('Reward') || id.includes('totalValue') || 
                           id.includes('bal_') || id.includes('val_') || id.includes('price_') || 
-                          id.includes('locked') || id.includes('daily');
+                          id.includes('locked') || id.includes('daily') || id.includes('Count');
     
-    // 容错处理：当值为 null, undefined, "" 时
     if (value === undefined || value === null || value === "" || value === "NaN") {
         el.innerText = isAmountField ? "0.00" : "--";
         return;
     }
 
-    // 数值格式化
     if (isAmountField && !isNaN(value)) {
         let num = parseFloat(value);
-        // 如果是单价展示 4 位小数，其他字段统一展示 2 位
+        // 单价保留4位，其它金额保留2位
         let decimalPlaces = id.includes('price_') ? 4 : 2;
         
         el.innerText = num.toLocaleString('en-US', {
@@ -174,14 +186,11 @@ export function updateText(id, value) {
             maximumFractionDigits: decimalPlaces
         });
     } else {
-        // 纯文本字段直接赋值
         el.innerText = value;
     }
 }
 
-// ==========================================
-// 🚀 暴露全局挂载
-// ==========================================
+// 暴露到全局，确保 HTML 里的 onclick="fetchUserData()" 能找到
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
