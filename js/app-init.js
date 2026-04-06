@@ -44,7 +44,7 @@ function mountAllGlobals() {
     window.renderNews = renderNews;
 
     // B. 执行各模块的挂载函数 (执行内部的 window.xxx = ... 赋值)
-    mountWalletClickHandler();     // 挂载钱包点击 (wallet-utils)
+    mountWalletClickHandler();     // 挂载钱包点击逻辑 (wallet-utils)
     mountModalHandlers();          // 挂载弹窗与复制逻辑 (modal-handler)
     mountCalculationHandlers();    // 挂载计算器逻辑 (calculations)
     mountActionExecutors();        // 挂载业务交互逻辑 (action-executor)
@@ -59,38 +59,39 @@ function initApp() {
     // 立即执行挂载，确保在 DOM 加载前函数已就绪
     mountAllGlobals();
 
+    // 页面加载完成后的逻辑
     window.addEventListener('load', () => {
         console.log("[App] 页面加载完成，检查初始状态...");
         
-        // 1. 读取语言并初始化翻译
+        // --- 2.1 基础环境初始化 ---
         const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
         if (window.i18nRender) {
             window.i18nRender(savedLang);
         }
 
-        // 2. 预渲染静态组件 (公告、看板)
+        // 预渲染静态组件 (公告、看板)
         if (window.renderNews) renderNews(savedLang);
         if (window.renderStatsPage) renderStatsPage(savedLang);
 
-        // 3. 登录态恢复与数据自动拉取
+        // --- 2.2 登录态恢复逻辑 ---
         const currentAddress = localStorage.getItem('fbs_address');
         const isManualLogout = localStorage.getItem('user_logout_manual');
 
+        // 规则：本地有地址 且 用户没有手动点过“退出登录”
         if (currentAddress && isManualLogout !== 'true') {
             console.log(`[App] 自动连接地址: ${currentAddress}`);
             
-            // 更新导航栏钱包 UI
+            // 更新导航栏钱包 UI（显示缩略地址）
             updateWalletUI(currentAddress);
             
-            // 核心：调用 api-service 里的 fetchUserData
-            // 该函数内部包含了价格标准化逻辑，解决价格不显示的问题
+            // 核心：拉取飞书后台的所有资产、团队、记录数据
             fetchUserData(currentAddress); 
             
         } else {
-            console.log("[App] 当前处于未登录状态");
-            resetWalletUI();
+            console.log("[App] 处于未登录或手动登出状态，等待手动连接");
+            resetWalletUI(); // 显示“连接钱包”按钮
             
-            // 初始清空列表，显示空状态
+            // 初始清空列表，防止显示旧的缓存数据
             if (window.renderHistory) window.renderHistory([]); 
             if (window.renderTransfers) window.renderTransfers([]);
             if (window.renderTokenList) window.renderTokenList({});
@@ -99,32 +100,47 @@ function initApp() {
 
     /**
      * 3. 监听钱包账号与链的变化
+     * 修复核心：防止 TP 钱包等插件重复发送 accountsChanged 导致的死循环
      */
     if (window.ethereum) {
-        // 账号切换
+        // 监听账号切换
         window.ethereum.on('accountsChanged', (accounts) => {
-            console.log("[Wallet] 检测到账号变更");
-            if (accounts.length > 0) {
-                const newAddr = accounts[0];
-                localStorage.setItem('fbs_address', newAddr);
-                localStorage.setItem('user_logout_manual', 'false');
-                location.reload(); // 账号切换属于重大变更，建议 reload 确保内存干净
-            } else {
-                localStorage.removeItem('fbs_address');
-                localStorage.setItem('user_logout_manual', 'true');
+            // 获取当前本地存储的旧地址进行对比
+            const oldAddr = (localStorage.getItem('fbs_address') || "").toLowerCase();
+            const newAddr = (accounts[0] || "").toLowerCase();
+
+            console.log("[Wallet] 检测到账号信号:", newAddr || "空");
+
+            // --- 核心修复：只有当地址【真正】发生改变时才执行重载 ---
+            if (newAddr !== oldAddr) {
+                console.log("[Wallet] 地址发生真实变更，正在更新状态...");
+                
+                if (newAddr) {
+                    // 切换到了新账号
+                    localStorage.setItem('fbs_address', accounts[0]);
+                    localStorage.setItem('user_logout_manual', 'false');
+                } else {
+                    // 用户在插件内断开了所有连接
+                    localStorage.removeItem('fbs_address');
+                    localStorage.setItem('user_logout_manual', 'true');
+                }
+                
+                // 执行刷新以确保所有数据（飞书/资产）重新加载
                 location.reload();
+            } else {
+                console.log("[Wallet] 地址与本地一致，拦截重复刷新信号");
             }
         });
 
         // 链切换 (监听是否离开 BSC)
-        window.ethereum.on('chainChanged', () => {
-            console.log("[Wallet] 检测到网络变更");
+        window.ethereum.on('chainChanged', (chainId) => {
+            console.log("[Wallet] 网络变更:", chainId);
             location.reload();
         });
     } else {
-        console.warn("[App] 未检测到 Web3 环境，请在 DApp 浏览器中访问");
+        console.warn("[App] 未检测到 Web3 环境，请在钱包 DApp 浏览器中访问");
     }
 }
 
-// 启动
+// --- 启动程序 ---
 initApp();
