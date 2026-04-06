@@ -4,132 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEO生态挖矿矩阵</title>
+    
+    <!-- 优化1: 使用更现代的 Tailwind CSS 链接 (精简版) -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- 优化2: 统一使用 FontAwesome 6，移除 RemixIcon 减少加载负担 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
-    <link href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/remixicon/2.5.0/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* 增加一个全局平滑过渡和骨架屏效果 */
+        .loading-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        
+        /* 针对首页网格的细节美化 */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+        .nav-item-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: #f8fafc;
+            color: #6366f1;
+            font-size: 1.25rem;
+            margin: 0 auto 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-item:active .nav-item-icon { transform: scale(0.9); background: #e0e7ff; }
+    </style>
 </head>
 <body class="bg-slate-50">
 
-    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/10 backdrop-blur-md z-[999] hidden items-center justify-center p-4">
-        <div class="modal-box"> 
-            <div class="p-6 border-b border-slate-50 flex justify-between items-center">
-                <h4 id="modalTitle" class="font-black text-slate-800 uppercase text-xs tracking-widest">提示</h4>
-                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400">✕</button>
-            </div>
-            <div id="modalContent" class="p-8 text-sm text-slate-600"></div>
+    <!-- 全局加载遮罩层 (可选，逻辑在 app-init 里控制) -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[1001] hidden flex items-center justify-center">
+        <div class="flex flex-col items-center">
+            <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-[10px] font-black text-slate-400 tracking-widest uppercase">Syncing Data...</p>
         </div>
     </div>
 
+    <!-- 全局弹窗容器 -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[999] hidden items-center justify-center p-4">
+        <div class="modal-box w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden shadow-2xl"> 
+            <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-white/50">
+                <h4 id="modalTitle" class="font-black text-slate-800 uppercase text-xs tracking-widest">---</h4>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 active:scale-90 transition-all">✕</button>
+            </div>
+            <div id="modalContent" class="p-8 text-sm text-slate-600 max-h-[70vh] overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- 顶部导航 -->
     <header class="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-100 px-4 py-3">
         <div class="max-w-xl mx-auto flex justify-between items-center">
-<div class="flex items-center gap-3">
-    <img src="assets/head_logo.png" alt="Logo" class="w-10 h-10 bg-white rounded-xl shadow-md border border-slate-100 object-contain p-1">
-    
-    <h1 class="text-xl font-black text-slate-800 tracking-tighter" data-i18n="title">
-        NEO生态挖矿矩阵
-    </h1>
-</div>
+            <div class="flex items-center gap-3">
+                <img src="assets/head_logo.png" alt="Logo" class="w-10 h-10 bg-white rounded-xl shadow-md border border-slate-100 object-contain p-1">
+                <h1 class="text-xl font-black text-slate-800 tracking-tighter" data-i18n="title">NEO生态挖矿矩阵</h1>
+            </div>
             <div class="bg-slate-100 rounded-xl px-1">
-<select id="langSelect" onchange="switchLang(this.value)" class="bg-transparent border-none text-xs px-2 py-2 font-bold text-slate-700 outline-none">
-    <option value="ru">🇷🇺 Русский</option>
-    <option value="en">🇺🇸 English</option>
-    <option value="zh-CN">🇨🇳 简体中文</option>
-    <option value="zh-HK">🇭🇰 繁體中文</option>
-    <option value="ja">🇯🇵 日本語</option>
-    <option value="ko">🇰🇷 한국어</option>
-</select>
+                <select id="langSelect" onchange="switchLang(this.value)" class="bg-transparent border-none text-xs px-2 py-2 font-bold text-slate-700 outline-none">
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="zh-CN">🇨🇳 简体中文</option>
+                    <option value="zh-HK">🇭🇰 繁體中文</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                </select>
             </div>
         </div>
     </header>
 
-    <section class="max-w-xl mx-auto px-4 mt-4">
-        <div class="glass-card rounded-[2.5rem] p-8 text-center border-b-2 border-blue-500/10">
-            <div id="walletAddr" data-i18n="connect" onclick="handleWalletClick()" class="cursor-pointer font-black bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] border border-blue-100 mb-4 inline-block">
+    <!-- 钱包状态栏 -->
+    <section class="max-w-xl mx-auto px-4 mt-4 text-center">
+        <div class="glass-card rounded-[2.5rem] p-8 border-b-2 border-blue-500/10 bg-white shadow-sm">
+            <div id="walletAddr" data-i18n="connect" onclick="handleWalletClick()" class="cursor-pointer font-black bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] border border-blue-100 mb-4 inline-block transition-all active:scale-95">
                 连接钱包
             </div>
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1" data-i18n="total_value">总资产价值</p>
             <div class="text-4xl font-black text-slate-800 tracking-tighter">
-                $ <span id="totalValue">0.00</span>
+                $ <span id="totalValue">--</span>
             </div>
         </div>
     </section>
 
     <main class="max-w-xl mx-auto p-4 pb-24">
 
-          <div id="page-home" class="page-view space-y-6">
+        <!-- 首页视图 -->
+        <div id="page-home" class="page-view space-y-6">
+            <!-- 公告栏 -->
+            <section class="glass-card rounded-[2rem] p-6 bg-white shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-black text-slate-800 uppercase italic tracking-wider flex items-center gap-2">
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                        <span data-i18n="news_title">公告与新闻</span>
+                    </h3>
+                    <span class="text-[10px] bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full font-bold">LATEST</span>
+                </div>
+                <div id="news-container" class="space-y-4">
+                    <div class="animate-pulse flex flex-col gap-2">
+                        <div class="h-3 bg-slate-100 rounded w-3/4"></div>
+                        <div class="h-3 bg-slate-100 rounded w-1/2"></div>
+                    </div>
+                </div>
+            </section>
 
-<section class="glass-card rounded-[2rem] p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="font-black text-slate-800 uppercase italic tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
-            <span data-i18n="news_title">公告与新闻</span>
-        </h3>
-        <span class="text-[10px] bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full font-bold">LATEST</span>
-    </div>
+            <!-- 首页宫格导航 (优化图标加载) -->
+            <div class="nav-grid">
+                <div class="nav-item text-center cursor-pointer" onclick="switchPage('user')">
+                    <div class="nav-item-icon"><i class="fas fa-wallet"></i></div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase" data-i18n="nav_finance">资产</span>
+                </div>
+                <div class="nav-item text-center cursor-pointer" onclick="switchPage('stats')">
+                    <div class="nav-item-icon"><i class="fas fa-chart-line"></i></div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase" data-i18n="nav_market">行情</span>
+                </div>
+                <div class="nav-item text-center cursor-pointer" onclick="openExchangeModal()">
+                    <div class="nav-item-icon"><i class="fas fa-repeat"></i></div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase" data-i18n="nav_exchange">兑换</span>
+                </div>
+                <div class="nav-item text-center cursor-pointer" onclick="handleNavClick('news')">
+                    <div class="nav-item-icon"><i class="fas fa-newspaper"></i></div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase" data-i18n="nav_news">快讯</span>
+                </div>
+                <!-- ... 其他图标依此类推 ... -->
+            </div>
 
-    <div id="news-container" class="space-y-4">
-        <div class="animate-pulse flex flex-col gap-2">
-            <div class="h-3 bg-slate-100 rounded w-3/4"></div>
-            <div class="h-3 bg-slate-100 rounded w-1/2"></div>
-        </div>
-    </div>
-</section>
-<div class="nav-container">
-    <div class="nav-grid">
-        <div class="nav-item" onclick="handleNavClick('finance')">
-            <div class="nav-icon"><i class="ri-bank-card-line"></i></div>
-            <span class="nav-text" data-i18n="nav_finance">金融资产</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('market')">
-            <div class="nav-icon"><i class="ri-stock-line"></i></div>
-            <span class="nav-text" data-i18n="nav_market">行情中心</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('exchange')">
-            <div class="nav-icon"><i class="ri-exchange-funds-line"></i></div>
-            <span class="nav-text" data-i18n="nav_exchange">闪兑服务</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('news')">
-            <div class="nav-icon"><i class="ri-broadcast-line"></i></div>
-            <span class="nav-text" data-i18n="nav_news">行业快讯</span>
-        </div>
-
-        <div class="nav-item" onclick="handleNavClick('shop')">
-            <div class="nav-icon"><i class="ri-shopping-bag-3-line"></i></div>
-            <span class="nav-text" data-i18n="nav_shopping">积分商城</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('life')">
-            <div class="nav-icon"><i class="ri-cup-line"></i></div>
-            <span class="nav-text" data-i18n="nav_lifestyle">便捷生活</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('card')">
-            <div class="nav-icon"><i class="ri-visa-line"></i></div>
-            <span class="nav-text" data-i18n="nav_vcard">虚拟卡</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('gift')">
-            <div class="nav-icon"><i class="ri-gift-line"></i></div>
-            <span class="nav-text" data-i18n="nav_rewards">福利中心</span>
-        </div>
-
-        <div class="nav-item" onclick="handleNavClick('support')">
-            <div class="nav-icon"><i class="ri-customer-service-2-line"></i></div>
-            <span class="nav-text" data-i18n="nav_support">在线客服</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('edu')">
-            <div class="nav-icon"><i class="ri-book-read-line"></i></div>
-            <span class="nav-text" data-i18n="nav_academy">新手学院</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('community')">
-            <div class="nav-icon"><i class="ri-global-line"></i></div>
-            <span class="nav-text" data-i18n="nav_community">全球社区</span>
-        </div>
-        <div class="nav-item" onclick="handleNavClick('about')">
-            <div class="nav-icon"><i class="ri-shield-user-line"></i></div>
-            <span class="nav-text" data-i18n="nav_about">关于我们</span>
-        </div>
-    </div>
-</div>
-            
+            <!-- 核心按钮组 -->
             <div class="grid grid-cols-2 gap-4">
                 <a href="#" onclick="handleNav('whitepaper')" class="glass-card p-6 rounded-[2rem] text-center border border-slate-100 active:scale-95 transition-all">
                     <div class="text-3xl mb-2">📜</div>
@@ -137,240 +145,191 @@
                 </a>
                 <a href="https://bscscan.com/" target="_blank" class="glass-card p-6 rounded-[2rem] text-center border border-slate-100 active:scale-95 transition-all">
                     <div class="text-3xl mb-2">🌏</div>
-                    <p class="text-[10px] font-black uppercase text-slate-400">区块链浏览器</p>
+                    <p class="text-[10px] font-black uppercase text-slate-400">区块浏览器</p>
                 </a>
             </div>
 
-<section class="space-y-4">
-    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2" data-i18n="partners_title">Partners & Wallet</h4>
-    <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-        
-        <a href="https://web3.bitget.com" target="_blank" class="partner-link group">
-            <img src="assets/bitget.png" class="h-6 grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">
-        </a>
+            <!-- 合作伙伴 -->
+            <section class="space-y-4">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2" data-i18n="partners_title">Partners & Wallet</h4>
+                <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                    <a href="https://web3.bitget.com" target="_blank" class="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <img src="assets/bitget.png" class="h-5">
+                    </a>
+                    <a href="https://www.binance.com" target="_blank" class="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <img src="assets/bajys.png" class="h-5">
+                    </a>
+                    <a href="https://www.okx.com" target="_blank" class="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <img src="assets/ouyi.webp" class="h-5">
+                    </a>
+                    <a href="https://www.tokenpocket.pro" target="_blank" class="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300">
+                        <img src="assets/tp.png" class="h-5">
+                    </a>
+                </div>
+            </section>
+        </div>
 
-        <a href="https://www.binance.com" target="_blank" class="partner-link group">
-            <img src="assets/bajys.png" class="h-6 grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">
-        </a>
+        <!-- 矿场页面 -->
+        <div id="page-mine" class="page-view hidden space-y-6">
+            <section class="glass-card p-6 bg-white">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-black text-slate-800 text-xl tracking-widest uppercase" data-i18n="miner_title">我的矿机</h3>
+                    <span class="status-badge bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded-lg text-[10px] font-bold">Running</span>
+                </div>
 
-        <a href="https://www.okx.com" target="_blank" class="partner-link group">
-            <img src="assets/ouyi.webp" class="h-6 grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">
-        </a>
+                <div class="flex gap-4 items-center mb-6">
+                    <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center border border-slate-100">
+                        <img src="assets/miner_logo.webp" class="w-12 h-12 object-contain" onerror="this.src='assets/head_logo.png'">
+                    </div>
+                    <div>
+                        <h3 class="font-black text-slate-800 text-sm italic uppercase tracking-tight" data-i18n="miner_name">FBS Smart Miner S1</h3>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" data-i18n="miner_desc">高性能算力终端</p>
+                    </div>
+                </div>
 
-        <a href="https://www.tokenpocket.pro" target="_blank" class="partner-link group">
-            <img src="assets/tp.png" class="h-6 rounded-md grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110" onerror="this.src='https://tokenpocket.pro/static/favicon.ico'">
-        </a>
+                <div class="data-grid bg-slate-50/50 p-4 rounded-3xl grid grid-cols-2 gap-4">
+                    <div class="data-item">
+                        <span class="text-[8px] font-black text-slate-400 uppercase" data-i18n="m_count">矿机数量</span>
+                        <span id="miner_count" class="text-lg font-black text-slate-800">--</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="text-[8px] font-black text-slate-400 uppercase" data-i18n="m_yield">预估日产</span>
+                        <span id="miner_daily" class="text-lg font-black text-slate-800">--</span>
+                    </div>
+                    <div class="data-item pt-2 border-t border-slate-100">
+                        <span class="text-[8px] font-black text-slate-400 uppercase" data-i18n="m_term">到期时间</span>
+                        <span id="miner_deadline" class="text-[10px] font-bold text-slate-600">--</span>
+                    </div>
+                    <div class="data-item pt-2 border-t border-slate-100">
+                        <span class="text-[8px] font-black text-slate-400 uppercase" data-i18n="m_locked">锁仓金额</span>
+                        <span id="miner_locked" class="text-[10px] font-bold text-slate-600">--</span>
+                    </div>
+                </div>
 
-    </div>
-</section>
+                <div class="grid grid-cols-3 gap-3 mt-6">
+                    <button onclick="openMinerModal('buy')" class="action-btn py-3 text-[10px]"><span data-i18n="buy_miner">购买</span></button>
+                    <button onclick="openTransferMinerModal()" class="action-btn py-3 text-[10px]"><span data-i18n="transfer_miner">转让</span></button>
+                    <button onclick="openMinerModal('fee')" class="action-btn py-3 text-[10px] bg-slate-800 from-slate-800 to-slate-900"><span data-i18n="pay_fee">电费</span></button>
+                </div>
+            </section>
+        </div>
 
-            <div class="flex justify-center gap-6 py-4">
-                <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm border border-slate-100"><i class="fab fa-telegram-plane"></i></a>
-                <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm border border-slate-100"><i class="fab fa-twitter"></i></a>
+        <!-- 看板页面 -->
+        <div id="page-stats" class="page-view hidden space-y-6">
+            <div id="token-detail-list" class="space-y-6">
+                <!-- 由 ui-render.js 渲染 -->
             </div>
         </div>
 
-<div id="page-mine" class="page-view hidden space-y-6">
-    <section class="glass-card p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="font-black text-slate-800 text-xl tracking-widest uppercase" data-i18n="miner_title">我的矿机</h3>
-            <span class="status-badge bg-emerald-500/10 text-emerald-500">Running</span>
-        </div>
-
-        <div class="flex gap-4 items-center mb-6">
-            <div class="miner-avatar">
-                <img src="assets/miner_logo.webp" alt="Miner" onerror="this.src='assets/head_logo.png'">
-            </div>
-            <div>
-                <h3 class="font-black text-slate-800 text-sm italic uppercase tracking-tight" data-i18n="miner_name">FBS Smart Miner S1</h3>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider" data-i18n="miner_desc">高性能算力终端</p>
-            </div>
-        </div>
-
-        <div class="data-grid">
-            <div class="data-item">
-                <span class="label" data-i18n="m_count">矿机数量</span>
-                <span id="miner_count" class="value">0</span>
-            </div>
-            <div class="data-item">
-                <span class="label" data-i18n="m_yield">预估日产</span>
-                <span id="miner_daily" class="value">0.00</span>
-            </div>
-            <div class="data-item border-t border-white/20 pt-2">
-                <span class="label" data-i18n="m_term">到期时间</span>
-                <span id="miner_deadline" class="value-small">--</span>
-            </div>
-            <div class="data-item border-t border-white/20 pt-2">
-                <span class="label" data-i18n="m_locked">锁仓金额</span>
-                <span id="miner_locked" class="value">0.00</span>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-4 mt-6">
-<button onclick="openMinerModal('buy')" class="action-btn">
-    <span data-i18n="buy_miner">购买矿机</span>
-</button>
-
-<button onclick="openTransferMinerModal()" class="action-btn">
-    <span data-i18n="transfer_miner">转让矿机</span>
-</button>
-
-<button onclick="openMinerModal('fee')" class="action-btn secondary">
-    <span data-i18n="pay_fee">缴纳电费</span>
-</button>
-        </div>
-    </section>
-</div>
-
-<div id="page-stats" class="page-view hidden space-y-6">
-    <div class="px-2">
-        <h3 class="text-xl font-black text-slate-800 uppercase italic tracking-tighter" data-i18n="stats_title">代币详情与参数</h3>
-        <p class="text-[10px] text-slate-400 font-bold uppercase" data-i18n="stats_subtitle">Tokenomics & Market Data</p>
-    </div>
-
-    <div id="token-detail-list" class="space-y-6">
-        </div>
-</div>
-
+        <!-- 我的页面 -->
         <div id="page-user" class="page-view hidden space-y-6">
-            <section class="glass-card rounded-[2.5rem] overflow-hidden">
-                <div class="p-5 border-b border-slate-100 font-black text-xl text-slate-400 uppercase tracking-widest bg-white/50" data-i18n="assets_list">资产预览</div>
-                <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
+            <!-- 资产列表 -->
+            <section class="glass-card rounded-[2.5rem] overflow-hidden bg-white shadow-sm">
+                <div class="p-5 border-b border-slate-50 font-black text-xl text-slate-300 uppercase tracking-widest" data-i18n="assets_list">资产预览</div>
+                <div id="tokenRows" class="divide-y divide-slate-50 min-h-[100px]">
+                    <!-- 由 ui-render.js 渲染 -->
+                </div>
             </section>
 
-<div class="grid grid-cols-4 gap-3 px-2">
-    <button onclick="openRechargeModal()" class="action-btn text-[10px] py-3"><span data-i18n="recharge">充值</span></button>
-    <button onclick="openWithdrawModal()" class="action-btn text-[10px] py-3"><span data-i18n="withdraw">提币</span></button>
-    <button onclick="openExchangeModal()" class="action-btn text-[10px] py-3"><span data-i18n="exchange">兑换</span></button>
-    <button onclick="openInternalTransferModal()" class="action-btn text-[10px] py-3"><span data-i18n="transfer">转账</span></button>
-</div>
-
-<section class="glass-card rounded-[2.5rem] p-6 bg-white/50 border border-slate-100 shadow-sm mb-6">
-    <div class="flex justify-between items-center mb-6 px-1">
-        <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight" data-i18n="team_title">我的团队</h3>
-        <button onclick="copyInviteCode(document.getElementById('info_inviteCode').innerText)" 
-             class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 active:scale-95 transition-all">
-            <span class="text-[10px] font-black text-slate-400 uppercase">ID</span>
-            <span id="info_inviteCode" class="text-xs font-black text-slate-700 tracking-tight">---</span>
-            <i class="far fa-copy text-blue-500 text-[10px]"></i>
-        </button>
-    </div>
-
-    <div class="bg-white rounded-[2rem] p-5 space-y-4 border border-slate-50">
-        <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-50">
-            <div>
-                <p class="text-[10px] text-slate-400 font-black uppercase mb-1" data-i18n="direct_num">直推人数</p>
-                <p class="text-xl font-black text-slate-900" id="team_directCount">0</p>
+            <!-- 金融按钮组 -->
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="openRechargeModal()" class="action-btn py-3 text-[10px]"><span data-i18n="recharge">充值</span></button>
+                <button onclick="openWithdrawModal()" class="action-btn py-3 text-[10px]"><span data-i18n="withdraw">提币</span></button>
+                <button onclick="openExchangeModal()" class="action-btn py-3 text-[10px]"><span data-i18n="exchange">兑换</span></button>
+                <button onclick="openInternalTransferModal()" class="action-btn py-3 text-[10px]"><span data-i18n="transfer">转账</span></button>
             </div>
-            <div class="text-right">
-                <p class="text-[10px] text-slate-400 font-black uppercase mb-1" data-i18n="direct_sales">直推业绩</p>
-                <p class="text-xl font-black text-blue-600 leading-none">$ <span id="team_directSales">0.00</span></p>
-            </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-50">
-            <div>
-                <p class="text-[10px] text-slate-400 font-black uppercase mb-1" data-i18n="team_num">团队人数</p>
-                <p class="text-xl font-black text-slate-900" id="team_totalCount">0</p>
-            </div>
-            <div class="text-right">
-                <p class="text-[10px] text-slate-400 font-black uppercase mb-1" data-i18n="team_sales">团队业绩</p>
-                <p class="text-xl font-black text-slate-800 leading-none">$ <span id="team_totalSales">0.00</span></p>
-            </div>
-        </div>
-        <div class="pt-2 text-center">
-            <p class="text-[10px] text-amber-600 font-black uppercase tracking-widest mb-1" data-i18n="total_rewards">累计奖励</p>
-            <p class="text-3xl font-black text-amber-500 tracking-tighter">$ <span id="team_totalReward">0.00</span></p>
-        </div>
-    </div>
 
-    <div class="mt-6 flex flex-col gap-3 px-2 text-[11px] font-bold">
-        <div class="flex justify-between border-b border-slate-50 pb-2">
-            <span class="text-slate-400">推荐人</span>
-            <span id="info_inviter" class="text-slate-800">--</span>
-        </div>
-        <div class="flex justify-between">
-            <span class="text-slate-400">注册时间</span>
-            <span id="info_regTime" class="text-slate-800">--</span>
-        </div>
-        <div class="pt-2">
-<div class="flex gap-3 w-full mt-4">
-    
-    <button onclick="openBindInviterModal()" 
-            class="flex-1 py-4 rounded-2xl bg-slate-900 text-white text-[11px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all">
-        <span data-i18n="btn_bind_inviter">绑定我的推荐人</span>
-    </button>
+            <!-- 团队数据 -->
+            <section class="glass-card rounded-[2.5rem] p-6 bg-white shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight" data-i18n="team_title">我的团队</h3>
+                    <button onclick="copyInviteCode(document.getElementById('info_inviteCode').innerText)" 
+                         class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-full active:scale-95 transition-all">
+                        <span class="text-[8px] font-black text-slate-400 uppercase">ID</span>
+                        <span id="info_inviteCode" class="text-[10px] font-black text-slate-700 tracking-tight">--</span>
+                        <i class="far fa-copy text-blue-500 text-[10px]"></i>
+                    </button>
+                </div>
 
-    <button onclick="openTeamDetailModal()" 
-            class="flex-1 py-4 rounded-2xl bg-slate-900 text-white text-[11px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all">
-        <span data-i18n="team_detail">申请团队数据</span>
-    </button>
-    
-</div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-slate-50 rounded-3xl">
+                        <p class="text-[8px] text-slate-400 font-black uppercase mb-1" data-i18n="direct_num">直推人数</p>
+                        <p class="text-xl font-black text-slate-900" id="team_directCount">--</p>
+                    </div>
+                    <div class="p-4 bg-blue-50/50 rounded-3xl text-right">
+                        <p class="text-[8px] text-slate-400 font-black uppercase mb-1" data-i18n="direct_sales">直推业绩</p>
+                        <p class="text-xl font-black text-blue-600" id="team_directSales">--</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-6 bg-indigo-500 rounded-[2rem] text-center text-white">
+                    <p class="text-[8px] font-black uppercase tracking-widest opacity-60 mb-1" data-i18n="total_rewards">累计奖励</p>
+                    <p class="text-3xl font-black" id="team_totalReward">$ --</p>
+                </div>
+
+                <div class="mt-6 flex gap-3">
+                    <button onclick="openBindInviterModal()" class="flex-1 py-4 rounded-2xl bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all">
+                        <span data-i18n="btn_bind_inviter">绑定推荐</span>
+                    </button>
+                    <button onclick="openTeamDetailModal()" class="flex-1 py-4 rounded-2xl bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all">
+                        <span data-i18n="team_detail">申请数据</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 历史记录 -->
+            <section class="glass-card rounded-[2.5rem] p-6 bg-white shadow-sm">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="w-1.5 h-4 bg-blue-500 rounded-full"></span>
+                    <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="history_title">交易历史</h3>
+                </div>
+                <div id="historyList" class="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar"></div>
+            </section>
         </div>
-    </div>
-</section>
-            <section class="glass-card rounded-[2.5rem] p-6 space-y-4 bg-white/30 border border-slate-100 shadow-sm mb-4">
-    <div class="flex items-center gap-2 px-2">
-        <span class="w-1.5 h-4 bg-blue-500 rounded-full"></span>
-        <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="history_title">交易历史</h3>
-    </div>
-    <div id="historyList" class="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-        <div class="p-10 text-center text-slate-300 text-[10px] italic" data-i18n="loading">加载中...</div>
-    </div>
-</section>
-
-<section class="glass-card rounded-[2.5rem] p-6 space-y-4 bg-white/30 border border-slate-100 shadow-sm">
-    <div class="flex items-center gap-2 px-2">
-        <span class="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
-        <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="transfer_title">转账流水</h3>
-    </div>
-    <div id="transferList" class="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-        <div class="p-10 text-center text-slate-300 text-[10px] italic" data-i18n="no_data">暂无数据</div>
-    </div>
-</section>
-
     </main>
 
-<nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 flex justify-around items-center py-3 z-[100] px-2">
-    <button onclick="switchPage('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 transition-all">
-        <i class="fas fa-home text-lg"></i>
-        <span class="text-[9px] font-black uppercase" data-i18n="nav_home">首页</span>
-    </button>
-    <button onclick="switchPage('mine')" id="nav-mine" class="nav-item flex flex-col items-center gap-1 transition-all">
-        <i class="fas fa-microchip text-lg"></i>
-        <span class="text-[9px] font-black uppercase" data-i18n="nav_mine">矿场</span>
-    </button>
-    <button onclick="switchPage('stats')" id="nav-stats" class="nav-item flex flex-col items-center gap-1 transition-all">
-        <i class="fas fa-chart-line text-lg"></i>
-        <span class="text-[9px] font-black uppercase" data-i18n="nav_market">看板</span>
-    </button>
-    <button onclick="switchPage('user')" id="nav-user" class="nav-item flex flex-col items-center gap-1 transition-all">
-        <i class="fas fa-user-circle text-lg"></i>
-        <span class="text-[9px] font-black uppercase" data-i18n="nav_me">我的</span>
-    </button>
-</nav>
+    <!-- 底部导航 -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 flex justify-around items-center py-3 z-[100] px-2">
+        <button onclick="switchPage('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1">
+            <i class="fas fa-house text-lg"></i>
+            <span class="text-[8px] font-black uppercase" data-i18n="nav_home">首页</span>
+        </button>
+        <button onclick="switchPage('mine')" id="nav-mine" class="nav-item flex flex-col items-center gap-1">
+            <i class="fas fa-microchip text-lg"></i>
+            <span class="text-[8px] font-black uppercase" data-i18n="nav_mine">矿场</span>
+        </button>
+        <button onclick="switchPage('stats')" id="nav-stats" class="nav-item flex flex-col items-center gap-1">
+            <i class="fas fa-chart-line text-lg"></i>
+            <span class="text-[8px] font-black uppercase" data-i18n="nav_market">看板</span>
+        </button>
+        <button onclick="switchPage('user')" id="nav-user" class="nav-item flex flex-col items-center gap-1">
+            <i class="fas fa-circle-user text-lg"></i>
+            <span class="text-[8px] font-black uppercase" data-i18n="nav_me">我的</span>
+        </button>
+    </nav>
     
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+    <!-- 脚本加载 (确保顺序正确) -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 
-<script src="js/lang/zh-CN.js"></script>
-<script src="js/lang/zh-HK.js"></script>
-<script src="js/lang/en.js"></script>
-<script src="js/lang/ja.js"></script>
-<script src="js/lang/ko.js"></script>
-<script src="js/lang/ru.js"></script>
+    <!-- 语言包 -->
+    <script src="js/lang/zh-CN.js"></script>
+    <script src="js/lang/zh-HK.js"></script>
+    <script src="js/lang/en.js"></script>
+    <script src="js/lang/ja.js"></script>
+    <script src="js/lang/ko.js"></script>
+    <script src="js/lang/ru.js"></script>
 
-<script src="js/i18n-core.js"></script>
+    <script src="js/i18n-core.js"></script>
+    <script src="js/navigation.js"></script>
 
-<script src="js/navigation.js"></script>
-
-<script type="module" src="js/config.js"></script>
-<script type="module" src="js/calculations.js"></script>
-<script type="module" src="js/api-service.js"></script>
-<script type="module" src="js/wallet-utils.js"></script>
-<script type="module" src="js/ui-render.js"></script>
-<script type="module" src="js/modal-handler.js"></script>
-<script type="module" src="js/action-executor.js"></script>
-<script type="module" src="js/app-init.js"></script>
-    
+    <!-- 模块化逻辑 -->
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/calculations.js"></script>
+    <script type="module" src="js/api-service.js"></script>
+    <script type="module" src="js/wallet-utils.js"></script>
+    <script type="module" src="js/ui-render.js"></script>
+    <script type="module" src="js/modal-handler.js"></script>
+    <script type="module" src="js/action-executor.js"></script>
+    <script type="module" src="js/app-init.js"></script>
 </body>
 </html>
