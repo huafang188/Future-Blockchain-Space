@@ -1,4 +1,4 @@
-/* 现代 Apple 字体栈 */
+/* --- 1. 基础重置与 Apple 字体栈 --- */
 body {
     background-color: #f2f2f7;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Inter", sans-serif !important;
@@ -6,10 +6,11 @@ body {
     letter-spacing: -0.015em;
     color: #1c1c1e;
     margin: 0;
+    padding: 0;
     overflow-x: hidden;
 }
 
-/* --- 1. 悬浮胶囊导航 (带缩放动画) --- */
+/* --- 2. 核心：悬浮胶囊导航 (修复点击问题的关键) --- */
 .nav-wrapper {
     position: fixed;
     bottom: 24px;
@@ -17,20 +18,22 @@ body {
     transform: translateX(-50%);
     width: 92%;
     max-width: 400px;
-    z-index: 1000;
+    z-index: 1000; /* 确保在内容之上 */
+    pointer-events: none; /* 穿透外层容器，防止遮挡下方内容 */
 }
 
 .bottom-nav-pill {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
     border-radius: 999px;
     border: 0.5px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 10px 12px;
+    padding: 8px 12px;
+    pointer-events: auto; /* 恢复导航条本身的点击 */
 }
 
 .nav-item {
@@ -43,22 +46,24 @@ body {
     background: transparent;
     border: none;
     cursor: pointer;
+    outline: none;
 }
 
 .nav-item.active {
     color: #6366f1 !important;
-    transform: translateY(-6px) scale(1.15); 
+    transform: translateY(-6px) scale(1.1); /* 选中放大并位移 */
 }
 
-.nav-item i { font-size: 20px !important; margin-bottom: 2px; }
-.nav-item span { font-size: 9px !important; font-weight: 600; }
+.nav-item i { font-size: 20px; margin-bottom: 2px; }
+.nav-item span { font-size: 9px; font-weight: 600; }
 
-/* --- 2. 矿机卡片重构 --- */
+/* --- 3. 矿机卡片 (左上角图片 + 2x2 网格) --- */
 .miner-card {
     background: #ffffff;
     border-radius: 28px;
     padding: 20px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    border: 1px solid #f1f5f9;
 }
 
 .miner-header {
@@ -69,16 +74,15 @@ body {
 }
 
 .miner-img-small {
-    width: 85px !important;
-    height: 85px !important;
+    width: 80px;
+    height: 80px;
     border-radius: 18px;
     object-fit: cover;
     background: #f8fafc;
-    border: 1px solid #f1f5f9;
 }
 
 .miner-info-text h3 {
-    font-size: 16px !important;
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 4px;
 }
@@ -86,48 +90,40 @@ body {
 .miner-stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
     background: #f8fafc;
-    padding: 16px;
+    padding: 14px;
     border-radius: 20px;
 }
 
-.stat-value {
-    font-size: 14px;
-    font-weight: 700;
-}
+.stat-item { display: flex; flex-direction: column; }
+.stat-label { font-size: 9px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+.stat-value { font-size: 14px; font-weight: 700; color: #1e293b; }
 
-/* --- 3. 苹果风磨砂玻璃弹窗系统 --- */
-
-/* 遮罩层：深度虚化背景 */
+/* --- 4. 苹果风磨砂弹窗 (修复透明和点击) --- */
 #modalOverlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* 调暗背景 */
-    backdrop-filter: blur(15px) saturate(150%); /* 核心：高斯模糊 */
-    -webkit-backdrop-filter: blur(15px) saturate(150%);
-    display: none; /* 由 JS 控制显示 flex */
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.35); /* 深色半透 */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 2000;
+    display: none; /* 由 JS 控制为 flex */
     align-items: center;
     justify-content: center;
-    z-index: 2000;
     padding: 20px;
 }
 
-/* 弹窗主体：白玻璃质感 */
 .modal-box {
-    background: rgba(255, 255, 255, 0.85); /* 半透明白 */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
     width: 100%;
     max-width: 360px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.6); /* 亮色边框模拟玻璃边缘 */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     overflow: hidden;
-    animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15); /* 苹果式回弹动画 */
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
 }
 
 @keyframes modalPop {
@@ -135,54 +131,47 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* 弹窗内输入框和选择框优化 */
-#modalContent input, 
-#modalContent select {
-    background: rgba(0, 0, 0, 0.05) !important;
-    border: none !important;
-    border-radius: 14px !important;
-    padding: 12px 16px !important;
-    font-weight: 500 !important;
-    color: #1c1c1e !important;
-    width: 100%;
-    margin-top: 8px;
-    outline: none;
-}
-
-#modalContent input:focus {
-    background: rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-}
-
-/* 弹窗标题 */
-#modalTitle {
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    color: #1c1c1e;
-    text-align: center;
-}
-
-/* --- 4. 按钮统一胶囊化 --- */
+/* --- 5. 按钮与交互 --- */
 .action-btn {
     background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
     border-radius: 999px !important;
-    padding: 12px 20px !important;
+    padding: 12px 16px;
     border: none !important;
     color: white !important;
     font-weight: 600 !important;
-    font-size: 13px !important;
+    font-size: 12px;
     box-shadow: 0 8px 15px -3px rgba(99, 102, 241, 0.3);
-    cursor: pointer;
     transition: all 0.2s;
+    cursor: pointer;
+    display: inline-block;
     text-align: center;
 }
 
-.action-btn:active { transform: scale(0.95); filter: brightness(0.9); }
+.action-btn:active { transform: scale(0.94); filter: brightness(0.9); }
 
-/* 首页 4 列导航 */
-.nav-grid {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 16px 4px;
+/* 宫格导航图标 */
+.nav-icon {
+    width: 44px; height: 44px;
+    background: #fff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    color: #6366f1;
+    font-size: 20px;
 }
+
+/* 隐藏滚动条 */
 ::-webkit-scrollbar { display: none; }
+
+/* 页面切换容器 */
+.page-view {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
