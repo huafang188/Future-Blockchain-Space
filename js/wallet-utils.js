@@ -2,6 +2,7 @@ let currentAddress = localStorage.getItem('fbs_address');
 
 /**
  * 1. 挂载全局钱包点击事件
+ * 处理逻辑：未连接时去连接，已连接时点击则触发退出登录
  */
 export function mountWalletClickHandler() {
     window.handleWalletClick = function() {
@@ -19,7 +20,7 @@ export function mountWalletClickHandler() {
 }
 
 /**
- * 2. 连接钱包逻辑
+ * 2. 连接钱包核心逻辑
  */
 export async function connectWallet() {
     if (!window.ethereum) return alert("请在钱包内置浏览器中打开");
@@ -27,9 +28,10 @@ export async function connectWallet() {
     try {
         // A. 请求授权获取账号
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (!accounts || accounts.length === 0) return;
         const address = accounts[0]; 
         
-        // B. 安全签名确认（确保用户知情且防止重放）
+        // B. 安全签名确认（Hex 转换确保手机端兼容性）
         const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
         const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
         
@@ -40,65 +42,72 @@ export async function connectWallet() {
         
         // C. 更新状态标记
         localStorage.setItem('fbs_address', address);
-        localStorage.setItem('user_logout_manual', 'false'); // 关键：允许自动重连
+        localStorage.setItem('user_logout_manual', 'false'); // 核心：清除手动退出标记，允许下次自动重连
         currentAddress = address;
         
-        console.log("[Wallet] 连接成功:", address);
+        console.log("[Wallet] 手动连接成功:", address);
         
-        // D. 完成登录流程（更新UI并拉取飞书数据）
+        // D. 完成登录流程
         finishLogin();
 
     } catch (e) { 
         console.error("[Wallet] 连接取消或失败:", e); 
-        // 只有非 4001（用户主动取消）才报错提示
-        if (e.code !== 4001) alert("连接失败，请重试");
+        // 4001 是用户拒绝签名的标准错误码
+        if (e.code === 4001) {
+            alert("您已取消签名授权");
+        } else {
+            alert("连接失败，请检查钱包状态");
+        }
     }
 }
 
 /**
- * 3. 完成登录后的动作
+ * 3. 完成登录后的动作（更新UI + 拉取数据）
  */
 export function finishLogin() {
-    // 更新按钮显示
+    // 1. 更新按钮显示
     updateWalletUI(currentAddress);
     
-    // 立即拉取飞书后台资产数据
+    // 2. 立即拉取飞书后台资产数据
+    // 注意：fetchUserData 内部已删除“新用户自动弹窗”逻辑
     if (typeof window.fetchUserData === 'function') {
         window.fetchUserData(currentAddress);
     }
     
-    // 如果有打开的弹窗，自动关闭
+    // 3. 如果是在某个交互弹窗中触发的登录，自动关闭弹窗
     if (typeof window.closeModal === 'function') {
         window.closeModal();
     }
 }
 
 /**
- * 4. 更新钱包 UI（已连接状态）
+ * 4. 更新钱包 UI（已连接状态：显示缩略地址）
  */
 export function updateWalletUI(addr) {
     const el = document.getElementById('walletAddr');
     if (el) {
-        // 显示前6位和后4位
-        el.innerText = addr.slice(0, 6) + '...' + addr.slice(-4);
-        el.removeAttribute('data-i18n'); // 移除国际化键名，直接显示地址
+        // 显示格式如 0x1234...abcd
+        const displayAddr = addr.slice(0, 6) + '...' + addr.slice(-4);
+        el.innerText = displayAddr;
+        el.removeAttribute('data-i18n'); // 移除“连接钱包”的多语言标签
         el.className = "cursor-pointer font-black bg-emerald-50 text-emerald-600 px-4 py-2 rounded-full text-[10px] border border-emerald-100 mb-4 inline-block";
     }
 }
 
 /**
- * 5. 重置钱包 UI（未连接状态）
+ * 5. 重置钱包 UI（未连接状态：显示连接钱包）
  */
 export function resetWalletUI() {
     const el = document.getElementById('walletAddr');
     if (el) {
         el.innerText = '连接钱包';
-        el.setAttribute('data-i18n', 'connect'); // 恢复国际化标记
+        el.setAttribute('data-i18n', 'connect'); // 恢复多语言标记
         el.className = "cursor-pointer font-black bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] border border-blue-100 mb-4 inline-block";
         
-        // 立即触发一次多语言翻译扫描
+        // 触发一次全局多语言翻译，使“连接钱包”根据当前语言显示
         if (window.i18nRender) {
-            window.i18nRender(localStorage.getItem('fbs_lang') || 'zh-CN');
+            const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+            window.i18nRender(savedLang);
         }
     }
 }
@@ -107,8 +116,8 @@ export function resetWalletUI() {
  * 6. 登出逻辑
  */
 export function logout() {
-    if (confirm("确定要退出登录并断开连接吗？\n退出后下次访问将不再自动连接。")) {
-        // 设置手动退出标记，阻止 app-init.js 的重连判断
+    if (confirm("确定要退出登录吗？\n退出后下次访问将不会自动重连。")) {
+        // 设置手动退出标记，彻底阻止下一次的自动重连判断
         localStorage.setItem('user_logout_manual', 'true');
         localStorage.removeItem('fbs_address');
         
@@ -118,12 +127,15 @@ export function logout() {
 }
 
 /**
- * 获取/设置地址的辅助函数
+ * 外部调用接口：获取当前本地存储的地址
  */
 export function getCurrentAddress() {
     return localStorage.getItem('fbs_address');
 }
 
+/**
+ * 外部调用接口：手动更新当前地址变量
+ */
 export function setCurrentAddress(addr) {
     currentAddress = addr;
 }
