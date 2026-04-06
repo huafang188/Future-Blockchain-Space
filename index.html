@@ -32,12 +32,16 @@
 </div>
             <div class="bg-slate-100 rounded-xl px-1">
 <select id="langSelect" onchange="switchLang(this.value)" class="bg-transparent border-none text-xs px-2 py-2 font-bold text-slate-700 outline-none">
-    <option value="ru">🇷🇺 Русский</option>
-    <option value="en">🇺🇸 English</option>
     <option value="zh-CN">🇨🇳 简体中文</option>
     <option value="zh-HK">🇭🇰 繁體中文</option>
+    <option value="en">🇺🇸 English</option>
     <option value="ja">🇯🇵 日本語</option>
     <option value="ko">🇰🇷 한국어</option>
+    <option value="ru">🇷🇺 Русский</option>
+    <option value="de">🇩🇪 Deutsch</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="it">🇮🇹 Italiano</option>
+    <option value="es">🇪🇸 Español</option>
 </select>
             </div>
         </div>
@@ -171,41 +175,44 @@
         </div>
 
 <div id="page-mine" class="page-view hidden space-y-6">
-    <section class="miner-card">
-        <div class="flex justify-between items-center mb-4">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Miner Status</span>
-            <span class="bg-emerald-50 text-emerald-500 px-3 py-1 rounded-full text-[9px] font-bold border border-emerald-100">Running</span>
-        </div>
+<section class="miner-card">
+    <div class="flex justify-between items-center mb-4">
+        <!-- 优化1: 加上 data-i18n -->
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" data-i18n="miner_status_label">Miner Status</span>
+        <span class="bg-emerald-50 text-emerald-500 px-3 py-1 rounded-full text-[9px] font-bold border border-emerald-100" data-i18n="miner_status_running">Running</span>
+    </div>
 
-        <div class="miner-header">
-            <img src="assets/miner_logo.webp" class="miner-img-small" onerror="this.src='assets/head_logo.png'">
-            <div class="miner-info-text">
-                <h3 data-i18n="miner_name">阿瓦隆 1066 智能矿机</h3>
-                <p>每台矿机算力 = 30TH/S，功耗 1500W</p>
-                <p class="mt-2 text-indigo-500 font-bold">FBS Smart Miner S1</p>
-            </div>
+    <div class="miner-header">
+        <img src="assets/miner_logo.webp" class="miner-img-small" onerror="this.src='assets/head_logo.png'">
+        <div class="miner-info-text">
+            <h3 data-i18n="miner_name">阿瓦隆 1066 智能矿机</h3>
+            <!-- 优化2: 加上 data-i18n -->
+            <p data-i18n="miner_specs">每台矿机算力 = 30TH/S，功耗 1500W</p>
+            <p class="mt-2 text-indigo-500 font-bold">FBS Smart Miner S1</p>
         </div>
+    </div>
 
-        <!-- 数据展示：2x2 网格 -->
-        <div class="miner-stats-grid">
-            <div class="stat-item">
-                <span class="stat-label" data-i18n="m_count">数量</span>
-                <span id="miner_count" class="stat-value">0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label" data-i18n="m_yield">日产量</span>
-                <span id="miner_daily" class="stat-value">0.00</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label" data-i18n="m_term">期限</span>
-                <span id="miner_deadline" class="stat-value">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label" data-i18n="m_locked">锁仓</span>
-                <span id="miner_locked" class="stat-value">0.00</span>
-            </div>
+    <!-- 数据展示：2x2 网格 -->
+    <div class="miner-stats-grid">
+        <div class="stat-item">
+            <!-- 确保这里的 m_count 与语言包里的 Key 完全一致 -->
+            <span class="stat-label" data-i18n="m_count">数量</span>
+            <span id="miner_count" class="stat-value">0</span>
         </div>
-
+        <div class="stat-item">
+            <span class="stat-label" data-i18n="m_yield">日产量</span>
+            <span id="miner_daily" class="stat-value">0.00</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label" data-i18n="m_term">期限</span>
+            <span id="miner_deadline" class="stat-value">--</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label" data-i18n="m_locked">锁仓</span>
+            <span id="miner_locked" class="stat-value">0.00</span>
+        </div>
+    </div>
+</section>
         <div class="grid grid-cols-3 gap-4 mt-6">
 <button onclick="openMinerModal('buy')" class="action-btn">
     <span data-i18n="buy_miner">购买矿机</span>
@@ -360,6 +367,10 @@
 <script src="js/lang/ja.js"></script>
 <script src="js/lang/ko.js"></script>
 <script src="js/lang/ru.js"></script>
+<script src="js/lang/de.js"></script>
+<script src="js/lang/fr.js"></script>
+<script src="js/lang/it.js"></script>
+<script src="js/lang/es.js"></script>
 
 <script src="js/i18n-core.js"></script>
 
