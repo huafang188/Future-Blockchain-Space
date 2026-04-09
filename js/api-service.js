@@ -56,8 +56,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         const response = await fetch(API_BASE, {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCsrfToken()
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         });
@@ -104,7 +103,7 @@ export async function fetchUserData(address) {
         console.log(`[API] 正在从后端同步数据: ${address}`);
         const cleanAddr = address.toLowerCase().trim();
         
-        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}&csrf=${getCsrfToken()}`, { signal });
+        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
         
         if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
         
