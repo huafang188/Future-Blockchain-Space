@@ -88,8 +88,8 @@ export function mountModalHandlers() {
         const max = document.getElementById('miner_count')?.innerText || "0";
         window.showModal("miner_transfer_title", `
             <div class="space-y-4 text-left">
-                <input type="text" id="minerT_Addr" placeholder="接收者地址 (0x...)" class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-[11px] border-none outline-none">
-                <input type="number" id="minerT_Amount" placeholder="数量 (最多 ${max})" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <input type="text" id="minerT_Addr" placeholder="接收者地址 (0x...)" data-i18n-placeholder="receiver_address_placeholder" class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-[11px] border-none outline-none">
+                <input type="number" id="minerT_Amount" placeholder="数量 (最多 ${max})" data-i18n-placeholder="amount_max_placeholder" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doMinerTransfer()" class="action-btn w-full mt-2">提交转让签名</button>
             </div>
         `);
@@ -101,7 +101,7 @@ window.openRechargeModal = function() {
             <div class="space-y-4">
                 <!-- 1. 选择充值资产区块 (上方) -->
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1">选择充值资产</p>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1" data-i18n="select_recharge_asset">选择充值资产</p>
                     <div class="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
                         <!-- 这里的 recLogo 会随着下拉框选择而自动切换 -->
                         <img id="recLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
@@ -119,7 +119,7 @@ window.openRechargeModal = function() {
                 <!-- 2. 数量输入区块 (下方) -->
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
                     <div class="flex justify-between items-center mb-2 ml-1">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">充值数量</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="recharge_amount">充值数量</p>
                     </div>
                     <input type="number" id="recAmount" placeholder="0.00" 
                            class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
@@ -149,8 +149,8 @@ window.openExchangeModal = function() {
                 <!-- 兑出区域 -->
                 <div class="p-5 bg-slate-50 rounded-[2rem] border border-slate-100">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1">兑出资产</span>
-                        <span class="text-[10px] font-bold text-indigo-500 mr-1 cursor-pointer" onclick="window.fillMax('sFromToken','sFromAmt')">最大可用</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1" data-i18n="swap_from">兑出资产</span>
+                        <span class="text-[10px] font-bold text-indigo-500 mr-1 cursor-pointer" onclick="window.fillMax('sFromToken','sFromAmt')" data-i18n="max_available">最大可用</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和 下拉框合并成一个“币种选择按钮” -->
@@ -179,7 +179,7 @@ window.openExchangeModal = function() {
                 <!-- 兑入区域 -->
                 <div class="p-5 bg-slate-50 rounded-[2rem] border border-slate-100">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1">预计兑入</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1" data-i18n="expected_receive">预计兑入</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和 下拉框合并 -->
@@ -253,7 +253,7 @@ window.openInternalTransferModal = function() {
     window.openTeamDetailModal = function() {
         window.showModal("modal_team_title", `
             <div class="space-y-4">
-                <p class="text-xs text-blue-600 bg-blue-50 p-4 rounded-2xl">团队详情将通过邮件发送</p>
+                <p class="text-xs text-blue-600 bg-blue-50 p-4 rounded-2xl" data-i18n="team_email_desc">团队详情将通过邮件发送</p>
                 <input type="email" id="team_email" placeholder="您的邮箱" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border-none">
                 <button type="button" onclick="window.doTeamEmailSubmit()" class="action-btn w-full">提交申请签名</button>
             </div>`);
@@ -279,6 +279,20 @@ window.openInternalTransferModal = function() {
             }
         }
     };
+
+    // --- 辅助：创建带Logo的币种选择器 ---
+    function createTokenSelector(selectId, imgId, selectedSymbol) {
+        return `
+            <div class="flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                <img id="${imgId}" src="${tokenConfig[selectedSymbol].logo}" class="w-8 h-8 object-contain shrink-0">
+                <select id="${selectId}" onchange="window.updateModalLogo('${selectId}','${imgId}')" 
+                        class="flex-1 bg-transparent font-black text-base outline-none border-none cursor-pointer appearance-none">
+                    ${getLogoOptions(selectedSymbol)}
+                </select>
+                <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+            </div>
+        `;
+    }
 
     window.closeModal = () => {
         const overlay = document.getElementById('modalOverlay');

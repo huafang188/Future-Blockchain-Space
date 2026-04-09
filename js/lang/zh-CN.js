@@ -23,6 +23,8 @@ window.i18nData['zh-CN'] = {
     m_yield: "预估日产",
     m_term: "挖矿期限", // 对齐飞书截图
     m_locked: "锁仓数量", // 对齐飞书截图
+    miner_model: "FBS 智能矿机 S1",
+    partners_title: "合作伙伴 & 钱包",
     buy_miner: "购买矿机",
     pay_fee: "缴纳电费",
     transfer_miner: "转让矿机",
@@ -55,6 +57,14 @@ window.i18nData['zh-CN'] = {
     expected_pay: "预计支付",
     elec_cost: "所需电费",
     available: "可用余额",
+    team_email_desc: "团队详情将通过邮件发送",
+    expected_receive: "预计兑入",
+    swap_from: "兑出资产",
+    recharge_amount: "充值数量",
+    select_recharge_asset: "选择充值资产",
+    receiver_address_placeholder: "接收者地址 (0x...)",
+    amount_max_placeholder: "数量 (最多 {max})",
+    max_available: "最大可用",
 
     // --- 5. 业务具体弹窗标题 (Modal Titles) ---
     modal_register_title: "激活挖矿账户",

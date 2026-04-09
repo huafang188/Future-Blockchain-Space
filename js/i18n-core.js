@@ -32,6 +32,21 @@ window.i18nRender = function() {
         }
     });
 
+    // --- B. 处理占位符翻译 ---
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const translation = dict[key];
+        if (translation !== undefined) {
+            // 处理占位符中的变量，如 {max}
+            let placeholder = translation;
+            if (placeholder.includes('{max}')) {
+                const max = el.placeholder.match(/最多 (\d+)/)?.[1] || '';
+                placeholder = placeholder.replace('{max}', max);
+            }
+            el.placeholder = placeholder;
+        }
+    });
+
     // --- B. 联动动态组件 (仅保留只需语言代码即可渲染的函数) ---
     /**
      * ⚠️ 修复说明：

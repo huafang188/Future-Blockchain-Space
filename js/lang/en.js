@@ -23,6 +23,8 @@ window.i18nData['en'] = {
     m_yield: "Daily Yield",
     m_term: "Mining Term", 
     m_locked: "Locked Amount",
+    miner_model: "FBS Smart Miner S1",
+    partners_title: "Partners & Wallet",
     buy_miner: "Buy Miner",
     pay_fee: "Pay Electric",
     transfer_miner: "Transfer Miner",
@@ -55,6 +57,14 @@ window.i18nData['en'] = {
     expected_pay: "Estimated Pay",
     elec_cost: "Electric Cost",
     available: "Available Balance",
+    team_email_desc: "Team reports will be sent to your email",
+    expected_receive: "Estimated Receive",
+    swap_from: "Swap From",
+    recharge_amount: "Recharge Amount",
+    select_recharge_asset: "Select Recharge Asset",
+    receiver_address_placeholder: "Recipient Address (0x...)",
+    amount_max_placeholder: "Amount (max {max})",
+    max_available: "Max Available",
 
     // --- 5. Modal Titles ---
     modal_register_title: "Activate Mining Account",

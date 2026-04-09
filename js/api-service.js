@@ -3,6 +3,32 @@ import { API_BASE } from './config.js';
 // 用于管理请求取消，彻底解决并发请求导致的 "Failed to fetch" 报错
 let fetchController = null;
 
+// CSRF token 管理
+let csrfToken = null;
+
+/**
+ * 生成或获取 CSRF token
+ */
+function getCsrfToken() {
+    if (!csrfToken) {
+        csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        // 存储到 localStorage
+        localStorage.setItem('fbs_csrf_token', csrfToken);
+    }
+    return csrfToken;
+}
+
+/**
+ * 辅助函数：统一处理API错误
+ */
+function handleApiError(message) {
+    if (window.showModal) {
+        window.showModal("错误", `<div class="p-4 text-center">${message}</div>`);
+    } else {
+        alert(message);
+    }
+}
+
 /**
  * 1. 提交交易/申请记录到后端 (POST)
  * 涵盖：充值、提现、兑换、绑定推荐人、矿机/内部转账
@@ -29,7 +55,10 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     try {
         const response = await fetch(API_BASE, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+            },
             body: JSON.stringify(payload)
         });
         
@@ -47,13 +76,14 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
             
             return { success: true, data: result };
         } else {
-            alert(`提交失败: ${result.msg || "服务器繁忙"}`);
+            handleApiError(`提交失败: ${result.msg || "服务器繁忙"}`);
             return { success: false };
         }
     } catch (e) {
         // 捕获因刷新页面导致的连接中断
         if (e.message === 'Failed to fetch') return { success: false };
         console.error("[API] POST 请求异常:", e);
+        handleApiError(`请求异常: ${e.message}`);
         return { success: false, error: e.message };
     }
 }
@@ -74,7 +104,7 @@ export async function fetchUserData(address) {
         console.log(`[API] 正在从后端同步数据: ${address}`);
         const cleanAddr = address.toLowerCase().trim();
         
-        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
+        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}&csrf=${getCsrfToken()}`, { signal });
         
         if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
         
