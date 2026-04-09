@@ -28,6 +28,9 @@ window.i18nData['en'] = {
     buy_miner: "Buy Miner",
     pay_fee: "Pay Electric",
     transfer_miner: "Transfer Miner",
+    miner_status_label: "Miner Status",
+    miner_status_running: "Running",
+    miner_specs: "Hash Power = 30TH/S, Power 1500W",
 
     // --- 3. Assets & Team ---
     assets_list: "Asset Overview",
@@ -44,6 +47,8 @@ window.i18nData['en'] = {
     team_sales: "Team Sales",
     total_rewards: "Total Rewards",
     reg_time: "Registration Date",
+    btn_bind_inviter: "Bind My Referrer",
+    team_detail: "Apply for Team Data",
 
     // --- 4. Common Modals ---
     btn_confirm: "Confirm Submit",
@@ -93,6 +98,8 @@ window.i18nData['en'] = {
 
     // --- 8. News & Announcements ---
     news_title: "Announcements",
+    history_title: "Transaction History",
+    transfer_title: "Transfer History",
     news_list: [
         "NEO Eco Mining Matrix is live, starting a new era of hash power.",
         "FBS Protocol v2.0 upgrade completed, transaction costs reduced by 30%.",

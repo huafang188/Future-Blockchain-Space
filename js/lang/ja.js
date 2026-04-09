@@ -23,9 +23,14 @@ window.i18nData['ja'] = {
     m_yield: "1日あたりの産出量",
     m_term: "マイニング期限", 
     m_locked: "ロック数量", 
+    miner_model: "FBS スマートマイナー S1",
+    partners_title: "パートナー & ウォレット",
     buy_miner: "マイナー購入",
     pay_fee: "電気代支払い",
     transfer_miner: "マイナー譲渡",
+    miner_status_label: "マイナーステータス",
+    miner_status_running: "稼働中",
+    miner_specs: "1台あたりの計算能力 = 30TH/S、消費電力 1500W",
 
     // --- 3. 資産とチーム (User Page) ---
     assets_list: "資産プレビュー",
@@ -42,6 +47,8 @@ window.i18nData['ja'] = {
     team_sales: "チーム総実績",
     total_rewards: "累計報酬",
     reg_time: "登録日時",
+    btn_bind_inviter: "紹介者を紐付ける",
+    team_detail: "チームデータを申請する",
 
     // --- 4. ポップアップ共通 (Modals) ---
     btn_confirm: "確認して送信",
@@ -83,6 +90,8 @@ window.i18nData['ja'] = {
 
     // --- 8. ニュース & お知らせ ---
     news_title: "お知らせとニュース",
+    history_title: "取引履歴",
+    transfer_title: "送金履歴",
     news_list: [
         "NEO生態マイニングマトリックスが正式に稼働、計算能力の新時代へ",
         "FBSプロトコル v2.0 アップグレード完了、取引コストを30%削減",

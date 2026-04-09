@@ -28,6 +28,9 @@ window.i18nData['zh-CN'] = {
     buy_miner: "购买矿机",
     pay_fee: "缴纳电费",
     transfer_miner: "转让矿机",
+    miner_status_label: "矿机状态",
+    miner_status_running: "运行中",
+    miner_specs: "每台矿机算力 = 30TH/S，功耗 1500W",
 
     // --- 3. 资产与团队 (User Page) ---
     assets_list: "资产预览",
@@ -44,6 +47,8 @@ window.i18nData['zh-CN'] = {
     team_sales: "团队业绩",
     total_rewards: "累计奖励",
     reg_time: "注册时间",
+    btn_bind_inviter: "绑定我的推荐人",
+    team_detail: "申请团队数据",
 
     // --- 4. 弹窗公共部分 (Modals) ---
     btn_confirm: "确认提交",
@@ -93,6 +98,8 @@ window.i18nData['zh-CN'] = {
 
     // --- 8. 新闻与公告 ---
     news_title: "公告与新闻",
+    history_title: "交易历史",
+    transfer_title: "转账流水",
     news_list: [
         "NEO生态挖矿矩阵正式上线，开启算力新纪元",
         "FBS 协议 v2.0 升级完成，交易损耗降低 30%",

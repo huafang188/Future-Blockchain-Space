@@ -23,9 +23,14 @@ window.i18nData['fr'] = {
     m_yield: "Rendement quotidien",
     m_term: "Échéance du minage", 
     m_locked: "Quantité verrouillée", 
+    miner_model: "FBS Smart Miner S1",
+    partners_title: "Partenaires & Portefeuille",
     buy_miner: "Acheter Mineur",
     pay_fee: "Payer Électricité",
     transfer_miner: "Transférer Mineur",
+    miner_status_label: "Statut du Mineur",
+    miner_status_running: "En Fonctionnement",
+    miner_specs: "Puissance = 30TH/S, Consommation 1500W",
 
     // --- 3. Actifs et Équipe (User Page) ---
     assets_list: "Aperçu des Actifs",
@@ -42,6 +47,8 @@ window.i18nData['fr'] = {
     team_sales: "Volume de l'équipe",
     total_rewards: "Récompenses totales",
     reg_time: "Date d'inscription",
+    btn_bind_inviter: "Lier le Parrain",
+    team_detail: "Demander Données Équipe",
 
     // --- 4. Éléments communs des fenêtres (Modals) ---
     btn_confirm: "Confirmer l'envoi",
@@ -83,6 +90,8 @@ window.i18nData['fr'] = {
 
     // --- 8. Nouvelles et Annonces ---
     news_title: "Annonces et Nouvelles",
+    history_title: "Historique des Transactions",
+    transfer_title: "Historique des Transfers",
     news_list: [
         "Lancement officiel de la Matrice NEO, nouvelle ère du hachage",
         "Mise à jour du protocole FBS v2.0, frais réduits de 30%",

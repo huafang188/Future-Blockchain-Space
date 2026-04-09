@@ -23,9 +23,14 @@ window.i18nData['zh-HK'] = {
     m_yield: "預估日產",
     m_term: "挖礦期限", // 對齊飛書截圖
     m_locked: "鎖倉數量", // 對齊飛書截圖
+    miner_model: "FBS 智能礦機 S1",
+    partners_title: "合作夥伴 & 錢包",
     buy_miner: "購買礦機",
     pay_fee: "繳納電費",
     transfer_miner: "轉讓礦機",
+    miner_status_label: "礦機狀態",
+    miner_status_running: "運行中",
+    miner_specs: "每台礦機算力 = 30TH/S，功耗 1500W",
 
     // --- 3. 資產與團隊 (User Page) ---
     assets_list: "資產預覽",
@@ -42,6 +47,8 @@ window.i18nData['zh-HK'] = {
     team_sales: "團隊業績",
     total_rewards: "累計獎勵",
     reg_time: "註冊時間",
+    btn_bind_inviter: "綁定我的推薦人",
+    team_detail: "申請團隊數據",
 
     // --- 4. 彈窗公共部分 (Modals) ---
     btn_confirm: "確認提交",
@@ -83,6 +90,8 @@ window.i18nData['zh-HK'] = {
 
     // --- 8. 新聞與公告 ---
     news_title: "公告與新聞",
+    history_title: "交易歷史",
+    transfer_title: "轉賬流水",
     news_list: [
         "NEO生態挖礦矩陣正式上線，開啟算力新紀元",
         "FBS 協議 v2.0 升級完成，交易損耗降低 30%",

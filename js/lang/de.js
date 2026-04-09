@@ -23,9 +23,14 @@ window.i18nData['de'] = {
     m_yield: "Täglicher Ertrag",
     m_term: "Mining-Laufzeit", 
     m_locked: "Gesperrter Betrag", 
+    miner_model: "FBS Smart Miner S1",
+    partners_title: "Partner & Wallet",
     buy_miner: "Miner kaufen",
     pay_fee: "Stromkosten zahlen",
     transfer_miner: "Miner übertragen",
+    miner_status_label: "Miner-Status",
+    miner_status_running: "Laufend",
+    miner_specs: "Rechenleistung = 30TH/S, Verbrauch 1500W",
 
     // --- 3. Assets & Team (User Page) ---
     assets_list: "Asset-Übersicht",
@@ -42,6 +47,8 @@ window.i18nData['de'] = {
     team_sales: "Teamumsatz",
     total_rewards: "Gesamtbelohnungen",
     reg_time: "Registrierungsdatum",
+    btn_bind_inviter: "Einladungs-ID binden",
+    team_detail: "Team-Daten anfordern",
 
     // --- 4. Allgemeine Modal-Elemente (Modals) ---
     btn_confirm: "Bestätigen",
@@ -83,6 +90,8 @@ window.i18nData['de'] = {
 
     // --- 8. News & Ankündigungen ---
     news_title: "Ankündigungen & News",
+    history_title: "Transaktionsverlauf",
+    transfer_title: "Transferverlauf",
     news_list: [
         "NEO Eco Mining Matrix ist offiziell gestartet — Eine neue Ära beginnt",
         "FBS-Protokoll v2.0 Upgrade abgeschlossen, Transaktionskosten um 30% gesenkt",

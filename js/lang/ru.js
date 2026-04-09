@@ -23,9 +23,14 @@ window.i18nData['ru'] = {
     m_yield: "Доход в день",
     m_term: "Срок майнинга", 
     m_locked: "Заблокировано", 
+    miner_model: "FBS Smart Miner S1",
+    partners_title: "Партнеры & Кошелек",
     buy_miner: "Купить майнер",
     pay_fee: "Оплата эл-энергии",
     transfer_miner: "Передать майнер",
+    miner_status_label: "Статус майнера",
+    miner_status_running: "В работе",
+    miner_specs: "Мощность = 30TH/S, Потребление 1500W",
 
     // --- 3. Активы и Команда (User Page) ---
     assets_list: "Обзор активов",
@@ -42,6 +47,8 @@ window.i18nData['ru'] = {
     team_sales: "Объем команды",
     total_rewards: "Всего наград",
     reg_time: "Дата регистрации",
+    btn_bind_inviter: "Привязать пригласителя",
+    team_detail: "Запросить данные команды",
 
     // --- 4. Общие элементы модальных окон (Modals) ---
     btn_confirm: "Подтвердить отправку",
@@ -83,6 +90,8 @@ window.i18nData['ru'] = {
 
     // --- 8. Новости и Объявления ---
     news_title: "Новости и объявления",
+    history_title: "История транзакций",
+    transfer_title: "История переводов",
     news_list: [
         "Матрица майнинга NEO официально запущена — новая эра мощности",
         "Протокол FBS v2.0 обновлен: комиссии снижены на 30%",

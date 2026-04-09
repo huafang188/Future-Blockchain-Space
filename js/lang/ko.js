@@ -23,9 +23,14 @@ window.i18nData['ko'] = {
     m_yield: "일일 생산량",
     m_term: "채굴 기간", 
     m_locked: "락업 수량", 
+    miner_model: "FBS 스마트 채굴기 S1",
+    partners_title: "파트너 & 지갑",
     buy_miner: "채굴기 구매",
     pay_fee: "전기료 납부",
     transfer_miner: "채굴기 전송",
+    miner_status_label: "채굴기 상태",
+    miner_status_running: "운영 중",
+    miner_specs: "대당 해시파워 = 30TH/S, 소비전력 1500W",
 
     // --- 3. 자산 및 팀 (User Page) ---
     assets_list: "자산 현황",
@@ -42,6 +47,8 @@ window.i18nData['ko'] = {
     team_sales: "전체 팀 실적",
     total_rewards: "누적 보상",
     reg_time: "가입 일시",
+    btn_bind_inviter: "추천인 바인딩",
+    team_detail: "팀 데이터 신청",
 
     // --- 4. 팝업 공통 (Modals) ---
     btn_confirm: "확인 및 제출",
@@ -83,6 +90,8 @@ window.i18nData['ko'] = {
 
     // --- 8. 뉴스 및 공지사항 ---
     news_title: "공지 및 뉴스",
+    history_title: "거래 내역",
+    transfer_title: "전송 내역",
     news_list: [
         "NEO 에코 채굴 매트릭스 정식 출시, 해시파워의 새로운 시대",
         "FBS 프로토콜 v2.0 업그레이드 완료, 거래 비용 30% 감소",

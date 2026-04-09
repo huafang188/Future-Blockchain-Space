@@ -23,9 +23,14 @@ window.i18nData['es'] = {
     m_yield: "Rendimiento Diario",
     m_term: "Plazo de Minería", 
     m_locked: "Cantidad Bloqueada", 
+    miner_model: "FBS Smart Miner S1",
+    partners_title: "Socios & Billetera",
     buy_miner: "Comprar Minero",
     pay_fee: "Pagar Electricidad",
     transfer_miner: "Transferir Minero",
+    miner_status_label: "Estado del Minero",
+    miner_status_running: "En Funcionamiento",
+    miner_specs: "Potencia = 30TH/S, Consumo 1500W",
 
     // --- 3. Activos y Equipo (Página de Usuario) ---
     assets_list: "Resumen de Activos",
@@ -42,6 +47,8 @@ window.i18nData['es'] = {
     team_sales: "Ventas del Equipo",
     total_rewards: "Recompensas Totales",
     reg_time: "Fecha de Registro",
+    btn_bind_inviter: "Vincular Invitador",
+    team_detail: "Solicitar Datos del Equipo",
 
     // --- 4. Elementos comunes de Modales (Popups) ---
     btn_confirm: "Confirmar Envío",
@@ -83,6 +90,8 @@ window.i18nData['es'] = {
 
     // --- 8. Noticias y Anuncios ---
     news_title: "Anuncios y Noticias",
+    history_title: "Historial de Transacciones",
+    transfer_title: "Historial de Transferencias",
     news_list: [
         "La Matriz de Minería NEO está oficialmente en línea, comienza una nueva era",
         "Protocolo FBS v2.0 actualizado, costos de transacción reducidos en un 30%",
