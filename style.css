@@ -220,3 +220,13 @@ body {
 
 /* 隐藏滚动条 */
 ::-webkit-scrollbar { display: none; }
+
+/* 白皮书模块 */
+.wp-chapter { border-bottom: 1px solid #f1f5f9; padding: 4px 0; }
+.wp-chapter:last-child { border-bottom: none; }
+.wp-chapter summary::-webkit-details-marker { display: none; }
+.wp-sub { border-left: 2px solid #ede9fe; margin-left: 4px; padding-left: 8px; }
+.wp-sub summary::-webkit-details-marker { display: none; }
+#wpContent { max-height: 70vh; overflow-y: auto; padding-right: 4px; }
+#wpContent::-webkit-scrollbar { width: 3px; }
+#wpContent::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 3px; }
