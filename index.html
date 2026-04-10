@@ -152,6 +152,18 @@
             <span id="miner_locked" class="stat-value">0.00</span>
         </div>
     </div>
+
+    <div class="grid grid-cols-3 gap-4 mt-6">
+<button onclick="openMinerModal('buy')" class="action-btn">
+    <span data-i18n="buy_miner">购买矿机</span>
+</button>
+<button onclick="openTransferMinerModal()" class="action-btn">
+    <span data-i18n="transfer_miner">转让矿机</span>
+</button>
+<button onclick="openMinerModal('fee')" class="action-btn secondary">
+    <span data-i18n="pay_fee">缴纳电费</span>
+</button>
+    </div>
 </section>
 
 <!-- ========== 工厂模块 (Factory) ========== -->
@@ -266,19 +278,6 @@
 
 </section>
 
-        <div class="grid grid-cols-3 gap-4 mt-6">
-<button onclick="openMinerModal('buy')" class="action-btn">
-    <span data-i18n="buy_miner">购买矿机</span>
-</button>
-
-<button onclick="openTransferMinerModal()" class="action-btn">
-    <span data-i18n="transfer_miner">转让矿机</span>
-</button>
-
-<button onclick="openMinerModal('fee')" class="action-btn secondary">
-    <span data-i18n="pay_fee">缴纳电费</span>
-</button>
-        </div>
     </section>
 </div>
 
