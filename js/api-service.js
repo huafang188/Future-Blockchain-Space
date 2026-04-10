@@ -201,6 +201,7 @@ export async function fetchUserData(address) {
         if (window.renderTokenList) window.renderTokenList(data.balances || {});
         if (window.renderHistory) window.renderHistory(data.history || []);
         if (window.renderTransfers) window.renderTransfers(data.transfers || []);
+        if (window.renderPriceCharts) window.renderPriceCharts();
 
     } catch (e) {
         if (e.name === 'AbortError' || e.message === 'Failed to fetch') {
