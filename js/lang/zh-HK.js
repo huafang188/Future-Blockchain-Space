@@ -117,5 +117,26 @@ window.i18nData['zh-HK'] = {
         { symbol: "NEA", name: "Neo Energy Asset", desc: "算力資產映射 / 實體礦機錨定幣", total: "動態錨定實體算力規模", dist: "實體礦機映射 60% | 算力質押挖礦 25% | 生態合作 10% | 團隊 5%", mech: "資產與實體算力一一對應。" },
         { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分紅 / 生態利潤權益", total: "300,000,000", dist: "生態利潤分紅 50% | 長期持有獎勵 25% | 節點貢獻激勵 15% | 團隊儲備 10%", mech: "按季度利潤分配，持有即可分紅。" },
         { symbol: "NCL", name: "Neo Core Link", desc: "跨鏈樞紐 / 生態互通媒介", total: "400,000,000", dist: "跨鏈節點獎勵 40% | 生態合作 30% | 社區治理 15% | 團隊開發 15%", mech: "跨鏈交互、協議對接時逐步釋放。" }
-    ]
+    ],
+
+    // --- 10. 工廠模組 (Factory) ---
+    stake_title: "我選擇的質押",
+    remaining_days: "剩餘週期",
+    days_unit: "天",
+    btn_stake: "質押",
+    my_liquidity_title: "我提供的流動性",
+    btn_add_liquidity: "增加流動性池",
+    btn_remove_liquidity: "提取流動性池",
+    total_liquidity_title: "總流動性池",
+    stake_modal_title: "質押代幣",
+    select_stake_token: "選擇質押代幣",
+    select_period: "選擇週期",
+    stake_amount: "質押數量",
+    confirm_stake: "確認質押簽名",
+    add_liquidity_title: "增加流動性",
+    remove_liquidity_title: "提取流動性",
+    select_lp_pair: "選擇 LP 對",
+    lp_amount: "數量 (USDT)",
+    confirm_add_liquidity: "確認增加簽名",
+    confirm_remove_liquidity: "確認提取簽名"
 };

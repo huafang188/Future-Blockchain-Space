@@ -294,6 +294,70 @@ window.openInternalTransferModal = function() {
         `;
     }
 
+    // --- 7. 工厂模块：质押弹窗 ---
+    window.openStakeModal = function() {
+        const stakeTokenOptions = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL']
+            .map(t => `<option value="${t}">${t}</option>`).join('');
+        const periodOptions = [180, 360, 540, 720]
+            .map(d => `<option value="${d}">${d} 天</option>`).join('');
+
+        window.showModal("stake_modal_title", `
+            <div class="space-y-4 text-left">
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="select_stake_token">选择质押代币</p>
+                    <select id="stakeToken" class="w-full p-4 bg-white rounded-2xl font-black outline-none border border-slate-100">
+                        ${stakeTokenOptions}
+                    </select>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="select_period">选择周期</p>
+                    <select id="stakePeriod" class="w-full p-4 bg-white rounded-2xl font-black outline-none border border-slate-100">
+                        ${periodOptions}
+                    </select>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="stake_amount">质押数量</p>
+                    <input type="number" id="stakeAmount" placeholder="0.00" 
+                           class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
+                </div>
+                <button type="button" onclick="window.doStake()" class="action-btn w-full mt-2 !from-purple-500" data-i18n="confirm_stake">确认质押签名</button>
+            </div>`);
+    };
+
+    // --- 8. 工厂模块：流动性弹窗 (增加/提取) ---
+    window.openLiquidityModal = function(mode) {
+        const isAdd = mode === 'add';
+        const lpPairs = [
+            { key: 'LP-NEO/USDT', label: 'LP—NEO/USDT' },
+            { key: 'LP-NEX/USDT', label: 'LP—NEX/USDT' },
+            { key: 'LP-NET/USDT', label: 'LP—NET/USDT' },
+            { key: 'LP-NEA/USDT', label: 'LP—NEA/USDT' },
+            { key: 'LP-NRY/USDT', label: 'LP—NRY/USDT' },
+            { key: 'LP-NCL/USDT', label: 'LP—NCL/USDT' }
+        ];
+        const lpOptions = lpPairs.map(p => `<option value="${p.key}">${p.label}</option>`).join('');
+        const titleKey = isAdd ? 'add_liquidity_title' : 'remove_liquidity_title';
+        const btnText = isAdd ? 'confirm_add_liquidity' : 'confirm_remove_liquidity';
+        const btnClass = isAdd ? '!from-cyan-500' : '!from-orange-500';
+        const placeholder = isAdd ? '增加数量 (USDT)' : '提取数量 (USDT)';
+
+        window.showModal(titleKey, `
+            <div class="space-y-4 text-left">
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="select_lp_pair">选择 LP 对</p>
+                    <select id="lpPair" class="w-full p-4 bg-white rounded-2xl font-black outline-none border border-slate-100">
+                        ${lpOptions}
+                    </select>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="lp_amount">数量 (USDT)</p>
+                    <input type="number" id="lpAmount" placeholder="${placeholder}" 
+                           class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
+                </div>
+                <button type="button" onclick="window.doLiquidity('${mode}')" class="action-btn w-full mt-2 ${btnClass}" data-i18n="${btnText}">确认提交签名</button>
+            </div>`);
+    };
+
     window.closeModal = () => {
         const overlay = document.getElementById('modalOverlay');
         if (overlay) {

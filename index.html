@@ -153,6 +153,119 @@
         </div>
     </div>
 </section>
+
+<!-- ========== 工厂模块 (Factory) ========== -->
+<section class="factory-section space-y-6 mt-6">
+    
+    <!-- A. 质押区域 -->
+    <div class="glass-card rounded-[2rem] p-6">
+        <div class="flex items-center gap-2 mb-4 px-1">
+            <span class="w-1.5 h-4 bg-purple-500 rounded-full"></span>
+            <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="stake_title">我选择的质押</h3>
+        </div>
+        <div id="stakeList" class="space-y-2">
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">NEO</span>
+                <span class="text-xs font-bold text-slate-800"><span id="stake_NEO">0</span> / <span data-i18n="remaining_days" class="text-slate-400">剩余周期</span>: <span id="stake_NEO_days">0</span><span data-i18n="days_unit">天</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">NEX</span>
+                <span class="text-xs font-bold text-slate-800"><span id="stake_NEX">0</span> / <span data-i18n="remaining_days" class="text-slate-400">剩余周期</span>: <span id="stake_NEX_days">0</span><span data-i18n="days_unit">天</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">NET</span>
+                <span class="text-xs font-bold text-slate-800"><span id="stake_NET">0</span> / <span data-i18n="remaining_days" class="text-slate-400">剩余周期</span>: <span id="stake_NET_days">0</span><span data-i18n="days_unit">天</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">NEA</span>
+                <span class="text-xs font-bold text-slate-800"><span id="stake_NEA">0</span> / <span data-i18n="remaining_days" class="text-slate-400">剩余周期</span>: <span id="stake_NEA_days">0</span><span data-i18n="days_unit">天</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">NRY</span>
+                <span class="text-xs font-bold text-slate-800"><span id="stake_NRY">0</span> / <span data-i18n="remaining_days" class="text-slate-400">剩余周期</span>: <span id="stake_NRY_days">0</span><span data-i18n="days_unit">天</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">NCL</span>
+                <span class="text-xs font-bold text-slate-800"><span id="stake_NCL">0</span> / <span data-i18n="remaining_days" class="text-slate-400">剩余周期</span>: <span id="stake_NCL_days">0</span><span data-i18n="days_unit">天</span></span>
+            </div>
+        </div>
+        <button onclick="openStakeModal()" class="action-btn w-full mt-4 !from-purple-500" data-i18n="btn_stake">质押</button>
+    </div>
+
+    <!-- B. 我的流动性区域 -->
+    <div class="glass-card rounded-[2rem] p-6">
+        <div class="flex items-center gap-2 mb-4 px-1">
+            <span class="w-1.5 h-4 bg-cyan-500 rounded-full"></span>
+            <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="my_liquidity_title">我提供的流动性</h3>
+        </div>
+        <div id="liquidityList" class="space-y-2">
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">LP—NEO/USDT</span>
+                <span class="text-xs font-black text-cyan-600">$<span id="liq_NEOUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">LP—NEX/USDT</span>
+                <span class="text-xs font-black text-cyan-600">$<span id="liq_NEXUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">LP—NET/USDT</span>
+                <span class="text-xs font-black text-cyan-600">$<span id="liq_NETUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">LP—NEA/USDT</span>
+                <span class="text-xs font-black text-cyan-600">$<span id="liq_NEAUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">LP—NRY/USDT</span>
+                <span class="text-xs font-black text-cyan-600">$<span id="liq_NRYUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-white/50 rounded-xl border border-slate-50">
+                <span class="text-xs font-bold text-slate-600">LP—NCL/USDT</span>
+                <span class="text-xs font-black text-cyan-600">$<span id="liq_NCLUSDT">0.00</span></span>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-4">
+            <button onclick="openLiquidityModal('add')" class="action-btn text-[10px] py-3 !from-cyan-500" data-i18n="btn_add_liquidity">增加流动性池</button>
+            <button onclick="openLiquidityModal('remove')" class="action-btn text-[10px] py-3 !from-orange-500" data-i18n="btn_remove_liquidity">提取流动性池</button>
+        </div>
+    </div>
+
+    <!-- C. 总流动性池区域 -->
+    <div class="glass-card rounded-[2rem] p-6">
+        <div class="flex items-center gap-2 mb-4 px-1">
+            <span class="w-1.5 h-4 bg-amber-500 rounded-full"></span>
+            <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="total_liquidity_title">总流动性池</h3>
+        </div>
+        <div id="totalLiquidityList" class="space-y-2">
+            <div class="flex justify-between items-center p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                <span class="text-xs font-bold text-slate-600">NEO/USDT</span>
+                <span class="text-xs font-black text-amber-600">$<span id="totalLiq_NEOUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                <span class="text-xs font-bold text-slate-600">NEX/USDT</span>
+                <span class="text-xs font-black text-amber-600">$<span id="totalLiq_NEXUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                <span class="text-xs font-bold text-slate-600">NET/USDT</span>
+                <span class="text-xs font-black text-amber-600">$<span id="totalLiq_NETUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                <span class="text-xs font-bold text-slate-600">NEA/USDT</span>
+                <span class="text-xs font-black text-amber-600">$<span id="totalLiq_NEAUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                <span class="text-xs font-bold text-slate-600">NRY/USDT</span>
+                <span class="text-xs font-black text-amber-600">$<span id="totalLiq_NRYUSDT">0.00</span></span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                <span class="text-xs font-bold text-slate-600">NCL/USDT</span>
+                <span class="text-xs font-black text-amber-600">$<span id="totalLiq_NCLUSDT">0.00</span></span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
         <div class="grid grid-cols-3 gap-4 mt-6">
 <button onclick="openMinerModal('buy')" class="action-btn">
     <span data-i18n="buy_miner">购买矿机</span>

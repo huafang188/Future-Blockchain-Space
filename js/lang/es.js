@@ -117,5 +117,26 @@ window.i18nData['es'] = {
         { symbol: "NEA", name: "Neo Energy Asset", desc: "Mapeo de activos de hash / Anclaje a minero físico", total: "Dinámico según potencia total", dist: "Mapeo de mineros físicos 60% | Staking 25% | Socios 10% | Equipo 5%", mech: "Correspondencia 1:1 con el hardware de minería físico." },
         { symbol: "NRY", name: "Neo Resource Yield", desc: "Derechos de dividendos / Participación en beneficios", total: "300,000,000", dist: "Distribución de utilidades 50% | Premios por holding 25% | Colaboradores 15% | Reserva del equipo 10%", mech: "Distribución trimestral de beneficios a los holders." },
         { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Medio de interoperabilidad", total: "400,000,000", dist: "Premios nodos cross-chain 40% | Alianzas 30% | Gobernanza 15% | Desarrollo 15%", mech: "Liberación durante la integración de protocolos y servicios." }
-    ]
+    ],
+
+    // --- 10. Módulo Fábrica ---
+    stake_title: "Mi Staking",
+    remaining_days: "Restante",
+    days_unit: "días",
+    btn_stake: "Stakear",
+    my_liquidity_title: "Mi Liquidez",
+    btn_add_liquidity: "Añadir Liquidez",
+    btn_remove_liquidity: "Retirar Liquidez",
+    total_liquidity_title: "Pool de Liquidez Total",
+    stake_modal_title: "Stakear Token",
+    select_stake_token: "Seleccionar Token",
+    select_period: "Seleccionar Período",
+    stake_amount: "Cantidad de Stake",
+    confirm_stake: "Confirmar Stake y Firmar",
+    add_liquidity_title: "Añadir Liquidez",
+    remove_liquidity_title: "Retirar Liquidez",
+    select_lp_pair: "Seleccionar Par LP",
+    lp_amount: "Cantidad (USDT)",
+    confirm_add_liquidity: "Confirmar Añadir y Firmar",
+    confirm_remove_liquidity: "Confirmar Retirar y Firmar"
 };

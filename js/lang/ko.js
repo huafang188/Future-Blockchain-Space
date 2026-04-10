@@ -117,5 +117,26 @@ window.i18nData['ko'] = {
         { symbol: "NEA", name: "Neo Energy Asset", desc: "해시 자산 맵핑 / 실물 채굴기 고정 토큰", total: "전체 해시파워 규모에 따른 유동적 발행", dist: "실물 채굴기 맵핑 60% | 스테이킹 채굴 25% | 생태계 협력 10% | 팀 5%", mech: "실물 채굴 장비와 1:1 자산 맵핑." },
         { symbol: "NRY", name: "Neo Resource Yield", desc: "수익 배당 / 생태계 이익 공유 권한", total: "300,000,000", dist: "이익 배당 50% | 장기 보유 보상 25% | 기여자 인센티브 15% | 팀 예비 10%", mech: "분기별 수익 분배, 보유 시 배당 수령." },
         { symbol: "NCL", name: "Neo Core Link", desc: "크로스체인 허브 / 생태계 상호 운용 매개체", total: "400,000,000", dist: "크로스체인 노드 보상 40% | 파트너십 30% | 거버넌스 15% | 개발팀 15%", mech: "프로토콜 연결 및 서비스 연동 시 단계별 릴리스." }
-    ]
+    ],
+
+    // --- 10. 팩토리 모듈 (Factory) ---
+    stake_title: "내 스테이킹",
+    remaining_days: "잔여 기간",
+    days_unit: "일",
+    btn_stake: "스테이킹",
+    my_liquidity_title: "내 유동성",
+    btn_add_liquidity: "유동성 추가",
+    btn_remove_liquidity: "유동성 출금",
+    total_liquidity_title: "총 유동성 풀",
+    stake_modal_title: "토큰 스테이킹",
+    select_stake_token: "토큰 선택",
+    select_period: "기간 선택",
+    stake_amount: "스테이킹 수량",
+    confirm_stake: "스테이킹 확인 및 서명",
+    add_liquidity_title: "유동성 추가",
+    remove_liquidity_title: "유동성 출금",
+    select_lp_pair: "LP 페어 선택",
+    lp_amount: "수량 (USDT)",
+    confirm_add_liquidity: "추가 확인 및 서명",
+    confirm_remove_liquidity: "출금 확인 및 서명"
 };

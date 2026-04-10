@@ -117,5 +117,26 @@ window.i18nData['ja'] = {
         { symbol: "NEA", name: "Neo Energy Asset", desc: "ハッシュ資産マッピング / 実機マイナーペグトークン", total: "ハッシュパワー規模に応じて動的発行", dist: "実機マッピング 60% | ステーキングマイニング 25% | パートナー 10% | チーム 5%", mech: "実機マイニング機器と1:1の資産マッピング。" },
         { symbol: "NRY", name: "Neo Resource Yield", desc: "収益配当 / エコシステム利益還元権利", total: "300,000,000", dist: "利益分配 50% | 長期保有報酬 25% | 貢献者インセンティブ 15% | チーム準備 10%", mech: "四半期ごとの利益分配、保有者に配当を付与。" },
         { symbol: "NCL", name: "Neo Core Link", desc: "クロスチェーンハブ / 相互運用メディア", total: "400,000,000", dist: "ノード報酬 40% | パートナーシップ 30% | ガバナンス 15% | 開発チーム 15%", mech: "プロトコル接続やサービス連携時に段階的に放出。" }
-    ]
+    ],
+
+    // --- 10. 工場モジュール (Factory) ---
+    stake_title: "私のステーキング",
+    remaining_days: "残り期間",
+    days_unit: "日",
+    btn_stake: "ステーキング",
+    my_liquidity_title: "私の流動性",
+    btn_add_liquidity: "流動性を追加",
+    btn_remove_liquidity: "流動性を引き出す",
+    total_liquidity_title: "総流動性プール",
+    stake_modal_title: "トークンをステーク",
+    select_stake_token: "トークンを選択",
+    select_period: "期間を選択",
+    stake_amount: "ステーキング数量",
+    confirm_stake: "ステーキングを確認して署名",
+    add_liquidity_title: "流動性を追加",
+    remove_liquidity_title: "流動性を引き出す",
+    select_lp_pair: "LPペアを選択",
+    lp_amount: "数量 (USDT)",
+    confirm_add_liquidity: "追加を確認して署名",
+    confirm_remove_liquidity: "引き出しを確認して署名"
 };

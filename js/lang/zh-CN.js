@@ -125,5 +125,26 @@ window.i18nData['zh-CN'] = {
         { symbol: "NEA", name: "Neo Energy Asset", desc: "算力资产映射 / 实体矿机锚定币", total: "动态锚定实体算力规模", dist: "实体矿机映射 60% | 算力质押挖矿 25% | 生态合作 10% | 团队 5%", mech: "资产与实体算力一一对应。" },
         { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分红 / 生态利润权益", total: "300,000,000", dist: "生态利润分红 50% | 长期持有奖励 25% | 节点贡献激励 15% | 团队储备 10%", mech: "按季度利润分配，持有即可分红。" },
         { symbol: "NCL", name: "Neo Core Link", desc: "跨链枢纽 / 生态互通媒介", total: "400,000,000", dist: "跨链节点奖励 40% | 生态合作 30% | 社区治理 15% | 团队开发 15%", mech: "跨链交互、协议对接时逐步释放。" }
-    ]
+    ],
+
+    // --- 10. 工厂模块 (Factory) ---
+    stake_title: "我选择的质押",
+    remaining_days: "剩余周期",
+    days_unit: "天",
+    btn_stake: "质押",
+    my_liquidity_title: "我提供的流动性",
+    btn_add_liquidity: "增加流动性池",
+    btn_remove_liquidity: "提取流动性池",
+    total_liquidity_title: "总流动性池",
+    stake_modal_title: "质押代币",
+    select_stake_token: "选择质押代币",
+    select_period: "选择周期",
+    stake_amount: "质押数量",
+    confirm_stake: "确认质押签名",
+    add_liquidity_title: "增加流动性",
+    remove_liquidity_title: "提取流动性",
+    select_lp_pair: "选择 LP 对",
+    lp_amount: "数量 (USDT)",
+    confirm_add_liquidity: "确认增加签名",
+    confirm_remove_liquidity: "确认提取签名"
 };

@@ -245,6 +245,34 @@ window.doInternalTransfer = async function() {
     await executeSignatureAction("内部转账", amount, symbol, "transfer", { receiver: to });
 };
 
+// --- 9. 工厂模块：质押 ---
+window.doStake = async function() {
+    const token = document.getElementById('stakeToken')?.value;
+    const period = document.getElementById('stakePeriod')?.value;
+    const amount = document.getElementById('stakeAmount')?.value;
+
+    if (!amount || parseFloat(amount) <= 0) {
+        alert("请输入有效的质押数量");
+        return;
+    }
+
+    await executeSignatureAction("质押", amount, token, "record_transaction", { period: period });
+};
+
+// --- 10. 工厂模块：流动性 (增加/提取) ---
+window.doLiquidity = async function(mode) {
+    const lpPair = document.getElementById('lpPair')?.value;
+    const amount = document.getElementById('lpAmount')?.value;
+
+    if (!amount || parseFloat(amount) <= 0) {
+        alert("请输入有效的数量");
+        return;
+    }
+
+    const actionType = mode === 'add' ? 'add_liquidity' : 'remove_liquidity';
+    await executeSignatureAction(actionType, amount, lpPair, "record_transaction", { lpPair: lpPair });
+};
+
 export function mountActionExecutors() {
     console.log("[Executors] 核心交易逻辑已挂载 (含余额预检与金额清洗)");
 }
