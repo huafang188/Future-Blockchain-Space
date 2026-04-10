@@ -1,0 +1,150 @@
+window.i18nData = window.i18nData || {};
+window.i18nData['ar'] = {
+    // --- 1. Global & Navigation ---
+    title: "مصفوفة تعدين النظام البيئي NEO",
+    connect: "ربط المحفظة",
+    connected: "متصل",
+    total_value: "إجمالي قيمة الأصول",
+    loading: "جارٍ التحميل...",
+    no_data: "لا توجد بيانات",
+    copy_success: "تم النسخ بنجاح إلى الحافظة",
+    copy_fail: "فشل النسخ، يرجى التشغيل اليدوي",
+    nav_home: "الرئيسية",
+    nav_mine: "المنجم",
+    nav_market: "اللوحة",
+    nav_me: "حسابي",
+    nav_wp: "الكتاب الأبيض",
+
+    // --- 2. Miner Page ---
+    miner_title: "جهاز التعدين الخاص بي",
+    miner_name: "جهاز التعدين الذكي Avalon 1066",
+    miner_desc: "قوة حوسبة كل جهاز ≈ 30TH/s، استهلاك طاقة: 1500W",
+    m_count: "عدد الأجهزة",
+    m_yield: "الإنتاج اليومي المتوقع",
+    m_term: "مدة التعدين",
+    m_locked: "الكمية المقفلة",
+    miner_model: "جهاز التعدين الذكي FBS S1",
+    partners_title: "الشركاء والمحافظ",
+    buy_miner: "شراء جهاز تعدين",
+    pay_fee: "دفع رسوم الكهرباء",
+    transfer_miner: "نقل جهاز التعدين",
+    miner_status_label: "حالة الجهاز",
+    miner_status_running: "يعمل",
+    miner_specs: "قوة حوسبة كل جهاز = 30TH/S، استهلاك طاقة 1500W",
+
+    // --- 3. Assets & Team (User Page) ---
+    assets_list: "معاينة الأصول",
+    recharge: "إيداع",
+    withdraw: "سحب",
+    exchange: "تبديل",
+    transfer: "تحويل",
+    team_title: "فريقي",
+    invite_code: "معرفي",
+    inviter: "المُحيل",
+    direct_num: "عدد الإحالات المباشرة",
+    direct_sales: "مبيعات الإحالات المباشرة",
+    team_num: "عدد أعضاء الفريق",
+    team_sales: "مبيعات الفريق",
+    total_rewards: "المكافآت التراكمية",
+    reg_time: "تاريخ التسجيل",
+    btn_bind_inviter: "ربط المُحيل الخاص بي",
+    team_detail: "طلب بيانات الفريق",
+
+    // --- 4. Modals ---
+    btn_confirm: "تأكيد الإرسال",
+    btn_confirm_bind: "ربط وتوقيع الآن",
+    btn_transfer_now: "إرسال توقيع النقل",
+    btn_submit_email: "إرسال طلب التوقيع",
+    placeholder_inviter_id: "أدخل معرف المُحيل",
+    placeholder_email: "أدخل بريدك الإلكتروني للتواصل",
+    receiver_address: "عنوان محفظة المستلم",
+    transfer_amount: "الكمية المحولة",
+    expected_pay: "الدفع المتوقع",
+    elec_cost: "رسوم الكهرباء المطلوبة",
+    available: "الرصيد المتاح",
+    team_email_desc: "سيتم إرسال تفاصيل الفريق عبر البريد الإلكتروني",
+    expected_receive: "الاستلام المتوقع",
+    swap_from: "الأصل المبادل",
+    recharge_amount: "كمية الإيداع",
+    select_recharge_asset: "اختر الأصل للإيداع",
+    receiver_address_placeholder: "عنوان المستلم (0x...)",
+    amount_max_placeholder: "الكمية (الأقصى {max})",
+    max_available: "الأقصى المتاح",
+
+    // --- 5. Modal Titles ---
+    modal_register_title: "تفعيل حساب التعدين",
+    modal_bind_title: "ربط علاقة الإحالة",
+    miner_transfer_title: "نقل داخلي لجهاز التعدين",
+    modal_team_title: "طلب تفاصيل الفريق",
+    internal_transfer: "تحويل داخلي",
+
+    // --- 6. Descriptions ---
+    register_desc: "أدخل معرف المُحيل لتفعيل عقدة القوة الحسابية الخاصة بك",
+    team_detail_desc: "بسبب كمية البيانات الكبيرة، سيتم إرسال التقرير المفصل للفريق إلى بريدك الإلكتروني",
+    wait_audit: "تم إرسال الطلب، يرجى الانتظار للمراجعة",
+    sign_to_confirm: "يرجى التوقيع في المحفظة لتأكيد الهوية",
+
+    // --- 7. Status & Type Mapping ---
+    "تم الإرسال": "تم الإرسال",
+    "قيد المعالجة": "قيد المعالجة",
+    "نجاح": "نجاح",
+    "فشل": "فشل",
+    "إيداع": "إيداع",
+    "سحب": "سحب",
+    "تبديل": "تبديل",
+    "تحويل داخلي": "تحويل داخلي",
+    "شراء جهاز تعدين": "شراء جهاز تعدين",
+    "دفع رسوم كهرباء": "دفع رسوم كهرباء",
+
+    // --- 8. News ---
+    news_title: "الإعلانات والأخبار",
+    history_title: "سجل المعاملات",
+    transfer_title: "سجل التحويلات",
+    news_list: [
+        "إطلاق مصفوفة تعدين النظام البيئي NEO رسمياً، بدء عصر جديد للقوة الحسابية",
+        "ترقية بروتوكول FBS v2.0 مكتملة، خفض فقدان المعاملات بنسبة 30%",
+        "إعلان مؤقت حول صيانة عقدة NEO (30 مارس)",
+        "ميزة جديدة: دعم سحب عوائد 10 عملات رقمية بيئية بنقرة واحدة",
+        "خطة توظيف العقد العالمية جارية، شارك الآن"
+    ],
+
+    // --- 9. Token Details (Stats Page) ---
+    stats_title: "تفاصيل ومعاملات العملات الرقمية",
+    stats_subtitle: "اقتصاديات العملات وبيانات السوق",
+    token_labels: {
+        fullname: "الاسم الكامل",
+        position: "التخصص",
+        supply: "إجمالي العرض",
+        distribution: "آلية التوزيع",
+        mechanism: "آلية الإصدار"
+    },
+    tokens: [
+        { symbol: "NEO", name: "New Energy Ore", desc: "عملة رئيسية للنظام البيئي / إنتاج التعدين الأساسي", total: "1,000,000,000", dist: "إنتاج التعدين 30% | بناء النظام البيئي 20% | تحفيز الفريق 15% | المستثمرون الأوائل 15% | إيراد مجتمعي 10% | سيولة 10%", mech: "إنتاج خطي من التعدين، متوقع الانتهاء خلال 5 سنوات، تنصف سنوي." },
+        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "مسرع قوة الحوسبة / شهادة تعزيز التعدين", total: "500,000,000", dist: "عقد عالية الأداء 40% | رهن NEO 25% | شراكات بيئية 15% | فريق 10% | حوافز مجتمعية 10%", mech: "إصدار تدريجي مع نمو قوة الحوسبة." },
+        { symbol: "NET", name: "Neo Energy Token", desc: "وقود الشبكة / رسوم الغاز", total: "200,000,000", dist: "مكافآت العقد 35% | صيانة الشبكة 30% | احتياطي السيولة 20% | إيراد مجتمعي 15%", mech: "آلية حرق وانكماش، انكماش إجمالي." },
+        { symbol: "NEA", name: "Neo Energy Asset", desc: "تعيين أصول القوة الحسابية / عملة مرتبطة بأجهزة التعدين الفعلية", total: "ديناميكي مرتبط بحجم القوة الحسابية الفعلية", dist: "تعيين أجهزة التعدين 60% | رهن قوة الحوسبة 25% | شراكات بيئية 10% | فريق 5%", mech: "تطابق واحد لواحد بين الأصول وأجهزة التعدين الفعلية." },
+        { symbol: "NRY", name: "Neo Resource Yield", desc: "حقوق الأرباح / حقوق مشاركة أرباح النظام البيئي", total: "300,000,000", dist: "توزيع أرباح 50% | مكافآت الاحتفاظ الطويل 25% | حوافز المساهمين 15% | احتياطي الفريق 10%", mech: "توزيع أرباح ربع سنوية، أرباح بالاحتفاظ." },
+        { symbol: "NCL", name: "Neo Core Link", desc: "محور تبادل السلاسل / وسيط التشغيل البيني", total: "400,000,000", dist: "مكافآت العقد البينية 40% | شراكات 30% | حوكمة المجتمع 15% | تطوير الفريق 15%", mech: "إصدار تدريجي عند تكامل البروتوكولات." }
+    ],
+
+    // --- 10. Factory Module ---
+    stake_title: "رهني الحالي",
+    remaining_days: "المتبقي",
+    days_unit: "أيام",
+    btn_stake: "رهن",
+    my_liquidity_title: "سيولتي",
+    btn_add_liquidity: "إضافة سيولة",
+    btn_remove_liquidity: "سحب سيولة",
+    total_liquidity_title: "مجمع السيولة الكلي",
+    stake_modal_title: "رهن العملة",
+    select_stake_token: "اختر العملة",
+    select_period: "اختر المدة",
+    stake_amount: "كمية الرهن",
+    confirm_stake: "تأكيد الرهن والتوقيع",
+    add_liquidity_title: "إضافة سيولة",
+    remove_liquidity_title: "سحب سيولة",
+    select_lp_pair: "اختر زوج LP",
+    lp_amount: "الكمية (USDT)",
+    confirm_add_liquidity: "تأكيد الإضافة والتوقيع",
+    confirm_remove_liquidity: "تأكيد السحب والتوقيع"
+};
