@@ -319,5 +319,5 @@ window.i18nData['ar'] = {
     wp_ch11_title: "11 تحذير المخاطر",
     wp_ch11_s1_title: "11.1 مخاطر السياسة والتنظيم",
     wp_ch12_title: "12 بيان الامتثال",
-    wp_ch13_title: "13 ملحق"
+    wp_ch13_title: "13 ملحق",
 };
