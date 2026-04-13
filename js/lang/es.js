@@ -407,4 +407,3 @@ window.i18nData['es'] = {
     wp_ch13_s5_title: "13.5 Registro Actualizaciones Versión",
     wp_ch13_s5_content: "V1.0: Versión completa inicial libro blanco, actualizaciones siguientes basadas voto comunitario.",
 };
-
