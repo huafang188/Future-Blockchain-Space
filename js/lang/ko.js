@@ -20,6 +20,7 @@ window.i18nData['ko'] = {
     miner_name: "아발론 1066 스마트 채굴기",
     miner_desc: "대당 해시파워 ≈ 30TH/s, 소비전력: 1500W",
     m_count: "채굴기 수량",
+    m_running: "운영 중 수량",
     m_yield: "일일 생산량",
     m_term: "채굴 기간", 
     m_locked: "락업 수량", 

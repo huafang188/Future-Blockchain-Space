@@ -20,6 +20,7 @@ window.i18nData['ja'] = {
     miner_name: "アヴァロン 1066 スマートマイナー",
     miner_desc: "1台あたりの計算能力 ≈ 30TH/s、消費電力：1500W",
     m_count: "保有台数",
+    m_running: "稼働中の台数",
     m_yield: "1日あたりの産出量",
     m_term: "マイニング期限", 
     m_locked: "ロック数量", 

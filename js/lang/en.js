@@ -20,6 +20,7 @@ window.i18nData['en'] = {
     miner_name: "Avalon 1066 Smart Miner",
     miner_desc: "Hash Power ≈ 30TH/s, Power: 1500W",
     m_count: "Miners Count",
+    m_running: "Running Count",
     m_yield: "Daily Yield",
     m_term: "Mining Term", 
     m_locked: "Locked Amount",

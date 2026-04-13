@@ -149,6 +149,7 @@ export async function fetchUserData(address) {
         // E. 渲染矿机数据 (严格匹配飞书文字列名)
         if (data.miner) {
             updateText('miner_count', data.miner["矿机数量"]);
+            updateText('miner_running', data.miner["在运行"]);
             updateText('miner_daily', data.miner["日产量"]);
             updateText('miner_deadline', data.miner["挖矿期限"]); 
             updateText('miner_locked', data.miner["锁仓数量"]);

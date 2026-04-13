@@ -20,6 +20,7 @@ window.i18nData['ru'] = {
     miner_name: "Avalon 1066 Smart Miner",
     miner_desc: "Мощность ≈ 30 TH/s, Потребление: 1500W",
     m_count: "Кол-во устройств",
+    m_running: "В работе",
     m_yield: "Доход в день",
     m_term: "Срок майнинга", 
     m_locked: "Заблокировано", 

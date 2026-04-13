@@ -20,6 +20,7 @@ window.i18nData['it'] = {
     miner_name: "Miner Intelligente Avalon 1066",
     miner_desc: "Potenza ≈ 30TH/s, Consumo: 1500W",
     m_count: "Quantità unità",
+    m_running: "In funzione",
     m_yield: "Resa Giornaliera",
     m_term: "Scadenza Mining", 
     m_locked: "Quantità Vincolata", 

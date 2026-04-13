@@ -20,6 +20,7 @@ window.i18nData['ar'] = {
     miner_name: "جهاز التعدين الذكي Avalon 1066",
     miner_desc: "قوة حوسبة كل جهاز ≈ 30TH/s، استهلاك طاقة: 1500W",
     m_count: "عدد الأجهزة",
+    m_running: "يعمل",
     m_yield: "الإنتاج اليومي المتوقع",
     m_term: "مدة التعدين",
     m_locked: "الكمية المقفلة",
