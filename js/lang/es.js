@@ -405,8 +405,7 @@ window.i18nData['es'] = {
     wp_ch13_s4_title: "13.4 Direcciones Smart Contracts",
     wp_ch13_s4_content: "Direcciones contratos mainnet, multi-firma, tesorería, quema (publicadas tras lanzamiento oficial).",
     wp_ch13_s5_title: "13.5 Registro Actualizaciones Versión",
-    wp_ch13_s5_content: "V1.0: Versión completa inicial libro blanco, actualizaciones siguientes basadas voto comunitario."
-};
+    wp_ch13_s5_content: "V1.0: Versión completa inicial libro blanco, actualizaciones siguientes basadas voto comunitario.",
     wp_ch0_title: "Resumen Ejecutivo",
     wp_ch0_p1: "Este proyecto está construido sobre las dobles oportunidades históricas de la reestructuración industrial global de blockchain y la revolución energética, construyendo un nuevo ecosistema de minería de potencia de cálculo impulsado por energía limpia como núcleo, potencia de cálculo distribuida como portador de valor y tecnología blockchain como base de confianza.",
     wp_ch0_p2: "Actualmente la demanda global de potencia de cálculo muestra una tendencia de crecimiento exponencial. El entrenamiento de grandes modelos de IA, redes de almacenamiento distribuidas, infraestructura Web3, renderizado metaverso en tiempo real y liquidación de transacciones on-chain empujan conjuntamente a la potencia de cálculo a convertirse en el factor de producción clave de la era digital.",
@@ -484,6 +483,6 @@ window.i18nData['es'] = {
     wp_ch3_s2_i5: "Interoperabilidad Ecológica Cross-Chain mediante NCL:",
     wp_ch3_s2_i5_desc: "NCL asume funciones como verificación cross-chain, incentivación de nodos relay y ruteo de intercambio de activos, realizando libre circulación de activos multi-cadena y reforzando el soporte externo de valor del ecosistema.",
     wp_ch3_s2_i6: "Modelo Económico Deflacionario:",
-    wp_ch3_s2_i6_desc: "A través de mecanismos como combustión de combustible NET, combustión de comisiones de transacción, recompra ecológica y destrucción, así como bloqueo-staking, controla la cantidad de tokens en circulación, mejorando la estabilidad de valor a largo plazo. El mecanismo deflacionario combinado con verdaderos ingresos de minería forma un doble motor de soporte de valor."
+    wp_ch3_s2_i6_desc: "A través de mecanismos como combustión de combustible NET, combustión de comisiones de transacción, recompra ecológica y destrucción, así como bloqueo-staking, controla la cantidad de tokens en circulación, mejorando la estabilidad de valor a largo plazo. El mecanismo deflacionario combinado con verdaderos ingresos de minería forma un doble motor de soporte de valor.",
 };
 
