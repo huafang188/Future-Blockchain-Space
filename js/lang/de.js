@@ -101,6 +101,25 @@ window.i18nData['de'] = {
         "Globales Knoten-Rekrutierungsprogramm läuft, jetzt beitreten"
     ],
 
+    // --- 4. NEO Energy Mining Features ---
+    neo_energy_title: "NEO Energy Mining: Grünes Energie-Rechenleistungssystem",
+    infra_title: "Infrastruktur & Hardware-Spezifikationen",
+    infra_desc: "NEO Energy hat seinen Hauptsitz in Russland und baut ein hochleistungsfähiges, compliant Rechenleistungskluster im vollständigen Einklang mit den örtlichen Gesetzen und Vorschriften auf.",
+    infra_capacity: "Installationskapazität: Gesamtnachschub von 50.000 Einheiten (einschließlich 10.000 Originalmodellen und 40.000 synthetischen Modellen).",
+    infra_performance: "Leistungsindikatoren: Einzelne Einheiten erreichen eine Rechenleistung von 30 TH/S bei einer Nennleistung von 1500W.",
+    infra_tech: "Kerntechnologie: Integriert ein AI-intelligentes Rechenleistungsverteilungssystem, um eine optimale Ressourcennutzung zu erreichen.",
+    governance_title: "Innovative Governance-Architektur: Multi-Token-Synergie-Modell",
+    governance_desc: "Das Projekt hat ein sechsdimensionales entkoppeltes Token-Wirtschaftsmodell eingeführt, das durch digitale Assets mit unterschiedlichen Funktionen eine vollständige闭环-Verwaltung realisiert:",
+    governance_value: "Wertzirkulation & Anreize: Deckt Kernwertträger, Rechenleistungsgewinnmechanismen und ökologische Gewinnbeteiligungen ab.",
+    governance_network: "Netzwerkbetrieb & Mapping: Enthält Netzwerk-Treibstoff (Gas)-Verbrauch, physische Asset (RWA)-Mapping und cross-chain interoperable Zirkulation.",
+    tech_title: "Technische Absicherung & Vertrauensmechanismus",
+    tech_consensus: "Hybrider Konsensmechanismus: Kombiniert mehrere Konsensprotokolle, um Netzwerkeffizienz und dezentrale Sicherheit zu gewährleisten.",
+    tech_verification: "On-Chain-Verifizierungssystem: Überprüft physische Rechenleistung in Echtzeit über verteilte Ledger, eliminiert Informationsinseln und schafft dezentrale Vertrauensbindungen.",
+    green_title: "Grüne Energie & nachhaltige Entwicklung",
+    green_desc: "Das Ökosystem integriert tief verteilte saubere Energienoten und fördert die Synergie zwischen Energieproduktion und Rechenleistungsverbrauch:",
+    green_complement: "Mehrenergie-Komplementarität: Integriert Wasserkraft, Photovoltaik, Windenergie und Biomasseenergie.",
+    green_efficiency: "Energieeffizienz-Optimierung: Reduziert die Kohlenstoffemissionsintensität von der Quelle aus und wandelt Blockchain-Rechenleistung in einen Kernantrieb für die grüne Energiewende um.",
+
     // --- 9. Token-Details (Stats Page) ---
     stats_title: "Tokenomics",
     stats_subtitle: "Marktdaten & Parameter",

@@ -10,10 +10,16 @@ window.i18nRender = function(lang) {
         return;
     }
 
-    const dict = window.i18nData[lang]; 
+    let dict = window.i18nData[lang]; 
     if (!dict) {
-        console.error(`[i18n] 找不到语言包数据: ${lang}`);
-        return;
+        console.warn(`[i18n] 找不到语言包数据: ${lang}，使用默认语言 zh-CN`);
+        dict = window.i18nData['zh-CN'];
+        if (!dict) {
+            console.error("[i18n] 默认语言包也找不到！");
+            return;
+        }
+        // 更新localStorage为默认语言
+        localStorage.setItem('fbs_lang', 'zh-CN');
     }
 
     console.log(`[i18n] 正在渲染语言: ${lang}`);

@@ -101,6 +101,25 @@ window.i18nData['it'] = {
         "Programma di reclutamento nodi globali in corso, unisciti ora"
     ],
 
+    // --- 4. NEO Energy Mining Features ---
+    neo_energy_title: "NEO Energy Mining: Ecosistema di potenza di calcolo ad energia verde",
+    infra_title: "Infrastruttura & Specifiche hardware",
+    infra_desc: "NEO Energy ha sede in Russia e costruisce un cluster di potenza di calcolo performante e conforme nel pieno rispetto delle leggi e normative locali.",
+    infra_capacity: "Capacità di installazione: Fornitura totale di 50.000 unità (inclusi 10.000 modelli originali e 40.000 modelli sintetici).",
+    infra_performance: "Indicatori prestazionali: Potenza di calcolo unitaria di 30 TH/S, consumo nominale di 1500W.",
+    infra_tech: "Tecnologia core: Integra un sistema di distribuzione di potenza di calcolo intelligente con IA per ottimizzare l'utilizzo delle risorse.",
+    governance_title: "Architettura di governance innovativa: Modello di sinergia multi-token",
+    governance_desc: "Il progetto ha introdotto un modello economico token a sei dimensioni disaccoppiate, realizzando una gestione completa a ciclo chiuso grazie a asset digitali con funzioni diverse:",
+    governance_value: "Circolazione del valore & Incentivi: Copre i portatori di valore core, i meccanismi di guadagno di potenza di calcolo e le quote di profitto ecologiche.",
+    governance_network: "Operazione e mappatura della rete: Include il consumo di carburante di rete (Gas), la mappatura di asset fisici (RWA) e la circolazione interoperabile cross-chain.",
+    tech_title: "Garanzia tecnica & Meccanismo di fiducia",
+    tech_consensus: "Meccanismo di consenso ibrido: Combina più protocolli di consenso per garantire l'efficienza della rete e la sicurezza decentralizzata.",
+    tech_verification: "Sistema di verifica on-chain: Verifica in tempo reale la potenza di calcolo fisica tramite un registro distribuito, elimina gli isolati informativi e stabilisce legami di fiducia decentralizzati.",
+    green_title: "Energia verde & Sviluppo sostenibile",
+    green_desc: "L'ecosistema integra profondamente nodi di energia pulita distribuiti, promuovendo la sinergia tra produzione di energia e consumo di potenza di calcolo:",
+    green_complement: "Complemento multi-energia: Integra idroelettrica, fotovoltaico, eolico e energia da biomassa.",
+    green_efficiency: "Ottimizzazione dell'efficienza energetica: Riduce l'intensità delle emissioni di carbonio alla fonte e trasforma la potenza di calcolo blockchain in un motore essenziale per la transizione energetica verde.",
+
     // --- 9. Dettagli Token (Pagina Stats) ---
     stats_title: "Tokenomics",
     stats_subtitle: "Dati di Mercato e Parametri",

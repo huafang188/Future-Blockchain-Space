@@ -33,10 +33,10 @@ window.i18nData['zh-CN'] = {
     miner_status_running: "运行中",
     miner_specs: "每台矿机算力 = 30TH/S，功耗 1500W",
 
-    // --- 3. 资产与团队 (User Page) ---
-    assets_list: "资产预览",
+    // --- 3. 资产与团队 ---
+    assets_list: "资产概览",
     recharge: "充值",
-    withdraw: "提币",
+    withdraw: "提现",
     exchange: "兑换",
     transfer: "转账",
     team_title: "我的团队",
@@ -48,6 +48,25 @@ window.i18nData['zh-CN'] = {
     team_sales: "团队业绩",
     total_rewards: "累计奖励",
     reg_time: "注册时间",
+
+    // --- 4. NEO Energy Mining 核心特性 ---
+    neo_energy_title: "NEO Energy Mining: 绿色能源算力生态系统",
+    infra_title: "基础设施与硬件规格",
+    infra_desc: "NEO Energy总部位于俄罗斯，在完全符合当地法律法规的框架下，构建了高性能、合规化的算力集群。",
+    infra_capacity: "装机容量：总供应量 50,000 台（含10,000台原始机型及40,000台合成机型）。",
+    infra_performance: "性能指标：单机算力达 30 TH/S，额定功耗为 1500W。",
+    infra_tech: "核心技术：集成 AI智能算力 分配系统，实现资源利用最优解。",
+    governance_title: "创新治理架构：多通证协同模型",
+    governance_desc: "项目首创 六维解耦型通证经济模型，通过不同功能的数字资产，实现全链路的闭环管理：",
+    governance_value: "价值流通与激励：涵盖核心价值载体、算力增益机制与生态收益分红。",
+    governance_network: "网络运维与映射：包含网络燃料（Gas）消耗、实体资产（RWA）映射以及跨链互操作性流转。",
+    tech_title: "技术保障与信任机制",
+    tech_consensus: "混合共识机制：结合多种共识协议，确保网络的高效性与去中心化安全。",
+    tech_verification: "链上核验系统：通过分布式账本实时核验物理算力，消除信息孤岛，建立去中心化信任纽带。",
+    green_title: "绿色能源与可持续发展",
+    green_desc: "生态系统深度整合分布式清洁能源节点，推动能源生产与算力消耗的协同：",
+    green_complement: "多能互补：整合水电、光伏、风电及生物质能。",
+    green_efficiency: "能效优化：从源头降低碳排放强度，将区块链算力转化为推动绿色能源转型的核心动力。",
     btn_bind_inviter: "绑定我的推荐人",
     team_detail: "申请团队数据",
 

@@ -430,5 +430,24 @@ window.i18nData['zh-HK'] = {
     wp_ch13_s4_title: "13.4 智能合約地址",
     wp_ch13_s4_p1: "主網合約地址、多簽地址、國庫地址、燃燒地址（正式上線後公佈）。",
     wp_ch13_s5_title: "13.5 版本更新記錄",
-    wp_ch13_s5_p1: "V1.0：初始完整版白皮書，後續升級以社區投票公示為準。"
+    wp_ch13_s5_p1: "V1.0：初始完整版白皮書，後續升級以社區投票公示為準。",
+
+    // --- 4. NEO Energy Mining Features ---
+    neo_energy_title: "NEO Energy Mining: 綠色能源算力生態系統",
+    infra_title: "基礎設施與硬件規格",
+    infra_desc: "NEO Energy總部位於俄羅斯，在完全符合當地法律法規的框架下，構建了高性能、合規化的算力集群。",
+    infra_capacity: "裝機容量：總供應量 50,000 台（含10,000台原始機型及40,000台合成機型）。",
+    infra_performance: "性能指標：單機算力達 30 TH/S，額定功耗為 1500W。",
+    infra_tech: "核心技術：集成 AI智能算力 分配系統，實現資源利用最優解。",
+    governance_title: "創新治理架構：多通證協同模型",
+    governance_desc: "項目首創 六維解耦型通證經濟模型，通過不同功能的數字資產，實現全鏈路的閉環管理：",
+    governance_value: "價值流通與激勵：涵蓋核心價值載體、算力增益機制與生態收益分紅。",
+    governance_network: "網絡運維與映射：包含網絡燃料（Gas）消耗、實體資產（RWA）映射以及跨鏈互操作性流轉。",
+    tech_title: "技術保障與信任機制",
+    tech_consensus: "混合共識機制：結合多種共識協議，確保網絡的高效性與去中心化安全。",
+    tech_verification: "鏈上核验系統：通過分布式賬本實時核验物理算力，消除信息孤島，建立去中心化信任紐帶。",
+    green_title: "綠色能源與可持續發展",
+    green_desc: "生態系統深度整合分布式清潔能源節點，推動能源生產與算力消耗的協同：",
+    green_complement: "多能互補：整合水電、光伏、風電及生物質能。",
+    green_efficiency: "能效優化：從源頭降低碳排放強度，將區塊鏈算力轉化為推動綠色能源轉型的核心動力。"
 };

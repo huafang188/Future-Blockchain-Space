@@ -101,6 +101,25 @@ window.i18nData['fr'] = {
         "Programme de recrutement de nœuds mondiaux en cours, rejoignez-nous"
     ],
 
+    // --- 4. NEO Energy Mining Features ---
+    neo_energy_title: "NEO Energy Mining : Écosystème de puissance de calcul à énergie verte",
+    infra_title: "Infrastructure & Spécifications matérielles",
+    infra_desc: "NEO Energy a son siège en Russie et construit un cluster de puissance de calcul performant et conforme dans le respect total des lois et réglementations locales.",
+    infra_capacity: "Capacité d'installation : Approvisionnement total de 50 000 unités (y compris 10 000 modèles originaux et 40 000 modèles synthétiques).",
+    infra_performance: "Indicateurs de performance : Puissance de calcul unitaire atteignant 30 TH/S, consommation nominale de 1500W.",
+    infra_tech: "Technologie de base : Intègre un système de distribution de puissance de calcul intelligent avec IA pour optimiser l'utilisation des ressources.",
+    governance_title: "Architecture de gouvernance innovante : Modèle de synergie multi-tokens",
+    governance_desc: "Le projet a introduit un modèle économique de token à six dimensions découplées, réalisant une gestion en boucle fermée complète grâce à des actifs numériques aux fonctions différentes :",
+    governance_value: "Circulation de la valeur & Incitations : Couvre les porteurs de valeur de base, les mécanismes de gain de puissance de calcul et les parts de profit écologiques.",
+    governance_network: "Exploitation et cartographie du réseau : Comprend la consommation de carburant réseau (Gas), la cartographie d'actifs physiques (RWA) et la circulation interopérable cross-chain.",
+    tech_title: "Garantie technique & Mécanisme de confiance",
+    tech_consensus: "Mécanisme de consensus hybride : Combine plusieurs protocoles de consensus pour garantir l'efficacité du réseau et la sécurité décentralisée.",
+    tech_verification: "Système de vérification sur chaîne : Vérifie en temps réel la puissance de calcul physique via un registre distribué, élimine les îlots d'information et établit des liens de confiance décentralisés.",
+    green_title: "Énergie verte & Développement durable",
+    green_desc: "L'écosystème intègre profondément des nœuds d'énergie propre distribués, promouvant la synergie entre production d'énergie et consommation de puissance de calcul :",
+    green_complement: "Complément multi-énergies : Intègre l'hydroélectricité, le photovoltaïque, l'éolien et l'énergie biomasses.",
+    green_efficiency: "Optimisation de l'efficacité énergétique : Réduit l'intensité des émissions de carbone à la source et transforme la puissance de calcul blockchain en un moteur essentiel pour la transition énergétique verte.",
+
     // --- 9. Détails des Jetons (Stats Page) ---
     stats_title: "Tokenomics",
     stats_subtitle: "Données Marché & Paramètres",

@@ -227,6 +227,6 @@ body {
 .wp-chapter summary::-webkit-details-marker { display: none; }
 .wp-sub { border-left: 2px solid #ede9fe; margin-left: 4px; padding-left: 8px; }
 .wp-sub summary::-webkit-details-marker { display: none; }
-#wpContent { max-height: 70vh; overflow-y: auto; padding-right: 4px; }
+#wpContent { overflow-y: visible; padding-right: 4px; }
 #wpContent::-webkit-scrollbar { width: 3px; }
 #wpContent::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 3px; }
