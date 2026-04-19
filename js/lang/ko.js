@@ -297,7 +297,25 @@ window.i18nData['ko'] = {
     // 제13장: 부록
     wp_ch13_title: "13 부록",
 
-    // --- 4. NEO Energy Mining Features ---
+    // --- 4. 창립자 프로필 ---
+    founder_title: "창립자 프로필",
+    founder_role: "NEO 프로젝트 발기인 겸 핵심 팀 직접 리더",
+    founder_intro: "글로벌 암호화폐 채굴 업계의 선도적인 인물 중 한 명이며 러시아 및 유라시아 지역의 채굴 인프라의 대표적인 기업가입니다. 극한 환경에서 초대규모 데이터 센터 구축과 재생 가능 에너지를 활용한 채굴로 유명합니다.",
+    founder_core_title: "핵심 아이덴티티",
+    founder_bitriver: "<strong>BitRiver 창립자 겸 CEO:</strong> 2017년에 BitRiver를 설립했으며, 현재 세계 최대의 암호화폐 채굴 코로케이션 서비스 제공업체 중 하나입니다.",
+    founder_advocate: "<strong>업계 옹호자:</strong> 러시아 산업가 및 기업가 연합(RSPP)에서 중요한 직책을 맡고 있으며 러시아 디지털 채굴 합법화 및 규제화의 핵심 인물입니다.",
+    founder_background_title: "창업 배경 및 성과",
+    founder_education: "스탠포드 대학 경영대학원 MBA를 보유하고 있으며, 이 경험은 그에게 국제적 시야와 선진적인 경영 철학을 제공했습니다.",
+    founder_bratsk: "<strong>브라츠크 채굴 농장:</strong> 시베리아 브라츠크에 BitRiver의 첫 번째 플래그십 데이터 센터를 설립했습니다. 이 위치는 매우 전략적입니다: 브라츠크 수력 발전소의 잉여 전력을 활용하여 채굴 비용을 크게 절감; 시베리아의 연중 낮은 기온이 채굴 기계의 냉각 비용과 고장률을 크게 줄입니다.",
+    founder_expansion: "<strong>규모 확장:</strong> 그의 리더십 아래 BitRiver는 단일 채굴 농장에서 러시아 전역에 여러 대형 데이터 센터를 보유한 그룹 회사로 확장되었으며 총 전력 용량은 수백 메가와트(MW)를 초과합니다.",
+    founder_business_title: "비즈니스 모델 및 혁신",
+    founder_hosting: "<strong>코로케이션 서비스:</strong> 비트코인 가격 변동의 직접적인 위험을 감수하지 않고 전 세계 기관 고객에게 전력, 공간 및 유지보수 서비스를 제공합니다.",
+    founder_energy: "<strong>에너지 협력:</strong> Gazprom Neft 등의 에너지 대기업과 적극적으로 협력하여 수반 가스(APG)를 사용하여 채굴용 전력을 생성하고 폐기 에너지의 재사용을 실현했습니다. 이는 녹색 에너지 전환에서 벤치마크가 됩니다.",
+    founder_2026_title: "2026년의 영향력",
+    founder_compliance: "<strong>규제 준수 개척자:</strong> 러시아의 수출 연산력 및 외화 지불에 관한 규제 프레임워크 개발을 지원하여 채굴을 러시아의 중요한 수출 수익 산업으로 만들었습니다.",
+    founder_ai: "<strong>AI 데이터 센터 전환:</strong> 글로벌 트렌드에 따라 BitRiver를 이끌고 일부 고전력 데이터 센터를 HPC(고성능 컴퓨팅) 센터로 전환하여 AI 모델 훈련을 위한 연산력 지원을 제공하고 있습니다.",
+
+    // --- 5. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: 그린 에너지 연산력 생태계",
     infra_title: "인프라구조와 하드웨어 사양",
     infra_desc: "NEO Energy는 러시아에 본사를 두고 있으며, 현지 법률 규정을 완전히 준수하는 프레임워크에서 고성능, 규정 준수형 연산력 클러스터를 구축하고 있습니다.",

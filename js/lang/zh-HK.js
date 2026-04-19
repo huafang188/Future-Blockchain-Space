@@ -432,7 +432,25 @@ window.i18nData['zh-HK'] = {
     wp_ch13_s5_title: "13.5 版本更新記錄",
     wp_ch13_s5_p1: "V1.0：初始完整版白皮書，後續升級以社區投票公示為準。",
 
-    // --- 4. NEO Energy Mining Features ---
+    // --- 4. 創始人簡介 ---
+    founder_title: "創始人簡介",
+    founder_role: "NEO 項目發起人兼核心團隊直接領導人",
+    founder_intro: "全球加密貨幣挖礦行業的領軍人物之一，也是俄羅斯及歐亞地區礦業基礎設施的代表性企業家。他以在極端環境下構建超大規模數據中心和利用可再生能源挖礦而聞名。",
+    founder_core_title: "核心身份",
+    founder_bitriver: "<strong>BitRiver 創始人兼 CEO：</strong>於 2017 年創立 BitRiver，該公司目前是全球最大的礦機託管（Colocation）服務商之一。",
+    founder_advocate: "<strong>行業倡導者：</strong>在俄羅斯工業家和企業家聯盟（RSPP）中擔任重要職務，是推動俄羅斯數字挖礦合法化和規範化的核心人物。",
+    founder_background_title: "創業背景與成就",
+    founder_education: "Igor Runets 擁有斯坦福大學商學院的 MBA 學位，這段經歷為他帶來了國際化的視野和先進的管理理念。",
+    founder_bratsk: "<strong>布拉茨克礦場（Bratsk）：</strong>他在西伯利亞的布拉茨克建立了 BitRiver 的首個旗艦級數據中心。該選址極具戰略眼光：利用布拉茨克水電站的過剩電力，大幅降低了挖礦成本；西伯利亞常年的低溫氣候極大地降低了礦機的散熱成本和故障率。",
+    founder_expansion: "<strong>規模擴張：</strong>在他的領導下，BitRiver 從一個單一礦場擴展為在俄羅斯境內擁有多個大型機房的集團公司，總電力容量已突破數百兆瓦（MW）。",
+    founder_business_title: "商業模式與創新",
+    founder_hosting: "<strong>託管服務：</strong>為全球機構客戶提供電力、空間和運維服務，而不承擔比特幣價格波動的直接風險。",
+    founder_energy: "<strong>能源合作：</strong>他積極與俄羅斯天然氣工業股份公司（Gazprom Neft）等能源巨頭合作，利用油田火炬氣（Associated Petroleum Gas）發電挖礦，實現了廢棄能源的再利用，這在綠色能源轉型中具有標桿意義。",
+    founder_2026_title: "2026 年的影響力",
+    founder_compliance: "<strong>合規先行者：</strong>他協助製定了俄羅斯針對出口算力和外匯收付的監管框架，使得礦業成為俄羅斯重要的出口創匯產業。",
+    founder_ai: "<strong>AI 數據中心轉型：</strong>追隨全球趨勢，他正帶領 BitRiver 將部分高電力規格的數據中心改造為 HPC（高性能計算）中心，為 AI 模型訓練提供算力支持。",
+
+    // --- 5. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: 綠色能源算力生態系統",
     infra_title: "基礎設施與硬件規格",
     infra_desc: "NEO Energy總部位於俄羅斯，在完全符合當地法律法規的框架下，構建了高性能、合規化的算力集群。",

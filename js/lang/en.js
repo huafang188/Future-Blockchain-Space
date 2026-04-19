@@ -49,7 +49,25 @@ window.i18nData['en'] = {
     total_rewards: "Total Rewards",
     reg_time: "Registration Date",
 
-    // --- 4. NEO Energy Mining Features ---
+    // --- 4. Founder Profile ---
+    founder_title: "Founder Profile",
+    founder_role: "Initiator and Direct Leader of the NEO Project Core Team",
+    founder_intro: "One of the leading figures in the global cryptocurrency mining industry and a representative entrepreneur in mining infrastructure across Russia and Eurasia. He is renowned for building ultra-large-scale data centers in extreme environments and utilizing renewable energy for mining.",
+    founder_core_title: "Core Identity",
+    founder_bitriver: "<strong>Founder & CEO of BitRiver:</strong> Founded BitRiver in 2017, which is now one of the world's largest cryptocurrency mining colocation service providers.",
+    founder_advocate: "<strong>Industry Advocate:</strong> Holds a key position in the Russian Union of Industrialists and Entrepreneurs (RSPP) and is a central figure in promoting the legalization and regulation of digital mining in Russia.",
+    founder_background_title: "Entrepreneurial Background & Achievements",
+    founder_education: "Holds an MBA from Stanford Graduate School of Business, which has provided him with an international perspective and advanced management philosophy.",
+    founder_bratsk: "<strong>Bratsk Mining Farm:</strong> Established BitRiver's first flagship data center in Bratsk, Siberia. This location is highly strategic: utilizing excess electricity from the Bratsk Hydroelectric Power Station to significantly reduce mining costs; the year-round cold climate in Siberia significantly reduces cooling costs and failure rates of mining equipment.",
+    founder_expansion: "<strong>Large-scale Expansion:</strong> Under his leadership, BitRiver has expanded from a single mining farm to a group with multiple large data centers across Russia, with a total power capacity exceeding several hundred megawatts (MW).",
+    founder_business_title: "Business Model & Innovation",
+    founder_hosting: "<strong>Colocation Services:</strong> Provides power, space, and maintenance services to global institutional clients without directly taking on the risk of bitcoin price volatility.",
+    founder_energy: "<strong>Energy Cooperation:</strong> Actively collaborates with energy giants such as Gazprom Neft to generate electricity for mining using Associated Petroleum Gas (APG), achieving reuse of wasted energy, which serves as a benchmark in the green energy transition.",
+    founder_2026_title: "Influence in 2026",
+    founder_compliance: "<strong>Compliance Pioneer:</strong> Helped develop Russia's regulatory framework for export computing power and foreign currency payments, making mining an important export revenue industry for Russia.",
+    founder_ai: "<strong>AI Data Center Transformation:</strong> Following global trends, he is leading BitRiver to transform some high-power data centers into HPC (High-Performance Computing) centers, providing computing power support for AI model training.",
+
+    // --- 5. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: Green Energy Hash Power Ecosystem",
     infra_title: "Infrastructure & Hardware Specifications",
     infra_desc: "NEO Energy is headquartered in Russia, building a high-performance, compliant hash power cluster fully in accordance with local laws and regulations.",
