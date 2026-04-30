@@ -256,6 +256,22 @@ export function renderTransfers(transfers = []) {
     }).join('');
 }
 
+/**
+ * 解析日期字符串（处理飞书格式 DD/MM/YYYY）
+ */
+function parseDate(dateStr) {
+    if (!dateStr) return new Date();
+    // 检测格式 DD/MM/YYYY
+    const match = dateStr.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1; // 月份从0开始
+        const year = parseInt(match[3], 10);
+        return new Date(year, month, day);
+    }
+    return new Date(dateStr);
+}
+
 function renderPriceCharts() {
     if (typeof Chart === 'undefined') return;
 
@@ -284,12 +300,12 @@ function renderPriceCharts() {
         // 获取该代币的历史价格数据
         const symbolHistory = priceHistory[symbol] || [];
         
-        if (symbolHistory.length > 0) {
+        if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
             // 使用真实历史数据
             // 按时间排序（旧到新）
             const sortedHistory = [...symbolHistory].sort((a, b) => {
-                const dateA = new Date(a.execute_time);
-                const dateB = new Date(b.execute_time);
+                const dateA = parseDate(a.execute_time);
+                const dateB = parseDate(b.execute_time);
                 return dateA - dateB;
             });
 
@@ -297,7 +313,7 @@ function renderPriceCharts() {
             const recentHistory = sortedHistory.slice(-days);
 
             recentHistory.forEach(record => {
-                const date = new Date(record.execute_time);
+                const date = parseDate(record.execute_time);
                 labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
                 data.push(parseFloat(record.price) || 0);
             });
