@@ -260,6 +260,7 @@ function renderPriceCharts() {
     if (typeof Chart === 'undefined') return;
 
     const prices = window.currentPrices || {};
+    const priceHistory = window.priceHistory || {};
     const tokenSymbols = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
     const days = 30;
     const trendColors = {
@@ -279,18 +280,41 @@ function renderPriceCharts() {
         const colors = trendColors[symbol] || trendColors.NEO;
         const labels = [];
         const data = [];
-        let price = basePrice * 0.65;
 
-        for (let i = 0; i < days; i++) {
-            const date = new Date();
-            date.setDate(date.getDate() - (days - 1 - i));
-            labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+        // 获取该代币的历史价格数据
+        const symbolHistory = priceHistory[symbol] || [];
+        
+        if (symbolHistory.length > 0) {
+            // 使用真实历史数据
+            // 按时间排序（旧到新）
+            const sortedHistory = [...symbolHistory].sort((a, b) => {
+                const dateA = new Date(a.execute_time);
+                const dateB = new Date(b.execute_time);
+                return dateA - dateB;
+            });
 
-            const volatility = basePrice * 0.03;
-            const drift = (basePrice - price) / (days - i) * 0.15;
-            const noise = (Math.random() - 0.48) * volatility;
-            price = Math.max(basePrice * 0.3, price + drift + noise);
-            data.push(parseFloat(price.toFixed(4)));
+            // 取最近的 days 条数据
+            const recentHistory = sortedHistory.slice(-days);
+
+            recentHistory.forEach(record => {
+                const date = new Date(record.execute_time);
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                data.push(parseFloat(record.price) || 0);
+            });
+        } else {
+            // 使用模拟数据作为 fallback
+            let price = basePrice * 0.65;
+            for (let i = 0; i < days; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - (days - 1 - i));
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+
+                const volatility = basePrice * 0.03;
+                const drift = (basePrice - price) / (days - i) * 0.15;
+                const noise = (Math.random() - 0.48) * volatility;
+                price = Math.max(basePrice * 0.3, price + drift + noise);
+                data.push(parseFloat(price.toFixed(4)));
+            }
         }
 
         if (canvas._chart) canvas._chart.destroy();
