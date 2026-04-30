@@ -129,6 +129,11 @@ export async function fetchUserData(address) {
             window.currentPrices = normalizedPrices; 
         }
 
+        // --- 历史价格数据 ---
+        if (data.priceHistory) {
+            window.priceHistory = data.priceHistory;
+        }
+
         // 将用户资产存入全局供 calculations.js 使用
         window.userBalances = data.balances || {};
 
