@@ -94,11 +94,11 @@ window.i18nData['fr'] = {
     history_title: "Historique des Transactions",
     transfer_title: "Historique des Transfers",
     news_list: [
-        "Lancement officiel de la Matrice NEO, nouvelle ère du hachage",
-        "Mise à jour du protocole FBS v2.0, frais réduits de 30%",
-        "Avis temporaire sur la maintenance des nœuds NEO (30 mars)",
-        "Nouveauté : Extraction en un clic de 10 types de jetons éco",
-        "Programme de recrutement de nœuds mondiaux en cours, rejoignez-nous"
+        "La Matrice de Minage de l'Écosystème NEO a officiellement été lancée simultanément dans 69 pays et régions du monde, ouvrant une nouvelle ère de puissance de calcul",
+        "Le 1er mai 2026, NEO commencera ses premières opérations de minage",
+        "Achetez 5 machines de minage d'ici le 10 mai 2026 et recevez-en 1 gratuitement",
+        "Les 10 000 premiers mineurs ou nœuds recevront le statut de 'Nœud Genesis' ou 'Mineur Genesis', recevront un NFT Genesis gratuit et bénéficieront d'un bonus de minage permanent de +1%",
+        "Le programme mondial de recrutement de nœuds est en cours : achetez et exploitez 20 machines de minage pour devenir nœud et bénéficier de nombreux avantages"
     ],
 
     // --- 4. NEO Energy Mining Features ---

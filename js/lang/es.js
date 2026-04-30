@@ -99,11 +99,11 @@ window.i18nData['es'] = {
     history_title: "Historial de Transacciones",
     transfer_title: "Historial de Transferencias",
     news_list: [
-        "La Matriz de Minería NEO está oficialmente en línea, comienza una nueva era",
-        "Protocolo FBS v2.0 actualizado, costos de transacción reducidos en un 30%",
-        "Aviso temporal sobre mantenimiento de nodos NEO (30 de marzo)",
-        "Nuevo: Soporte para extracción en un clic de 10 tipos de tokens eco",
-        "Plan de reclutamiento de nodos globales en marcha, únete ahora"
+        "La Matriz de Minería del Ecosistema NEO se lanzó oficialmente simultáneamente en 69 países y regiones de todo el mundo, abriendo una nueva era de potencia informática",
+        "El 1 de mayo de 2026, NEO comenzará sus primeras operaciones de minería",
+        "Compra 5 equipos de minería antes del 10 de mayo de 2026 y recibe 1 adicional de regalo",
+        "Los primeros 10.000 mineros o nodos obtendrán el estatus de 'Nodo Génesis' o 'Minero Génesis', recibirán un NFT Génesis de regalo y disfrutarán de un bono de minería permanente del +1%",
+        "El programa global de reclutamiento de nodos está en marcha: compra y opera 20 equipos de minería para convertirte en nodo y disfrutar de múltiples beneficios"
     ],
 
     // --- 8. Detalles de Tokens (Página de Estadísticas) ---

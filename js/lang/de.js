@@ -94,11 +94,11 @@ window.i18nData['de'] = {
     history_title: "Transaktionsverlauf",
     transfer_title: "Transferverlauf",
     news_list: [
-        "NEO Eco Mining Matrix ist offiziell gestartet — Eine neue Ära beginnt",
-        "FBS-Protokoll v2.0 Upgrade abgeschlossen, Transaktionskosten um 30% gesenkt",
-        "Temporäre Wartung der NEO-Knoten (30. März)",
-        "Neu: Unterstützung für One-Click-Extraction von 10 Öko-Token-Erträgen",
-        "Globales Knoten-Rekrutierungsprogramm läuft, jetzt beitreten"
+        "Die NEO-Ökosystem-Mining-Matrix wurde gleichzeitig in 69 Ländern und Regionen weltweit offiziell gestartet und eröffnet eine neue Ära der Rechenleistung",
+        "Am 1. Mai 2026 startet NEO seine ersten Mining-Operationen",
+        "Kaufen Sie bis zum 10. Mai 2026 5 Mining-Rigs und erhalten Sie 1 Rig extra kostenlos",
+        "Die ersten 10.000 Miner oder Knoten erhalten den Status 'Genesis Node' oder 'Genesis Miner', erhalten ein Genesis-NFT als Geschenk und genießen einen permanenten +1% Mining-Bonus",
+        "Das globale Knoten-Recrutierungsprogramm läuft auf Hochtouren: Kaufen und betreiben Sie 20 Mining-Rigs, um ein Knoten zu werden und vielfältige Vorteile zu genießen"
     ],
 
     // --- 4. NEO Energy Mining Features ---

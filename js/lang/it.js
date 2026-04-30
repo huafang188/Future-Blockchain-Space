@@ -94,11 +94,11 @@ window.i18nData['it'] = {
     history_title: "Cronologia Transazioni",
     transfer_title: "Cronologia Trasferimenti",
     news_list: [
-        "La Matrice di Mining NEO è ufficialmente online, inizia una nuova era",
-        "Protocollo FBS v2.0 aggiornato, costi di transazione ridotti del 30%",
-        "Avviso temporaneo sulla manutenzione dei nodi NEO (30 marzo)",
-        "Novità: Supporto per l'estrazione in un click di 10 tipi di token eco",
-        "Programma di reclutamento nodi globali in corso, unisciti ora"
+        "La Matrice di Mining dell'Ecosistema NEO è stata ufficialmente lanciata simultaneamente in 69 paesi e regioni in tutto il mondo, aprendo una nuova era di potenza di calcolo",
+        "Il 1 maggio 2026, NEO inizierà le sue prime operazioni di mining",
+        "Acquista 5 macchine per il mining entro il 10 maggio 2026 e ricevi 1 in regalo",
+        "I primi 10.000 minatori o nodi riceveranno lo status di 'Nodo Genesi' o 'Minatore Genesi', riceveranno un NFT Genesi in regalo e godranno di un bonus di mining permanente del +1%",
+        "Il programma globale di reclutamento nodi è in corso: acquista e gestisci 20 macchine per il mining per diventare un nodo e goderti vantaggi multipli"
     ],
 
     // --- 4. NEO Energy Mining Features ---
