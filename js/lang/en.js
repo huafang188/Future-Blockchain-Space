@@ -140,7 +140,7 @@ window.i18nData['en'] = {
     transfer_title: "Transfer History",
     news_list: [
 "The NEO Ecosystem Mining Matrix has officially launched simultaneously across 69 countries and regions worldwide, ushering in a new era of computing power.",
-"On May 1, 2026, NEO will commence its inaugural mining operations.",
+"Congratulations! NEO has successfully launched its inaugural mining on May 1, 2026. Users who bind their referral relationship before June 1, 2026 will receive 20 NEA (valued at $30) as a gift.",
 "Purchase 5 mining rigs before May 10, 2026, and receive 1 additional rig as a complimentary bonus.",
 "The first 10,000 miners or nodes will be granted 'Genesis Node' or 'Genesis Miner' status; they will receive a complimentary Genesis NFT and enjoy a permanent +1% mining bonus.",
 "The global node recruitment program is currently in full swing; purchase and operate 20 mining rigs to qualify as a node and enjoy a wide range of exclusive benefits."

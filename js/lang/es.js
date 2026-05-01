@@ -100,7 +100,7 @@ window.i18nData['es'] = {
     transfer_title: "Historial de Transferencias",
     news_list: [
         "La Matriz de Minería del Ecosistema NEO se lanzó oficialmente simultáneamente en 69 países y regiones de todo el mundo, abriendo una nueva era de potencia informática",
-        "El 1 de mayo de 2026, NEO comenzará sus primeras operaciones de minería",
+        "¡Felicidades! NEO comenzó con éxito su primera minería el 1 de mayo de 2026. Los usuarios que vinculen su relación de referido antes del 1 de junio de 2026 recibirán 20 NEA (valor $30) como regalo.",
         "Compra 5 equipos de minería antes del 10 de mayo de 2026 y recibe 1 adicional de regalo",
         "Los primeros 10.000 mineros o nodos obtendrán el estatus de 'Nodo Génesis' o 'Minero Génesis', recibirán un NFT Génesis de regalo y disfrutarán de un bono de minería permanente del +1%",
         "El programa global de reclutamiento de nodos está en marcha: compra y opera 20 equipos de minería para convertirte en nodo y disfrutar de múltiples beneficios"

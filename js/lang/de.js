@@ -95,7 +95,7 @@ window.i18nData['de'] = {
     transfer_title: "Transferverlauf",
     news_list: [
         "Die NEO-Ökosystem-Mining-Matrix wurde gleichzeitig in 69 Ländern und Regionen weltweit offiziell gestartet und eröffnet eine neue Ära der Rechenleistung",
-        "Am 1. Mai 2026 startet NEO seine ersten Mining-Operationen",
+        "Herzlichen Glückwunsch! NEO hat am 1. Mai 2026 erfolgreich sein erstes Mining gestartet. Benutzer, die ihre Referral-Beziehung vor dem 1. Juni 2026 binden, erhalten 20 NEA (Wert 30 $) als Geschenk.",
         "Kaufen Sie bis zum 10. Mai 2026 5 Mining-Rigs und erhalten Sie 1 Rig extra kostenlos",
         "Die ersten 10.000 Miner oder Knoten erhalten den Status 'Genesis Node' oder 'Genesis Miner', erhalten ein Genesis-NFT als Geschenk und genießen einen permanenten +1% Mining-Bonus",
         "Das globale Knoten-Recrutierungsprogramm läuft auf Hochtouren: Kaufen und betreiben Sie 20 Mining-Rigs, um ein Knoten zu werden und vielfältige Vorteile zu genießen"

@@ -95,7 +95,7 @@ window.i18nData['fr'] = {
     transfer_title: "Historique des Transfers",
     news_list: [
         "La Matrice de Minage de l'Écosystème NEO a officiellement été lancée simultanément dans 69 pays et régions du monde, ouvrant une nouvelle ère de puissance de calcul",
-        "Le 1er mai 2026, NEO commencera ses premières opérations de minage",
+        "Félicitations ! NEO a commencé avec succès son premier minage le 1er mai 2026. Les utilisateurs qui lieront leur relation de parrainage avant le 1er juin 2026 recevront 20 NEA (valeur 30 $) comme cadeau.",
         "Achetez 5 machines de minage d'ici le 10 mai 2026 et recevez-en 1 gratuitement",
         "Les 10 000 premiers mineurs ou nœuds recevront le statut de 'Nœud Genesis' ou 'Mineur Genesis', recevront un NFT Genesis gratuit et bénéficieront d'un bonus de minage permanent de +1%",
         "Le programme mondial de recrutement de nœuds est en cours : achetez et exploitez 20 machines de minage pour devenir nœud et bénéficier de nombreux avantages"
