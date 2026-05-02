@@ -161,47 +161,53 @@ export async function fetchUserData(address) {
         }
 
         // F. 渲染工厂模块 - 质押数据
-        if (data.stake) {
-            const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
-            stakeTokens.forEach(token => {
-                const amtEl = document.getElementById(`stake_${token}`);
-                const dayEl = document.getElementById(`stake_${token}_days`);
-                if (amtEl) amtEl.innerText = data.stake[token] || "0";
-                if (dayEl) dayEl.innerText = data.stake[`${token}剩余天数`] || "0";
-            });
-        }
+        const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
+        stakeTokens.forEach(token => {
+            const amtEl = document.getElementById(`stake_${token}`);
+            const dayEl = document.getElementById(`stake_${token}_days`);
+            if (amtEl) {
+                const value = data.stake ? (data.stake[token] || data.stake[`${token}质押数量`] || 0) : 0;
+                amtEl.innerText = parseFloat(value).toFixed(2);
+            }
+            if (dayEl) {
+                const value = data.stake ? (data.stake[`${token}剩余天数`] || data.stake[`${token}days`] || 0) : 0;
+                dayEl.innerText = value;
+            }
+        });
 
         // G. 渲染工厂模块 - 用户流动性数据
-        if (data.liquidity) {
-            const lpPairs = [
-                { key: 'LP-NEO/USDT', id: 'liq_NEOUSDT' },
-                { key: 'LP-NEX/USDT', id: 'liq_NEXUSDT' },
-                { key: 'LP-NET/USDT', id: 'liq_NETUSDT' },
-                { key: 'LP-NEA/USDT', id: 'liq_NEAUSDT' },
-                { key: 'LP-NRY/USDT', id: 'liq_NRYUSDT' },
-                { key: 'LP-NCL/USDT', id: 'liq_NCLUSDT' }
-            ];
-            lpPairs.forEach(pair => {
-                const el = document.getElementById(pair.id);
-                if (el) el.innerText = parseFloat(data.liquidity[pair.key] || 0).toFixed(2);
-            });
-        }
+        const lpPairs = [
+            { key: 'LP-NEO/USDT', id: 'liq_NEOUSDT' },
+            { key: 'LP-NEX/USDT', id: 'liq_NEXUSDT' },
+            { key: 'LP-NET/USDT', id: 'liq_NETUSDT' },
+            { key: 'LP-NEA/USDT', id: 'liq_NEAUSDT' },
+            { key: 'LP-NRY/USDT', id: 'liq_NRYUSDT' },
+            { key: 'LP-NCL/USDT', id: 'liq_NCLUSDT' }
+        ];
+        lpPairs.forEach(pair => {
+            const el = document.getElementById(pair.id);
+            if (el) {
+                const value = data.liquidity ? (data.liquidity[pair.key] || data.liquidity[pair.id] || 0) : 0;
+                el.innerText = parseFloat(value).toFixed(2);
+            }
+        });
 
         // H. 渲染工厂模块 - 总流动性池数据
-        if (data.totalLiquidity) {
-            const totalPairs = [
-                { key: 'NEO/USDT', id: 'totalLiq_NEOUSDT' },
-                { key: 'NEX/USDT', id: 'totalLiq_NEXUSDT' },
-                { key: 'NET/USDT', id: 'totalLiq_NETUSDT' },
-                { key: 'NEA/USDT', id: 'totalLiq_NEAUSDT' },
-                { key: 'NRY/USDT', id: 'totalLiq_NRYUSDT' },
-                { key: 'NCL/USDT', id: 'totalLiq_NCLUSDT' }
-            ];
-            totalPairs.forEach(pair => {
-                const el = document.getElementById(pair.id);
-                if (el) el.innerText = parseFloat(data.totalLiquidity[pair.key] || 0).toFixed(2);
-            });
-        }
+        const totalPairs = [
+            { key: 'NEO/USDT', id: 'totalLiq_NEOUSDT' },
+            { key: 'NEX/USDT', id: 'totalLiq_NEXUSDT' },
+            { key: 'NET/USDT', id: 'totalLiq_NETUSDT' },
+            { key: 'NEA/USDT', id: 'totalLiq_NEAUSDT' },
+            { key: 'NRY/USDT', id: 'totalLiq_NRYUSDT' },
+            { key: 'NCL/USDT', id: 'totalLiq_NCLUSDT' }
+        ];
+        totalPairs.forEach(pair => {
+            const el = document.getElementById(pair.id);
+            if (el) {
+                const value = data.totalLiquidity ? (data.totalLiquidity[pair.key] || data.totalLiquidity[pair.id] || 0) : 0;
+                el.innerText = parseFloat(value).toFixed(2);
+            }
+        });
 
         // F. 执行各 UI 模块的渲染函数
         if (window.renderTokenList) window.renderTokenList(data.balances || {});
