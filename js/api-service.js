@@ -1,4 +1,4 @@
-import { API_BASE, getTeamByInviter, findTopLevelInviter, calculateTeamData } from './config.js';
+import { API_BASE, getTeamByInviter, findTopLevelInviter, getTeamInfoByCode, buildInviterChain, FEISHU_FIELD_MAP } from './config.js';
 
 // 用于管理请求取消，彻底解决并发请求导致的 "Failed to fetch" 报错
 let fetchController = null;
@@ -137,11 +137,11 @@ export async function fetchUserData(address) {
         // 将用户资产存入全局供 calculations.js 使用
         window.userBalances = data.balances || {};
 
-        // --- 团队识别与推荐链处理 ---
+        // --- 团队识别与推荐链处理（适配飞书表格结构）---
         const userInfo = {
             inviteCode: data.info?.["推荐码"],
             inviter: data.info?.["推荐人"],
-            inviterChain: data.info?.["推荐链"] || [], // 推荐链数据格式: [{inviter: 'xxx', level: 1}, ...]
+            inviterChain: [],
             team: null,
             topInviter: null
         };
@@ -150,14 +150,28 @@ export async function fetchUserData(address) {
         if (data.info?.["团队"]) {
             userInfo.team = data.info["团队"];
         }
-        // 2. 如果有推荐链，找到最高层级的推荐码并确定团队
-        else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
+        
+        // 2. 构建推荐链
+        // 优先使用后端直接返回的推荐链
+        if (data.info?.["推荐链"] && data.info["推荐链"].length > 0) {
+            userInfo.inviterChain = data.info["推荐链"];
+        }
+        // 如果后端返回了推荐关系列表，前端构建推荐链
+        else if (data.inviterList && data.inviterList.length > 0 && userInfo.inviteCode) {
+            userInfo.inviterChain = buildInviterChain(data.inviterList, userInfo.inviteCode);
+            console.log(`[Team] 前端构建推荐链:`, userInfo.inviterChain);
+        }
+        
+        // 3. 根据推荐链找到最高层级推荐人并确定团队
+        if (userInfo.inviterChain.length > 0) {
             const topResult = findTopLevelInviter(userInfo.inviterChain);
             userInfo.topInviter = topResult.inviter;
-            userInfo.team = topResult.team;
+            if (!userInfo.team) {
+                userInfo.team = topResult.team;
+            }
         }
-        // 3. 如果只有直接推荐人，根据推荐人确定团队
-        else if (userInfo.inviter) {
+        // 4. 如果只有直接推荐人，根据推荐人确定团队
+        else if (userInfo.inviter && !userInfo.team) {
             userInfo.team = getTeamByInviter(userInfo.inviter);
             userInfo.topInviter = userInfo.inviter;
         }
@@ -171,7 +185,7 @@ export async function fetchUserData(address) {
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // D. 渲染团队数据（前端根据推荐码计算）
+        // D. 渲染团队数据（适配飞书表格结构）
         const userInviteCode = data.info?.["推荐码"];
         let teamData = {
             directCount: 0,
@@ -181,20 +195,20 @@ export async function fetchUserData(address) {
             totalReward: 0
         };
         
-        // 如果后端返回了团队数据，优先使用后端数据
+        // 1. 优先使用后端直接返回的团队数据
         if (data.team) {
             teamData = {
-                directCount: data.team["直推人数"] || 0,
-                directSales: data.team["直推业绩"] || 0,
-                totalCount: data.team["团队人数"] || 0,
-                totalSales: data.team["团队业绩"] || 0,
-                totalReward: data.team["累计奖励"] || 0
+                directCount: data.team["直推人数"] || data.team[FEISHU_FIELD_MAP.userTeam.directCount] || 0,
+                directSales: data.team["直推业绩"] || data.team[FEISHU_FIELD_MAP.userTeam.directSales] || 0,
+                totalCount: data.team["团队人数"] || data.team[FEISHU_FIELD_MAP.userTeam.totalCount] || 0,
+                totalSales: data.team["团队业绩"] || data.team[FEISHU_FIELD_MAP.userTeam.totalSales] || 0,
+                totalReward: data.team["累计奖励"] || data.team[FEISHU_FIELD_MAP.userTeam.totalReward] || 0
             };
         }
-        // 否则使用前端计算（根据推荐码计算团队数据）
-        else if (userInviteCode) {
-            teamData = calculateTeamData(userInviteCode);
-            console.log(`[Team] 根据推荐码 ${userInviteCode} 计算团队数据:`, teamData);
+        // 2. 如果后端返回了团队列表数据，根据推荐码查找
+        else if (data.teamList && data.teamList.length > 0 && userInviteCode) {
+            teamData = getTeamInfoByCode(data.teamList, userInviteCode);
+            console.log(`[Team] 从团队列表中找到数据:`, teamData);
         }
         
         // 渲染团队数据
