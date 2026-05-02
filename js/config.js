@@ -166,7 +166,11 @@ export const TOKEN_DECIMALS = {
     'BTC': 18,
     'BNB': 18,
     'NEO': 18,
-    'NEX': 18
+    'NEX': 18,
+    'NET': 18,
+    'NEA': 18,
+    'NRY': 18,
+    'NCL': 18
 };
 
 /**
@@ -179,6 +183,8 @@ export const tokenConfig = {
     'NEA': { logo: 'assets/nea_logo.webp', chartUrl: '' },
     'NRY': { logo: 'assets/nry_logo.webp', chartUrl: '' },
     'NCL': { logo: 'assets/ncl_logo.webp', chartUrl: '' },
-    'USDT': { logo: 'assets/usdt_logo.webp', chartUrl: '' },
-    'BNB': { logo: 'assets/bnb_logo.webp', chartUrl: '' }
+    'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
+    'BNB': { logo: 'assets/BNB.webp', chartUrl: '' },
+    'ETH': { logo: 'assets/ETH.webp', chartUrl: '' },
+    'BTC': { logo: 'assets/BTC.webp', chartUrl: '' }
 };
