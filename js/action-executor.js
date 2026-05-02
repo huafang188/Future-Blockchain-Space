@@ -1,5 +1,10 @@
-import { RECEIVE_ADDRS, CONTRACT_ADDRS, BSC_CHAIN_ID } from './config.js';
+import { RECEIVE_ADDRS, CONTRACT_ADDRS, BSC_CHAIN_ID, getReceiveAddress } from './config.js';
 import { postTransactionRecord } from './api-service.js';
+
+// 当前用户信息（从全局状态获取）
+function getUserInfo() {
+    return window.currentUserInfo || {};
+}
 
 /**
  * 🛠️ 辅助：将文字转为钱包兼容的 Hex 格式
@@ -167,15 +172,21 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
 // 🚀 全局映射挂载
 // ==========================================
 
-// 1. 充值
+// 1. 充值（支持按团队分流）
 window.doRecharge = async function() {
     const symbol = document.getElementById('recToken')?.value;
     const amount = document.getElementById('recAmount')?.value;
     if (!amount || parseFloat(amount) <= 0) return alert("请输入正确金额");
-    await executeOnChainTransfer("RECHARGE", symbol, amount, RECEIVE_ADDRS.RECHARGE);
+    
+    // 获取用户信息进行地址分流
+    const userInfo = getUserInfo();
+    const receiveAddr = getReceiveAddress('RECHARGE', userInfo);
+    
+    console.log(`[Recharge] 分流地址: ${receiveAddr} (团队: ${userInfo.team || '默认'})`);
+    await executeOnChainTransfer("RECHARGE", symbol, amount, receiveAddr);
 };
 
-// 2. 购买矿机 & 缴纳电费
+// 2. 购买矿机 & 缴纳电费（支持按团队分流）
 window.doChainPay = async function(bizType) {
     let rawValue = "";
     if (bizType === 'MINER') {
@@ -188,7 +199,12 @@ window.doChainPay = async function(bizType) {
     const amount = rawValue.replace(/[^\d.]/g, '');
     if (!amount || parseFloat(amount) <= 0) return alert("金额计算异常，请重试");
 
-    const target = (bizType === 'MINER') ? RECEIVE_ADDRS.MINER : RECEIVE_ADDRS.ELECTRIC;
+    // 获取用户信息进行地址分流
+    const userInfo = getUserInfo();
+    const addrType = (bizType === 'MINER') ? 'MINER' : 'ELECTRIC';
+    const target = getReceiveAddress(addrType, userInfo);
+    
+    console.log(`[${bizType}] 分流地址: ${target} (团队: ${userInfo.team || '默认'})`);
     // 强制使用 USDT 支付
     await executeOnChainTransfer(bizType, "USDT", amount, target);
 };

@@ -5,13 +5,67 @@ export const API_BASE = "https://api.neoneo.ink/api/user";
 export const BSC_CHAIN_ID = '0x38';
 
 /**
- * 收款地址配置
+ * 收款地址配置 - 支持多组地址用于客户分流
  */
 export const RECEIVE_ADDRS = {
-    RECHARGE: "0xCfd8e926623e46fB8F54baaB9c7609808daFf9B4",
-    ELECTRIC: "0xFf27899526FDA4A30411A8e2778d7F7BCb837568",
-    MINER: "0xBdfFB96E30d2d5858c46374a213ee819A005256c"
+    // 默认地址组（普通用户）
+    DEFAULT: {
+        RECHARGE: "0xCfd8e926623e46fB8F54baaB9c7609808daFf9B4",
+        ELECTRIC: "0xFf27899526FDA4A30411A8e2778d7F7BCb837568",
+        MINER: "0xBdfFB96E30d2d5858c46374a213ee819A005256c"
+    },
+    // 团队A地址组
+    TEAM_A: {
+        RECHARGE: "0xTeamA_Recharge_Address",
+        ELECTRIC: "0xTeamA_Electric_Address",
+        MINER: "0xTeamA_Miner_Address"
+    },
+    // 团队B地址组
+    TEAM_B: {
+        RECHARGE: "0xTeamB_Recharge_Address",
+        ELECTRIC: "0xTeamB_Electric_Address",
+        MINER: "0xTeamB_Miner_Address"
+    },
+    // 团队C地址组
+    TEAM_C: {
+        RECHARGE: "0xTeamC_Recharge_Address",
+        ELECTRIC: "0xTeamC_Electric_Address",
+        MINER: "0xTeamC_Miner_Address"
+    }
 };
+
+/**
+ * 团队分流策略配置
+ */
+export const TEAM_STRATEGY = {
+    'team_a': 'TEAM_A',
+    'team_b': 'TEAM_B',
+    'team_c': 'TEAM_C',
+    'A队': 'TEAM_A',
+    'B队': 'TEAM_B',
+    'C队': 'TEAM_C',
+    'default': 'DEFAULT'
+};
+
+/**
+ * 获取收款地址（支持按团队分流）
+ * @param {string} type - 地址类型: RECHARGE, ELECTRIC, MINER
+ * @param {Object} userInfo - 用户信息（包含 team 字段）
+ * @returns {string} 收款地址
+ */
+export function getReceiveAddress(type, userInfo = {}) {
+    // 根据团队名称/ID选择地址组
+    const teamKey = userInfo.team || 'default';
+    const group = TEAM_STRATEGY[teamKey] || TEAM_STRATEGY['default'];
+    
+    // 返回对应地址，如果不存在则回退到默认地址
+    if (RECEIVE_ADDRS[group] && RECEIVE_ADDRS[group][type]) {
+        return RECEIVE_ADDRS[group][type];
+    }
+    
+    // 最终回退到默认地址
+    return RECEIVE_ADDRS.DEFAULT[type] || RECEIVE_ADDRS.DEFAULT.RECHARGE;
+}
 
 /**
  * 合约地址与精度配置 (Decimals)
