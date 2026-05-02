@@ -1,4 +1,4 @@
-import { API_BASE, getTeamByInviter, findTopLevelInviter } from './config.js';
+import { API_BASE, getTeamByInviter, findTopLevelInviter, calculateTeamData } from './config.js';
 
 // 用于管理请求取消，彻底解决并发请求导致的 "Failed to fetch" 报错
 let fetchController = null;
@@ -171,14 +171,38 @@ export async function fetchUserData(address) {
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
 
-        // D. 渲染团队数据
+        // D. 渲染团队数据（前端根据推荐码计算）
+        const userInviteCode = data.info?.["推荐码"];
+        let teamData = {
+            directCount: 0,
+            directSales: 0,
+            totalCount: 0,
+            totalSales: 0,
+            totalReward: 0
+        };
+        
+        // 如果后端返回了团队数据，优先使用后端数据
         if (data.team) {
-            updateText('team_directCount', data.team["直推人数"]);
-            updateText('team_directSales', data.team["直推业绩"]);
-            updateText('team_totalCount', data.team["团队人数"]);
-            updateText('team_totalSales', data.team["团队业绩"]);
-            updateText('team_totalReward', data.team["累计奖励"]);
+            teamData = {
+                directCount: data.team["直推人数"] || 0,
+                directSales: data.team["直推业绩"] || 0,
+                totalCount: data.team["团队人数"] || 0,
+                totalSales: data.team["团队业绩"] || 0,
+                totalReward: data.team["累计奖励"] || 0
+            };
         }
+        // 否则使用前端计算（根据推荐码计算团队数据）
+        else if (userInviteCode) {
+            teamData = calculateTeamData(userInviteCode);
+            console.log(`[Team] 根据推荐码 ${userInviteCode} 计算团队数据:`, teamData);
+        }
+        
+        // 渲染团队数据
+        updateText('team_directCount', teamData.directCount);
+        updateText('team_directSales', teamData.directSales.toFixed(2));
+        updateText('team_totalCount', teamData.totalCount);
+        updateText('team_totalSales', teamData.totalSales.toFixed(2));
+        updateText('team_totalReward', teamData.totalReward.toFixed(2));
 
         // E. 渲染矿机数据 (严格匹配飞书文字列名)
         if (data.miner) {

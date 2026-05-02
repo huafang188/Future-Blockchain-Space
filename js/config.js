@@ -188,6 +188,139 @@ export const TOKEN_DECIMALS = {
 };
 
 /**
+ * 模拟团队数据（前端处理推荐关系）
+ * 包含用户推荐关系、业绩数据等
+ */
+export const MOCK_TEAM_DATA = {
+    // 用户推荐关系映射 (推荐码 -> 直推用户列表)
+    inviterMap: {
+        'LEADER_A': ['USER_A001', 'USER_A002', 'USER_A003', 'USER_A004', 'USER_A005'],
+        'VIP_A001': ['USER_A006', 'USER_A007', 'USER_A008'],
+        'VIP_A002': ['USER_A009', 'USER_A010'],
+        'USER_A001': ['USER_A011', 'USER_A012'],
+        'USER_A002': ['USER_A013'],
+        'LEADER_B': ['USER_B001', 'USER_B002', 'USER_B003'],
+        'VIP_B001': ['USER_B004', 'USER_B005'],
+        'USER_B001': ['USER_B006'],
+        'LEADER_C': ['USER_C001', 'USER_C002'],
+        'VIP_C001': ['USER_C003', 'USER_C004', 'USER_C005', 'USER_C006']
+    },
+    // 用户业绩数据 (用户ID -> 业绩)
+    userSales: {
+        'LEADER_A': 500000,
+        'VIP_A001': 120000,
+        'VIP_A002': 80000,
+        'USER_A001': 35000,
+        'USER_A002': 25000,
+        'USER_A003': 20000,
+        'USER_A004': 15000,
+        'USER_A005': 10000,
+        'USER_A006': 18000,
+        'USER_A007': 12000,
+        'USER_A008': 8000,
+        'USER_A009': 15000,
+        'USER_A010': 5000,
+        'USER_A011': 6000,
+        'USER_A012': 4000,
+        'USER_A013': 3000,
+        'LEADER_B': 300000,
+        'VIP_B001': 90000,
+        'VIP_B002': 60000,
+        'USER_B001': 40000,
+        'USER_B002': 30000,
+        'USER_B003': 20000,
+        'USER_B004': 25000,
+        'USER_B005': 15000,
+        'USER_B006': 8000,
+        'LEADER_C': 150000,
+        'VIP_C001': 50000,
+        'VIP_C002': 35000,
+        'USER_C001': 20000,
+        'USER_C002': 18000,
+        'USER_C003': 12000,
+        'USER_C004': 10000,
+        'USER_C005': 8000,
+        'USER_C006': 6000
+    },
+    // 用户等级配置
+    userLevels: {
+        'LEADER_A': '创始人',
+        'VIP_A001': '核心成员',
+        'VIP_A002': '核心成员',
+        'LEADER_B': '创始人',
+        'VIP_B001': '核心成员',
+        'LEADER_C': '创始人',
+        'VIP_C001': '核心成员',
+        'VIP_C002': '核心成员'
+    }
+};
+
+/**
+ * 计算团队数据
+ * @param {string} inviterCode - 当前用户的推荐码
+ * @returns {Object} 包含直推人数、直推业绩、团队总人数、团队总业绩
+ */
+export function calculateTeamData(inviterCode) {
+    const { inviterMap, userSales } = MOCK_TEAM_DATA;
+    
+    // 获取直接推荐的用户列表
+    const directUsers = inviterMap[inviterCode] || [];
+    
+    // 计算直推人数和直推业绩
+    const directCount = directUsers.length;
+    const directSales = directUsers.reduce((sum, userId) => {
+        return sum + (userSales[userId] || 0);
+    }, 0);
+    
+    // 递归计算整个团队（包括所有层级）
+    const getAllTeamMembers = (code, visited = new Set()) => {
+        if (visited.has(code)) return [];
+        visited.add(code);
+        
+        const members = [];
+        const children = inviterMap[code] || [];
+        
+        children.forEach(child => {
+            members.push(child);
+            members.push(...getAllTeamMembers(child, visited));
+        });
+        
+        return members;
+    };
+    
+    const allTeamMembers = getAllTeamMembers(inviterCode);
+    const totalCount = allTeamMembers.length;
+    const totalSales = allTeamMembers.reduce((sum, userId) => {
+        return sum + (userSales[userId] || 0);
+    }, 0);
+    
+    return {
+        directCount,
+        directSales,
+        totalCount,
+        totalSales,
+        totalReward: Math.floor(totalSales * 0.05) // 5% 团队奖励
+    };
+}
+
+/**
+ * 获取用户信息（根据推荐码）
+ * @param {string} inviteCode - 用户的推荐码
+ * @returns {Object} 用户信息
+ */
+export function getUserInfoByCode(inviteCode) {
+    const { userSales, userLevels } = MOCK_TEAM_DATA;
+    const team = getTeamByInviter(inviteCode);
+    
+    return {
+        inviteCode,
+        team,
+        level: userLevels[inviteCode] || '普通用户',
+        sales: userSales[inviteCode] || 0
+    };
+}
+
+/**
  * 代币视觉配置
  */
 export const tokenConfig = {
