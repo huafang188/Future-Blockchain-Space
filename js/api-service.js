@@ -117,6 +117,10 @@ export async function fetchUserData(address) {
             updateText('info_inviter', '---');
             // 此处清空资产显示，防止显示上一个钱包的数据
             if (window.renderTokenList) window.renderTokenList({});
+            
+            // 即使是新用户，也要尝试渲染质押和流动性数据（总流动性是全局数据）
+            renderFactoryData(data);
+            
             return;
         }
 
@@ -128,6 +132,9 @@ export async function fetchUserData(address) {
             });
             window.currentPrices = normalizedPrices; 
         }
+
+        // 渲染工厂模块数据（质押、流动性）
+        renderFactoryData(data);
 
         // --- 历史价格数据 ---
         if (data.priceHistory) {
@@ -207,137 +214,6 @@ export async function fetchUserData(address) {
             updateText('miner_locked', data.miner["锁仓数量"]);
         }
 
-        // F. 渲染工厂模块 - 质押数据（#是数字类型标识，不是字段名的一部分）
-        const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
-        stakeTokens.forEach(token => {
-            const amtEl = document.getElementById(`stake_${token}`);
-            const dayEl = document.getElementById(`stake_${token}_days`);
-            if (amtEl && data.stake) {
-                // 优先尝试不带#的字段名（#是数字类型标识）
-                const possibleKeys = [
-                    token,
-                    `${token}质押数量`,
-                    `${token}质押`,
-                    `${token}数量`,
-                    // 兼容可能的#前缀情况
-                    `# ${token}`,
-                    `# ${token}质押数量`,
-                    `# ${token}质押`,
-                    `# ${token}数量`
-                ];
-                let value = 0;
-                for (const key of possibleKeys) {
-                    if (data.stake[key] !== undefined && data.stake[key] !== null && data.stake[key] !== '') {
-                        value = data.stake[key];
-                        break;
-                    }
-                }
-                amtEl.innerText = parseFloat(value).toFixed(2);
-            }
-            if (dayEl && data.stake) {
-                const possibleKeys = [
-                    `${token}剩余天数`,
-                    `${token}天数`,
-                    `${token}days`,
-                    `${token}deadline`,
-                    `${token}到期天数`,
-                    // 兼容可能的#前缀情况
-                    `# ${token}剩余天数`,
-                    `# ${token}天数`
-                ];
-                let value = 0;
-                for (const key of possibleKeys) {
-                    if (data.stake[key] !== undefined && data.stake[key] !== null && data.stake[key] !== '') {
-                        value = data.stake[key];
-                        break;
-                    }
-                }
-                dayEl.innerText = value;
-            }
-        });
-
-        // G. 渲染工厂模块 - 用户流动性数据（#是数字类型标识，不是字段名的一部分）
-        const lpPairs = [
-            { key: 'LP-NEO/USDT', id: 'liq_NEOUSDT' },
-            { key: 'LP-NEX/USDT', id: 'liq_NEXUSDT' },
-            { key: 'LP-NET/USDT', id: 'liq_NETUSDT' },
-            { key: 'LP-NEA/USDT', id: 'liq_NEAUSDT' },
-            { key: 'LP-NRY/USDT', id: 'liq_NRYUSDT' },
-            { key: 'LP-NCL/USDT', id: 'liq_NCLUSDT' }
-        ];
-        lpPairs.forEach(pair => {
-            const el = document.getElementById(pair.id);
-            if (el && data.liquidity) {
-                // #是数字类型标识，优先尝试不带#的字段名
-                const baseKey = pair.key.split('/')[0].split('-')[1]; // 获取 NEO, NEX 等
-                const possibleKeys = [
-                    pair.key,                          // LP-NEO/USDT
-                    pair.key.replace('/', ''),         // LP-NEOUSDT
-                    pair.key.replace('-', '—'),        // LP—NEO/USDT（中文破折号）
-                    pair.key.replace('-', '—').replace('/', ''), // LP—NEOUSDT
-                    `LP${baseKey}USDT`,                // LPNEOUSDT
-                    `LP—${baseKey}USDT`,               // LP—NEOUSDT（中文破折号）
-                    pair.id,                           // liq_NEOUSDT
-                    // 兼容可能的#前缀情况
-                    `# ${pair.key}`,
-                    `# ${pair.key.replace('/', '')}`,
-                    `# ${pair.key.replace('-', '—')}`,
-                    `# ${pair.key.replace('-', '—').replace('/', '')}`,
-                    `# LP${baseKey}USDT`,
-                    `# LP—${baseKey}USDT`,
-                    `# ${pair.id}`
-                ];
-                let value = 0;
-                for (const key of possibleKeys) {
-                    if (data.liquidity[key] !== undefined && data.liquidity[key] !== null && data.liquidity[key] !== '') {
-                        value = data.liquidity[key];
-                        break;
-                    }
-                }
-                el.innerText = parseFloat(value).toFixed(2);
-            }
-        });
-
-        // H. 渲染工厂模块 - 总流动性池数据（#是数字类型标识，不是字段名的一部分）
-        const totalPairs = [
-            { key: 'NEO/USDT', id: 'totalLiq_NEOUSDT' },
-            { key: 'NEX/USDT', id: 'totalLiq_NEXUSDT' },
-            { key: 'NET/USDT', id: 'totalLiq_NETUSDT' },
-            { key: 'NEA/USDT', id: 'totalLiq_NEAUSDT' },
-            { key: 'NRY/USDT', id: 'totalLiq_NRYUSDT' },
-            { key: 'NCL/USDT', id: 'totalLiq_NCLUSDT' }
-        ];
-        totalPairs.forEach(pair => {
-            const el = document.getElementById(pair.id);
-            if (el && data.totalLiquidity) {
-                // #是数字类型标识，优先尝试不带#的字段名
-                const baseKey = pair.key.split('/')[0]; // 获取 NEO, NEX 等
-                const possibleKeys = [
-                    pair.key,                          // NEO/USDT
-                    pair.key.replace('/', ''),         // NEOUSDT
-                    `${baseKey}USDT`,                  // NEOUSDT
-                    `${baseKey}/USDT流动性`,           // NEO/USDT流动性
-                    `总${baseKey}USDT`,                // 总NEOUSDT
-                    pair.id,                           // totalLiq_NEOUSDT
-                    // 兼容可能的#前缀情况
-                    `# ${pair.key}`,
-                    `# ${pair.key.replace('/', '')}`,
-                    `# ${baseKey}USDT`,
-                    `# ${baseKey}/USDT流动性`,
-                    `# 总${baseKey}USDT`,
-                    `# ${pair.id}`
-                ];
-                let value = 0;
-                for (const key of possibleKeys) {
-                    if (data.totalLiquidity[key] !== undefined && data.totalLiquidity[key] !== null && data.totalLiquidity[key] !== '') {
-                        value = data.totalLiquidity[key];
-                        break;
-                    }
-                }
-                el.innerText = parseFloat(value).toFixed(2);
-            }
-        });
-
         // F. 执行各 UI 模块的渲染函数
         if (window.renderTokenList) window.renderTokenList(data.balances || {});
         if (window.renderHistory) window.renderHistory(data.history || []);
@@ -410,8 +286,69 @@ export function updateText(id, value) {
     }
 }
 
+/**
+ * 渲染工厂模块数据（质押、流动性、总流动性）
+ * @param {Object} data - 后端返回的数据
+ */
+function renderFactoryData(data) {
+    console.log("[Factory] 渲染工厂模块数据:", data);
+    
+    // 1. 渲染质押数据
+    const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
+    stakeTokens.forEach(token => {
+        const amtEl = document.getElementById(`stake_${token}`);
+        const dayEl = document.getElementById(`stake_${token}_days`);
+        
+        if (amtEl && data.stake) {
+            const value = data.stake[token] || data.stake[`# ${token}`] || 0;
+            amtEl.innerText = parseFloat(value).toFixed(2);
+        }
+        if (dayEl && data.stake) {
+            const value = data.stake[`${token}剩余天数`] || data.stake[`# ${token}剩余天数`] || 0;
+            dayEl.innerText = value;
+        }
+    });
+
+    // 2. 渲染用户流动性数据
+    const lpPairs = [
+        { base: 'NEO', id: 'liq_NEOUSDT' },
+        { base: 'NEX', id: 'liq_NEXUSDT' },
+        { base: 'NET', id: 'liq_NETUSDT' },
+        { base: 'NEA', id: 'liq_NEAUSDT' },
+        { base: 'NRY', id: 'liq_NRYUSDT' },
+        { base: 'NCL', id: 'liq_NCLUSDT' }
+    ];
+    lpPairs.forEach(({ base, id }) => {
+        const el = document.getElementById(id);
+        if (el && data.liquidity) {
+            const key = `LP-${base}/USDT`;
+            const value = data.liquidity[key] || 0;
+            el.innerText = parseFloat(value).toFixed(2);
+        }
+    });
+
+    // 3. 渲染总流动性数据
+    const totalPairs = [
+        { base: 'NEO', id: 'totalLiq_NEOUSDT' },
+        { base: 'NEX', id: 'totalLiq_NEXUSDT' },
+        { base: 'NET', id: 'totalLiq_NETUSDT' },
+        { base: 'NEA', id: 'totalLiq_NEAUSDT' },
+        { base: 'NRY', id: 'totalLiq_NRYUSDT' },
+        { base: 'NCL', id: 'totalLiq_NCLUSDT' }
+    ];
+    totalPairs.forEach(({ base, id }) => {
+        const el = document.getElementById(id);
+        if (el && data.totalLiquidity) {
+            const key = `${base}/USDT`;
+            const value = data.totalLiquidity[key] || 0;
+            el.innerText = parseFloat(value).toFixed(2);
+        }
+    });
+}
+
 // 暴露到全局，确保 HTML 按钮、导航和其它模块能调用
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
+window.renderFactoryData = renderFactoryData;
