@@ -160,22 +160,22 @@ export async function fetchUserData(address) {
             updateText('miner_locked', data.miner["锁仓数量"]);
         }
 
-        // F. 渲染工厂模块 - 质押数据
+        // F. 渲染工厂模块 - 质押数据 (支持飞书表格#前缀字段)
         const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
         stakeTokens.forEach(token => {
             const amtEl = document.getElementById(`stake_${token}`);
             const dayEl = document.getElementById(`stake_${token}_days`);
             if (amtEl) {
-                const value = data.stake ? (data.stake[token] || data.stake[`${token}质押数量`] || 0) : 0;
+                const value = data.stake ? (data.stake[token] || data.stake[`# ${token}`] || data.stake[`${token}质押数量`] || data.stake[`# ${token}质押数量`] || 0) : 0;
                 amtEl.innerText = parseFloat(value).toFixed(2);
             }
             if (dayEl) {
-                const value = data.stake ? (data.stake[`${token}剩余天数`] || data.stake[`${token}days`] || 0) : 0;
+                const value = data.stake ? (data.stake[`${token}剩余天数`] || data.stake[`# ${token}剩余天数`] || data.stake[`${token}days`] || 0) : 0;
                 dayEl.innerText = value;
             }
         });
 
-        // G. 渲染工厂模块 - 用户流动性数据
+        // G. 渲染工厂模块 - 用户流动性数据 (支持飞书表格#前缀字段)
         const lpPairs = [
             { key: 'LP-NEO/USDT', id: 'liq_NEOUSDT' },
             { key: 'LP-NEX/USDT', id: 'liq_NEXUSDT' },
@@ -187,12 +187,12 @@ export async function fetchUserData(address) {
         lpPairs.forEach(pair => {
             const el = document.getElementById(pair.id);
             if (el) {
-                const value = data.liquidity ? (data.liquidity[pair.key] || data.liquidity[pair.id] || 0) : 0;
+                const value = data.liquidity ? (data.liquidity[pair.key] || data.liquidity[`# ${pair.key}`] || data.liquidity[pair.id] || 0) : 0;
                 el.innerText = parseFloat(value).toFixed(2);
             }
         });
 
-        // H. 渲染工厂模块 - 总流动性池数据
+        // H. 渲染工厂模块 - 总流动性池数据 (支持飞书表格#前缀字段)
         const totalPairs = [
             { key: 'NEO/USDT', id: 'totalLiq_NEOUSDT' },
             { key: 'NEX/USDT', id: 'totalLiq_NEXUSDT' },
@@ -204,7 +204,7 @@ export async function fetchUserData(address) {
         totalPairs.forEach(pair => {
             const el = document.getElementById(pair.id);
             if (el) {
-                const value = data.totalLiquidity ? (data.totalLiquidity[pair.key] || data.totalLiquidity[pair.id] || 0) : 0;
+                const value = data.totalLiquidity ? (data.totalLiquidity[pair.key] || data.totalLiquidity[`# ${pair.key}`] || data.totalLiquidity[pair.id] || 0) : 0;
                 el.innerText = parseFloat(value).toFixed(2);
             }
         });
