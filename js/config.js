@@ -48,15 +48,114 @@ export const TEAM_STRATEGY = {
 };
 
 /**
- * 获取收款地址（支持按团队分流）
+ * 推荐码与团队的映射配置
+ * - 推荐码可以是团队创始人或核心成员的邀请码
+ * - 用户通过这些推荐码注册后，归属于对应团队
+ */
+export const INVITER_TEAM_MAP = {
+    // 团队A的推荐码列表
+    'TEAM_A': [
+        'LEADER_A',    // 团队A创始人
+        'VIP_A001',    // 团队A核心成员1
+        'VIP_A002',    // 团队A核心成员2
+        'VIP_A003'     // 团队A核心成员3
+    ],
+    // 团队B的推荐码列表
+    'TEAM_B': [
+        'LEADER_B',    // 团队B创始人
+        'VIP_B001',    // 团队B核心成员1
+        'VIP_B002'     // 团队B核心成员2
+    ],
+    // 团队C的推荐码列表
+    'TEAM_C': [
+        'LEADER_C',    // 团队C创始人
+        'VIP_C001',    // 团队C核心成员1
+        'VIP_C002',    // 团队C核心成员2
+        'VIP_C003',    // 团队C核心成员3
+        'VIP_C004'     // 团队C核心成员4
+    ]
+};
+
+/**
+ * 团队层级配置（用于确定最高层级）
+ * 数字越大表示层级越高
+ */
+export const TEAM_LEVELS = {
+    'TEAM_A': 10,    // 最高级别团队
+    'TEAM_B': 8,     // 中级团队
+    'TEAM_C': 5,     // 初级团队
+    'DEFAULT': 0     // 默认层级
+};
+
+/**
+ * 根据推荐码获取所属团队
+ * @param {string} inviterCode - 推荐码
+ * @returns {string} 团队标识 (如 'TEAM_A', 'TEAM_B')
+ */
+export function getTeamByInviter(inviterCode) {
+    if (!inviterCode) return 'DEFAULT';
+    
+    const code = inviterCode.toUpperCase().trim();
+    
+    for (const [team, codes] of Object.entries(INVITER_TEAM_MAP)) {
+        if (codes.includes(code)) {
+            return team;
+        }
+    }
+    
+    return 'DEFAULT';
+}
+
+/**
+ * 根据推荐链找到最高层级的推荐码（团队创始人）
+ * @param {Array} inviterChain - 推荐链数组，格式: [{inviter: 'xxx', level: 1}, ...]
+ * @returns {Object} 包含最高层级推荐码和所属团队
+ */
+export function findTopLevelInviter(inviterChain = []) {
+    if (!inviterChain || inviterChain.length === 0) {
+        return { inviter: null, team: 'DEFAULT', level: 0 };
+    }
+    
+    // 按层级从高到低排序，找到最高层级
+    const sortedChain = [...inviterChain].sort((a, b) => {
+        const levelA = TEAM_LEVELS[getTeamByInviter(a.inviter)] || 0;
+        const levelB = TEAM_LEVELS[getTeamByInviter(b.inviter)] || 0;
+        return levelB - levelA;
+    });
+    
+    // 获取最高层级的推荐人
+    const topInviter = sortedChain[0];
+    const team = getTeamByInviter(topInviter.inviter);
+    
+    return {
+        inviter: topInviter.inviter,
+        team: team,
+        level: TEAM_LEVELS[team] || 0
+    };
+}
+
+/**
+ * 获取收款地址（支持按推荐码/团队分流）
  * @param {string} type - 地址类型: RECHARGE, ELECTRIC, MINER
- * @param {Object} userInfo - 用户信息（包含 team 字段）
+ * @param {Object} userInfo - 用户信息（包含 team 或 inviterChain 字段）
  * @returns {string} 收款地址
  */
 export function getReceiveAddress(type, userInfo = {}) {
-    // 根据团队名称/ID选择地址组
-    const teamKey = userInfo.team || 'default';
-    const group = TEAM_STRATEGY[teamKey] || TEAM_STRATEGY['default'];
+    let group = 'DEFAULT';
+    
+    // 优先使用用户信息中的团队字段
+    if (userInfo.team && TEAM_STRATEGY[userInfo.team]) {
+        group = TEAM_STRATEGY[userInfo.team];
+    }
+    // 如果没有团队字段，但有推荐链，则根据推荐链找到最高层级团队
+    else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
+        const topInviter = findTopLevelInviter(userInfo.inviterChain);
+        group = TEAM_STRATEGY[topInviter.team] || TEAM_STRATEGY['default'];
+    }
+    // 兼容旧的团队key格式
+    else if (userInfo.team && TEAM_STRATEGY[userInfo.team]) {
+        group = TEAM_STRATEGY[userInfo.team];
+    }
     
     // 返回对应地址，如果不存在则回退到默认地址
     if (RECEIVE_ADDRS[group] && RECEIVE_ADDRS[group][type]) {

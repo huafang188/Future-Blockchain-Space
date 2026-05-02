@@ -1,4 +1,4 @@
-import { API_BASE } from './config.js';
+import { API_BASE, getTeamByInviter, findTopLevelInviter } from './config.js';
 
 // 用于管理请求取消，彻底解决并发请求导致的 "Failed to fetch" 报错
 let fetchController = null;
@@ -136,6 +136,35 @@ export async function fetchUserData(address) {
 
         // 将用户资产存入全局供 calculations.js 使用
         window.userBalances = data.balances || {};
+
+        // --- 团队识别与推荐链处理 ---
+        const userInfo = {
+            inviteCode: data.info?.["推荐码"],
+            inviter: data.info?.["推荐人"],
+            inviterChain: data.info?.["推荐链"] || [], // 推荐链数据格式: [{inviter: 'xxx', level: 1}, ...]
+            team: null,
+            topInviter: null
+        };
+        
+        // 1. 如果后端已经返回了团队信息，直接使用
+        if (data.info?.["团队"]) {
+            userInfo.team = data.info["团队"];
+        }
+        // 2. 如果有推荐链，找到最高层级的推荐码并确定团队
+        else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
+            const topResult = findTopLevelInviter(userInfo.inviterChain);
+            userInfo.topInviter = topResult.inviter;
+            userInfo.team = topResult.team;
+        }
+        // 3. 如果只有直接推荐人，根据推荐人确定团队
+        else if (userInfo.inviter) {
+            userInfo.team = getTeamByInviter(userInfo.inviter);
+            userInfo.topInviter = userInfo.inviter;
+        }
+        
+        // 保存到全局状态
+        window.currentUserInfo = userInfo;
+        console.log(`[Team] 用户团队识别结果: ${userInfo.team} (最高层级推荐人: ${userInfo.topInviter || '无'})`);
 
         // C. 渲染资料信息
         updateText('info_inviteCode', data.info?.["推荐码"]);
