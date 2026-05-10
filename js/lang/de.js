@@ -93,12 +93,21 @@ window.i18nData['de'] = {
     news_title: "Ankündigungen & News",
     history_title: "Transaktionsverlauf",
     transfer_title: "Transferverlauf",
+    news_1: "<b>Globale Expansion der NEO-Ökosystem-Mining-Matrix：</b>Rechenzentren in Nordeuropa etabliert, Knotenrekrutierung in vollem Gange",
+    news_2: "<b>NEO Global News：</b>Bis heute operiert die NEO-Ökosystem-Mining-Matrix erfolgreich in 87 Ländern und Regionen weltweit.",
+    news_3: "<b>Start der internationalen Infrastrukturkonstruktion：</b>Um der wachsenden Nachfrage nach Rechenleistung gerecht zu werden, wurden die NEO-Rechenzentrenprojekte in Island, Norwegen und Kanada offiziell genehmigt. Die Bauarbeiten beginnen am 1. Juli 2026 und dauern etwa 6 Monate, mit dem Ziel, die Energieeffizienz durch die geografischen Vorteile der hohen Breitengrade zu verbessern.",
+    news_4: "<b>Hardwareversorgung stark erhöht：</b>Aufgrund des globalen Anstiegs der Popularität nach dem Start des NEO-Ökosystems kam es in mehreren Regionen zu Engpässen bei der Geräteversorgung. Um diesem Problem entgegenzuwirken, haben die Behörden dringend die Investitionen in den Bau von Rechenzentren erhöht und die ursprüngliche Größe der Mining-Maschinen auf 150.000 Einheiten erweitert, um die stabile Versorgung des Weltmarktes zu gewährleisten.",
+    news_5: "<b>Genesis-Phase erfolgreich abgeschlossen：</b>Die lang erwartete Rekrutierung von NEO Genesis Minern und der ersten Knoten ist erfolgreich abgeschlossen.",
+    news_6: "<b>Dynamischer Transaktionssteueranpassungsmechanismus：</b>Die anfängliche Transaktionssteuerermäßigung für die NEO-USDT-Umwandlung ist beendet. Die zukünftige Transaktionssteuer wird in Echtzeit und transparent dynamisch angepasst, basierend auf der tatsächlichen Belastung der AI-Rechenleistungsvermietung und den Betriebsdaten der Mining-Maschinen.",
+    news_7: "<b>Globale Knotenrekrutierung fortsetzen：</b>Das Rekrutierungsprogramm für globale Partnerknoten läuft weiterhin auf Hochtouren. Nutzer können zu Ökosystemknoten werden, indem sie 20 Mining-Maschinen kaufen und betreiben, und erhalten einen permanenten 1%-Bonus auf die Rechenleistung sowie exklusive Transaktionssteuererleichterungen.",
     news_list: [
-        "Die NEO-Ökosystem-Mining-Matrix wurde gleichzeitig in 69 Ländern und Regionen weltweit offiziell gestartet und eröffnet eine neue Ära der Rechenleistung",
-        "Herzlichen Glückwunsch! NEO hat am 1. Mai 2026 erfolgreich sein erstes Mining gestartet. Benutzer, die ihre Referral-Beziehung vor dem 1. Juni 2026 binden, erhalten 20 NEA (Wert 30 $) als Geschenk.",
-        "Kaufen Sie bis zum 10. Mai 2026 5 Mining-Rigs und erhalten Sie 1 Rig extra kostenlos",
-        "Die ersten 10.000 Miner oder Knoten erhalten den Status 'Genesis Node' oder 'Genesis Miner', erhalten ein Genesis-NFT als Geschenk und genießen einen permanenten +1% Mining-Bonus",
-        "Das globale Knoten-Recrutierungsprogramm läuft auf Hochtouren: Kaufen und betreiben Sie 20 Mining-Rigs, um ein Knoten zu werden und vielfältige Vorteile zu genießen"
+        "<b>Globale Expansion der NEO-Ökosystem-Mining-Matrix：</b>Rechenzentren in Nordeuropa etabliert, Knotenrekrutierung in vollem Gange",
+        "<b>NEO Global News：</b>Bis heute operiert die NEO-Ökosystem-Mining-Matrix erfolgreich in 87 Ländern und Regionen weltweit.",
+        "<b>Start der internationalen Infrastrukturkonstruktion：</b>Um der wachsenden Nachfrage nach Rechenleistung gerecht zu werden, wurden die NEO-Rechenzentrenprojekte in Island, Norwegen und Kanada offiziell genehmigt. Die Bauarbeiten beginnen am 1. Juli 2026 und dauern etwa 6 Monate, mit dem Ziel, die Energieeffizienz durch die geografischen Vorteile der hohen Breitengrade zu verbessern.",
+        "<b>Hardwareversorgung stark erhöht：</b>Aufgrund des globalen Anstiegs der Popularität nach dem Start des NEO-Ökosystems kam es in mehreren Regionen zu Engpässen bei der Geräteversorgung. Um diesem Problem entgegenzuwirken, haben die Behörden dringend die Investitionen in den Bau von Rechenzentren erhöht und die ursprüngliche Größe der Mining-Maschinen auf 150.000 Einheiten erweitert, um die stabile Versorgung des Weltmarktes zu gewährleisten.",
+        "<b>Genesis-Phase erfolgreich abgeschlossen：</b>Die lang erwartete Rekrutierung von NEO Genesis Minern und der ersten Knoten ist erfolgreich abgeschlossen.",
+        "<b>Dynamischer Transaktionssteueranpassungsmechanismus：</b>Die anfängliche Transaktionssteuerermäßigung für die NEO-USDT-Umwandlung ist beendet. Die zukünftige Transaktionssteuer wird in Echtzeit und transparent dynamisch angepasst, basierend auf der tatsächlichen Belastung der AI-Rechenleistungsvermietung und den Betriebsdaten der Mining-Maschinen.",
+        "<b>Globale Knotenrekrutierung fortsetzen：</b>Das Rekrutierungsprogramm für globale Partnerknoten läuft weiterhin auf Hochtouren. Nutzer können zu Ökosystemknoten werden, indem sie 20 Mining-Maschinen kaufen und betreiben, und erhalten einen permanenten 1%-Bonus auf die Rechenleistung sowie exklusive Transaktionssteuererleichterungen."
     ],
 
     // --- 4. NEO Energy Mining Features ---

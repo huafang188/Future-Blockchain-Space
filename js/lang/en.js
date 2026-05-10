@@ -138,12 +138,21 @@ window.i18nData['en'] = {
     news_title: "Announcements",
     history_title: "Transaction History",
     transfer_title: "Transfer History",
+    news_1: "<b>NEO生态挖矿矩阵全球版图扩张：</b>算力中心落地北欧，节点招募火热进行",
+    news_2: "<b>NEO全球讯：</b>截至目前，NEO生态挖矿矩阵已成功在全球87个国家与地区实现稳定运行。",
+    news_3: "<b>跨国基础设施建设启动：</b>为应对日益增长的算力需求，位于冰岛、挪威及加拿大的NEO算力中心机房已正式完成立项。该工程预计于2026年7月1日动工，建设周期约为6个月，旨在利用高纬度地区的地理优势提升能源能效。",
+    news_4: "<b>硬件供应大幅提升：</b>鉴于NEO生态上线后全球热度飙升，多地出现设备供不应求的现象。为此，官方已紧急追加机房建设投入，将原始矿机规模扩大至150,000台，以保障全球市场的平稳供应。",
+    news_5: "<b>创世阶段圆满收官：</b>备受瞩目的NEO创世矿工与首批节点招募工作已宣告圆满完成。",
+    news_6: "<b>交易税费动态调整机制：</b>NEO兑换USDT的初期交易税优惠政策现已结束。后续交易税率将由AI算力租赁的实际负载及矿机运行数据进行实时、透明的动态调整。",
+    news_7: "<b>全球节点招募持续推进：</b>针对全球合作伙伴的节点招募计划仍在火热进行中。用户通过购买并运行20台矿机即可晋升为生态节点，除享有永久1%的算力加成外，还将获得专属的交易税减免权益。",
     news_list: [
-"The NEO Ecosystem Mining Matrix has officially launched simultaneously across 69 countries and regions worldwide, ushering in a new era of computing power.",
-"Congratulations! NEO has successfully launched its inaugural mining on May 1, 2026. Users who bind their referral relationship before June 1, 2026 will receive 20 NEA (valued at $30) as a gift.",
-"Purchase 5 mining rigs before May 10, 2026, and receive 1 additional rig as a complimentary bonus.",
-"The first 10,000 miners or nodes will be granted 'Genesis Node' or 'Genesis Miner' status; they will receive a complimentary Genesis NFT and enjoy a permanent +1% mining bonus.",
-"The global node recruitment program is currently in full swing; purchase and operate 20 mining rigs to qualify as a node and enjoy a wide range of exclusive benefits."
+        "<b>NEO生态挖矿矩阵全球版图扩张：</b>算力中心落地北欧，节点招募火热进行",
+        "<b>NEO全球讯：</b>截至目前，NEO生态挖矿矩阵已成功在全球87个国家与地区实现稳定运行。",
+        "<b>跨国基础设施建设启动：</b>为应对日益增长的算力需求，位于冰岛、挪威及加拿大的NEO算力中心机房已正式完成立项。该工程预计于2026年7月1日动工，建设周期约为6个月，旨在利用高纬度地区的地理优势提升能源能效。",
+        "<b>硬件供应大幅提升：</b>鉴于NEO生态上线后全球热度飙升，多地出现设备供不应求的现象。为此，官方已紧急追加机房建设投入，将原始矿机规模扩大至150,000台，以保障全球市场的平稳供应。",
+        "<b>创世阶段圆满收官：</b>备受瞩目的NEO创世矿工与首批节点招募工作已宣告圆满完成。",
+        "<b>交易税费动态调整机制：</b>NEO兑换USDT的初期交易税优惠政策现已结束。后续交易税率将由AI算力租赁的实际负载及矿机运行数据进行实时、透明的动态调整。",
+        "<b>全球节点招募持续推进：</b>针对全球合作伙伴的节点招募计划仍在火热进行中。用户通过购买并运行20台矿机即可晋升为生态节点，除享有永久1%的算力加成外，还将获得专属的交易税减免权益。"
     ],
 
     // --- 9. Token Details (Stats Page) ---
