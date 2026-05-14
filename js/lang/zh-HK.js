@@ -62,6 +62,10 @@ window.i18nData['zh-HK'] = {
     expected_pay: "預計支付",
     elec_cost: "所需電費",
     available: "可用餘額",
+    swap_slippage: "滑點/買賣稅",
+    swap_from: "兌出資產",
+    withdraw_fee: "手續費：0.5USDT",
+    transfer_fee: "手續費：0.00USDT",
 
     // --- 5. 業務具體彈窗標題 (Modal Titles) ---
     modal_register_title: "激活挖礦帳戶",

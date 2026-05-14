@@ -63,6 +63,10 @@ window.i18nData['de'] = {
     expected_pay: "Voraussichtliche Zahlung",
     elec_cost: "Stromkosten",
     available: "Verfügbares Guthaben",
+    swap_slippage: "Schlupf/Gebühr",
+    swap_from: "Tausch von",
+    withdraw_fee: "Gebühr: 0.5USDT",
+    transfer_fee: "Gebühr: 0.00USDT",
 
     // --- 5. Modal Titel (Modal Titles) ---
     modal_register_title: "Mining-Konto aktivieren",

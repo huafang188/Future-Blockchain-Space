@@ -63,6 +63,10 @@ window.i18nData['ru'] = {
     expected_pay: "К оплате",
     elec_cost: "Стоимость эл-энергии",
     available: "Доступный баланс",
+    swap_slippage: "Проскальзывание/Комиссия",
+    swap_from: "Обмен из",
+    withdraw_fee: "Комиссия: 0.5USDT",
+    transfer_fee: "Комиссия: 0.00USDT",
 
     // --- 5. Заголовки модальных окон (Modal Titles) ---
     modal_register_title: "Активация аккаунта",

@@ -138,6 +138,9 @@ window.openRechargeModal = function() {
                         ${getLogoOptions('NEO')}
                     </select>
                 </div>
+                <div class="px-1 -mb-2">
+                    <span class="text-[9px] font-bold text-amber-500" data-i18n="withdraw_fee">手续费：0.5USDT</span>
+                </div>
                 <input type="number" id="witAmount" placeholder="提现数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doWithdrawSignature()" class="action-btn w-full mt-2 !from-red-500">确认提现签名</button>
             </div>`);
@@ -169,8 +172,18 @@ window.openExchangeModal = function() {
                     </div>
                 </div>
 
-                <!-- 中间装饰箭头 -->
-                <div class="flex justify-center -my-6 relative z-10">
+                <!-- 中间装饰箭头 + 滑点控制 -->
+                <div class="flex flex-col items-center -my-4 relative z-10">
+                    <!-- 滑点/买卖税滑块 -->
+                    <div class="w-full px-2 py-2 bg-indigo-50 rounded-xl border border-indigo-100 mb-2">
+                        <div class="flex justify-between items-center mb-1 px-1">
+                            <span class="text-[9px] font-bold text-indigo-600" data-i18n="swap_slippage">滑点/买卖税</span>
+                            <span id="slippageValue" class="text-[9px] font-black text-indigo-500">3%</span>
+                        </div>
+                        <input type="range" id="slippageSlider" min="3" max="20" step="1" value="3" 
+                               oninput="window.updateSlippage(this.value)"
+                               class="w-full h-1.5 bg-indigo-200 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                    </div>
                     <div class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-50 text-indigo-500">
                         <i class="fa-solid fa-arrow-down"></i>
                     </div>
@@ -231,6 +244,9 @@ window.openInternalTransferModal = function() {
                     <div class="flex justify-between items-center mb-2 ml-1">
                         <p class="text-[10px] font-bold text-slate-400 uppercase">转账数量</p>
                         <span class="text-[10px] font-bold text-indigo-500 cursor-pointer" onclick="window.fillMax('transToken','transAmount')">全部转出</span>
+                    </div>
+                    <div class="px-1 -mb-1">
+                        <span class="text-[9px] font-bold text-emerald-500" data-i18n="transfer_fee">手续费：0.00USDT</span>
                     </div>
                     <input type="number" id="transAmount" placeholder="0.00" 
                            class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">

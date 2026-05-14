@@ -63,6 +63,10 @@ window.i18nData['ko'] = {
     expected_pay: "예상 결제 금액",
     elec_cost: "필요 전기료",
     available: "사용 가능 잔액",
+    swap_slippage: "슬리피지/수수료",
+    swap_from: "스왑 출처",
+    withdraw_fee: "수수료: 0.5USDT",
+    transfer_fee: "수수료: 0.00USDT",
 
     // --- 5. 업무별 팝업 제목 (Modal Titles) ---
     modal_register_title: "채굴 계정 활성화",

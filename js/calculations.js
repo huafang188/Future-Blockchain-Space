@@ -92,17 +92,28 @@ export function mountCalculationHandlers() {
 
     /**
      * 5. 提币/转账最大值点击事件
-     * 用于点击“最大”按钮时自动填满输入框
+     * 用于点击"最大"按钮时自动填满输入框
      */
     window.fillMax = function(selectId, inputId) {
         const symbol = document.getElementById(selectId)?.value;
         const inputEl = document.getElementById(inputId);
         const balances = window.userBalances || {};
-        
+
         if (symbol && inputEl) {
             inputEl.value = parseFloat(balances[symbol] || 0);
             // 如果是兑换，填满后触发一次计算
             if (inputId === 'sFromAmt') window.calcSwap();
+        }
+    };
+
+    /**
+     * 6. 滑点/买卖税滑块更新
+     * @param {string} value - 滑块值 (3-5)
+     */
+    window.updateSlippage = function(value) {
+        const displayEl = document.getElementById('slippageValue');
+        if (displayEl) {
+            displayEl.innerText = value + '%';
         }
     };
 

@@ -63,6 +63,10 @@ window.i18nData['fr'] = {
     expected_pay: "Montant à payer",
     elec_cost: "Coût de l'électricité",
     available: "Solde disponible",
+    swap_slippage: "Glissement/Frais",
+    swap_from: "Échanger de",
+    withdraw_fee: "Frais: 0.5USDT",
+    transfer_fee: "Frais: 0.00USDT",
 
     // --- 5. Titres des fenêtres (Modal Titles) ---
     modal_register_title: "Activer Compte de Minage",

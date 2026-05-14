@@ -63,6 +63,10 @@ window.i18nData['ja'] = {
     expected_pay: "支払い予定額",
     elec_cost: "必要な電気代",
     available: "利用可能残高",
+    swap_slippage: "スリッページ/手数料",
+    swap_from: ".swap From",
+    withdraw_fee: "手数料：0.5USDT",
+    transfer_fee: "手数料：0.00USDT",
 
     // --- 5. 業務別ポップアップタイトル (Modal Titles) ---
     modal_register_title: "マイニングアカウントの有効化",

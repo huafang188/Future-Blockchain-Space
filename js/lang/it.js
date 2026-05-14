@@ -63,6 +63,10 @@ window.i18nData['it'] = {
     expected_pay: "Pagamento Stimato",
     elec_cost: "Costo Elettricità",
     available: "Saldo Disponibile",
+    swap_slippage: "Slittamento/Commissione",
+    swap_from: "Scambia Da",
+    withdraw_fee: "Commissione: 0.5USDT",
+    transfer_fee: "Commissione: 0.00USDT",
 
     // --- 5. Titoli Modal Specifici ---
     modal_register_title: "Attiva Account Mining",
