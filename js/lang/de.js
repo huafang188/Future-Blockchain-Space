@@ -93,6 +93,12 @@ window.i18nData['de'] = {
     购买矿机: "Miner-Kauf",
     缴纳电费: "Stromzahlung",
 
+    // --- Miner Level Translation ---
+    钻石大师: "Diamantmeister",
+    钻石矿工: "Diamantminer",
+    黄金矿工: "Goldminer",
+    白银矿工: "Silberminer",
+
     // --- 8. News & Ankündigungen ---
     news_title: "Ankündigungen & News",
     history_title: "Transaktionsverlauf",

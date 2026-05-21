@@ -60,7 +60,7 @@ window.i18nRender = function(lang) {
      * 因为这两个函数需要真实的“资产数据/历史数据”对象才能运行。
      * 如果在这里传入 lang (字符串)，会导致渲染逻辑因拿不到数据而将页面数值清空。
      */
-    const dynamicRenders = ['renderNews', 'renderStatsPage'];
+    const dynamicRenders = ['renderNews', 'renderStatsPage', 'renderMinerLevel'];
     
     dynamicRenders.forEach(fnName => {
         if (typeof window[fnName] === 'function') {

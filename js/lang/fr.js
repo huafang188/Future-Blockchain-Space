@@ -93,6 +93,12 @@ window.i18nData['fr'] = {
     购买矿机: "Achat Mineur",
     缴纳电费: "Paiement Électricité",
 
+    // --- Traduction du Niveau de Mineur ---
+    钻石大师: "Maître Diamant",
+    钻石矿工: "Mineur Diamant",
+    黄金矿工: "Mineur d'Or",
+    白银矿工: "Mineur d'Argent",
+
     // --- 8. Nouvelles et Annonces ---
     news_title: "Annonces et Nouvelles",
     history_title: "Historique des Transactions",

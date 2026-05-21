@@ -136,6 +136,12 @@ window.i18nData['en'] = {
     内部转账: "Internal Transfer",
     购买矿机: "Buy Miner",
     缴纳电费: "Pay Electric Fee",
+    
+    // --- Miner Level Translation ---
+    钻石大师: "Diamond Master",
+    钻石矿工: "Diamond Miner",
+    黄金矿工: "Gold Miner",
+    白银矿工: "Silver Miner",
 
     // --- 8. News & Announcements ---
     news_title: "Announcements",

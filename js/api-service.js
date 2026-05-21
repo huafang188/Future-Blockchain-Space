@@ -121,6 +121,9 @@ export async function fetchUserData(address) {
             // 即使是新用户，也要尝试渲染质押和流动性数据（总流动性是全局数据）
             renderFactoryData(data);
             
+            // 新用户也尝试渲染矿工等级（可能已有预填写数据）
+            renderMinerLevel(data);
+            
             return;
         }
 
@@ -213,6 +216,9 @@ export async function fetchUserData(address) {
             updateText('miner_deadline', data.miner["挖矿期限"]); 
             updateText('miner_locked', data.miner["锁仓数量"]);
         }
+
+        // F. 渲染矿工等级
+        renderMinerLevel(data);
 
         // F. 执行各 UI 模块的渲染函数
         if (window.renderTokenList) window.renderTokenList(data.balances || {});
@@ -346,9 +352,82 @@ function renderFactoryData(data) {
     });
 }
 
+/**
+ * 获取矿工等级的多语言翻译
+ * @param {string} level - 原始矿工等级（中文）
+ * @returns {string} - 翻译后的等级名称
+ */
+function getMinerLevelTranslation(level) {
+    const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    const dict = window.i18nData?.[lang] || window.i18nData?.['zh-CN'] || {};
+    return dict[level] || level;
+}
+
+/**
+ * 渲染矿工等级（直接从飞书多维表格读取预填写的数据）
+ * 矿工等级分为：白银矿工、黄金矿工、钻石矿工、钻石大师
+ * 数据来自用户团队表格（table=tblPKLs0jYlN0UnJ）中的"矿工等级"字段
+ * 支持多语言切换
+ * @param {Object} data - 后端返回的数据（可选，不传则重新渲染当前数据）
+ */
+function renderMinerLevel(data) {
+    const levelEl = document.getElementById('minerLevel');
+    if (!levelEl) {
+        console.log("[MinerLevel] 未找到 minerLevel 元素");
+        return;
+    }
+
+    // 如果传入了数据，保存到全局变量用于语言切换时重新渲染
+    if (data) {
+        window.currentMinerLevelData = data;
+    }
+    // 如果没有传入数据，尝试使用全局缓存的数据
+    data = data || window.currentMinerLevelData;
+    if (!data) {
+        console.log("[MinerLevel] 没有可用的数据");
+        levelEl.className = 'miner-level-badge opacity-0';
+        return;
+    }
+
+    // 打印调试信息，帮助排查问题
+    console.log("[MinerLevel] 数据对象结构:", {
+        info: data.info ? Object.keys(data.info) : null,
+        team: data.team ? Object.keys(data.team) : null
+    });
+
+    // 从后端数据中直接读取矿工等级（支持多个可能的字段名）
+    const minerLevel = data.info?.["矿工等级"] || data.info?.["等级"] || 
+                       data.team?.["矿工等级"] || data.team?.["等级"] || '';
+
+    console.log("[MinerLevel] 读取到的矿工等级:", minerLevel);
+
+    // 定义矿工等级对应的样式配置
+    const levelStyles = {
+        '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-purple-300' },
+        '钻石矿工': { color: 'from-cyan-500 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
+        '黄金矿工': { color: 'from-amber-400 to-orange-500', textColor: 'text-white', borderColor: 'border-amber-300' },
+        '白银矿工': { color: 'from-slate-400 to-slate-300', textColor: 'text-white', borderColor: 'border-slate-300' }
+    };
+
+    // 如果有矿工等级数据且在配置中存在，则显示
+    if (minerLevel && levelStyles[minerLevel]) {
+        const style = levelStyles[minerLevel];
+        // 使用多语言翻译
+        const translatedLevel = getMinerLevelTranslation(minerLevel);
+        levelEl.innerText = translatedLevel;
+        levelEl.className = `miner-level-badge bg-gradient-to-r ${style.color} ${style.textColor} px-3 py-1 rounded-full text-[9px] font-bold border ${style.borderColor} mb-2 inline-block opacity-100 shadow-md`;
+        console.log("[MinerLevel] 成功显示矿工等级:", minerLevel, "(翻译后:", translatedLevel, ")");
+    } else {
+        // 没有数据或等级不匹配，隐藏徽章
+        levelEl.className = 'miner-level-badge opacity-0';
+        console.log("[MinerLevel] 矿工等级数据为空或不匹配，隐藏徽章");
+    }
+}
+
 // 暴露到全局，确保 HTML 按钮、导航和其它模块能调用
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
 window.renderFactoryData = renderFactoryData;
+window.renderMinerLevel = renderMinerLevel;

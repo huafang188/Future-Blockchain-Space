@@ -98,6 +98,12 @@ window.i18nData['es'] = {
     confirm_add_liquidity: "Confirmar Añadir y Firmar",
     confirm_remove_liquidity: "Confirmar Retirar y Firmar",
 
+    // --- Traducción del Nivel de Minero ---
+    钻石大师: "Maestro Diamante",
+    钻石矿工: "Minero Diamante",
+    黄金矿工: "Minero de Oro",
+    白银矿工: "Minero de Plata",
+
     // --- 7. Noticias y Anuncios ---
     news_title: "Anuncios y Noticias",
     history_title: "Historial de Transacciones",
