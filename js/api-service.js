@@ -377,12 +377,12 @@ function renderMinerLevel(data) {
         return;
     }
 
-    // 如果传入了数据，保存到全局变量用于语言切换时重新渲染
-    if (data) {
+    // 如果传入了数据且是有效对象（不是语言代码字符串），保存到全局变量用于语言切换时重新渲染
+    if (data && typeof data === 'object' && (data.info || data.team)) {
         window.currentMinerLevelData = data;
     }
-    // 如果没有传入数据，尝试使用全局缓存的数据
-    data = data || window.currentMinerLevelData;
+    // 如果没有传入数据或传入的是语言代码字符串，尝试使用全局缓存的数据
+    data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
     if (!data) {
         console.log("[MinerLevel] 没有可用的数据");
         levelEl.className = 'miner-level-badge opacity-0';
