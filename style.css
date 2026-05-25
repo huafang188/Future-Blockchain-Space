@@ -329,14 +329,14 @@ body::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 240px;
+    font-size: 160px;
     font-weight: 900;
     font-family: "Press Start 2P", "VT323", "Silkscreen", monospace;
-    color: rgba(147, 51, 234, 0.06);
+    color: rgba(147, 51, 234, 0.04);
     letter-spacing: 0.1em;
     text-shadow: 
-        0 0 30px rgba(147, 51, 234, 0.3),
-        0 0 60px rgba(147, 51, 234, 0.15);
+        0 0 20px rgba(147, 51, 234, 0.2),
+        0 0 40px rgba(147, 51, 234, 0.1);
     pointer-events: none;
     z-index: 1;
     image-rendering: pixelated;
