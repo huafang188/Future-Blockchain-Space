@@ -25,7 +25,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(242, 242, 247, 0.75); /* 75%遮罩 = 25%图片可见度 */
+    background-color: rgba(242, 242, 247, 0.55); /* 55%遮罩 = 45%图片可见度 */
     pointer-events: none;
     z-index: 0;
 }
@@ -68,12 +68,12 @@ body::before {
 .bottom-nav-pill {
     /* 关键：恢复导航条本身的点击 */
     pointer-events: auto;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
     border-radius: 999px;
-    border: 0.5px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -8px rgba(0, 0, 0, 0.03);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.03), 0 8px 16px -8px rgba(0, 0, 0, 0.02);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -170,14 +170,14 @@ body::before {
 }
 
 .modal-box {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border-radius: 32px;
     width: 100%;
     max-width: 360px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
     animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
 }
@@ -246,12 +246,12 @@ body::before {
 /* --- 6. 其它 UI 细节 --- */
 /* 玻璃卡片容器 */
 .glass-card {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.03), 0 6px 16px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.02), 0 6px 16px rgba(0,0,0,0.01), inset 0 1px 0 rgba(255,255,255,0.2);
     transform: translateY(0);
     transition: all 0.3s ease;
 }
