@@ -498,6 +498,20 @@ body::before {
 /* 隐藏滚动条 */
 ::-webkit-scrollbar { display: none; }
 
+/* Logo 弹跳动画 */
+.logo-bounce {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 /* 白皮书模块 */
 .wp-chapter { border-bottom: 1px solid #f1f5f9; padding: 4px 0; }
 .wp-chapter:last-child { border-bottom: none; }
