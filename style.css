@@ -8,6 +8,48 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    /* 全局背景图片 */
+    background-image: url('assets/网页背景.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* 背景图片遮罩层 - 控制透明度 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(242, 242, 247, 0.75); /* 75%遮罩 = 25%图片可见度 */
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* --- 1.5 标题渐变动画 --- */
+.title-gradient {
+    background: linear-gradient(90deg, #7c3aed, #a855f7, #9333ea, #c084fc, #7c3aed);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 4s ease infinite;
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* --- 2. 悬浮胶囊导航 (解决点击问题的核心) --- */
@@ -26,12 +68,12 @@ body {
 .bottom-nav-pill {
     /* 关键：恢复导航条本身的点击 */
     pointer-events: auto;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
     border-radius: 999px;
-    border: 0.5px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.1);
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -8px rgba(0, 0, 0, 0.03);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -53,7 +95,7 @@ body {
 
 /* 选中的按钮放大并向上偏移 */
 .nav-item.active {
-    color: #6366f1 !important;
+    color: #9333ea !important;
     transform: translateY(-6px) scale(1.15); 
 }
 
@@ -128,14 +170,14 @@ body {
 }
 
 .modal-box {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border-radius: 32px;
     width: 100%;
     max-width: 360px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     overflow: hidden;
     animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
 }
@@ -204,12 +246,12 @@ body {
 /* --- 6. 其它 UI 细节 --- */
 /* 玻璃卡片容器 */
 .glass-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.08), 0 6px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.03), 0 6px 16px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,0.3);
     transform: translateY(0);
     transition: all 0.3s ease;
 }
@@ -217,6 +259,129 @@ body {
 .glass-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 16px 40px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* 区块链主题卡片 - 仅应用于资产卡片模块 */
+.blockchain-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.blockchain-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.3) 0%, rgba(139, 92, 246, 0.15) 40%, transparent 70%);
+    animation: floatGlow 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.blockchain-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(ellipse at center, rgba(147, 51, 234, 0.2) 0%, rgba(99, 102, 241, 0.1) 50%, transparent 80%);
+    animation: floatGlow 6s ease-in-out infinite reverse;
+    pointer-events: none;
+}
+
+@keyframes floatGlow {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translate(10px, -10px) scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* 区块链网格背景 */
+.blockchain-card .blockchain-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 20px 20px;
+    }
+}
+
+/* 浮动粒子效果 */
+.blockchain-card .floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.blockchain-card .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.8) 0%, rgba(139, 92, 246, 0.4) 100%);
+    border-radius: 50%;
+    animation: particleFloat 10s ease-in-out infinite;
+}
+
+.blockchain-card .particle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+.blockchain-card .particle:nth-child(2) { top: 60%; left: 80%; animation-delay: 2s; }
+.blockchain-card .particle:nth-child(3) { top: 80%; left: 30%; animation-delay: 4s; }
+.blockchain-card .particle:nth-child(4) { top: 40%; left: 60%; animation-delay: 6s; }
+.blockchain-card .particle:nth-child(5) { top: 10%; left: 70%; animation-delay: 8s; }
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    50% {
+        transform: translate(20px, -30px) scale(1.5);
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.2;
+    }
+}
+
+.blockchain-card:hover {
+    box-shadow: 
+        0 16px 40px rgba(0,0,0,0.1), 
+        0 8px 20px rgba(0,0,0,0.08),
+        0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.blockchain-card:hover::before {
+    animation-duration: 4s;
+}
+
+.blockchain-card:hover::after {
+    animation-duration: 3s;
 }
 
 /* 首页 4 列导航 */
