@@ -85,7 +85,17 @@ function initApp() {
             updateWalletUI(currentAddress);
             
             // 核心：拉取飞书后台的所有资产、团队、记录数据
-            fetchUserData(currentAddress); 
+        fetchUserData(currentAddress);
+        
+        // 额外调用：确保工厂模块数据被渲染（即使 fetchUserData 内部已调用）
+        // 这可以确保在页面初始化时这三个区块也能正确显示
+        setTimeout(() => {
+            console.log("[App] 延迟渲染工厂模块数据");
+            // 从全局缓存中获取数据（如果有的话）
+            if (window.lastFetchedData) {
+                window.renderFactoryData(window.lastFetchedData);
+            }
+        }, 500); 
             
         } else {
             console.log("[App] 处于未登录或手动登出状态，等待手动连接");

@@ -521,3 +521,58 @@ body::before {
 #wpContent { overflow-y: visible; padding-right: 4px; }
 #wpContent::-webkit-scrollbar { width: 3px; }
 #wpContent::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 3px; }
+
+/* 合作伙伴滚动容器 */
+.partner-scroll-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 8px 0;
+}
+
+/* 合作伙伴滚动轨道 */
+.partner-scroll-track {
+    display: flex;
+    gap: 24px;
+    animation: scrollLeft 15s linear infinite;
+}
+
+/* 鼠标悬停暂停动画 */
+.partner-scroll-container:hover .partner-scroll-track {
+    animation-play-state: paused;
+}
+
+/* 从右至左滚动动画 */
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* 动图容器边缘虚化效果 */
+.banner-blur-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(10px);
+}
+
+.banner-blur-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 1rem;
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.banner-blur-container img {
+    display: block;
+    border-radius: 1rem;
+}

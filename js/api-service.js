@@ -110,6 +110,19 @@ export async function fetchUserData(address) {
         const data = await res.json();
         console.log("[API] 后端原始数据包:", data);
 
+        // 缓存数据供其他模块使用
+        window.lastFetchedData = data;
+
+        // 【DEBUG】打印完整的 stake、liquidity、totalLiquidity 结构
+        console.log("[API] stake 完整结构:", JSON.stringify(data.stake, null, 2));
+        console.log("[API] liquidity 完整结构:", JSON.stringify(data.liquidity, null, 2));
+        console.log("[API] totalLiquidity 完整结构:", JSON.stringify(data.totalLiquidity, null, 2));
+        
+        // 【DEBUG】打印 _debug 字段（后端返回的原始数据）
+        if (data._debug) {
+            console.log("[API] 后端 _debug 信息:", JSON.stringify(data._debug, null, 2));
+        }
+
         // --- 核心逻辑：新用户初始化，取消自动弹窗 ---
         if (data.newUser) {
             console.log("[API] 该地址为新用户，待手动绑定");
@@ -298,6 +311,9 @@ export function updateText(id, value) {
  */
 function renderFactoryData(data) {
     console.log("[Factory] 渲染工厂模块数据:", data);
+    console.log("[Factory] data.stake:", data.stake);
+    console.log("[Factory] data.liquidity:", data.liquidity);
+    console.log("[Factory] data.totalLiquidity:", data.totalLiquidity);
     
     // 1. 渲染质押数据
     const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
@@ -305,12 +321,16 @@ function renderFactoryData(data) {
         const amtEl = document.getElementById(`stake_${token}`);
         const dayEl = document.getElementById(`stake_${token}_days`);
         
-        if (amtEl && data.stake) {
-            const value = data.stake[token] || data.stake[`# ${token}`] || 0;
+        if (amtEl) {
+            const stakeData = data.stake || {};
+            const value = stakeData[token] || stakeData[`# ${token}`] || 0;
+            console.log(`[Factory] 质押 ${token}:`, value);
             amtEl.innerText = parseFloat(value).toFixed(2);
         }
-        if (dayEl && data.stake) {
-            const value = data.stake[`${token}剩余天数`] || data.stake[`# ${token}剩余天数`] || 0;
+        if (dayEl) {
+            const stakeData = data.stake || {};
+            const value = stakeData[`${token}剩余天数`] || stakeData[`# ${token}剩余天数`] || 0;
+            console.log(`[Factory] 质押 ${token}剩余天数:`, value);
             dayEl.innerText = value;
         }
     });
@@ -326,9 +346,11 @@ function renderFactoryData(data) {
     ];
     lpPairs.forEach(({ base, id }) => {
         const el = document.getElementById(id);
-        if (el && data.liquidity) {
+        if (el) {
+            const liqData = data.liquidity || {};
             const key = `LP-${base}/USDT`;
-            const value = data.liquidity[key] || 0;
+            const value = liqData[key] || 0;
+            console.log(`[Factory] 流动性 ${key}:`, value);
             el.innerText = parseFloat(value).toFixed(2);
         }
     });
@@ -344,9 +366,11 @@ function renderFactoryData(data) {
     ];
     totalPairs.forEach(({ base, id }) => {
         const el = document.getElementById(id);
-        if (el && data.totalLiquidity) {
+        if (el) {
+            const totalLiqData = data.totalLiquidity || {};
             const key = `${base}/USDT`;
-            const value = data.totalLiquidity[key] || 0;
+            const value = totalLiqData[key] || 0;
+            console.log(`[Factory] 总流动性 ${key}:`, value);
             el.innerText = parseFloat(value).toFixed(2);
         }
     });
