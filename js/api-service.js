@@ -293,55 +293,11 @@ export function updateText(id, value) {
 }
 
 /**
- * 获取工厂模块的默认模拟数据（用于演示或后端未返回数据时）
- */
-function getDefaultFactoryData() {
-    return {
-        stake: {
-            'NEO': '1250.50',
-            'NEX': '890.30',
-            'NET': '2340.00',
-            'NEA': '567.80',
-            'NRY': '1890.25',
-            'NCL': '456.78',
-            'NEO剩余天数': '180',
-            'NEX剩余天数': '90',
-            'NET剩余天数': '365',
-            'NEA剩余天数': '60',
-            'NRY剩余天数': '120',
-            'NCL剩余天数': '270'
-        },
-        liquidity: {
-            'LP-NEO/USDT': '156800.50',
-            'LP-NEX/USDT': '98500.75',
-            'LP-NET/USDT': '234500.00',
-            'LP-NEA/USDT': '67800.25',
-            'LP-NRY/USDT': '189200.00',
-            'LP-NCL/USDT': '56400.80'
-        },
-        totalLiquidity: {
-            'NEO/USDT': '1250000.00',
-            'NEX/USDT': '890000.00',
-            'NET/USDT': '2340000.00',
-            'NEA/USDT': '567000.00',
-            'NRY/USDT': '1890000.00',
-            'NCL/USDT': '456000.00'
-        }
-    };
-}
-
-/**
  * 渲染工厂模块数据（质押、流动性、总流动性）
  * @param {Object} data - 后端返回的数据
  */
 function renderFactoryData(data) {
     console.log("[Factory] 渲染工厂模块数据:", data);
-    
-    // 如果后端没有返回工厂数据，使用默认模拟数据
-    const defaultData = getDefaultFactoryData();
-    const stakeData = data.stake || defaultData.stake;
-    const liquidityData = data.liquidity || defaultData.liquidity;
-    const totalLiquidityData = data.totalLiquidity || defaultData.totalLiquidity;
     
     // 1. 渲染质押数据
     const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
@@ -349,12 +305,12 @@ function renderFactoryData(data) {
         const amtEl = document.getElementById(`stake_${token}`);
         const dayEl = document.getElementById(`stake_${token}_days`);
         
-        if (amtEl) {
-            const value = stakeData[token] || stakeData[`# ${token}`] || 0;
+        if (amtEl && data.stake) {
+            const value = data.stake[token] || data.stake[`# ${token}`] || 0;
             amtEl.innerText = parseFloat(value).toFixed(2);
         }
-        if (dayEl) {
-            const value = stakeData[`${token}剩余天数`] || stakeData[`# ${token}剩余天数`] || 0;
+        if (dayEl && data.stake) {
+            const value = data.stake[`${token}剩余天数`] || data.stake[`# ${token}剩余天数`] || 0;
             dayEl.innerText = value;
         }
     });
@@ -370,9 +326,9 @@ function renderFactoryData(data) {
     ];
     lpPairs.forEach(({ base, id }) => {
         const el = document.getElementById(id);
-        if (el) {
+        if (el && data.liquidity) {
             const key = `LP-${base}/USDT`;
-            const value = liquidityData[key] || 0;
+            const value = data.liquidity[key] || 0;
             el.innerText = parseFloat(value).toFixed(2);
         }
     });
@@ -388,9 +344,9 @@ function renderFactoryData(data) {
     ];
     totalPairs.forEach(({ base, id }) => {
         const el = document.getElementById(id);
-        if (el) {
+        if (el && data.totalLiquidity) {
             const key = `${base}/USDT`;
-            const value = totalLiquidityData[key] || 0;
+            const value = data.totalLiquidity[key] || 0;
             el.innerText = parseFloat(value).toFixed(2);
         }
     });
