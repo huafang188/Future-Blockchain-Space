@@ -68,6 +68,11 @@ window.i18nData['el'] = {
     swap_from: "Περιουσία Ανταλλαγής",
     withdraw_fee: "Προμήθεια: 0.5USDT",
     transfer_fee: "Προμήθεια: 0.00USDT",
+    
+    // --- 5. Σημαντική Ανακοίνωση ---
+    important_announcement: "Σημαντική Ανακοίνωση",
+    neo_update_note: "Regarding NEO Recent Updates: 1.We have recently optimized our UI display. You may experience slow page loading. We will continue to optimize related content to ensure system stability. 2.The recent exchange system delays are related to our on-chain and off-chain linkage processing. We are currently optimizing nodes to improve speed globally and minimize congestion. 3.Some users experienced temporary data errors. We apologize for the inconvenience. This was due to database migration to a more stable system. Affected users will receive compensation. Details will be announced later. 4.We will soon connect data to the Dashboard page, displaying AI computing power rental status, financial disclosures, NEO global production parameters, on-chain plans, and our deflation mechanism. 5.Regarding NCL activation: NCL is our cross-chain ecosystem. We will issue NCL on BSC, TON, SOL, and ETH chains. NCL acquisition methods will be announced. Thank you to all users and partners for your support.",
+    
     recharge_amount: "Ποσότητα Κατάθεσης",
     select_recharge_asset: "Επιλογή Περιουσίας Κατάθεσης",
     receiver_address_placeholder: "Διεύθυνση Παραλήπτη (0x...)",

@@ -25,17 +25,21 @@ export function renderNews(lang) {
 
     const labels = getI18nLabels(lang);
     if (!labels) {
-        container.innerHTML = `<div class="animate-pulse space-y-2"><div class="h-4 bg-slate-100 rounded w-3/4"></div><div class="h-4 bg-slate-100 rounded w-1/2"></div></div>`;
         return;
     }
 
     const newsList = labels.news_list || [];
     if (newsList.length === 0) {
-        container.innerHTML = `<div class="p-4 text-center text-slate-400 text-[10px] italic">No Announcements</div>`;
         return;
     }
 
-    container.innerHTML = newsList.map(newsText => `
+    const importantAnnouncement = container.querySelector('.bg-gradient-to-r.from-orange-50.to-red-50');
+    let importantHtml = '';
+    if (importantAnnouncement) {
+        importantHtml = importantAnnouncement.outerHTML;
+    }
+
+    const newsHtml = newsList.map(newsText => `
         <div class="bg-white/50 p-3 rounded-xl border border-slate-50 hover:bg-white transition-all shadow-sm">
             <p class="text-xs font-bold text-slate-800 leading-relaxed">${newsText}</p>
             <div class="flex items-center gap-2 mt-2">
@@ -44,6 +48,8 @@ export function renderNews(lang) {
             </div>
         </div>
     `).join('');
+
+    container.innerHTML = importantHtml + newsHtml;
 }
 
 /**
