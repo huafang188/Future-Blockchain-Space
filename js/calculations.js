@@ -222,5 +222,39 @@ export function mountCalculationHandlers() {
         }
     };
 
+    /**
+     * 10. 交易历史/转账流水标签切换
+     */
+    window.switchHistoryTab = function(tab) {
+        const historyPanel = document.getElementById('history-panel');
+        const transferPanel = document.getElementById('transfer-panel');
+        const tabHistory = document.getElementById('tab-history');
+        const tabTransfer = document.getElementById('tab-transfer');
+
+        if (tab === 'history') {
+            if (historyPanel) historyPanel.classList.remove('hidden');
+            if (transferPanel) transferPanel.classList.add('hidden');
+            if (tabHistory) {
+                tabHistory.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+                tabHistory.classList.add('bg-blue-500', 'text-white', 'shadow-sm');
+            }
+            if (tabTransfer) {
+                tabTransfer.classList.remove('bg-blue-500', 'text-white', 'shadow-sm');
+                tabTransfer.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+            }
+        } else if (tab === 'transfer') {
+            if (historyPanel) historyPanel.classList.add('hidden');
+            if (transferPanel) transferPanel.classList.remove('hidden');
+            if (tabHistory) {
+                tabHistory.classList.remove('bg-blue-500', 'text-white', 'shadow-sm');
+                tabHistory.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+            }
+            if (tabTransfer) {
+                tabTransfer.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+                tabTransfer.classList.add('bg-blue-500', 'text-white', 'shadow-sm');
+            }
+        }
+    };
+
     console.log("[Calculations] 计算逻辑挂载成功");
 }
