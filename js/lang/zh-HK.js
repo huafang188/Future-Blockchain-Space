@@ -14,6 +14,7 @@ window.i18nData['zh-HK'] = {
     nav_market: "看板",
     nav_me: "我的",
     nav_wp: "白皮書",
+    official_contacts: "官方聯絡方式與社區（逐步建設中）",
 
     // --- 2. 礦機主界面 (Miner Page) ---
     miner_title: "我的礦機",

@@ -14,6 +14,7 @@ window.i18nData['de'] = {
     nav_market: "Board",
     nav_me: "Profil",
     nav_wp: "Whitepaper",
+    official_contacts: "Offizielle Kontakte und Community (Im Aufbau)",
 
     // --- 2. Miner-Interface (Miner Page) ---
     miner_title: "Meine Miner",

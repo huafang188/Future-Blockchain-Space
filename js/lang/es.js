@@ -14,6 +14,7 @@ window.i18nData['es'] = {
     nav_market: "Tablero",
     nav_me: "Perfil",
     nav_wp: "Whitepaper",
+    official_contacts: "Contactos Oficiales y Comunidad (En Construcción)",
 
     // --- 2. Interfaz del Minero (Página de Minería) ---
     miner_title: "Mis Mineros",

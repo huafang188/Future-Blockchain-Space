@@ -14,6 +14,7 @@ window.i18nData['ar'] = {
     nav_market: "اللوحة",
     nav_me: "حسابي",
     nav_wp: "الكتاب الأبيض",
+    official_contacts: "جهات الاتصال الرسمية والمجتمع (قيد الإنشاء)",
 
     // --- 2. Miner Page ---
     miner_title: "جهاز التعدين الخاص بي",

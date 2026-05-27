@@ -14,6 +14,7 @@ window.i18nData['ru'] = {
     nav_market: "Статистика",
     nav_me: "Профиль",
     nav_wp: "Whitepaper",
+    official_contacts: "Официальные контакты и сообщество (строится)",
 
     // --- 2. Интерфейс майнера (Miner Page) ---
     miner_title: "Мои майнеры",

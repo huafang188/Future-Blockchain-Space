@@ -14,6 +14,7 @@ window.i18nData['ko'] = {
     nav_market: "보드",
     nav_me: "마이",
     nav_wp: "백서",
+    official_contacts: "공식 연락처 및 커뮤니티 (建设中)",
 
     // --- 2. 채굴기 인터페이스 (Miner Page) ---
     miner_title: "내 채굴기",

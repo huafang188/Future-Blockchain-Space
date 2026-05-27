@@ -14,6 +14,7 @@ window.i18nData['fr'] = {
     nav_market: "Stats",
     nav_me: "Profil",
     nav_wp: "Livre Blanc",
+    official_contacts: "Contacts Officiels et Communauté (En Construction)",
 
     // --- 2. Interface Mineur (Miner Page) ---
     miner_title: "Mes Mineurs",

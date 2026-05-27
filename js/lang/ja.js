@@ -14,6 +14,7 @@ window.i18nData['ja'] = {
     nav_market: "ボード",
     nav_me: "マイページ",
     nav_wp: "白書",
+    official_contacts: "公式サイトへのお問い合わせとコミュニティ（建設中）",
 
     // --- 2. マイナーインターフェース (Miner Page) ---
     miner_title: "マイマイナー",

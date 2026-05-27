@@ -14,6 +14,7 @@ window.i18nData['hi'] = {
     nav_market: "बोर्ड",
     nav_me: "मेरा",
     nav_wp: "व्हाइट पेपर",
+    official_contacts: "आधिकारिक संपर्क और समुदाय (निर्माणाधीन)",
 
     // --- 2. खनन पृष्ठ (Miner Page) ---
     miner_title: "मेरा खनन उपकरण",
