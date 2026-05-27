@@ -112,7 +112,18 @@ window.i18nData['en'] = {
     amount_max_placeholder: "Amount (max {max})",
     max_available: "Max Available",
 
-    // --- 5. Modal Titles ---
+    // --- 5. Buy Miner Modal ---
+    buy_num_placeholder: "Enter Quantity (1-100)",
+    confirm_pay_bsc: "Confirm Payment (BSC)",
+    
+    // --- 6. Electric Fee Modal ---
+    elec_num_placeholder: "Miner Count",
+    days_30: "30 Days",
+    days_90: "90 Days",
+    days_180: "180 Days",
+    days_360: "360 Days",
+    
+    // --- 7. Modal Titles ---
     modal_register_title: "Activate Mining Account",
     modal_bind_title: "Referral Binding",
     miner_transfer_title: "Internal Miner Transfer",

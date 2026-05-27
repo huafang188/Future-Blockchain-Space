@@ -68,7 +68,18 @@ window.i18nData['ja'] = {
     withdraw_fee: "手数料：0.5USDT",
     transfer_fee: "手数料：0.00USDT",
 
-    // --- 5. 業務別ポップアップタイトル (Modal Titles) ---
+    // --- 5. マイナー購入ポップアップ ---
+    buy_num_placeholder: "数量を入力 (1-100)",
+    confirm_pay_bsc: "支払いを確認 (BSC)",
+    
+    // --- 6. 電気代ポップアップ ---
+    elec_num_placeholder: "マイナー数量",
+    days_30: "30 日",
+    days_90: "90 日",
+    days_180: "180 日",
+    days_360: "360 日",
+    
+    // --- 7. 業務別ポップアップタイトル (Modal Titles) ---
     modal_register_title: "マイニングアカウントの有効化",
     modal_bind_title: "紹介関係の紐付け",
     miner_transfer_title: "内部マイナー譲渡",

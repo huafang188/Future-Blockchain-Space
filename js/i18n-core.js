@@ -32,6 +32,8 @@ window.i18nRender = function(lang) {
         if (translation !== undefined) {
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 el.placeholder = translation;
+            } else if (el.tagName === 'OPTION') {
+                el.textContent = translation;
             } else {
                 el.innerHTML = translation;
             }

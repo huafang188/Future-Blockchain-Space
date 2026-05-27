@@ -68,7 +68,18 @@ window.i18nData['ko'] = {
     withdraw_fee: "수수료: 0.5USDT",
     transfer_fee: "수수료: 0.00USDT",
 
-    // --- 5. 업무별 팝업 제목 (Modal Titles) ---
+    // --- 5. 채굴기 구매 팝업 ---
+    buy_num_placeholder: "수량 입력 (1-100)",
+    confirm_pay_bsc: "결제 확인 (BSC)",
+    
+    // --- 6. 전기료 팝업 ---
+    elec_num_placeholder: "채굴기 수량",
+    days_30: "30 일",
+    days_90: "90 일",
+    days_180: "180 일",
+    days_360: "360 일",
+    
+    // --- 7. 업무별 팝업 제목 (Modal Titles) ---
     modal_register_title: "채굴 계정 활성화",
     modal_bind_title: "추천 관계 바인딩",
     miner_transfer_title: "내부 채굴기 전송",

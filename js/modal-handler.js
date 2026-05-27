@@ -52,7 +52,7 @@ export function mountModalHandlers() {
             const nums = [1, 5, 10, 20, 50, 100];
             window.showModal("buy_miner", `
                 <div class="space-y-4">
-                    <input type="number" id="buyNumInput" oninput="window.setBuyNumInput(this)" placeholder="输入数量 (1-100)" min="1" max="100" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border border-slate-200 text-center" style="appearance: textfield;">
+                    <input type="number" id="buyNumInput" oninput="window.setBuyNumInput(this)" data-i18n-placeholder="buy_num_placeholder" placeholder="输入数量 (1-100)" min="1" max="100" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border border-slate-200 text-center" style="appearance: textfield;">
                     <div class="flex gap-2 justify-center">
                         <button type="button" onclick="window.setBuyNumInputValue(1)" class="px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold">1</button>
                         <button type="button" onclick="window.setBuyNumInputValue(10)" class="px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold">10</button>
@@ -63,23 +63,23 @@ export function mountModalHandlers() {
                         <span class="text-xs font-bold text-blue-600" data-i18n="expected_pay">预计支付</span>
                         <span id="buyTotal" class="text-xl font-black text-blue-700">$ 0.00</span>
                     </div>
-                    <button type="button" onclick="window.doChainPay('MINER')" class="action-btn w-full mt-2">确认支付 (BSC)</button>
+                    <button type="button" onclick="window.doChainPay('MINER')" class="action-btn w-full mt-2" data-i18n="confirm_pay_bsc">确认支付 (BSC)</button>
                 </div>`);
         } else {
             window.showModal("pay_fee", `
                 <div class="space-y-4 text-left">
-                    <input type="number" id="elecNum" oninput="window.calcElec()" placeholder="矿机数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border-none">
+                    <input type="number" id="elecNum" oninput="window.calcElec()" data-i18n-placeholder="elec_num_placeholder" placeholder="矿机数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border-none">
                     <select id="elecDays" onchange="window.calcElec()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold outline-none">
-                        <option value="30">30 天</option>
-                        <option value="90">90 天</option>
-                        <option value="180">180 天</option>
-                        <option value="360">360 天</option>
+                        <option value="30" data-i18n="days_30">30 天</option>
+                        <option value="90" data-i18n="days_90">90 天</option>
+                        <option value="180" data-i18n="days_180">180 天</option>
+                        <option value="360" data-i18n="days_360">360 天</option>
                     </select>
                     <div class="p-5 bg-slate-900 rounded-[2rem] flex justify-between items-center">
                         <span class="text-slate-400 text-xs font-bold" data-i18n="elec_cost">所需电费</span>
                         <span id="elecCost" class="text-yellow-500 font-black text-lg">0.00 USDT</span>
                     </div>
-                    <button type="button" onclick="window.doChainPay('ELECTRIC')" class="action-btn w-full mt-2">确认支付 (BSC)</button>
+                    <button type="button" onclick="window.doChainPay('ELECTRIC')" class="action-btn w-full mt-2" data-i18n="confirm_pay_bsc">确认支付 (BSC)</button>
                 </div>`);
         }
     };

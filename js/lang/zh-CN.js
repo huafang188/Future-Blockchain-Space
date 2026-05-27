@@ -112,7 +112,18 @@ window.i18nData['zh-CN'] = {
     amount_max_placeholder: "数量 (最多 {max})",
     max_available: "最大可用",
 
-    // --- 5. 业务具体弹窗标题 (Modal Titles) ---
+    // --- 5. 购买矿机弹窗 ---
+    buy_num_placeholder: "输入数量 (1-100)",
+    confirm_pay_bsc: "确认支付 (BSC)",
+    
+    // --- 6. 电费弹窗 ---
+    elec_num_placeholder: "矿机数量",
+    days_30: "30 天",
+    days_90: "90 天",
+    days_180: "180 天",
+    days_360: "360 天",
+    
+    // --- 7. 业务具体弹窗标题 (Modal Titles) ---
     modal_register_title: "激活挖矿账户",
     modal_bind_title: "绑定推荐关系",
     miner_transfer_title: "内部转让矿机",
