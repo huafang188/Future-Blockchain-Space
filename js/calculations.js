@@ -152,5 +152,23 @@ export function mountCalculationHandlers() {
         }
     };
 
+    /**
+     * 7. 公告折叠/展开切换
+     */
+    window.toggleAnnouncement = function() {
+        const content = document.getElementById('announcement-content');
+        const icon = document.getElementById('announcement-toggle-icon');
+        
+        if (content && icon) {
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    };
+
     console.log("[Calculations] 计算逻辑挂载成功");
 }

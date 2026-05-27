@@ -114,7 +114,12 @@ window.i18nData['en'] = {
     
     // --- 5. Important Announcement ---
     important_announcement: "Important Notice",
-    neo_update_note: "Regarding NEO Recent Updates: 1.We have recently optimized our UI display. You may experience slow page loading. We will continue to optimize related content to ensure system stability. 2.The recent exchange system delays are related to our on-chain and off-chain linkage processing. We are currently optimizing nodes to improve speed globally and minimize congestion. 3.Some users experienced temporary data errors. We apologize for the inconvenience. This was due to database migration to a more stable system. Affected users will receive compensation. Details will be announced later. 4.We will soon connect data to the Dashboard page, displaying AI computing power rental status, financial disclosures, NEO global production parameters, on-chain plans, and our deflation mechanism. 5.Regarding NCL activation: NCL is our cross-chain ecosystem. We will issue NCL on BSC, TON, SOL, and ETH chains. NCL acquisition methods will be announced. Thank you to all users and partners for your support.",
+    neo_update_p1: "1. We have recently optimized our UI display. You may experience slow page loading. We will continue to optimize related content to ensure system stability.",
+    neo_update_p2: "2. The recent exchange system delays are related to our on-chain and off-chain linkage processing. We are currently optimizing nodes to improve speed globally and minimize congestion.",
+    neo_update_p3: "3. Some users experienced temporary data errors. We apologize for the inconvenience. This was due to database migration to a more stable system. Affected users will receive compensation. Details will be announced later.",
+    neo_update_p4: "4. We will soon connect data to the Dashboard page, displaying AI computing power rental status, financial disclosures, NEO global production parameters, on-chain plans, and our deflation mechanism.",
+    neo_update_p5: "5. Regarding NCL activation: NCL is our cross-chain ecosystem. We will issue NCL on BSC, TON, SOL, and ETH chains. NCL acquisition methods will be announced.",
+    neo_update_thanks: "Thank you to all users and partners for your support.",
 
     // --- 6. Buy Miner Modal ---
     buy_num_placeholder: "Enter Quantity (1-100)",

@@ -110,12 +110,32 @@
     </div>
 
     <div id="news-container" class="space-y-4">
-        <div class="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-xl border border-orange-100 shadow-sm">
-            <div class="flex items-start gap-2">
-                <span class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0 mt-0.5">!</span>
-                <div>
-                    <p class="text-[10px] font-black text-orange-500 uppercase tracking-wider mb-1" data-i18n="important_announcement">重要公告</p>
-                    <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_note">关于 NEO 近期更新的说明：1.我们近期优化了我们的 UI 显示，可能会出现页面加载缓慢的情况，我们后续会继续优化相关内容，确保我们系统的稳定性。2.近期出现兑换系统延迟的原因，这部分内容与我们链上与链下联动的处理有关，目前我们已经在优化相关节点，提高全球部分节点的速度，尽量避免链上拥堵的情况。3.部分用户短期出现数据错误，给您带来的不便敬请谅解，原因是因为我们将原先的数据库进行了迁移，我们现在使用更加稳定的数据库系统，对应的用户我们会进行补偿，具体补偿计划稍后公布。4.我们会在近期对看板页面进行数据对接，看板页面会公布我们的AI 算力租赁情况及财务公示，并且同时公布 NEO 的全网产出参数以及上链计划，同时推出我们的通缩机制。5.对于 NCL 的启用：NCL 是我们推出的跨链生态，我们将在BSC链、TON 链、SOL 链、ETH 链发行我们的 NCL 资产，NCL 的获取方式我们届时会进行公布。感谢每一位用户及合作伙伴的陪伴。</p>
+        <div class="bg-white/50 rounded-xl border border-slate-50 shadow-sm">
+            <button type="button" onclick="toggleAnnouncement()" class="w-full p-4 flex items-center justify-between hover:bg-white/50 transition-colors">
+                <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0">!</span>
+                    <span class="text-[10px] font-black text-orange-500 uppercase tracking-wider" data-i18n="important_announcement">重要公告</span>
+                </div>
+                <span id="announcement-toggle-icon" class="text-slate-400 text-xs transition-transform">▼</span>
+            </button>
+            <div id="announcement-content" class="hidden px-4 pb-4 space-y-2">
+                <div class="bg-slate-50/50 p-3 rounded-lg">
+                    <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_p1">1. 我们近期优化了我们的 UI 显示，可能会出现页面加载缓慢的情况，我们后续会继续优化相关内容，确保我们系统的稳定性。</p>
+                </div>
+                <div class="bg-slate-50/50 p-3 rounded-lg">
+                    <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_p2">2. 近期出现兑换系统延迟的原因，这部分内容与我们链上与链下联动的处理有关，目前我们已经在优化相关节点，提高全球部分节点的速度，尽量避免链上拥堵的情况。</p>
+                </div>
+                <div class="bg-slate-50/50 p-3 rounded-lg">
+                    <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_p3">3. 部分用户短期出现数据错误，给您带来的不便敬请谅解，原因是因为我们将原先的数据库进行了迁移，我们现在使用更加稳定的数据库系统，对应的用户我们会进行补偿，具体补偿计划稍后公布。</p>
+                </div>
+                <div class="bg-slate-50/50 p-3 rounded-lg">
+                    <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_p4">4. 我们会在近期对看板页面进行数据对接，看板页面会公布我们的AI 算力租赁情况及财务公示，并且同时公布 NEO 的全网产出参数以及上链计划，同时推出我们的通缩机制。</p>
+                </div>
+                <div class="bg-slate-50/50 p-3 rounded-lg">
+                    <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_p5">5. 对于 NCL 的启用：NCL 是我们推出的跨链生态，我们将在BSC链、TON 链、SOL 链、ETH 链发行我们的 NCL 资产，NCL 的获取方式我们届时会进行公布。</p>
+                </div>
+                <div class="pt-2">
+                    <p class="text-[11px] text-slate-600 text-center italic" data-i18n="neo_update_thanks">感谢每一位用户及合作伙伴的陪伴。</p>
                 </div>
             </div>
         </div>
