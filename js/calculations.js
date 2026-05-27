@@ -32,21 +32,20 @@ export function mountCalculationHandlers() {
     window.setBuyNumInput = function(input) {
         let value = parseInt(input.value);
         
-        // 限制输入范围 1-100
-        if (isNaN(value) || value < 1) {
-            input.value = 1;
-            value = 1;
-        } else if (value > 100) {
+        // 只限制最大值为 100
+        if (!isNaN(value) && value > 100) {
             input.value = 100;
             value = 100;
         }
         
         // 计算总价：每台 150 USDT/USD
         const unitPrice = 150;
-        const total = (value * unitPrice).toFixed(2);
-        
-        const totalEl = document.getElementById('buyTotal');
-        if (totalEl) totalEl.innerText = `$ ${total}`;
+        // 只有当值有效时才计算总价
+        if (!isNaN(value) && value >= 1 && value <= 100) {
+            const total = (value * unitPrice).toFixed(2);
+            const totalEl = document.getElementById('buyTotal');
+            if (totalEl) totalEl.innerText = `$ ${total}`;
+        }
     };
 
     /**
