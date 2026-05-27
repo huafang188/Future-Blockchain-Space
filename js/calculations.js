@@ -26,6 +26,42 @@ export function mountCalculationHandlers() {
     };
 
     /**
+     * 1.1 购买矿机：输入框方式更新数量和总价
+     * @param {HTMLElement} input - 输入框对象
+     */
+    window.setBuyNumInput = function(input) {
+        let value = parseInt(input.value);
+        
+        // 限制输入范围 1-100
+        if (isNaN(value) || value < 1) {
+            input.value = 1;
+            value = 1;
+        } else if (value > 100) {
+            input.value = 100;
+            value = 100;
+        }
+        
+        // 计算总价：每台 150 USDT/USD
+        const unitPrice = 150;
+        const total = (value * unitPrice).toFixed(2);
+        
+        const totalEl = document.getElementById('buyTotal');
+        if (totalEl) totalEl.innerText = `$ ${total}`;
+    };
+
+    /**
+     * 1.2 购买矿机：快捷按钮设置输入框值
+     * @param {number} n - 矿机数量
+     */
+    window.setBuyNumInputValue = function(n) {
+        const input = document.getElementById('buyNumInput');
+        if (input) {
+            input.value = n;
+            window.setBuyNumInput(input);
+        }
+    };
+
+    /**
      * 2. 缴纳电费：实时计算所需 USDT
      * 公式：数量 * 天数 * 1.00 (即 1美元/台/天)
      */

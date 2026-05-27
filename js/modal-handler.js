@@ -52,11 +52,12 @@ export function mountModalHandlers() {
             const nums = [1, 5, 10, 20, 50, 100];
             window.showModal("buy_miner", `
                 <div class="space-y-4">
-                    <div class="grid grid-cols-3 gap-2">
-                        ${nums.map(n => `
-                            <button type="button" onclick="window.setBuyNum(${n}, this)" class="buy-btn border border-slate-200 p-3 rounded-2xl text-[11px] font-bold">
-                                ${n}台
-                            </button>`).join('')}
+                    <input type="number" id="buyNumInput" oninput="window.setBuyNumInput(this)" placeholder="输入数量 (1-100)" min="1" max="100" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border border-slate-200 text-center" style="appearance: textfield;">
+                    <div class="flex gap-2 justify-center">
+                        <button type="button" onclick="window.setBuyNumInputValue(1)" class="px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold">1</button>
+                        <button type="button" onclick="window.setBuyNumInputValue(10)" class="px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold">10</button>
+                        <button type="button" onclick="window.setBuyNumInputValue(50)" class="px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold">50</button>
+                        <button type="button" onclick="window.setBuyNumInputValue(100)" class="px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold">100</button>
                     </div>
                     <div class="p-5 bg-blue-50 rounded-[2rem] flex justify-between items-center">
                         <span class="text-xs font-bold text-blue-600" data-i18n="expected_pay">预计支付</span>
