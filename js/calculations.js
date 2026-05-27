@@ -188,5 +188,39 @@ export function mountCalculationHandlers() {
         }
     };
 
+    /**
+     * 9. 公告/新闻标签切换
+     */
+    window.switchNewsTab = function(tab) {
+        const announcementPanel = document.getElementById('announcement-panel');
+        const newsPanel = document.getElementById('news-panel');
+        const tabAnnouncement = document.getElementById('tab-announcement');
+        const tabNews = document.getElementById('tab-news');
+        
+        if (tab === 'announcement') {
+            if (announcementPanel) announcementPanel.classList.remove('hidden');
+            if (newsPanel) newsPanel.classList.add('hidden');
+            if (tabAnnouncement) {
+                tabAnnouncement.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+                tabAnnouncement.classList.add('bg-orange-500', 'text-white', 'shadow-sm');
+            }
+            if (tabNews) {
+                tabNews.classList.remove('bg-orange-500', 'text-white', 'shadow-sm');
+                tabNews.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+            }
+        } else if (tab === 'news') {
+            if (announcementPanel) announcementPanel.classList.add('hidden');
+            if (newsPanel) newsPanel.classList.remove('hidden');
+            if (tabAnnouncement) {
+                tabAnnouncement.classList.remove('bg-orange-500', 'text-white', 'shadow-sm');
+                tabAnnouncement.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+            }
+            if (tabNews) {
+                tabNews.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
+                tabNews.classList.add('bg-orange-500', 'text-white', 'shadow-sm');
+            }
+        }
+    };
+
     console.log("[Calculations] 计算逻辑挂载成功");
 }

@@ -72,6 +72,7 @@ window.i18nData['ar'] = {
     
     // --- 5. إعلان هام ---
     important_announcement: "إعلان هام",
+    news_title_short: "أخبار",
     neo_update_p1: "1. We have recently optimized our UI display. You may experience slow page loading. We will continue to optimize related content to ensure system stability.",
     neo_update_p2: "2. The recent exchange system delays are related to our on-chain and off-chain linkage processing. We are currently optimizing nodes to improve speed globally and minimize congestion.",
     neo_update_p3: "3. Some users experienced temporary data errors. We apologize for the inconvenience. This was due to database migration to a more stable system. Affected users will receive compensation. Details will be announced later.",
