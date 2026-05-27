@@ -170,5 +170,23 @@ export function mountCalculationHandlers() {
         }
     };
 
+    /**
+     * 8. 新闻列表折叠/展开切换
+     */
+    window.toggleNewsList = function() {
+        const content = document.getElementById('news-list-content');
+        const icon = document.getElementById('news-toggle-icon');
+        
+        if (content && icon) {
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    };
+
     console.log("[Calculations] 计算逻辑挂载成功");
 }

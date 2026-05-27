@@ -33,7 +33,7 @@ export function renderNews(lang) {
         return;
     }
 
-    const importantAnnouncement = container.querySelector('.bg-gradient-to-r.from-orange-50.to-red-50');
+    const importantAnnouncement = container.querySelector('#announcement-content').parentElement;
     let importantHtml = '';
     if (importantAnnouncement) {
         importantHtml = importantAnnouncement.outerHTML;
