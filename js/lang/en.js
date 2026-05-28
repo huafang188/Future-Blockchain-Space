@@ -15,6 +15,7 @@ window.i18nData['en'] = {
     nav_me: "Profile",
     nav_wp: "Whitepaper",
     official_contacts: "Official Contacts & Community (Under Construction)",
+    neo_ton_partnership: "TON is Coming: NEO will soon support The Open Network - the world's leading L1 blockchain: fastest speed, lowest fees, sub-second confirmation, nearly zero cost, native access to over 1 billion users on Telegram.",
 
     // --- 2. Miner Interface ---
     miner_title: "My Miners",

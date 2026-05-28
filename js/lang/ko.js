@@ -15,6 +15,7 @@ window.i18nData['ko'] = {
     nav_me: "마이",
     nav_wp: "백서",
     official_contacts: "공식 연락처 및 커뮤니티 (建设中)",
+    neo_ton_partnership: "TON 이 곧 도착합니다: NEO 가 The Open Network 를 지원합니다——세계 최고의 L1 블록체인: 가장 빠른 속도, 가장 낮은 비용, 아초 단위 확인, 거의 무료, Telegram 의 10 억 이상 사용자에게 원본 액세스。",
 
     // --- 2. 채굴기 인터페이스 (Miner Page) ---
     miner_title: "내 채굴기",

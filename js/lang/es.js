@@ -15,6 +15,7 @@ window.i18nData['es'] = {
     nav_me: "Perfil",
     nav_wp: "Whitepaper",
     official_contacts: "Contactos Oficiales y Comunidad (En Construcción)",
+    neo_ton_partnership: "TON está llegando: NEO pronto soportará The Open Network — la cadena L1 líder mundial: velocidad máxima, tarifas mínimas, confirmación en subsegundos, costo casi cero, acceso nativo a más de 1 mil millones de usuarios de Telegram.",
 
     // --- 2. Interfaz del Minero (Página de Minería) ---
     miner_title: "Mis Mineros",

@@ -15,6 +15,7 @@ window.i18nData['zh-CN'] = {
     nav_me: "我的",
     nav_wp: "白皮书",
     official_contacts: "官方联系方式与社区（逐步建设中）",
+    neo_ton_partnership: "TON 即将来袭：NEO 即将支持 The Open Network——全球领先的L1区块链：速度最快，费用最低，亚秒级确认，几乎零费用，原生访问 Telegram 上超过 10 亿用户。",
 
     // --- 2. 矿机主界面 (Miner Page) ---
     miner_title: "我的矿机",

@@ -15,6 +15,7 @@ window.i18nData['fr'] = {
     nav_me: "Profil",
     nav_wp: "Livre Blanc",
     official_contacts: "Contacts Officiels et Communauté (En Construction)",
+    neo_ton_partnership: "TON arrive bientôt: NEO supportera bientôt The Open Network — le plus grand L1 blockchain au monde: vitesse maximale, frais minimaux, confirmation en sous-seconde, coût presque nul, accès natif à plus de 1 milliard d'utilisateurs Telegram.",
 
     // --- 2. Interface Mineur (Miner Page) ---
     miner_title: "Mes Mineurs",

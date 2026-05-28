@@ -15,6 +15,7 @@ window.i18nData['ja'] = {
     nav_me: "マイページ",
     nav_wp: "白書",
     official_contacts: "公式サイトへのお問い合わせとコミュニティ（建設中）",
+    neo_ton_partnership: "TON が来る：NEO は The Open Network のサポートを開始します——世界有数の L1 ブロックチェーン：最速、最低コスト、亜秒級確認、ほぼゼロ料金、Telegram の 10 億人以上のユーザーにネイティブアクセス。",
 
     // --- 2. マイナーインターフェース (Miner Page) ---
     miner_title: "マイマイナー",

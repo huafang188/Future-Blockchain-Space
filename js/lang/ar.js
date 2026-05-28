@@ -15,6 +15,7 @@ window.i18nData['ar'] = {
     nav_me: "حسابي",
     nav_wp: "الكتاب الأبيض",
     official_contacts: "جهات الاتصال الرسمية والمجتمع (قيد الإنشاء)",
+    neo_ton_partnership: "TON قادم: سيدعم NEO قريبًا The Open Network — قوة Blockchain L1 الرائدة عالميًا: أسرع سرعة، أقل رسوم، تأكيد أقل من الثانية، تكلفة صفرية تقريبًا، وصول أصلي لأكثر من 1 بليون مستخدم على Telegram.",
 
     // --- 2. Miner Page ---
     miner_title: "جهاز التعدين الخاص بي",
