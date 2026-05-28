@@ -179,6 +179,27 @@ export function renderTokenList(balances = {}) {
 }
 
 /**
+ * 获取代币 Logo
+ */
+function getTokenLogo(symbol) {
+    const logoMap = {
+        'NEO': '💜',
+        'GAS': '⛽',
+        'ETH': '🟣',
+        'BTC': '₿',
+        'USDT': '💵',
+        'USDC': '💳',
+        'TON': '🌐',
+        'BNB': '🔷',
+        'SOL': '⚡',
+        'ADA': '🔶',
+        'DOT': '🔵',
+        'MATIC': '🟢'
+    };
+    return logoMap[symbol] || '🔹';
+}
+
+/**
  * 4. 渲染交易流水 (充值/提现/奖励等)
  */
 export function renderHistory(history = []) {
@@ -198,6 +219,7 @@ export function renderHistory(history = []) {
         const symbol = item['交易代币'] || item.symbol || '';
         const status = item['交易状态'] || item.status || 'Success';
         const time = item['交易时间'] || item.time || '--';
+        const tokenLogo = getTokenLogo(symbol);
         
         // 判断资金流向渲染颜色
         const isPositive = amount > 0 || type.includes('充值') || type.includes('奖励') || type.includes('收益');
@@ -205,8 +227,8 @@ export function renderHistory(history = []) {
         return `
         <div class="flex items-center justify-between p-4 mb-2 bg-white/50 rounded-2xl border border-slate-50 hover:border-blue-100 transition-all">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 ${isPositive ? 'bg-emerald-50' : 'bg-blue-50'} rounded-xl flex items-center justify-center border border-white">
-                    <i class="fa-solid ${isPositive ? 'fa-arrow-down-left text-emerald-500' : 'fa-arrow-up-right text-blue-500'} text-[10px]"></i>
+                <div class="w-9 h-9 ${isPositive ? 'bg-emerald-50' : 'bg-blue-50'} rounded-xl flex items-center justify-center border border-white text-[18px]">
+                    ${tokenLogo}
                 </div>
                 <div>
                     <p class="text-[11px] font-black text-slate-800 tracking-tight">${type}</p>
