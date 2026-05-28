@@ -202,22 +202,22 @@ export function mountCalculationHandlers() {
             if (newsPanel) newsPanel.classList.add('hidden');
             if (tabAnnouncement) {
                 tabAnnouncement.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
-                tabAnnouncement.classList.add('bg-orange-500', 'text-white', 'shadow-sm');
+                tabAnnouncement.classList.add('bg-purple-500', 'text-white', 'shadow-sm');
             }
             if (tabNews) {
-                tabNews.classList.remove('bg-orange-500', 'text-white', 'shadow-sm');
+                tabNews.classList.remove('bg-purple-500', 'text-white', 'shadow-sm');
                 tabNews.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
             }
         } else if (tab === 'news') {
             if (announcementPanel) announcementPanel.classList.add('hidden');
             if (newsPanel) newsPanel.classList.remove('hidden');
             if (tabAnnouncement) {
-                tabAnnouncement.classList.remove('bg-orange-500', 'text-white', 'shadow-sm');
+                tabAnnouncement.classList.remove('bg-purple-500', 'text-white', 'shadow-sm');
                 tabAnnouncement.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
             }
             if (tabNews) {
                 tabNews.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
-                tabNews.classList.add('bg-orange-500', 'text-white', 'shadow-sm');
+                tabNews.classList.add('bg-purple-500', 'text-white', 'shadow-sm');
             }
         }
     };
@@ -236,22 +236,22 @@ export function mountCalculationHandlers() {
             if (transferPanel) transferPanel.classList.add('hidden');
             if (tabHistory) {
                 tabHistory.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
-                tabHistory.classList.add('bg-blue-500', 'text-white', 'shadow-sm');
+                tabHistory.classList.add('bg-purple-500', 'text-white', 'shadow-sm');
             }
             if (tabTransfer) {
-                tabTransfer.classList.remove('bg-blue-500', 'text-white', 'shadow-sm');
+                tabTransfer.classList.remove('bg-purple-500', 'text-white', 'shadow-sm');
                 tabTransfer.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
             }
         } else if (tab === 'transfer') {
             if (historyPanel) historyPanel.classList.add('hidden');
             if (transferPanel) transferPanel.classList.remove('hidden');
             if (tabHistory) {
-                tabHistory.classList.remove('bg-blue-500', 'text-white', 'shadow-sm');
+                tabHistory.classList.remove('bg-purple-500', 'text-white', 'shadow-sm');
                 tabHistory.classList.add('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
             }
             if (tabTransfer) {
                 tabTransfer.classList.remove('bg-slate-100', 'text-slate-500', 'hover:bg-slate-200');
-                tabTransfer.classList.add('bg-blue-500', 'text-white', 'shadow-sm');
+                tabTransfer.classList.add('bg-purple-500', 'text-white', 'shadow-sm');
             }
         }
     };
