@@ -325,7 +325,6 @@ window.i18nData['hi'] = {
     wp_ch6_s2_title: "6.2 NEO Detailed Design",
     wp_ch6_s2_p1: "NEO (New Energy Ore) is the core token of the entire clean energy computing ecosystem, assuming core functions of value anchor, basic payment, staking guarantee, governance voting, etc.",
     wp_ch6_s2_total: "NEO Total Issuance: 1,000,000,000 tokens",
-    wp_ch6_s2_mining: "Mining Issuance: 30% (300,000,000 tokens), linear decreasing release over 8 years",
     wp_ch6_s3_title: "6.3 NEX Detailed Design",
     wp_ch6_s3_p1: "NEX (Neo Energy Xtreme) is positioned as computing acceleration token, issued only through staking and high-performance nodes, not available for direct fiat purchase. Total: 500,000,000 tokens",
     wp_ch6_s4_title: "6.4 NET Detailed Design",
