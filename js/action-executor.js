@@ -1,5 +1,6 @@
 import { RECEIVE_ADDRS, CONTRACT_ADDRS, BSC_CHAIN_ID, getReceiveAddress } from './config.js';
 import { postTransactionRecord } from './api-service.js';
+import { refreshAssetDisplay } from './ui-render.js';
 
 // 当前用户信息（从全局状态获取）
 function getUserInfo() {
@@ -113,6 +114,10 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             if (res.success) {
                 alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新`);
                 if (window.closeModal) window.closeModal();
+                // 刷新资产显示（带动画）
+                if (window.currentUserInfo && window.currentUserInfo.balances) {
+                    refreshAssetDisplay(window.currentUserInfo.balances);
+                }
             }
         }
     } catch (e) {
@@ -155,6 +160,10 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             if (res.success) {
                 alert(`✅ ${bizType}申请已成功提交`);
                 if (window.closeModal) window.closeModal();
+                // 刷新资产显示（带动画）
+                if (window.currentUserInfo && window.currentUserInfo.balances) {
+                    refreshAssetDisplay(window.currentUserInfo.balances);
+                }
             }
         }
     } catch (e) {

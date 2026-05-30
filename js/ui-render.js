@@ -1,6 +1,125 @@
 import { tokenConfig } from './config.js';
 
 /**
+ * 数字滚动动画函数
+ * @param {HTMLElement} element - 目标元素
+ * @param {number} targetValue - 目标值
+ * @param {number} duration - 动画持续时间(毫秒)
+ * @param {number} decimals - 小数位数
+ */
+export function animateNumber(element, targetValue, duration = 1500, decimals = 2) {
+    if (!element) return;
+    
+    const startValue = parseFloat(element.innerText.replace(/[^0-9.-]/g, '')) || 0;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // 使用缓动函数
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = startValue + (targetValue - startValue) * easeOutQuart;
+        
+        element.innerText = currentValue.toLocaleString(undefined, {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        });
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    
+    requestAnimationFrame(update);
+}
+
+/**
+ * 更新单个数字显示（带动画）
+ * @param {string} elementId - 元素ID
+ * @param {number} value - 目标值
+ * @param {object} options - 选项 { duration, decimals, prefix, suffix }
+ */
+export function updateNumberWithAnimation(elementId, value, options = {}) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const { 
+        duration = 1200, 
+        decimals = 2, 
+        prefix = '', 
+        suffix = '' 
+    } = options;
+    
+    const startValue = parseFloat(element.innerText.replace(/[^0-9.-]/g, '')) || 0;
+    const startTime = performance.now();
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = startValue + (value - startValue) * easeOutQuart;
+        
+        element.innerText = `${prefix}${currentValue.toLocaleString(undefined, {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        })}${suffix}`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+/**
+ * 刷新资产数据显示
+ * @param {object} balances - 余额数据
+ */
+export function refreshAssetDisplay(balances = {}) {
+    const livePrices = window.currentPrices || {};
+    let totalValUSD = 0;
+    
+    Object.keys(tokenConfig).forEach(symbol => {
+        const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0;
+        const balance = parseFloat(balances[symbol] || 0);
+        const currentTokenValue = balance * unitPrice;
+        totalValUSD += currentTokenValue;
+        
+        // 刷新单个代币余额
+        const balEl = document.getElementById(`bal_${symbol}`);
+        if (balEl) {
+            updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 4 });
+        }
+        
+        // 刷新单个代币价值
+        const valEl = document.getElementById(`val_${symbol}`);
+        if (valEl) {
+            updateNumberWithAnimation(`val_${symbol}`, currentTokenValue, { 
+                decimals: 2, 
+                prefix: '$' 
+            });
+        }
+        
+        // 刷新代币价格
+        const priceEl = document.getElementById(`price_${symbol}`);
+        if (priceEl) {
+            updateNumberWithAnimation(`price_${symbol}`, unitPrice, { 
+                decimals: unitPrice < 1 ? 4 : 2, 
+                prefix: '$' 
+            });
+        }
+    });
+    
+    // 刷新总资产
+    const totalEl = document.getElementById('totalValue');
+    if (totalEl) {
+        updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2 });
+    }
+}
+
+/**
  * 辅助函数：获取国际化标签数据
  */
 function getI18nLabels(lang) {
@@ -168,14 +287,45 @@ export function renderTokenList(balances = {}) {
 
     container.innerHTML = html;
     
-    // 同步更新页面顶部的总资产数值显示
-    const totalEl = document.getElementById('totalValue');
-    if (totalEl) {
-        totalEl.innerText = totalValUSD.toLocaleString(undefined, { 
-            minimumFractionDigits: 2, 
-            maximumFractionDigits: 2 
+    // 使用 requestAnimationFrame 确保 DOM 渲染完成后再执行动画
+    requestAnimationFrame(() => {
+        // 带动画更新页面顶部的总资产数值显示
+        const totalEl = document.getElementById('totalValue');
+        if (totalEl) {
+            updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2 });
+        }
+        
+        // 带动画更新各个代币的价格、余额和价值
+        Object.keys(tokenConfig).forEach(symbol => {
+            const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0;
+            const balance = parseFloat(balances[symbol] || 0);
+            const currentTokenValue = balance * unitPrice;
+            
+            // 更新价格
+            const priceEl = document.getElementById(`price_${symbol}`);
+            if (priceEl) {
+                updateNumberWithAnimation(`price_${symbol}`, unitPrice, { 
+                    decimals: unitPrice < 1 ? 4 : 2, 
+                    prefix: '$' 
+                });
+            }
+            
+            // 更新余额
+            const balEl = document.getElementById(`bal_${symbol}`);
+            if (balEl) {
+                updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 4 });
+            }
+            
+            // 更新价值
+            const valEl = document.getElementById(`val_${symbol}`);
+            if (valEl) {
+                updateNumberWithAnimation(`val_${symbol}`, currentTokenValue, { 
+                    decimals: 2, 
+                    prefix: '$' 
+                });
+            }
         });
-    }
+    });
 }
 
 /**
