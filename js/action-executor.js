@@ -2,6 +2,26 @@ import { RECEIVE_ADDRS, CONTRACT_ADDRS, BSC_CHAIN_ID, getReceiveAddress } from '
 import { postTransactionRecord } from './api-service.js';
 import { refreshAssetDisplay } from './ui-render.js';
 
+// 导入 fetchUserData 用于刷新数据
+let fetchUserDataFunc = null;
+
+// 初始化 fetchUserData 函数引用
+function initFetchUserData() {
+    if (!fetchUserDataFunc && window.fetchUserData) {
+        fetchUserDataFunc = window.fetchUserData;
+    }
+}
+
+// 刷新用户数据（从后端获取最新数据）
+async function refreshUserDataAfterTransaction() {
+    initFetchUserData();
+    const address = localStorage.getItem('fbs_address');
+    if (address && fetchUserDataFunc) {
+        console.log('[Executors] 交易完成，正在刷新用户数据...');
+        await fetchUserDataFunc(address);
+    }
+}
+
 // 当前用户信息（从全局状态获取）
 function getUserInfo() {
     return window.currentUserInfo || {};
@@ -114,10 +134,10 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             if (res.success) {
                 alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新`);
                 if (window.closeModal) window.closeModal();
-                // 刷新资产显示（带动画）
-                if (window.currentUserInfo && window.currentUserInfo.balances) {
-                    refreshAssetDisplay(window.currentUserInfo.balances);
-                }
+                // 延迟500ms后刷新用户数据（等待后端处理完成）
+                setTimeout(async () => {
+                    await refreshUserDataAfterTransaction();
+                }, 500);
             }
         }
     } catch (e) {
@@ -160,10 +180,10 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             if (res.success) {
                 alert(`✅ ${bizType}申请已成功提交`);
                 if (window.closeModal) window.closeModal();
-                // 刷新资产显示（带动画）
-                if (window.currentUserInfo && window.currentUserInfo.balances) {
-                    refreshAssetDisplay(window.currentUserInfo.balances);
-                }
+                // 延迟500ms后刷新用户数据（等待后端处理完成）
+                setTimeout(async () => {
+                    await refreshUserDataAfterTransaction();
+                }, 500);
             }
         }
     } catch (e) {
