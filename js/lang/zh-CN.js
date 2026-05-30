@@ -35,6 +35,18 @@ window.i18nData['zh-CN'] = {
     miner_status_running: "运行中",
     miner_specs: "每台矿机算力 = 30TH/S，功耗 1500W",
 
+    // --- 2.5 全网矿机运行情况 ---
+    network_miner_title: "全网矿机运行情况",
+    data_syncing: "数据对接中，敬请期待",
+    network_miner_total: "全网运行矿机总数",
+    network_daily_output: "全网NEO日产量",
+    single_miner_output: "单台矿机NEO产量",
+    today_new_original: "今日新增原始矿机",
+    today_new_synthetic: "今日新增合成矿机",
+    neo_holders: "NEO持有者数量",
+    neo_total_output: "NEO产出总量",
+    neo_burned: "NEO销毁数量",
+
     // --- 3. 资产与团队 ---
     assets_list: "资产概览",
     recharge: "充值",

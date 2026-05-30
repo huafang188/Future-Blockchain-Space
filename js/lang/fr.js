@@ -35,6 +35,18 @@ window.i18nData['fr'] = {
     miner_status_running: "En Fonctionnement",
     miner_specs: "Puissance = 30TH/S, Consommation 1500W",
 
+    // --- 2.5 Statut des Mineurs du Réseau ---
+    network_miner_title: "Statut des Mineurs du Réseau",
+    data_syncing: "Synchronisation des données, veuillez patienter",
+    network_miner_total: "Total des Mineurs du Réseau",
+    network_daily_output: "Production Journalière NEO",
+    single_miner_output: "Production NEO par Mineur",
+    today_new_original: "Nouveaux Mineurs Originaux Aujourd'hui",
+    today_new_synthetic: "Nouveaux Mineurs Synthétiques Aujourd'hui",
+    neo_holders: "Détenteurs NEO",
+    neo_total_output: "Production Totale NEO",
+    neo_burned: "NEO Brûlé",
+
     // --- 3. Actifs et Équipe (User Page) ---
     assets_list: "Aperçu des Actifs",
     recharge: "Dépôt",

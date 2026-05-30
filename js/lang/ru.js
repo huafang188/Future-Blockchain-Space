@@ -35,6 +35,18 @@ window.i18nData['ru'] = {
     miner_status_running: "В работе",
     miner_specs: "Мощность = 30TH/S, Потребление 1500W",
 
+    // --- 2.5 Статус сети майнеров ---
+    network_miner_title: "Статус сети майнеров",
+    data_syncing: "Синхронизация данных, ожидайте",
+    network_miner_total: "Всего майнеров в сети",
+    network_daily_output: "Суточная добыча NEO",
+    single_miner_output: "Добыча NEO за майнер",
+    today_new_original: "Новые оригинальные майнеры сегодня",
+    today_new_synthetic: "Новые синтетические майнеры сегодня",
+    neo_holders: "Держатели NEO",
+    neo_total_output: "Общая добыча NEO",
+    neo_burned: "Сожжено NEO",
+
     // --- 3. Активы и Команда (User Page) ---
     assets_list: "Обзор активов",
     recharge: "Пополнение",

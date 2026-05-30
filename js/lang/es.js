@@ -35,6 +35,18 @@ window.i18nData['es'] = {
     miner_status_running: "En Funcionamiento",
     miner_specs: "Potencia = 30TH/S, Consumo 1500W",
 
+    // --- 2.5 Estado de los Mineros de la Red ---
+    network_miner_title: "Estado de los Mineros de la Red",
+    data_syncing: "Sincronización de datos, espere por favor",
+    network_miner_total: "Total de Mineros en la Red",
+    network_daily_output: "Producción Diaria NEO",
+    single_miner_output: "Producción NEO por Minero",
+    today_new_original: "Nuevos Mineros Originales Hoy",
+    today_new_synthetic: "Nuevos Mineros Sintéticos Hoy",
+    neo_holders: "Titulares NEO",
+    neo_total_output: "Producción Total NEO",
+    neo_burned: "NEO Quemado",
+
     // --- 3. Activos y Equipo (Página de Usuario) ---
     assets_list: "Resumen de Activos",
     recharge: "Depósito",

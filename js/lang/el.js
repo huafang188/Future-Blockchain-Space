@@ -34,6 +34,18 @@ window.i18nData['el'] = {
     miner_status_running: "Σε Λειτουργία",
     miner_specs: "Ισχύς υπολογισμού ανά συσκευή = 30TH/S, κατανάλωση ενέργειας 1500W",
 
+    // --- 2.5 Κατάσταση Συσκευών Εξόρυξης Δικτύου ---
+    network_miner_title: "Κατάσταση Συσκευών Εξόρυξης Δικτύου",
+    data_syncing: "Συγχρονισμός δεδομένων σε εξέλιξη, παρακαλώ περιμένετε",
+    network_miner_total: "Συνολικές Συσκευές Εξόρυξης Δικτύου",
+    network_daily_output: "Ημερήσια Παραγωγή NEO",
+    single_miner_output: "Παραγωγή NEO ανά Συσκευή",
+    today_new_original: "Νέες Αρχικές Συσκευές Εξόρυξης Σήμερα",
+    today_new_synthetic: "Νέες Συνθετικές Συσκευές Εξόρυξης Σήμερα",
+    neo_holders: "Κάτοχοι NEO",
+    neo_total_output: "Συνολική Παραγωγή NEO",
+    neo_burned: "Καμένο NEO",
+
     // --- 3. Περιουσία & Ομάδα (User Page) ---
     assets_list: "Προεπισκόπηση Περιουσίας",
     recharge: "Κατάθεση",

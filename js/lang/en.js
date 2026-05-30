@@ -35,6 +35,18 @@ window.i18nData['en'] = {
     miner_status_running: "Running",
     miner_specs: "Hash Power = 30TH/S, Power 1500W",
 
+    // --- 2.5 Network Miner Status ---
+    network_miner_title: "Network Miner Status",
+    data_syncing: "Data Syncing, Stay Tuned",
+    network_miner_total: "Total Network Miners",
+    network_daily_output: "Daily NEO Output",
+    single_miner_output: "Single Miner NEO Output",
+    today_new_original: "New Original Miners Today",
+    today_new_synthetic: "New Synthetic Miners Today",
+    neo_holders: "NEO Holders",
+    neo_total_output: "Total NEO Output",
+    neo_burned: "NEO Burned",
+
     // --- 3. Assets & Team ---
     assets_list: "Asset Overview",
     recharge: "Deposit",

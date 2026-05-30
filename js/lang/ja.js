@@ -35,6 +35,18 @@ window.i18nData['ja'] = {
     miner_status_running: "稼働中",
     miner_specs: "1台あたりの計算能力 = 30TH/S、消費電力 1500W",
 
+    // --- 2.5 ネットワークマイナー状況 ---
+    network_miner_title: "ネットワークマイナー状況",
+    data_syncing: "データ連携中、しばらくお待ちください",
+    network_miner_total: "ネットワーク総マイナー数",
+    network_daily_output: "ネットワークNEO日量",
+    single_miner_output: "1台あたりのNEO産出量",
+    today_new_original: "本日新增の原始マイナー",
+    today_new_synthetic: "本日新增の合成マイナー",
+    neo_holders: "NEO保有者数",
+    neo_total_output: "NEO産出総量",
+    neo_burned: "NEO焼却数量",
+
     // --- 3. 資産とチーム (User Page) ---
     assets_list: "資産プレビュー",
     recharge: "入金",

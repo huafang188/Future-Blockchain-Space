@@ -34,6 +34,18 @@ window.i18nData['zh-HK'] = {
     miner_status_running: "運行中",
     miner_specs: "每台礦機算力 = 30TH/S，功耗 1500W",
 
+    // --- 2.5 全網礦機運行情況 ---
+    network_miner_title: "全網礦機運行情況",
+    data_syncing: "數據對接中，敬請期待",
+    network_miner_total: "全網運行礦機總數",
+    network_daily_output: "全網NEO日產量",
+    single_miner_output: "單台礦機NEO產量",
+    today_new_original: "今日新增原始礦機",
+    today_new_synthetic: "今日新增合成礦機",
+    neo_holders: "NEO持有者數量",
+    neo_total_output: "NEO產出總量",
+    neo_burned: "NEO銷毀數量",
+
     // --- 3. 資產與團隊 (User Page) ---
     assets_list: "資產預覽",
     recharge: "充值",

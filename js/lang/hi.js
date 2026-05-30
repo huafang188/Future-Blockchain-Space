@@ -34,6 +34,18 @@ window.i18nData['hi'] = {
     miner_status_running: "चालू",
     miner_specs: "प्रति उपकरण हैश पावर = 30TH/S, बिजली खपत 1500W",
 
+    // --- 2.5 नेटवर्क खनन उपकरण स्थिति ---
+    network_miner_title: "नेटवर्क खनन उपकरण स्थिति",
+    data_syncing: "डेटा सिंक हो रहा है, कृपया प्रतीक्षा करें",
+    network_miner_total: "नेटवर्क पर कुल खनन उपकरण",
+    network_daily_output: "दैनिक NEO उत्पादन",
+    single_miner_output: "प्रति उपकरण NEO उत्पादन",
+    today_new_original: "आज नए मूल खनन उपकरण",
+    today_new_synthetic: "आज नए संश्लेषित खनन उपकरण",
+    neo_holders: "NEO धारक",
+    neo_total_output: "कुल NEO उत्पादन",
+    neo_burned: "NEO जलाया गया",
+
     // --- 3. संपत्ति और टीम (User Page) ---
     assets_list: "संपत्ति पूर्वावलोकन",
     recharge: "रिचार्ज",

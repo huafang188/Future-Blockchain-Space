@@ -35,6 +35,18 @@ window.i18nData['ar'] = {
     miner_status_running: "يعمل",
     miner_specs: "قوة حوسبة كل جهاز = 30TH/S، استهلاك طاقة 1500W",
 
+    // --- 2.5 حالة أجهزة التعدين في الشبكة ---
+    network_miner_title: "حالة أجهزة التعدين في الشبكة",
+    data_syncing: "جارٍ مزامنة البيانات، يرجى الانتظار",
+    network_miner_total: "إجمالي أجهزة التعدين في الشبكة",
+    network_daily_output: "الإنتاج اليومي لـ NEO",
+    single_miner_output: "إنتاج NEO لكل جهاز",
+    today_new_original: "أجهزة تعدين أصلية جديدة اليوم",
+    today_new_synthetic: "أجهزة تعدين تركيبية جديدة اليوم",
+    neo_holders: "حاملو NEO",
+    neo_total_output: "إجمالي إنتاج NEO",
+    neo_burned: "NEO المحترق",
+
     // --- 3. Assets & Team (User Page) ---
     assets_list: "معاينة الأصول",
     recharge: "إيداع",

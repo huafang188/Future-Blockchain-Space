@@ -35,6 +35,18 @@ window.i18nData['ko'] = {
     miner_status_running: "운영 중",
     miner_specs: "대당 해시파워 = 30TH/S, 소비전력 1500W",
 
+    // --- 2.5 네트워크 채굴기 현황 ---
+    network_miner_title: "네트워크 채굴기 현황",
+    data_syncing: "데이터 연동 중, 잠시만 기다려주세요",
+    network_miner_total: "네트워크 총 채굴기 수",
+    network_daily_output: "네트워크 NEO 일일 생산량",
+    single_miner_output: "1대당 NEO 생산량",
+    today_new_original: "오늘新增 원시 채굴기",
+    today_new_synthetic: "오늘新增 합성 채굴기",
+    neo_holders: "NEO 보유자 수",
+    neo_total_output: "NEO 총 생산량",
+    neo_burned: "NEO 소각 수량",
+
     // --- 3. 자산 및 팀 (User Page) ---
     assets_list: "자산 현황",
     recharge: "충전",

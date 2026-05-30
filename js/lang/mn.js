@@ -34,6 +34,18 @@ window.i18nData['mn'] = {
     miner_status_running: "Ажиллаж буйгаа",
     miner_specs: "Бүх машины тооцооллын хүч = 30TH/S, хүч зарцуулалт 1500W",
 
+    // --- 2.5 Сүлжээний уул уурхайн машин ---
+    network_miner_title: "Сүлжээний уул уурхайн машин",
+    data_syncing: "Өгөгдөл синкчлэгдэж байна, түр хүлээнэ үү",
+    network_miner_total: "Сүлжээний нийт уул уурхайн машин",
+    network_daily_output: "Өдрийн NEO гарц",
+    single_miner_output: "Нэг машин дахь NEO гарц",
+    today_new_original: "Өнөөдөр шинэ анхны уул уурхайн машин",
+    today_new_synthetic: "Өнөөдөр шинэ синтетик уул уурхайн машин",
+    neo_holders: "NEO эзэд",
+    neo_total_output: "NEO нийт гарц",
+    neo_burned: "NEO устгасан",
+
     // --- 3. Хөрөнгө ба Баг (Хэрэглэгчийн хуудас) ---
     assets_list: "Хөрөнгийн урьдчилсан харах",
     recharge: "Оруулах",
