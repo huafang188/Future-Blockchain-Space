@@ -692,10 +692,14 @@ body::before {
 }
 
 .custom-modal-dropdown {
-    max-height: 220px;
-    overflow-y: auto;
+    max-height: 300px;
+    height: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .custom-modal-option {
