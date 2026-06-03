@@ -173,8 +173,20 @@ function initApp() {
     window.addEventListener('load', () => {
         console.log("[App] 页面加载完成，检查初始状态...");
         
+        // --- 2.0 隐藏加载遮罩 ---
+        setTimeout(() => {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.opacity = '0';
+                loadingOverlay.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 300);
+            }
+        }, 200);
+        
         // --- 2.1 基础环境初始化 ---
-        const savedLang = localStorage.getItem('fbs_lang') || 'ru';
+        const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
         if (window.i18nRender) {
             window.i18nRender(savedLang);
         }
