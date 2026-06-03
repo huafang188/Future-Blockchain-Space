@@ -50,6 +50,66 @@ function mountAllGlobals() {
     mountActionExecutors();        // 挂载业务交互逻辑 (action-executor)
 
     console.log("[Init] 全局函数挂载完成");
+    
+    // 轮播功能
+    let carouselCurrentIndex = 0;
+    let carouselInterval = null;
+    
+    window.carouselNext = function() {
+        const items = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('[data-index]');
+        if (items.length === 0) return;
+        
+        items[carouselCurrentIndex].classList.remove('active');
+        indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.3)';
+        
+        carouselCurrentIndex = (carouselCurrentIndex + 1) % items.length;
+        
+        items[carouselCurrentIndex].classList.add('active');
+        indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.5)';
+    };
+    
+    window.carouselPrev = function() {
+        const items = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('[data-index]');
+        if (items.length === 0) return;
+        
+        items[carouselCurrentIndex].classList.remove('active');
+        indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.3)';
+        
+        carouselCurrentIndex = (carouselCurrentIndex - 1 + items.length) % items.length;
+        
+        items[carouselCurrentIndex].classList.add('active');
+        indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.5)';
+    };
+    
+    window.carouselGoTo = function(index) {
+        const items = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('[data-index]');
+        if (items.length === 0 || index < 0 || index >= items.length) return;
+        
+        items[carouselCurrentIndex].classList.remove('active');
+        indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.3)';
+        
+        carouselCurrentIndex = index;
+        
+        items[carouselCurrentIndex].classList.add('active');
+        indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.5)';
+    };
+    
+    // 自动轮播
+    window.startCarousel = function() {
+        if (carouselInterval) clearInterval(carouselInterval);
+        carouselInterval = setInterval(carouselNext, 5000);
+    };
+    
+    // 停止轮播
+    window.stopCarousel = function() {
+        if (carouselInterval) {
+            clearInterval(carouselInterval);
+            carouselInterval = null;
+        }
+    };
 }
 
 /**
