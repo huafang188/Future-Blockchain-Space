@@ -128,7 +128,7 @@ function mountAllGlobals() {
     
     // 切换区块链下拉菜单
     window.toggleChainDropdown = function(event) {
-        event.stopPropagation();
+        if (event) event.stopPropagation();
         const wrappers = document.querySelectorAll('.custom-select-wrapper');
         wrappers.forEach(w => w.classList.remove('open'));
         const wrapper = document.querySelector('.custom-select-wrapper:not(.lang-select-wrapper)');
@@ -137,7 +137,7 @@ function mountAllGlobals() {
     
     // 切换语言下拉菜单
     window.toggleLangDropdown = function(event) {
-        event.stopPropagation();
+        if (event) event.stopPropagation();
         const wrappers = document.querySelectorAll('.custom-select-wrapper');
         wrappers.forEach(w => w.classList.remove('open'));
         const wrapper = document.querySelector('.custom-select-wrapper.lang-select-wrapper');
