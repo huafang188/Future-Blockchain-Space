@@ -75,8 +75,25 @@ window.i18nRender = function(lang) {
     });
 
     // --- C. 同步语言切换下拉框 ---
-    const selectEl = document.getElementById('langSelect');
-    if (selectEl) selectEl.value = lang;
+    const langTextEl = document.getElementById('selectedLangText');
+    if (langTextEl) {
+        const langNames = {
+            'zh-CN': '🇨🇳 中文',
+            'zh-HK': '🇭🇰 繁體',
+            'en': '🇺🇸 EN',
+            'ja': '🇯🇵 JP',
+            'ko': '🇰🇷 KR',
+            'ru': '🇷🇺 RU',
+            'de': '🇩🇪 DE',
+            'fr': '🇫🇷 FR',
+            'it': '🇮🇹 IT',
+            'ar': '🇸🇦 AR',
+            'mn': '🇲🇳 MN',
+            'hi': '🇮🇳 HI',
+            'el': '🇬🇷 EL'
+        };
+        langTextEl.textContent = langNames[lang] || lang;
+    }
 };
 
 /**

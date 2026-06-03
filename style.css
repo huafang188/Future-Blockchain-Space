@@ -530,71 +530,9 @@ body::before {
 
 /* --- 统一的胶囊状选择器样式 --- */
 /* 语言选择框样式 */
-.lang-select {
-    /* 彻底移除浏览器默认箭头 */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    
-    /* 移除所有边框和背景 */
-    border: none;
-    background: transparent;
-    
-    /* 文字样式 */
-    font-size: 12px;
-    font-weight: 700;
-    color: #334155;
-    
-    /* 移除焦点样式 */
-    outline: none;
-    box-shadow: none;
-    
-    /* 确保可以点击 */
-    cursor: pointer;
-    
-    /* 添加自定义下拉箭头空间 */
-    padding-right: 20px;
-}
-
-.lang-select::-ms-expand {
-    /* 移除 IE/Edge 默认箭头 */
-    display: none;
-}
-
-/* 语言选择器容器 - 胶囊状样式（与区块链选择器一致） */
+/* 语言选择器容器 - 使用自定义选择器样式 */
 .lang-select-wrapper {
-    position: relative;
-    display: inline-block;
-    padding: 4px 8px;
-    background: #f1f5f9;
-    border-radius: 12px;
     min-width: 60px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.lang-select-wrapper:hover {
-    background: #e2e8f0;
-}
-
-/* 语言选择器自定义箭头（与区块链选择器一致） */
-.lang-select-wrapper::after {
-    content: '▼';
-    position: absolute;
-    right: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8px;
-    color: #94a3b8;
-    pointer-events: none;
-}
-
-/* 语言选择框内部样式 */
-.lang-select {
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    color: #334155 !important;
-    line-height: 1.2 !important;
 }
 
 /* 灰度滤镜 */

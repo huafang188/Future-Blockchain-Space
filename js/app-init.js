@@ -127,17 +127,38 @@ function mountAllGlobals() {
     };
     
     // 切换区块链下拉菜单
-    window.toggleChainDropdown = function() {
-        const wrapper = document.querySelector('.custom-select-wrapper');
-        wrapper.classList.toggle('open');
+    window.toggleChainDropdown = function(event) {
+        event.stopPropagation();
+        const wrappers = document.querySelectorAll('.custom-select-wrapper');
+        wrappers.forEach(w => w.classList.remove('open'));
+        const wrapper = document.querySelector('.custom-select-wrapper:not(.lang-select-wrapper)');
+        if (wrapper) wrapper.classList.toggle('open');
+    };
+    
+    // 切换语言下拉菜单
+    window.toggleLangDropdown = function(event) {
+        event.stopPropagation();
+        const wrappers = document.querySelectorAll('.custom-select-wrapper');
+        wrappers.forEach(w => w.classList.remove('open'));
+        const wrapper = document.querySelector('.custom-select-wrapper.lang-select-wrapper');
+        if (wrapper) wrapper.classList.toggle('open');
+    };
+    
+    // 选择语言
+    window.selectLang = function(lang) {
+        const wrapper = document.querySelector('.custom-select-wrapper.lang-select-wrapper');
+        if (wrapper) wrapper.classList.remove('open');
+        window.switchLang(lang);
     };
     
     // 点击其他地方关闭下拉菜单
     document.addEventListener('click', function(event) {
-        const wrapper = document.querySelector('.custom-select-wrapper');
-        if (wrapper && !wrapper.contains(event.target)) {
-            wrapper.classList.remove('open');
-        }
+        const wrappers = document.querySelectorAll('.custom-select-wrapper');
+        wrappers.forEach(wrapper => {
+            if (!wrapper.contains(event.target)) {
+                wrapper.classList.remove('open');
+            }
+        });
     });
 }
 
