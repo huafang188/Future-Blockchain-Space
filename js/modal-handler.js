@@ -1,5 +1,8 @@
 import { tokenConfig, CONTRACT_ADDRS } from './config.js';
 
+// 将 tokenConfig 暴露为全局变量
+window.tokenConfig = tokenConfig;
+
 /**
  * 🛠️ 弹窗模块：管理所有动态 UI 交互
  */
