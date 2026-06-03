@@ -29,7 +29,12 @@ export function mountModalHandlers() {
         // 关闭所有下拉菜单
         document.querySelectorAll('.custom-modal-dropdown').forEach(el => el.style.display = 'none');
         
-        if (symbol === currentSymbol) return;
+        if (symbol === currentSymbol) {
+            // 恢复页面滚动
+            document.body.style.overflow = '';
+            document.body.style.touchAction = '';
+            return;
+        }
         
         // 更新选中状态
         const selectId = document.querySelector('.custom-modal-trigger.active')?.dataset.selectId;
@@ -48,6 +53,10 @@ export function mountModalHandlers() {
             activeTrigger.querySelector('span').textContent = symbol;
             activeTrigger.classList.remove('active');
         }
+        
+        // 恢复页面滚动
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
         
         // 如果是兑换弹窗，联动计算
         if (selectId && selectId.startsWith('s') && window.calcSwap) {
@@ -71,12 +80,37 @@ export function mountModalHandlers() {
         document.querySelectorAll('.custom-modal-trigger').forEach(el => el.classList.remove('active'));
         
         if (dropdown && trigger) {
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            const isOpen = dropdown.style.display === 'block';
+            dropdown.style.display = isOpen ? 'none' : 'block';
+            
             if (dropdown.style.display === 'block') {
                 trigger.classList.add('active');
+                // 禁止页面背景滚动
+                document.body.style.overflow = 'hidden';
+                document.body.style.touchAction = 'none';
+            } else {
+                // 恢复页面滚动
+                document.body.style.overflow = '';
+                document.body.style.touchAction = '';
             }
         }
     };
+
+    // --- 阻止下拉菜单滚动穿透 ---
+    const preventScrollPropagation = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    };
+
+    // 为所有下拉菜单添加滚动事件阻止
+    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('touchmove', function(e) {
+            const activeDropdown = document.querySelector('.custom-modal-dropdown[style*="display: block"]');
+            if (activeDropdown && !activeDropdown.contains(e.target)) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    });
 
     // --- 0.4. 选择纯文本选项（如质押周期、LP对）---
     window.selectModalTextOption = function(selectId, textId, displayText) {
@@ -107,6 +141,10 @@ export function mountModalHandlers() {
         
         // 移除 active 状态
         document.querySelectorAll('.custom-modal-trigger').forEach(el => el.classList.remove('active'));
+        
+        // 恢复页面滚动
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
     };
 
     // --- 1. 复制功能 (兼容移动端钱包) ---
