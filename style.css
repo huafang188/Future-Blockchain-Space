@@ -234,7 +234,6 @@ body::before {
     max-width: 360px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
     animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
 }
 
@@ -525,6 +524,196 @@ body::before {
     50% {
         transform: translateY(-8px);
     }
+}
+
+/* --- 统一的胶囊状选择器样式 --- */
+/* 语言选择框样式 */
+.lang-select {
+    /* 彻底移除浏览器默认箭头 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* 移除所有边框和背景 */
+    border: none;
+    background: transparent;
+    
+    /* 文字样式 */
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
+    
+    /* 移除焦点样式 */
+    outline: none;
+    box-shadow: none;
+    
+    /* 确保可以点击 */
+    cursor: pointer;
+    
+    /* 添加自定义下拉箭头空间 */
+    padding-right: 20px;
+}
+
+.lang-select::-ms-expand {
+    /* 移除 IE/Edge 默认箭头 */
+    display: none;
+}
+
+/* 语言选择器容器 - 胶囊状样式（与区块链选择器一致） */
+.lang-select-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    min-width: 60px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.lang-select-wrapper:hover {
+    background: #e2e8f0;
+}
+
+/* 语言选择器自定义箭头（与区块链选择器一致） */
+.lang-select-wrapper::after {
+    content: '▼';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8px;
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+/* 语言选择框内部样式 */
+.lang-select {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    line-height: 1.2 !important;
+}
+
+/* 灰度滤镜 */
+.grayscale {
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+/* --- 自定义区块链选择下拉菜单 --- */
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    cursor: pointer;
+    min-width: 60px;
+    transition: background-color 0.2s;
+}
+
+.custom-select-trigger:hover {
+    background: #e2e8f0;
+}
+
+.custom-select-arrow {
+    font-size: 8px;
+    color: #94a3b8;
+    margin-left: 4px;
+    transition: transform 0.2s;
+}
+
+.custom-select-wrapper.open .custom-select-arrow {
+    transform: rotate(180deg);
+}
+
+.custom-select-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 4px 0;
+    min-width: 100px;
+    z-index: 1000;
+    display: none;
+    border: 1px solid #e2e8f0;
+}
+
+.custom-select-wrapper.open .custom-select-dropdown {
+    display: block;
+}
+
+.custom-select-option {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    transition: background-color 0.2s;
+}
+
+.custom-select-option:hover {
+    background: #f8fafc;
+}
+
+.custom-select-option.disabled-option {
+    color: #94a3b8;
+}
+
+.custom-select-option.disabled-option:hover {
+    background: #f1f5f9;
+}
+
+/* --- 弹窗内自定义下拉菜单 (兼容移动端钱包) --- */
+.custom-modal-trigger {
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.custom-modal-trigger:hover {
+    background: #f8fafc !important;
+}
+
+.custom-modal-trigger.active {
+    border-color: #8b5cf6 !important;
+}
+
+.custom-modal-dropdown {
+    max-height: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.custom-modal-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    transition: background-color 0.2s;
+}
+
+.custom-modal-option:hover {
+    background: #f1f5f9;
+}
+
+/* 点击弹窗外部关闭下拉菜单 */
+.modal-content {
+    pointer-events: auto;
 }
 
 /* 白皮书模块 */

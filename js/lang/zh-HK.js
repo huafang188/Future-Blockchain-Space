@@ -16,6 +16,7 @@ window.i18nData['zh-HK'] = {
     nav_wp: "白皮書",
     official_contacts: "官方聯絡方式與社區（逐步建設中）",
     neo_ton_partnership: "TON 即將來襲：NEO 即將支援 The Open Network——全球領先的L1區塊鏈：速度最快，費用最低，亞秒級確認，幾乎零費用，原生訪問 Telegram 上超過 10 億用戶。",
+    neo_solana_partnership: "NEO 即將支援 SOLANA——全球最快的高性能區塊鏈之一，亞秒級確認，極低手續費，為DeFi和NFT生態提供強大支援。",
 
     // --- 2. 礦機主界面 (Miner Page) ---
     miner_title: "我的礦機",

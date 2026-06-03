@@ -16,6 +16,7 @@ window.i18nData['fr'] = {
     nav_wp: "Livre Blanc",
     official_contacts: "Contacts Officiels et Communauté (En Construction)",
     neo_ton_partnership: "TON arrive bientôt: NEO supportera bientôt The Open Network — le plus grand L1 blockchain au monde: vitesse maximale, frais minimaux, confirmation en sous-seconde, coût presque nul, accès natif à plus de 1 milliard d'utilisateurs Telegram.",
+    neo_solana_partnership: "NEO va bientôt prendre en charge SOLANA — l'une des blockchains haute performance les plus rapides au monde, confirmation en sous-seconde, frais extrêmement bas, soutien puissant pour les écosystèmes DeFi et NFT.",
 
     // --- 2. Interface Mineur (Miner Page) ---
     miner_title: "Mes Mineurs",

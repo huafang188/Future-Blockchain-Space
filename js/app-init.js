@@ -110,6 +110,35 @@ function mountAllGlobals() {
             carouselInterval = null;
         }
     };
+
+    // 区块链选择函数
+    window.selectChain = function(chain) {
+        // 关闭下拉菜单
+        const wrapper = document.querySelector('.custom-select-wrapper');
+        wrapper.classList.remove('open');
+        
+        if (chain === 'BSC') {
+            // BSC 链点击无反应（当前已选中）
+            return;
+        } else {
+            // TON 和 SOLANA 链显示 "come soon"
+            alert('🚀 ' + chain + ' Chain: Coming Soon');
+        }
+    };
+    
+    // 切换区块链下拉菜单
+    window.toggleChainDropdown = function() {
+        const wrapper = document.querySelector('.custom-select-wrapper');
+        wrapper.classList.toggle('open');
+    };
+    
+    // 点击其他地方关闭下拉菜单
+    document.addEventListener('click', function(event) {
+        const wrapper = document.querySelector('.custom-select-wrapper');
+        if (wrapper && !wrapper.contains(event.target)) {
+            wrapper.classList.remove('open');
+        }
+    });
 }
 
 /**

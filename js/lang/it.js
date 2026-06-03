@@ -16,6 +16,7 @@ window.i18nData['it'] = {
     nav_wp: "Whitepaper",
     official_contacts: "Contatti Ufficiali e Community (In Costruzione)",
     neo_ton_partnership: "TON sta arrivando: NEO supporterà presto The Open Network — la blockchain L1 leader mondiale: velocità massima, costi minimi, conferma in subsecondi, costo quasi zero, accesso nativo a oltre 1 miliardo di utenti Telegram.",
+    neo_solana_partnership: "NEO supporterà presto SOLANA — una delle blockchain ad alta performance più veloci al mondo, conferma in subsecondi, costi estremamente bassi, supporto potente per ecosistemi DeFi e NFT.",
 
     // --- 2. Interfaccia Miner (Pagina Mining) ---
     miner_title: "I Miei Miner",
