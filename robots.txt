@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /index.html
+Allow: /assets/
+Allow: /js/
+Allow: /style.css
+
+Disallow: /js/lang/
+Disallow: /api/
 
 Sitemap: https://www.neoneo.ink/sitemap.xml
+
+Host: https://www.neoneo.ink

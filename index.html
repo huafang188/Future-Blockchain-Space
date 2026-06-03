@@ -28,10 +28,28 @@
     <meta property="og:description" content="参与NEO区块链挖矿，获取加密货币奖励">
     <meta property="og:url" content="https://www.neoneo.ink">
     <meta property="og:type" content="website">
-    <title>NEO生态挖矿矩阵 - NEO Blockchain Mining</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>NEO生态挖矿矩阵 - NEO Blockchain Mining | 加密货币挖矿平台</title>
+    <meta name="theme-color" content="#8b5cf6">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preload" href="style.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp" defer></script>
+    
+    <!-- 结构化数据 Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "NEO生态挖矿矩阵",
+        "url": "https://www.neoneo.ink",
+        "logo": "https://www.neoneo.ink/assets/head_logo.webp",
+        "description": "参与NEO区块链挖矿，获取NEO、GAS等加密货币奖励。支持多种挖矿方式，加入绿色能源算力生态系统。",
+        "keywords": ["NEO","挖矿","区块链","加密货币","GAS","代币","crypto mining","blockchain mining"],
+        "sameAs": ["https://t.me/NEO_Mining_Official"]
+    }
+    </script>
 </head>
 <body class="bg-slate-50">
 
@@ -997,34 +1015,52 @@
     
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     <script src="js/lang/zh-CN.js"></script>
-<script src="js/lang/zh-HK.js"></script>
-<script src="js/lang/en.js"></script>
-<script src="js/lang/ja.js"></script>
-<script src="js/lang/ko.js"></script>
-<script src="js/lang/ru.js"></script>
-<script src="js/lang/de.js"></script>
-<script src="js/lang/fr.js"></script>
-<script src="js/lang/it.js"></script>
+    <script src="js/i18n-core.js" defer></script>
+    <script src="js/navigation.js" defer></script>
+    
+    <script type="module" defer>
+        // 按需加载其他语言文件
+        window.langFiles = {
+            'zh-CN': 'js/lang/zh-CN.js',
+            'zh-HK': 'js/lang/zh-HK.js',
+            'en': 'js/lang/en.js',
+            'ja': 'js/lang/ja.js',
+            'ko': 'js/lang/ko.js',
+            'ru': 'js/lang/ru.js',
+            'de': 'js/lang/de.js',
+            'fr': 'js/lang/fr.js',
+            'it': 'js/lang/it.js',
+            'ar': 'js/lang/ar.js',
+            'mn': 'js/lang/mn.js',
+            'hi': 'js/lang/hi.js',
+            'el': 'js/lang/el.js'
+        };
+        
+        window.loadLanguage = function(lang) {
+            return new Promise((resolve, reject) => {
+                if (window.translations && window.translations[lang]) {
+                    resolve();
+                    return;
+                }
+                const script = document.createElement('script');
+                script.src = window.langFiles[lang];
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        };
+    </script>
 
-    <script src="js/lang/ar.js"></script>
-    <script src="js/lang/mn.js"></script>
-    <script src="js/lang/hi.js"></script>
-    <script src="js/lang/el.js"></script>
-
-<script src="js/i18n-core.js"></script>
-
-<script src="js/navigation.js"></script>
-
-<script type="module" src="js/config.js"></script>
-<script type="module" src="js/calculations.js"></script>
-<script type="module" src="js/api-service.js"></script>
-<script type="module" src="js/wallet-utils.js"></script>
-<script type="module" src="js/ui-render.js"></script>
-<script type="module" src="js/modal-handler.js"></script>
-<script type="module" src="js/action-executor.js"></script>
-<script type="module" src="js/app-init.js"></script>
+<script type="module" defer src="js/config.js"></script>
+<script type="module" defer src="js/calculations.js"></script>
+<script type="module" defer src="js/api-service.js"></script>
+<script type="module" defer src="js/wallet-utils.js"></script>
+<script type="module" defer src="js/ui-render.js"></script>
+<script type="module" defer src="js/modal-handler.js"></script>
+<script type="module" defer src="js/action-executor.js"></script>
+<script type="module" defer src="js/app-init.js"></script>
 <script>
 function toggleWp() {
     var c = document.getElementById('wpContent');

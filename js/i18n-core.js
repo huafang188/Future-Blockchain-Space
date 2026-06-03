@@ -97,11 +97,22 @@ window.i18nRender = function(lang) {
 };
 
 /**
- * 2. 统一切换入口
+ * 2. 统一切换入口 - 支持按需加载语言文件
  */
-window.switchLang = function(lang) {
+window.switchLang = async function(lang) {
     if (!lang) return;
     console.log(`[i18n] 切换语言至: ${lang}`);
+    
+    // 如果语言不是默认的 zh-CN，按需加载语言文件
+    if (lang !== 'zh-CN' && window.loadLanguage) {
+        try {
+            await window.loadLanguage(lang);
+        } catch (e) {
+            console.error(`[i18n] 加载语言文件失败: ${lang}`, e);
+            return;
+        }
+    }
+    
     localStorage.setItem('fbs_lang', lang);
     
     // 执行翻译渲染
