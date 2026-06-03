@@ -85,31 +85,70 @@ export function mountModalHandlers() {
             
             if (dropdown.style.display === 'block') {
                 trigger.classList.add('active');
-                // 禁止页面背景滚动
-                document.body.style.overflow = 'hidden';
-                document.body.style.touchAction = 'none';
+                // 禁止页面背景滚动 - 使用更彻底的方案
+                lockBodyScroll();
             } else {
                 // 恢复页面滚动
-                document.body.style.overflow = '';
-                document.body.style.touchAction = '';
+                unlockBodyScroll();
             }
         }
     };
 
+    // --- 锁定页面滚动 ---
+    let scrollTop = 0;
+    const lockBodyScroll = function() {
+        scrollTop = window.scrollY || document.documentElement.scrollTop;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollTop}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+    };
+
+    // --- 解锁页面滚动 ---
+    const unlockBodyScroll = function() {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+        window.scrollTo(0, scrollTop);
+    };
+
     // --- 阻止下拉菜单滚动穿透 ---
-    const preventScrollPropagation = function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+    const handleTouchMove = function(e) {
+        const activeDropdown = document.querySelector('.custom-modal-dropdown[style*="display: block"]');
+        if (!activeDropdown) return;
+        
+        const target = e.target;
+        const isInsideDropdown = activeDropdown.contains(target);
+        
+        if (!isInsideDropdown) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        
+        // 在下拉菜单内部，检测是否到达滚动边界
+        const dropdown = activeDropdown;
+        const scrollTop = dropdown.scrollTop;
+        const scrollHeight = dropdown.scrollHeight;
+        const clientHeight = dropdown.clientHeight;
+        const deltaY = e.changedTouches ? e.changedTouches[0].clientY : 0;
+        
+        // 如果在顶部且向上滚动，阻止
+        if (scrollTop === 0 && deltaY > 0) {
+            e.preventDefault();
+        }
+        // 如果在底部且向下滚动，阻止
+        if (scrollTop >= scrollHeight - clientHeight && deltaY < 0) {
+            e.preventDefault();
+        }
     };
 
     // 为所有下拉菜单添加滚动事件阻止
     document.addEventListener('DOMContentLoaded', function() {
-        document.addEventListener('touchmove', function(e) {
-            const activeDropdown = document.querySelector('.custom-modal-dropdown[style*="display: block"]');
-            if (activeDropdown && !activeDropdown.contains(e.target)) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
     });
 
     // --- 0.4. 选择纯文本选项（如质押周期、LP对）---
