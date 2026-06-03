@@ -524,6 +524,9 @@ window.openInternalTransferModal = function() {
             // 使用 flex 并强制覆盖 display
             overlay.style.setProperty('display', 'flex', 'important');
             
+            // 弹窗打开时锁定页面滚动
+            lockBodyScroll();
+            
             // 触发局部语言渲染
             if (window.i18nRender) {
                 const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
@@ -669,6 +672,8 @@ window.openInternalTransferModal = function() {
         const overlay = document.getElementById('modalOverlay');
         if (overlay) {
             overlay.style.display = 'none';
+            // 关闭弹窗时解锁页面滚动
+            unlockBodyScroll();
         }
     };
 
