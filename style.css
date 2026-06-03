@@ -676,48 +676,6 @@ body::before {
     background: #f1f5f9;
 }
 
-/* --- 弹窗内自定义下拉菜单 (兼容移动端钱包) --- */
-.custom-modal-trigger {
-    display: flex;
-    align-items: center;
-    transition: background-color 0.2s;
-}
-
-.custom-modal-trigger:hover {
-    background: #f8fafc !important;
-}
-
-.custom-modal-trigger.active {
-    border-color: #8b5cf6 !important;
-}
-
-.custom-modal-dropdown {
-    max-height: 300px;
-    height: auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform;
-    z-index: 3000;
-}
-
-.custom-modal-option {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: #334155;
-    transition: background-color 0.2s;
-}
-
-.custom-modal-option:hover {
-    background: #f1f5f9;
-}
-
 /* 点击弹窗外部关闭下拉菜单 */
 .modal-content {
     pointer-events: auto;

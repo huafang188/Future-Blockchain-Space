@@ -12,145 +12,7 @@ export function mountModalHandlers() {
             .join('');
     };
 
-    // --- 0.1. 辅助功能：获取自定义下拉菜单选项 ---
-    const getCustomDropdownOptions = (selectedSymbol) => {
-        return Object.keys(tokenConfig)
-            .map(symbol => `
-                <div class="custom-modal-option" data-symbol="${symbol}" onclick="window.selectModalToken('${symbol}', '${selectedSymbol}')">
-                    <img src="${tokenConfig[symbol].logo}" class="w-6 h-6 object-contain mr-2" />
-                    <span>${symbol}</span>
-                </div>
-            `)
-            .join('');
-    };
 
-    // --- 0.2. 选择弹窗中的代币 ---
-    window.selectModalToken = function(symbol, currentSymbol) {
-        // 关闭所有下拉菜单
-        document.querySelectorAll('.custom-modal-dropdown').forEach(el => el.style.display = 'none');
-        
-        if (symbol === currentSymbol) {
-            // 恢复页面滚动
-            document.body.style.overflow = '';
-            document.body.style.touchAction = '';
-            return;
-        }
-        
-        // 更新选中状态
-        const selectId = document.querySelector('.custom-modal-trigger.active')?.dataset.selectId;
-        const imgId = document.querySelector('.custom-modal-trigger.active')?.dataset.imgId;
-        
-        if (selectId) {
-            document.getElementById(selectId).value = symbol;
-        }
-        if (imgId && tokenConfig[symbol]) {
-            document.getElementById(imgId).src = tokenConfig[symbol].logo;
-        }
-        
-        // 更新显示的文字
-        const activeTrigger = document.querySelector('.custom-modal-trigger.active');
-        if (activeTrigger) {
-            activeTrigger.querySelector('span').textContent = symbol;
-            activeTrigger.classList.remove('active');
-        }
-        
-        // 恢复页面滚动
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-        
-        // 如果是兑换弹窗，联动计算
-        if (selectId && selectId.startsWith('s') && window.calcSwap) {
-            window.calcSwap();
-        }
-    };
-
-    // --- 0.3. 切换弹窗下拉菜单 ---
-    window.toggleModalDropdown = function(selectId, imgId) {
-        // 关闭其他下拉菜单
-        document.querySelectorAll('.custom-modal-dropdown').forEach(el => {
-            if (el.dataset.selectId !== selectId) {
-                el.style.display = 'none';
-            }
-        });
-        
-        const dropdown = document.querySelector(`.custom-modal-dropdown[data-select-id="${selectId}"]`);
-        const trigger = document.querySelector(`.custom-modal-trigger[data-select-id="${selectId}"]`);
-        
-        // 移除其他 active 状态
-        document.querySelectorAll('.custom-modal-trigger').forEach(el => el.classList.remove('active'));
-        
-        if (dropdown && trigger) {
-            const isOpen = dropdown.style.display === 'block';
-            dropdown.style.display = isOpen ? 'none' : 'block';
-            
-            if (dropdown.style.display === 'block') {
-                trigger.classList.add('active');
-                // 禁止页面背景滚动 - 使用更彻底的方案
-                lockBodyScroll();
-            } else {
-                // 恢复页面滚动
-                unlockBodyScroll();
-            }
-        }
-    };
-
-    // --- 锁定页面滚动 ---
-    let scrollTop = 0;
-    const lockBodyScroll = function() {
-        scrollTop = window.scrollY || document.documentElement.scrollTop;
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollTop}px`;
-        document.body.style.width = '100%';
-        document.body.style.overflow = 'hidden';
-        document.body.style.touchAction = 'none';
-    };
-
-    // --- 解锁页面滚动 ---
-    const unlockBodyScroll = function() {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-        setTimeout(() => {
-            window.scrollTo(0, scrollTop);
-        }, 0);
-    };
-
-    // --- 0.4. 选择纯文本选项（如质押周期、LP对）---
-    window.selectModalTextOption = function(selectId, textId, displayText) {
-        // 关闭所有下拉菜单
-        document.querySelectorAll('.custom-modal-dropdown').forEach(el => el.style.display = 'none');
-        
-        // 更新隐藏的 select
-        const selectEl = document.getElementById(selectId);
-        if (selectEl) {
-            // 根据不同的选择框类型处理值
-            if (displayText.includes('天')) {
-                // 质押周期
-                selectEl.value = displayText.replace(' 天', '');
-            } else if (displayText.includes('LP—')) {
-                // LP 对，转换为 key 格式
-                selectEl.value = displayText.replace('—', '-');
-            } else {
-                // 普通代币
-                selectEl.value = displayText;
-            }
-        }
-        
-        // 更新显示的文字
-        const textEl = document.getElementById(textId);
-        if (textEl) {
-            textEl.textContent = displayText;
-        }
-        
-        // 移除 active 状态
-        document.querySelectorAll('.custom-modal-trigger').forEach(el => el.classList.remove('active'));
-        
-        // 恢复页面滚动
-        document.body.style.overflow = '';
-        document.body.style.touchAction = '';
-    };
 
     // --- 1. 复制功能 (兼容移动端钱包) ---
     window.copyInviteCode = function(text) {
@@ -243,40 +105,16 @@ window.openRechargeModal = function() {
                 <!-- 1. 选择充值资产区块 (上方) -->
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
                     <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1" data-i18n="select_recharge_asset">选择充值资产</p>
-                    <div class="relative">
-                        <div class="custom-modal-trigger flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm cursor-pointer" 
-                             data-select-id="recToken" data-img-id="recLogo"
-                             onclick="window.toggleModalDropdown('recToken', 'recLogo')">
-                            <!-- 这里的 recLogo 会随着下拉框选择而自动切换 -->
-                            <img id="recLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
-                            <span class="flex-1 font-black text-base text-left">USDT (BSC)</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                        </div>
-                        <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                             data-select-id="recToken" style="display: none;">
-                            <div class="custom-modal-option" data-symbol="USDT" onclick="window.selectModalToken('USDT', 'USDT')">
-                                <img src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain mr-2" />
-                                <span>USDT (BSC)</span>
-                            </div>
-                            <div class="custom-modal-option" data-symbol="BNB" onclick="window.selectModalToken('BNB', 'USDT')">
-                                <img src="${tokenConfig['BNB'].logo}" class="w-6 h-6 object-contain mr-2" />
-                                <span>BNB (Native)</span>
-                            </div>
-                            <div class="custom-modal-option" data-symbol="ETH" onclick="window.selectModalToken('ETH', 'USDT')">
-                                <img src="${tokenConfig['ETH'].logo}" class="w-6 h-6 object-contain mr-2" />
-                                <span>ETH (BSC-Wrapped)</span>
-                            </div>
-                            <div class="custom-modal-option" data-symbol="BTC" onclick="window.selectModalToken('BTC', 'USDT')">
-                                <img src="${tokenConfig['BTC'].logo}" class="w-6 h-6 object-contain mr-2" />
-                                <span>BTC (BSC-Wrapped)</span>
-                            </div>
-                        </div>
-                        <select id="recToken" style="display: none;">
+                    <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                        <img id="recLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
+                        <select id="recToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
+                                onchange="document.getElementById('recLogo').src = tokenConfig[this.value].logo;">
                             <option value="USDT" selected>USDT (BSC)</option>
                             <option value="BNB">BNB (Native)</option>
                             <option value="ETH">ETH (BSC-Wrapped)</option>
                             <option value="BTC">BTC (BSC-Wrapped)</option>
                         </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                     </div>
                 </div>
 
@@ -296,22 +134,15 @@ window.openRechargeModal = function() {
     window.openWithdrawModal = function() {
         window.showModal("withdraw", `
             <div class="space-y-4 text-left">
-                <div class="relative">
-                    <div class="custom-modal-trigger flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm cursor-pointer" 
-                         data-select-id="witToken" data-img-id="witLogo"
-                         onclick="window.toggleModalDropdown('witToken', 'witLogo')">
-                        <img id="witLogo" src="${tokenConfig['NEO'].logo}" class="w-8 h-8 object-contain">
-                        <span class="flex-1 font-black text-left">NEO</span>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                    </div>
-                    <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                         data-select-id="witToken" style="display: none;">
-                        ${getCustomDropdownOptions('NEO')}
-                    </div>
-                    <select id="witToken" style="display: none;">
-                        <option value="NEO" selected>NEO</option>
-                        ${getLogoOptions('NEO')}
+                <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <img id="witLogo" src="${tokenConfig['NEO'].logo}" class="w-8 h-8 object-contain">
+                    <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
+                            onchange="document.getElementById('witLogo').src = tokenConfig[this.value].logo;">
+                        ${Object.keys(tokenConfig).map(symbol => 
+                            `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
+                        ).join('')}
                     </select>
+                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                 </div>
                 <div class="px-1 -mb-2">
                     <span class="text-[9px] font-bold text-amber-500" data-i18n="withdraw_fee">手续费：0.5USDT</span>
@@ -331,23 +162,16 @@ window.openExchangeModal = function() {
                         <span class="text-[10px] font-bold text-indigo-500 mr-1 cursor-pointer" onclick="window.fillMax('sFromToken','sFromAmt')" data-i18n="max_available">最大可用</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
-                        <!-- 左侧：Logo 和 自定义下拉框合并成一个“币种选择按钮” -->
-                        <div class="relative shrink-0">
-                            <div class="custom-modal-trigger flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm cursor-pointer" 
-                                 data-select-id="sFromToken" data-img-id="swapFromLogo"
-                                 onclick="window.toggleModalDropdown('sFromToken', 'swapFromLogo')">
-                                <img id="swapFromLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
-                                <span class="font-bold text-sm">USDT</span>
-                                <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
-                            </div>
-                            <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                                 data-select-id="sFromToken" style="display: none;">
-                                ${getCustomDropdownOptions('USDT')}
-                            </div>
-                            <select id="sFromToken" style="display: none;">
-                                <option value="USDT" selected>USDT</option>
-                                ${getLogoOptions('USDT')}
+                        <!-- 左侧：Logo 和下拉框 -->
+                        <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
+                            <img id="swapFromLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
+                            <select id="sFromToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
+                                    onchange="document.getElementById('swapFromLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
+                                ${Object.keys(tokenConfig).map(symbol => 
+                                    `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
+                                ).join('')}
                             </select>
+                            <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
                         </div>
                         
                         <!-- 右侧：宽大的输入框，文字右对齐 -->
@@ -379,23 +203,16 @@ window.openExchangeModal = function() {
                         <span class="text-[10px] font-bold text-slate-400 uppercase ml-1" data-i18n="expected_receive">预计兑入</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
-                        <!-- 左侧：Logo 和 自定义下拉框合并 -->
-                        <div class="relative shrink-0">
-                            <div class="custom-modal-trigger flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm cursor-pointer" 
-                                 data-select-id="sToToken" data-img-id="swapToLogo"
-                                 onclick="window.toggleModalDropdown('sToToken', 'swapToLogo')">
-                                <img id="swapToLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
-                                <span class="font-bold text-sm">NEO</span>
-                                <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
-                            </div>
-                            <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                                 data-select-id="sToToken" style="display: none;">
-                                ${getCustomDropdownOptions('NEO')}
-                            </div>
-                            <select id="sToToken" style="display: none;">
-                                <option value="NEO" selected>NEO</option>
-                                ${getLogoOptions('NEO')}
+                        <!-- 左侧：Logo 和下拉框 -->
+                        <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
+                            <img id="swapToLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
+                            <select id="sToToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
+                                    onchange="document.getElementById('swapToLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
+                                ${Object.keys(tokenConfig).map(symbol => 
+                                    `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
+                                ).join('')}
                             </select>
+                            <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
                         </div>
                         
                         <!-- 右侧：展示框，文字右对齐 -->
@@ -421,23 +238,15 @@ window.openInternalTransferModal = function() {
                 <!-- 2. 选择资产区块 (上方) -->
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
                     <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1">转账资产</p>
-                    <div class="relative">
-                        <div class="custom-modal-trigger flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm cursor-pointer" 
-                             data-select-id="transToken" data-img-id="transLogo"
-                             onclick="window.toggleModalDropdown('transToken', 'transLogo')">
-                            <!-- 这里的 transLogo 会随下拉框改变 -->
-                            <img id="transLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
-                            <span class="flex-1 font-black text-base text-left">USDT</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                        </div>
-                        <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                             data-select-id="transToken" style="display: none;">
-                            ${getCustomDropdownOptions('USDT')}
-                        </div>
-                        <select id="transToken" style="display: none;">
-                            <option value="USDT" selected>USDT</option>
-                            ${getLogoOptions('USDT')}
+                    <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                        <img id="transLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
+                        <select id="transToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
+                                onchange="document.getElementById('transLogo').src = tokenConfig[this.value].logo;">
+                            ${Object.keys(tokenConfig).map(symbol => 
+                                `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
+                            ).join('')}
                         </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                     </div>
                 </div>
 
@@ -490,9 +299,6 @@ window.openInternalTransferModal = function() {
             // 使用 flex 并强制覆盖 display
             overlay.style.setProperty('display', 'flex', 'important');
             
-            // 弹窗打开时锁定页面滚动
-            lockBodyScroll();
-            
             // 触发局部语言渲染
             if (window.i18nRender) {
                 const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
@@ -504,22 +310,15 @@ window.openInternalTransferModal = function() {
     // --- 辅助：创建带Logo的自定义币种选择器 ---
     function createTokenSelector(selectId, imgId, selectedSymbol) {
         return `
-            <div class="relative">
-                <div class="custom-modal-trigger flex items-center gap-3 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm cursor-pointer" 
-                     data-select-id="${selectId}" data-img-id="${imgId}"
-                     onclick="window.toggleModalDropdown('${selectId}', '${imgId}')">
-                    <img id="${imgId}" src="${tokenConfig[selectedSymbol].logo}" class="w-8 h-8 object-contain shrink-0">
-                    <span class="flex-1 font-black text-base text-left">${selectedSymbol}</span>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                </div>
-                <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                     data-select-id="${selectId}" style="display: none;">
-                    ${getCustomDropdownOptions(selectedSymbol)}
-                </div>
-                <select id="${selectId}" style="display: none;">
-                    <option value="${selectedSymbol}" selected>${selectedSymbol}</option>
-                    ${getLogoOptions(selectedSymbol)}
+            <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
+                <img id="${imgId}" src="${tokenConfig[selectedSymbol].logo}" class="w-8 h-8 object-contain shrink-0">
+                <select id="${selectId}" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer" 
+                        onchange="document.getElementById('${imgId}').src = tokenConfig[this.value].logo; if(this.id.startsWith('s') && window.calcSwap) window.calcSwap();">
+                    ${Object.keys(tokenConfig).map(symbol => 
+                        `<option value="${symbol}" ${symbol === selectedSymbol ? 'selected' : ''}>${symbol}</option>`
+                    ).join('')}
                 </select>
+                <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
             </div>
         `;
     }
@@ -527,52 +326,26 @@ window.openInternalTransferModal = function() {
     // --- 7. 工厂模块：质押弹窗 ---
     window.openStakeModal = function() {
         const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
-        const stakeTokenDropdown = stakeTokens.map(t => 
-            `<div class="custom-modal-option" data-symbol="${t}" onclick="window.selectModalTextOption('stakeToken', 'stakeTokenText', '${t}')">${t}</div>`
-        ).join('');
         const periods = [180, 360, 540, 720];
-        const periodDropdown = periods.map(d => 
-            `<div class="custom-modal-option" data-symbol="${d}" onclick="window.selectModalTextOption('stakePeriod', 'stakePeriodText', '${d} 天')">${d} 天</div>`
-        ).join('');
 
         window.showModal("stake_modal_title", `
             <div class="space-y-4 text-left">
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
                     <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="select_stake_token">选择质押代币</p>
-                    <div class="relative">
-                        <div class="custom-modal-trigger flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 cursor-pointer" 
-                             data-select-id="stakeToken"
-                             onclick="window.toggleModalDropdown('stakeToken', '')">
-                            <span id="stakeTokenText" class="font-black">NEO</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                        </div>
-                        <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                             data-select-id="stakeToken" style="display: none;">
-                            ${stakeTokenDropdown}
-                        </div>
-                        <select id="stakeToken" style="display: none;">
-                            <option value="NEO" selected>NEO</option>
-                            ${stakeTokens.map(t => `<option value="${t}">${t}</option>`).join('')}
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100">
+                        <select id="stakeToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer">
+                            ${stakeTokens.map(t => `<option value="${t}" ${t === 'NEO' ? 'selected' : ''}>${t}</option>`).join('')}
                         </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                     </div>
                 </div>
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
                     <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="select_period">选择周期</p>
-                    <div class="relative">
-                        <div class="custom-modal-trigger flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 cursor-pointer" 
-                             data-select-id="stakePeriod"
-                             onclick="window.toggleModalDropdown('stakePeriod', '')">
-                            <span id="stakePeriodText" class="font-black">180 天</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                        </div>
-                        <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                             data-select-id="stakePeriod" style="display: none;">
-                            ${periodDropdown}
-                        </div>
-                        <select id="stakePeriod" style="display: none;">
-                            <option value="180" selected>180 天</option>
-                            ${periods.map(d => `<option value="${d}">${d} 天</option>`).join('')}
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100">
+                        <select id="stakePeriod" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer">
+                            ${periods.map(d => `<option value="${d}" ${d === 180 ? 'selected' : ''}>${d} 天</option>`).join('')}
                         </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                     </div>
                 </div>
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
@@ -595,10 +368,7 @@ window.openInternalTransferModal = function() {
             { key: 'LP-NRY/USDT', label: 'LP—NRY/USDT' },
             { key: 'LP-NCL/USDT', label: 'LP—NCL/USDT' }
         ];
-        const lpDropdown = lpPairs.map(p => 
-            `<div class="custom-modal-option" data-symbol="${p.key}" onclick="window.selectModalTextOption('lpPair', 'lpPairText', '${p.label}')">${p.label}</div>`
-        ).join('');
-        const lpOptions = lpPairs.map(p => `<option value="${p.key}">${p.label}</option>`).join('');
+        const lpOptions = lpPairs.map(p => `<option value="${p.key}" ${p.key === 'LP-NEO/USDT' ? 'selected' : ''}>${p.label}</option>`).join('');
         const titleKey = isAdd ? 'add_liquidity_title' : 'remove_liquidity_title';
         const btnText = isAdd ? 'confirm_add_liquidity' : 'confirm_remove_liquidity';
         const btnClass = isAdd ? '!from-cyan-500' : '!from-orange-500';
@@ -608,21 +378,11 @@ window.openInternalTransferModal = function() {
             <div class="space-y-4 text-left">
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
                     <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1" data-i18n="select_lp_pair">选择 LP 对</p>
-                    <div class="relative">
-                        <div class="custom-modal-trigger flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 cursor-pointer" 
-                             data-select-id="lpPair"
-                             onclick="window.toggleModalDropdown('lpPair', '')">
-                            <span id="lpPairText" class="font-black">LP—NEO/USDT</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                        </div>
-                        <div class="custom-modal-dropdown absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-slate-100 shadow-lg z-50 overflow-hidden" 
-                             data-select-id="lpPair" style="display: none;">
-                            ${lpDropdown}
-                        </div>
-                        <select id="lpPair" style="display: none;">
-                            <option value="LP-NEO/USDT" selected>LP—NEO/USDT</option>
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100">
+                        <select id="lpPair" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer">
                             ${lpOptions}
                         </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                     </div>
                 </div>
                 <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
@@ -638,8 +398,6 @@ window.openInternalTransferModal = function() {
         const overlay = document.getElementById('modalOverlay');
         if (overlay) {
             overlay.style.display = 'none';
-            // 关闭弹窗时解锁页面滚动
-            unlockBodyScroll();
         }
     };
 
