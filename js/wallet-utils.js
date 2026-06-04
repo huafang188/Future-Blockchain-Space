@@ -139,3 +139,67 @@ export function getCurrentAddress() {
 export function setCurrentAddress(addr) {
     currentAddress = addr;
 }
+
+/**
+ * 7. 监听钱包账户变化，自动连接新账户
+ */
+export function mountAccountChangeListener() {
+    if (!window.ethereum) return;
+    
+    console.log("[Wallet] 挂载账户变化监听器");
+    
+    // 监听账户变化事件
+    window.ethereum.on('accountsChanged', async (accounts) => {
+        console.log("[Wallet] 检测到账户变化:", accounts);
+        
+        // 如果没有账户，重置UI
+        if (!accounts || accounts.length === 0) {
+            console.log("[Wallet] 钱包已锁定或无账户");
+            return;
+        }
+        
+        const newAddress = accounts[0];
+        
+        // 如果是同一个地址，不需要处理
+        if (newAddress === currentAddress) {
+            console.log("[Wallet] 地址未变化");
+            return;
+        }
+        
+        // 检查是否是手动登出状态
+        const isManualLogout = localStorage.getItem('user_logout_manual');
+        if (isManualLogout === 'true') {
+            console.log("[Wallet] 用户已手动登出，跳过自动连接");
+            return;
+        }
+        
+        // 自动连接新账户（需要签名）
+        try {
+            // 请求签名确认
+            const msg = `FBS Auto Connect\nAddress: ${newAddress}\nTime: ${Date.now()}`;
+            const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            await window.ethereum.request({ 
+                method: 'personal_sign', 
+                params: [hexMsg, newAddress] 
+            });
+            
+            // 更新状态
+            localStorage.setItem('fbs_address', newAddress);
+            localStorage.setItem('user_logout_manual', 'false');
+            currentAddress = newAddress;
+            
+            console.log("[Wallet] 自动连接新账户成功:", newAddress);
+            
+            // 完成登录流程
+            finishLogin();
+            
+        } catch (e) {
+            console.error("[Wallet] 自动连接失败:", e);
+            // 用户取消签名，保持原状态或重置
+            if (e.code === 4001) {
+                console.log("[Wallet] 用户取消自动连接签名");
+            }
+        }
+    });
+}

@@ -1,7 +1,8 @@
 import { 
     mountWalletClickHandler, 
     updateWalletUI, 
-    resetWalletUI 
+    resetWalletUI,
+    mountAccountChangeListener
 } from './wallet-utils.js';
 
 import { 
@@ -44,10 +45,11 @@ function mountAllGlobals() {
     window.renderNews = renderNews;
 
     // B. 执行各模块的挂载函数 (执行内部的 window.xxx = ... 赋值)
-    mountWalletClickHandler();     // 挂载钱包点击逻辑 (wallet-utils)
-    mountModalHandlers();          // 挂载弹窗与复制逻辑 (modal-handler)
-    mountCalculationHandlers();    // 挂载计算器逻辑 (calculations)
-    mountActionExecutors();        // 挂载业务交互逻辑 (action-executor)
+    mountWalletClickHandler();        // 挂载钱包点击逻辑 (wallet-utils)
+    mountAccountChangeListener();     // 挂载账户变化监听器 (wallet-utils)
+    mountModalHandlers();             // 挂载弹窗与复制逻辑 (modal-handler)
+    mountCalculationHandlers();       // 挂载计算器逻辑 (calculations)
+    mountActionExecutors();           // 挂载业务交互逻辑 (action-executor)
 
     console.log("[Init] 全局函数挂载完成");
     
