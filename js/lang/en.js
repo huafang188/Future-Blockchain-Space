@@ -612,15 +612,5 @@ window.i18nData['en'] = {
     wp_ch13_s4_title: "13.4 Smart Contract Addresses",
     wp_ch13_s4_p1: "Mainnet contract addresses, multi-signature addresses, treasury addresses, burn addresses (announced after official launch).",
     wp_ch13_s5_title: "13.5 Version Update Record",
-    wp_ch13_s5_p1: "V1.0: Initial complete whitepaper version; subsequent upgrades subject to community voting announcement.",
-
-    // --- 14. News Content ---
-    news_global_user_title: "Global Users Exceed 100K: ",
-    news_global_user_content: "NEO Ecosystem Mining Matrix has officially exceeded 100,000 registered users worldwide, covering 87 countries and regions.",
-    news_asia_title: "Asia Market Continues to Boom: ",
-    news_asia_content: "User growth in Japan and South Korea is rapid, community activity hits new highs, and offline Meetup events are packed.",
-    news_europe_title: "European Mining Center Expansion: ",
-    news_europe_content: "Responding to European user demand, new Frankfurt mining nodes added to provide lower latency mining experience for EU users.",
-    news_south_america_title: "South America Market Fully Launched: ",
-    news_south_america_content: "Brazil and Argentina nodes officially launched, serving Latin American users and opening a new chapter of mining in South America."
+    wp_ch13_s5_p1: "V1.0: Initial complete whitepaper version; subsequent upgrades subject to community voting announcement."
 };
