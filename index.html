@@ -1141,6 +1141,35 @@
 <script type="module" src="js/action-executor.js"></script>
 <script type="module" src="js/app-init.js"></script>
 
+<!-- 确保加载遮罩层一定会被隐藏 -->
+<script>
+    // 页面加载完成后隐藏加载遮罩
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.opacity = '0';
+                loadingOverlay.style.transition = 'opacity 0.3s ease-out';
+                setTimeout(function() {
+                    loadingOverlay.style.display = 'none';
+                }, 300);
+            }
+        }, 500);
+    });
+    
+    // 超时保护：即使有脚本错误，5秒后也强制隐藏
+    setTimeout(function() {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay && loadingOverlay.style.display !== 'none') {
+            loadingOverlay.style.opacity = '0';
+            loadingOverlay.style.transition = 'opacity 0.3s ease-out';
+            setTimeout(function() {
+                loadingOverlay.style.display = 'none';
+            }, 300);
+        }
+    }, 5000);
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 <script>
 function toggleWp() {
