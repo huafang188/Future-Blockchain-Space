@@ -530,5 +530,15 @@ window.i18nData['zh-CN'] = {
     wp_ch13_s4_title: "13.4 智能合约地址",
     wp_ch13_s4_p1: "主网合约地址、多签地址、国库地址、燃烧地址（正式上线后公布）。",
     wp_ch13_s5_title: "13.5 版本更新记录",
-    wp_ch13_s5_p1: "V1.0：初始完整版白皮书，后续升级以社区投票公示为准。"
+    wp_ch13_s5_p1: "V1.0：初始完整版白皮书，后续升级以社区投票公示为准。",
+
+    // --- 14. 新闻内容 (News) ---
+    news_global_user_title: "全球用户突破十万：",
+    news_global_user_content: "NEO生态挖矿矩阵全球注册用户正式突破100,000大关，覆盖全球87个国家和地区。",
+    news_asia_title: "亚洲市场持续火热：",
+    news_asia_content: "日韩地区用户增长迅猛，社区活跃度创历史新高，线下Meetup活动场场爆满。",
+    news_europe_title: "欧洲算力中心扩容：",
+    news_europe_content: "响应欧洲用户需求，新增法兰克福算力节点，为欧盟用户提供更低延迟的挖矿体验。",
+    news_south_america_title: "南美市场全面启动：",
+    news_south_america_content: "巴西、阿根廷节点正式上线，服务拉丁美洲用户，开启南美挖矿新篇章。"
 };
