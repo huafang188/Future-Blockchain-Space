@@ -470,7 +470,7 @@ window.renderMinerLevel = renderMinerLevel;
  * 刷新余额 - 重新从后台获取用户数据
  */
 export async function refreshBalances() {
-    const address = window.currentWalletAddress;
+    const address = window.currentAddress || localStorage.getItem('fbs_address');
     if (!address) {
         alert("请先连接钱包");
         return;
