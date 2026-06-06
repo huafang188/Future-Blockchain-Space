@@ -34,7 +34,9 @@ window.i18nData['fr'] = {
     transfer_miner: "Transférer Mineur",
     miner_status_label: "Statut du Mineur",
     miner_status_running: "En Fonctionnement",
-    miner_specs: "Puissance = 30TH/S, Consommation 1500W",
+    miner_spec_hashrate: "Hashrate de minage : ≈30TH/S (30*10^12 collisions de hachage par seconde)",
+    miner_spec_ai: "Puissance de calcul IA : ≈256 EFLOPS (25,6 quadrillions d'opérations en virgule flottante)",
+    miner_spec_power: "Consommation maximale : 1500W",
 
     // --- 2.5 Statut des Mineurs du Réseau ---
     network_miner_title: "Statut des Mineurs du Réseau",

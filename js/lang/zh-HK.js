@@ -33,7 +33,9 @@ window.i18nData['zh-HK'] = {
     transfer_miner: "轉讓礦機",
     miner_status_label: "礦機狀態",
     miner_status_running: "運行中",
-    miner_specs: "每台礦機算力 = 30TH/S，功耗 1500W",
+    miner_spec_hashrate: "挖礦算力：≈30TH/S（每秒30*10^12次哈希碰撞）",
+    miner_spec_ai: "AI算力：≈256 EFLOPS（25.6億億次浮點運算總功）",
+    miner_spec_power: "最大功耗：1500W",
 
     // --- 2.5 全網礦機運行情況 ---
     network_miner_title: "全網礦機運行情況",

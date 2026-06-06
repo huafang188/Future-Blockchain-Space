@@ -34,7 +34,9 @@ window.i18nData['ru'] = {
     transfer_miner: "Передать майнер",
     miner_status_label: "Статус майнера",
     miner_status_running: "В работе",
-    miner_specs: "Мощность = 30TH/S, Потребление 1500W",
+    miner_spec_hashrate: "Хешрейт майнинга: ≈30TH/S (30*10^12 хеш-коллизий в секунду)",
+    miner_spec_ai: "AI вычислительная мощность: ≈256 EFLOPS (25,6 квадриллионов операций с плавающей точкой)",
+    miner_spec_power: "Максимальное энергопотребление: 1500W",
 
     // --- 2.5 Статус сети майнеров ---
     network_miner_title: "Статус сети майнеров",

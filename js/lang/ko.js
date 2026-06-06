@@ -34,7 +34,9 @@ window.i18nData['ko'] = {
     transfer_miner: "채굴기 전송",
     miner_status_label: "채굴기 상태",
     miner_status_running: "운영 중",
-    miner_specs: "대당 해시파워 = 30TH/S, 소비전력 1500W",
+    miner_spec_hashrate: "채굴 해시레이트: ≈30TH/S (초당 30*10^12회 해시 충돌)",
+    miner_spec_ai: "AI 연산력: ≈256 EFLOPS (256경회 부동소수점 연산)",
+    miner_spec_power: "최대 소비전력: 1500W",
 
     // --- 2.5 네트워크 채굴기 현황 ---
     network_miner_title: "네트워크 채굴기 현황",

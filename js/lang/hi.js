@@ -33,7 +33,9 @@ window.i18nData['hi'] = {
     transfer_miner: "खनन उपकरण हस्तांतरित करें",
     miner_status_label: "उपकरण स्थिति",
     miner_status_running: "चालू",
-    miner_specs: "प्रति उपकरण हैश पावर = 30TH/S, बिजली खपत 1500W",
+    miner_spec_hashrate: "माइनिंग हैशरेट: ≈30TH/S (प्रति सेकंड 30*10^12 हैश टक्कर)",
+    miner_spec_ai: "AI कंप्यूटिंग पावर: ≈256 EFLOPS (25.6 क्वाड्रिलियन फ्लोटिंग-पॉइंट ऑपरेशंस)",
+    miner_spec_power: "अधिकतम बिजली खपत: 1500W",
 
     // --- 2.5 नेटवर्क खनन उपकरण स्थिति ---
     network_miner_title: "नेटवर्क खनन उपकरण स्थिति",

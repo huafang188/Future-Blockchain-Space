@@ -34,7 +34,9 @@ window.i18nData['de'] = {
     transfer_miner: "Miner übertragen",
     miner_status_label: "Miner-Status",
     miner_status_running: "Laufend",
-    miner_specs: "Rechenleistung = 30TH/S, Verbrauch 1500W",
+    miner_spec_hashrate: "Mining-Hashrate: ≈30TH/S (30*10^12 Hash-Kollisionen pro Sekunde)",
+    miner_spec_ai: "AI-Rechenleistung: ≈256 EFLOPS (25,6 Billiarden Gleitkommaoperationen)",
+    miner_spec_power: "Max. Leistungsaufnahme: 1500W",
 
     // --- 2.5 Netzwerk-Miner-Status ---
     network_miner_title: "Netzwerk-Miner-Status",

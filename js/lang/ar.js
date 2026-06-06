@@ -34,7 +34,9 @@ window.i18nData['ar'] = {
     transfer_miner: "نقل جهاز التعدين",
     miner_status_label: "حالة الجهاز",
     miner_status_running: "يعمل",
-    miner_specs: "قوة حوسبة كل جهاز = 30TH/S، استهلاك طاقة 1500W",
+    miner_spec_hashrate: "معدل التجزئة للتعدين: ≈30TH/S (30*10^12 تصادم تجزئة في الثانية)",
+    miner_spec_ai: "قوة حساب الذكاء الاصطناعي: ≈256 EFLOPS (25.6 كوادريليون عملية فاصلة عائمة)",
+    miner_spec_power: "أقصى استهلاك للطاقة: 1500W",
 
     // --- 2.5 حالة أجهزة التعدين في الشبكة ---
     network_miner_title: "حالة أجهزة التعدين في الشبكة",

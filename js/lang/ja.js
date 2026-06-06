@@ -34,7 +34,9 @@ window.i18nData['ja'] = {
     transfer_miner: "マイナー譲渡",
     miner_status_label: "マイナーステータス",
     miner_status_running: "稼働中",
-    miner_specs: "1台あたりの計算能力 = 30TH/S、消費電力 1500W",
+    miner_spec_hashrate: "マイニングハッシュレート：≈30TH/S（毎秒30*10^12回のハッシュ計算）",
+    miner_spec_ai: "AI算力：≈256 EFLOPS（25.6京回の浮動小数点演算）",
+    miner_spec_power: "最大消費電力：1500W",
 
     // --- 2.5 ネットワークマイナー状況 ---
     network_miner_title: "ネットワークマイナー状況",
