@@ -193,6 +193,16 @@ export async function fetchUserData(address) {
         updateText('info_inviteCode', data.info?.["推荐码"]);
         updateText('info_inviter', data.info?.["推荐人"]);
         updateText('info_regTime', data.info?.["注册时间"]);
+        
+        // 控制绑定推荐人按钮显示：已绑定则隐藏
+        const bindBtn = document.getElementById('btn_bind_inviter');
+        if (bindBtn) {
+            if (data.info?.["推荐人"] && data.info["推荐人"] !== '---' && data.info["推荐人"] !== '') {
+                bindBtn.style.display = 'none';
+            } else {
+                bindBtn.style.display = 'block';
+            }
+        }
 
         // D. 渲染团队数据（从后端获取）
         let teamData = {
