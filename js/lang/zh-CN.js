@@ -34,7 +34,9 @@ window.i18nData['zh-CN'] = {
     transfer_miner: "转让矿机",
     miner_status_label: "矿机状态",
     miner_status_running: "运行中",
-    miner_specs: "每台矿机算力 = 30TH/S，功耗 1500W",
+    miner_spec_hashrate: "挖矿算力：≈30TH/S（每秒30*10^12次哈希碰撞）",
+    miner_spec_ai: "AI算力：≈256 EFLOPS（25.6亿亿次浮点运算总功）",
+    miner_spec_power: "最大功耗：1500W",
 
     // --- 2.5 全网矿机运行情况 ---
     network_miner_title: "全网矿机运行情况",

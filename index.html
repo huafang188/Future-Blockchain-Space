@@ -684,8 +684,11 @@
         <img src="assets/miner_logo.webp" class="miner-img-small" loading="lazy" onerror="this.src='assets/head_logo.webp'">
         <div class="miner-info-text">
             <h3 data-i18n="miner_name">阿瓦隆 1066 智能矿机</h3>
-            <!-- 优化2: 加上 data-i18n -->
-            <p data-i18n="miner_specs">每台矿机算力 = 30TH/S，功耗 1500W</p>
+            <div class="space-y-1 text-[10px] text-slate-600">
+                <p data-i18n="miner_spec_hashrate">挖矿算力：≈30TH/S（每秒30*10^12次哈希碰撞）</p>
+                <p data-i18n="miner_spec_ai">AI算力：≈256 EFLOPS（25.6亿亿次浮点运算总功）</p>
+                <p data-i18n="miner_spec_power">最大功耗：1500W</p>
+            </div>
         </div>
     </div>
 
