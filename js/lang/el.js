@@ -50,7 +50,7 @@ window.i18nData['el'] = {
     neo_burned: "Καμένο NEO",
 
     // --- 3. Περιουσία & Ομάδα (User Page) ---
-    assets_list: "Προεπισκόπηση Περιουσίας",
+    assets_list: "Λίστα Token",
     recharge: "Κατάθεση",
     withdraw: "Ανάληψη",
     exchange: "Ανταλλαγή",

@@ -50,7 +50,7 @@ window.i18nData['hi'] = {
     neo_burned: "NEO जलाया गया",
 
     // --- 3. संपत्ति और टीम (User Page) ---
-    assets_list: "संपत्ति पूर्वावलोकन",
+    assets_list: "टोकन सूची",
     recharge: "रिचार्ज",
     withdraw: "निकासी",
     exchange: "एक्सचेंज",

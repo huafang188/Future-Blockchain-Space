@@ -51,7 +51,7 @@ window.i18nData['ja'] = {
     neo_burned: "NEO焼却数量",
 
     // --- 3. 資産とチーム (User Page) ---
-    assets_list: "資産プレビュー",
+    assets_list: "トークンリスト",
     recharge: "入金",
     withdraw: "出金",
     exchange: "スワップ",

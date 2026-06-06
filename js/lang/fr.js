@@ -51,7 +51,7 @@ window.i18nData['fr'] = {
     neo_burned: "NEO Brûlé",
 
     // --- 3. Actifs et Équipe (User Page) ---
-    assets_list: "Aperçu des Actifs",
+    assets_list: "Liste des Tokens",
     recharge: "Dépôt",
     withdraw: "Retrait",
     exchange: "Échange (Swap)",

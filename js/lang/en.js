@@ -51,7 +51,7 @@ window.i18nData['en'] = {
     neo_burned: "NEO Burned",
 
     // --- 3. Assets & Team ---
-    assets_list: "Asset Overview",
+    assets_list: "Token List",
     recharge: "Deposit",
     withdraw: "Withdraw",
     exchange: "Swap",

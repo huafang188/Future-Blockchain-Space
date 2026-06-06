@@ -51,7 +51,7 @@ window.i18nData['ar'] = {
     neo_burned: "NEO المحترق",
 
     // --- 3. Assets & Team (User Page) ---
-    assets_list: "معاينة الأصول",
+    assets_list: "قائمة الرموز",
     recharge: "إيداع",
     withdraw: "سحب",
     exchange: "تبديل",

@@ -465,3 +465,34 @@ window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
 window.renderFactoryData = renderFactoryData;
 window.renderMinerLevel = renderMinerLevel;
+
+/**
+ * 刷新余额 - 重新从后台获取用户数据
+ */
+export async function refreshBalances() {
+    const address = window.currentWalletAddress;
+    if (!address) {
+        alert("请先连接钱包");
+        return;
+    }
+    
+    // 添加旋转动画
+    const refreshBtn = document.querySelector('button[onclick="refreshBalances()"] svg');
+    if (refreshBtn) {
+        refreshBtn.classList.add('animate-spin');
+    }
+    
+    try {
+        await fetchUserData(address);
+        console.log("[Refresh] 余额刷新成功");
+    } catch (error) {
+        console.error("[Refresh] 余额刷新失败:", error);
+        alert("刷新失败，请重试");
+    } finally {
+        // 移除旋转动画
+        if (refreshBtn) {
+            setTimeout(() => refreshBtn.classList.remove('animate-spin'), 500);
+        }
+    }
+}
+window.refreshBalances = refreshBalances;

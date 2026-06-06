@@ -50,7 +50,7 @@ window.i18nData['mn'] = {
     neo_burned: "NEO устгасан",
 
     // --- 3. Хөрөнгө ба Баг (Хэрэглэгчийн хуудас) ---
-    assets_list: "Хөрөнгийн урьдчилсан харах",
+    assets_list: "Токен жагсаалт",
     recharge: "Оруулах",
     withdraw: "Гаргах",
     exchange: "Солих",

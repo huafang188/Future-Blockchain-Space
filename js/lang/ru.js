@@ -51,7 +51,7 @@ window.i18nData['ru'] = {
     neo_burned: "Сожжено NEO",
 
     // --- 3. Активы и Команда (User Page) ---
-    assets_list: "Обзор активов",
+    assets_list: "Список токенов",
     recharge: "Пополнение",
     withdraw: "Вывод",
     exchange: "Обмен (Swap)",
