@@ -20,7 +20,7 @@ window.i18nData['ko'] = {
 
     // --- 2. 채굴기 인터페이스 (Miner Page) ---
     miner_title: "내 채굴기",
-    miner_name: "아발론 1066 스마트 채굴기",
+    miner_name: "NEO 에코 AI 스마트 채굴기",
     miner_desc: "대당 해시파워 ≈ 30TH/s, 소비전력: 1500W",
     m_count: "채굴기 수량",
     m_running: "운영 중 수량",

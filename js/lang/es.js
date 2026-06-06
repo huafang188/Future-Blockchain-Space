@@ -20,7 +20,7 @@ window.i18nData['es'] = {
 
     // --- 2. Interfaz del Minero (Página de Minería) ---
     miner_title: "Mis Mineros",
-    miner_name: "Minero Inteligente Avalon 1066",
+    miner_name: "Minero Inteligente AI NEO Eco",
     miner_desc: "Potencia ≈ 30TH/s, Consumo: 1500W",
     m_count: "Cantidad de unidades",
     m_running: "En funcionamiento",

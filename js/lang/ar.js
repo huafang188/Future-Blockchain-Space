@@ -20,7 +20,7 @@ window.i18nData['ar'] = {
 
     // --- 2. Miner Page ---
     miner_title: "جهاز التعدين الخاص بي",
-    miner_name: "جهاز التعدين الذكي Avalon 1066",
+    miner_name: "جهاز التعدين الذكي AI NEO Eco",
     miner_desc: "قوة حوسبة كل جهاز ≈ 30TH/s، استهلاك طاقة: 1500W",
     m_count: "عدد الأجهزة",
     m_running: "يعمل",

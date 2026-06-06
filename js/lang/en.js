@@ -20,7 +20,7 @@ window.i18nData['en'] = {
 
     // --- 2. Miner Interface ---
     miner_title: "My Miners",
-    miner_name: "Avalon 1066 Smart Miner",
+    miner_name: "NEO Eco AI Smart Miner",
     miner_desc: "Hash Power ≈ 30TH/s, Power: 1500W",
     m_count: "Miners Count",
     m_running: "Running Count",

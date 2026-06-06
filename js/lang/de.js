@@ -20,7 +20,7 @@ window.i18nData['de'] = {
 
     // --- 2. Miner-Interface (Miner Page) ---
     miner_title: "Meine Miner",
-    miner_name: "Avalon 1066 Smart Miner",
+    miner_name: "NEO Eco AI Smart Miner",
     miner_desc: "Rechenleistung ≈ 30TH/s, Verbrauch: 1500W",
     m_count: "Anzahl Miner",
     m_running: "Laufende Miner",

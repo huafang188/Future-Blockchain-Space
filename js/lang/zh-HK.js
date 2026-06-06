@@ -20,7 +20,7 @@ window.i18nData['zh-HK'] = {
 
     // --- 2. 礦機主界面 (Miner Page) ---
     miner_title: "我的礦機",
-    miner_name: "阿瓦隆 1066 智能礦機",
+    miner_name: "NEO 生態 AI 智能礦機",
     miner_desc: "每台礦機算力≈30TH/s，功耗：1500W",
     m_count: "礦機數量",
     m_yield: "預估日產",

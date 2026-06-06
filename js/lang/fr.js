@@ -20,7 +20,7 @@ window.i18nData['fr'] = {
 
     // --- 2. Interface Mineur (Miner Page) ---
     miner_title: "Mes Mineurs",
-    miner_name: "Mineur Intelligent Avalon 1066",
+    miner_name: "Mineur Intelligent AI NEO Eco",
     miner_desc: "Puissance ≈ 30TH/s, Consommation : 1500W",
     m_count: "Nombre d'unités",
     m_running: "En fonctionnement",

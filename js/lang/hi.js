@@ -20,7 +20,7 @@ window.i18nData['hi'] = {
 
     // --- 2. खनन पृष्ठ (Miner Page) ---
     miner_title: "मेरा खनन उपकरण",
-    miner_name: "Avalon 1066 स्मार्ट खनन उपकरण",
+    miner_name: "NEO Eco AI स्मार्ट खनन उपकरण",
     miner_desc: "प्रति उपकरण हैश पावर ≈ 30TH/s, बिजली खपत: 1500W",
     m_count: "उपकरण संख्या",
     m_yield: "अनुमानित दैनिक उत्पादन",

@@ -20,7 +20,7 @@ window.i18nData['ja'] = {
 
     // --- 2. マイナーインターフェース (Miner Page) ---
     miner_title: "マイマイナー",
-    miner_name: "アヴァロン 1066 スマートマイナー",
+    miner_name: "NEO エコ AI スマートマイナー",
     miner_desc: "1台あたりの計算能力 ≈ 30TH/s、消費電力：1500W",
     m_count: "保有台数",
     m_running: "稼働中の台数",

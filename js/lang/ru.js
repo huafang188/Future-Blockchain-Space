@@ -20,7 +20,7 @@ window.i18nData['ru'] = {
 
     // --- 2. Интерфейс майнера (Miner Page) ---
     miner_title: "Мои майнеры",
-    miner_name: "Avalon 1066 Smart Miner",
+    miner_name: "NEO Eco AI Smart Miner",
     miner_desc: "Мощность ≈ 30 TH/s, Потребление: 1500W",
     m_count: "Кол-во устройств",
     m_running: "В работе",

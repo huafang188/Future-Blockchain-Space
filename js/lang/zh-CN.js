@@ -20,7 +20,7 @@ window.i18nData['zh-CN'] = {
 
     // --- 2. 矿机主界面 (Miner Page) ---
     miner_title: "我的矿机",
-    miner_name: "阿瓦隆 1066 智能矿机",
+    miner_name: "NEO 生态 AI 智能矿机",
     miner_desc: "每台矿机算力≈30TH/s，功耗：1500W",
     m_count: "矿机数量",
     m_running: "在运行数量",
