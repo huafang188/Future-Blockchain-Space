@@ -221,27 +221,6 @@ window.i18nData['en'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Cross-chain hub / Interoperability medium", total: "400,000,000", dist: "Node rewards 40% | Partnerships 30% | Community 15% | Team 15%", mech: "Gradual release during protocol docking." }
     ],
 
-    // --- 10. Factory Module ---
-    stake_title: "My Staking",
-    remaining_days: "Remaining",
-    days_unit: "days",
-    btn_stake: "Stake",
-    my_liquidity_title: "My Liquidity",
-    btn_add_liquidity: "Add Liquidity",
-    btn_remove_liquidity: "Remove Liquidity",
-    total_liquidity_title: "Total Liquidity Pool",
-    stake_modal_title: "Stake Token",
-    select_stake_token: "Select Token",
-    select_period: "Select Period",
-    stake_amount: "Stake Amount",
-    confirm_stake: "Confirm Stake & Sign",
-    add_liquidity_title: "Add Liquidity",
-    remove_liquidity_title: "Remove Liquidity",
-    select_lp_pair: "Select LP Pair",
-    lp_amount: "Amount (USDT)",
-    confirm_add_liquidity: "Confirm Add & Sign",
-    confirm_remove_liquidity: "Confirm Remove & Sign",
-
     // --- 11. Whitepaper ---
     wp_title: "Whitepaper Overview",
     wp_subtitle: "(This Whitepaper is jointly maintained by the community. Copyright and final interpretation rights belong to community members)",

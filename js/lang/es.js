@@ -88,27 +88,6 @@ window.i18nData['es'] = {
 
     // --- 5. Transacciones ---
 
-    // --- 6. Staking y Liquididad ---
-    stake_title: "Mi Staking",
-    remaining_days: "Restante",
-    days_unit: "días",
-    btn_stake: "Stakear",
-    my_liquidity_title: "Mi Liquidez",
-    btn_add_liquidity: "Añadir Liquidez",
-    btn_remove_liquidity: "Retirar Liquidez",
-    total_liquidity_title: "Pool de Liquidez Total",
-    stake_modal_title: "Stakear Token",
-    select_stake_token: "Seleccionar Token",
-    select_period: "Seleccionar Período",
-    stake_amount: "Cantidad de Stake",
-    confirm_stake: "Confirmar Stake y Firmar",
-    add_liquidity_title: "Añadir Liquidez",
-    remove_liquidity_title: "Retirar Liquidez",
-    select_lp_pair: "Seleccionar Par LP",
-    lp_amount: "Cantidad (USDT)",
-    confirm_add_liquidity: "Confirmar Añadir y Firmar",
-    confirm_remove_liquidity: "Confirmar Retirar y Firmar",
-
     // --- Traducción del Nivel de Minero ---
     钻石大师: "Maestro Diamante",
     钻石矿工: "Minero Diamante",

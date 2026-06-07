@@ -173,27 +173,6 @@ window.i18nData['el'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Κεντρικός σημείο cross-chain / Μέσο διαλειτουργικότητας", total: "400,000,000", dist: "Αμοιβές cross-chain κόμβων 40% | Συνεργασίες 30% | Διοίκηση κοινότητας 15% | Ανάπτυξη 15%", mech: "Προσαυξανόμενη κυκλοφορία κατά την ενσωμάτωση πρωτοκόλλων." }
     ],
 
-    // --- 10. Module Εργοστασίου (Factory) ---
-    stake_title: "Το Staking Μου",
-    remaining_days: "Υπολείπον",
-    days_unit: "ημέρες",
-    btn_stake: "Stake",
-    my_liquidity_title: "Η Ρευστότητά Μου",
-    btn_add_liquidity: "Προσθήκη Ρευστότητας",
-    btn_remove_liquidity: "Απόσυρση Ρευστότητας",
-    total_liquidity_title: "Συνολική Pool Ρευστότητας",
-    stake_modal_title: "Stake Token",
-    select_stake_token: "Επιλογή Token",
-    select_period: "Επιλογή Περιόδου",
-    stake_amount: "Ποσότητα Stake",
-    confirm_stake: "Επιβεβαίωση Stake & Υπογραφή",
-    add_liquidity_title: "Προσθήκη Ρευστότητας",
-    remove_liquidity_title: "Απόσυρση Ρευστότητας",
-    select_lp_pair: "Επιλογή Ζεύγους LP",
-    lp_amount: "Ποσότητα (USDT)",
-    confirm_add_liquidity: "Επιβεβαίωση Προσθήκης & Υπογραφή",
-    confirm_remove_liquidity: "Επιβεβαίωση Απόσυρσης & Υπογραφή",
-
     // --- 11. Whitepaper ---
     wp_title: "Επισκόπηση Λευκής Βίβλου",
     wp_subtitle: "(Αυτή η Λευκή Βίβλος συντηρείται από την κοινότητα. Τα πνευματικά δικαιώματα και η τελική ερμηνεία ανήκουν στα μέλη της κοινότητας)",

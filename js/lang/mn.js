@@ -173,27 +173,6 @@ window.i18nData['mn'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Кроссчейн хуб / Интероперабельтийн дамжуулагч", total: "400,000,000", dist: "Кроссчейн зангилааны шагнал 40% | Түншлийн 30% | Нийгмийн удирдлага 15% | Багийн хөгжүүлэлт 15%", mech: "Протокол интеграцын үед таваар гаргалт." }
     ],
 
-    // --- 10: Үйлдвэрийн модуль (Factory) ---
-    stake_title: "Миний тавих",
-    remaining_days: "Үлдсэн",
-    days_unit: "өдөр",
-    btn_stake: "Тавих",
-    my_liquidity_title: "Миний ликвид",
-    btn_add_liquidity: "Ликвид нэмэх",
-    btn_remove_liquidity: "Ликвид гаргах",
-    total_liquidity_title: "Нийт ликвид пул",
-    stake_modal_title: "Токен тавих",
-    select_stake_token: "Токен сонгох",
-    select_period: "Хугацаа сонгох",
-    stake_amount: "Тавих дүн",
-    confirm_stake: "Тавихыг баталгаажуулж гарын үсэг зурах",
-    add_liquidity_title: "Ликвид нэмэх",
-    remove_liquidity_title: "Ликвид гаргах",
-    select_lp_pair: "LP хос сонгох",
-    lp_amount: "Дүн (USDT)",
-    confirm_add_liquidity: "Нэмэхийг баталгаажуулж гарын үсэг зурах",
-    confirm_remove_liquidity: "Гаргахыг баталгаажуулж гарын үсэг зурах",
-
     // --- 11. Цагаан ном (Whitepaper) ---
     wp_title: "Цагаан номын тойм",
     wp_subtitle: "(Энэ цагаан нийгэмийн хамтран хийсэн бөгөөд зохиогчийн эрх болон эцсийн тайлбарын эрх нийгмийн гишүүдэд хамаарна)",

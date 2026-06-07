@@ -221,27 +221,6 @@ window.i18nData['zh-CN'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "跨链枢纽 / 生态互通媒介", total: "400,000,000", dist: "跨链节点奖励 40% | 生态合作 30% | 社区治理 15% | 团队开发 15%", mech: "跨链交互、协议对接时逐步释放。" }
     ],
 
-    // --- 10. 工厂模块 (Factory) ---
-    stake_title: "我选择的质押",
-    remaining_days: "剩余周期",
-    days_unit: "天",
-    btn_stake: "质押",
-    my_liquidity_title: "我提供的流动性",
-    btn_add_liquidity: "增加流动性池",
-    btn_remove_liquidity: "提取流动性池",
-    total_liquidity_title: "总流动性池",
-    stake_modal_title: "质押代币",
-    select_stake_token: "选择质押代币",
-    select_period: "选择周期",
-    stake_amount: "质押数量",
-    confirm_stake: "确认质押签名",
-    add_liquidity_title: "增加流动性",
-    remove_liquidity_title: "提取流动性",
-    select_lp_pair: "选择 LP 对",
-    lp_amount: "数量 (USDT)",
-    confirm_add_liquidity: "确认增加签名",
-    confirm_remove_liquidity: "确认提取签名",
-
     // --- 11. 白皮书 (Whitepaper) ---
     wp_title: "白皮书概要",
     wp_subtitle: "（此白皮书为社区共同维护，著作权与最终解释权归社区成员所有）",

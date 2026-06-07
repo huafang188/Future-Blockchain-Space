@@ -177,27 +177,6 @@ window.i18nData['ko'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "크로스체인 허브 / 생태계 상호 운용 매개체", total: "400,000,000", dist: "크로스체인 노드 보상 40% | 파트너십 30% | 거버넌스 15% | 개발팀 15%", mech: "프로토콜 연결 및 서비스 연동 시 단계별 릴리스." }
     ],
 
-    // --- 10. 팩토리 모듈 (Factory) ---
-    stake_title: "내 스테이킹",
-    remaining_days: "잔여 기간",
-    days_unit: "일",
-    btn_stake: "스테이킹",
-    my_liquidity_title: "내 유동성",
-    btn_add_liquidity: "유동성 추가",
-    btn_remove_liquidity: "유동성 출금",
-    total_liquidity_title: "총 유동성 풀",
-    stake_modal_title: "토큰 스테이킹",
-    select_stake_token: "토큰 선택",
-    select_period: "기간 선택",
-    stake_amount: "스테이킹 수량",
-    confirm_stake: "스테이킹 확인 및 서명",
-    add_liquidity_title: "유동성 추가",
-    remove_liquidity_title: "유동성 출금",
-    select_lp_pair: "LP 페어 선택",
-    lp_amount: "수량 (USDT)",
-    confirm_add_liquidity: "추가 확인 및 서명",
-    confirm_remove_liquidity: "출금 확인 및 서명",
-
     // --- 11. 화이트페이퍼 ---
     wp_title: "화이트페이퍼 개요",
     wp_subtitle: "(이 화이트페이퍼는 커뮤니티가 공동으로 유지 관리하며, 저작권과 최종 해석권은 커뮤니티 구성원에게 귀속됩니다)",

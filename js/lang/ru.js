@@ -166,27 +166,6 @@ window.i18nData['ru'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Кроссчейн-хаб / Среда взаимодействия экосистем", total: "400,000,000", dist: "Награды кроссчейн-узлов 40% | Партнерства 30% | Управление 15% | Разработка 15%", mech: "Выпуск при интеграции протоколов и сервисов." }
     ],
 
-    // --- 10. Модуль Фабрики ---
-    stake_title: "Мой Стейкинг",
-    remaining_days: "Осталось",
-    days_unit: "дней",
-    btn_stake: "Стейк",
-    my_liquidity_title: "Моя Ликвидность",
-    btn_add_liquidity: "Добавить ликвидность",
-    btn_remove_liquidity: "Вывести ликвидность",
-    total_liquidity_title: "Общий пул ликвидности",
-    stake_modal_title: "Стейк токен",
-    select_stake_token: "Выберите токен",
-    select_period: "Выберите период",
-    stake_amount: "Сумма стейка",
-    confirm_stake: "Подтвердить стейк и подписать",
-    add_liquidity_title: "Добавить ликвидность",
-    remove_liquidity_title: "Вывести ликвидность",
-    select_lp_pair: "Выберите LP пару",
-    lp_amount: "Сумма (USDT)",
-    confirm_add_liquidity: "Подтвердить добавление и подписать",
-    confirm_remove_liquidity: "Подтвердить вывод и подписать",
-
     // --- 11. Whitepaper ---
     wp_title: "Обзор Белой Книги",
     wp_subtitle: "(Эта Белая Книга совместно поддерживается сообществом. Авторские права и право окончательной интерпретации принадлежат членам сообщества)",

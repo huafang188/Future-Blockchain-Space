@@ -173,27 +173,6 @@ window.i18nData['hi'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "क्रॉस-चेन हब / इंटरऑपरेबिलिटी माध्यम", total: "400,000,000", dist: "क्रॉस-चेन नोड पुरस्कार 40% | साझेदारी 30% | शासन 15% | विकास 15%", mech: "प्रोटोकॲ डॉकिंग पर चरणबद्ध रिलीज।" }
     ],
 
-    // --- 10. फैक्ट्री मॉड्यूल (Factory) ---
-    stake_title: "मेरा स्टेकिंग",
-    remaining_days: "शेष",
-    days_unit: "दिन",
-    btn_stake: "स्टेक",
-    my_liquidity_title: "मेरी लिक्विडिटी",
-    btn_add_liquidity: "लिक्विडिटी जोड़ें",
-    btn_remove_liquidity: "लिक्विडिटी हटाएं",
-    total_liquidity_title: "कुल लिक्विडिटी पूल",
-    stake_modal_title: "टोकन स्टेक करें",
-    select_stake_token: "टोकन चुनें",
-    select_period: "अवधि चुनें",
-    stake_amount: "स्टेक राशि",
-    confirm_stake: "स्टेक पुष्टि और साइन करें",
-    add_liquidity_title: "लिक्विडिटी जोड़ें",
-    remove_liquidity_title: "लिक्विडिटी हटाएं",
-    select_lp_pair: "LP जोड़ी चुनें",
-    lp_amount: "राशि (USDT)",
-    confirm_add_liquidity: "जोड़ना पुष्टि और साइन करें",
-    confirm_remove_liquidity: "हटाना पुष्टि और साइन करें",
-
     // --- 11. Whitepaper ---
     wp_title: "व्हाइटपेपर अवलोकन",
     wp_subtitle: "(यह व्हाइटपेपर समुदाय द्वारा संयुक्त रूप से बनाए रखा जाता है। कॉपीराइट और अंतिम व्याख्या अधिकार समुदाय के सदस्यों के हैं)",

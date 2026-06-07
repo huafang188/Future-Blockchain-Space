@@ -174,27 +174,6 @@ window.i18nData['ar'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "محور تبادل السلاسل / وسيط التشغيل البيني", total: "400,000,000", dist: "مكافآت العقد البينية 40% | شراكات 30% | حوكمة المجتمع 15% | تطوير الفريق 15%", mech: "إصدار تدريجي عند تكامل البروتوكولات." }
     ],
 
-    // --- 10. Factory Module ---
-    stake_title: "رهني الحالي",
-    remaining_days: "المتبقي",
-    days_unit: "أيام",
-    btn_stake: "رهن",
-    my_liquidity_title: "سيولتي",
-    btn_add_liquidity: "إضافة سيولة",
-    btn_remove_liquidity: "سحب سيولة",
-    total_liquidity_title: "مجمع السيولة الكلي",
-    stake_modal_title: "رهن العملة",
-    select_stake_token: "اختر العملة",
-    select_period: "اختر المدة",
-    stake_amount: "كمية الرهن",
-    confirm_stake: "تأكيد الرهن والتوقيع",
-    add_liquidity_title: "إضافة سيولة",
-    remove_liquidity_title: "سحب سيولة",
-    select_lp_pair: "اختر زوج LP",
-    lp_amount: "الكمية (USDT)",
-    confirm_add_liquidity: "تأكيد الإضافة والتوقيع",
-    confirm_remove_liquidity: "تأكيد السحب والتوقيع",
-
     // --- 11. Whitepaper ---
     wp_title: "نظرة عامة على الورقة البيضاء",
     wp_subtitle: "(هذه الورقة البيضاء يتم صيانتها بشكل مشترك من قبل المجتمع. حقوق النشر والتفسير النهائي تعود لأعضاء المجتمع)",
