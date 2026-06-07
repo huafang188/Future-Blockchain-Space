@@ -113,16 +113,6 @@ export async function fetchUserData(address) {
         // 缓存数据供其他模块使用
         window.lastFetchedData = data;
 
-        // 【DEBUG】打印完整的 stake、liquidity、totalLiquidity 结构
-        console.log("[API] stake 完整结构:", JSON.stringify(data.stake, null, 2));
-        console.log("[API] liquidity 完整结构:", JSON.stringify(data.liquidity, null, 2));
-        console.log("[API] totalLiquidity 完整结构:", JSON.stringify(data.totalLiquidity, null, 2));
-        
-        // 【DEBUG】打印 _debug 字段（后端返回的原始数据）
-        if (data._debug) {
-            console.log("[API] 后端 _debug 信息:", JSON.stringify(data._debug, null, 2));
-        }
-
         // --- 核心逻辑：新用户初始化，取消自动弹窗 ---
         if (data.newUser) {
             console.log("[API] 该地址为新用户，待手动绑定");
@@ -130,9 +120,6 @@ export async function fetchUserData(address) {
             updateText('info_inviter', '---');
             // 此处清空资产显示，防止显示上一个钱包的数据
             if (window.renderTokenList) window.renderTokenList({});
-            
-            // 即使是新用户，也要尝试渲染质押和流动性数据（总流动性是全局数据）
-            renderFactoryData(data);
             
             // 新用户也尝试渲染矿工等级（可能已有预填写数据）
             renderMinerLevel(data);
@@ -148,9 +135,6 @@ export async function fetchUserData(address) {
             });
             window.currentPrices = normalizedPrices; 
         }
-
-        // 渲染工厂模块数据（质押、流动性）
-        renderFactoryData(data);
 
         // --- 历史价格数据 ---
         if (data.priceHistory) {
@@ -316,77 +300,6 @@ export function updateText(id, value) {
 }
 
 /**
- * 渲染工厂模块数据（质押、流动性、总流动性）
- * @param {Object} data - 后端返回的数据
- */
-function renderFactoryData(data) {
-    console.log("[Factory] 渲染工厂模块数据:", data);
-    console.log("[Factory] data.stake:", data.stake);
-    console.log("[Factory] data.liquidity:", data.liquidity);
-    console.log("[Factory] data.totalLiquidity:", data.totalLiquidity);
-    
-    // 1. 渲染质押数据
-    const stakeTokens = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
-    stakeTokens.forEach(token => {
-        const amtEl = document.getElementById(`stake_${token}`);
-        const dayEl = document.getElementById(`stake_${token}_days`);
-        
-        if (amtEl) {
-            const stakeData = data.stake || {};
-            const value = stakeData[token] || stakeData[`# ${token}`] || 0;
-            console.log(`[Factory] 质押 ${token}:`, value);
-            amtEl.innerText = parseFloat(value).toFixed(2);
-        }
-        if (dayEl) {
-            const stakeData = data.stake || {};
-            const value = stakeData[`${token}剩余天数`] || stakeData[`# ${token}剩余天数`] || 0;
-            console.log(`[Factory] 质押 ${token}剩余天数:`, value);
-            dayEl.innerText = value;
-        }
-    });
-
-    // 2. 渲染用户流动性数据
-    const lpPairs = [
-        { base: 'NEO', id: 'liq_NEOUSDT' },
-        { base: 'NEX', id: 'liq_NEXUSDT' },
-        { base: 'NET', id: 'liq_NETUSDT' },
-        { base: 'NEA', id: 'liq_NEAUSDT' },
-        { base: 'NRY', id: 'liq_NRYUSDT' },
-        { base: 'NCL', id: 'liq_NCLUSDT' }
-    ];
-    lpPairs.forEach(({ base, id }) => {
-        const el = document.getElementById(id);
-        if (el) {
-            const liqData = data.liquidity || {};
-            const key = `LP-${base}/USDT`;
-            const value = liqData[key] || 0;
-            console.log(`[Factory] 流动性 ${key}:`, value);
-            el.innerText = parseFloat(value).toFixed(2);
-        }
-    });
-
-    // 3. 渲染总流动性数据
-    const totalPairs = [
-        { base: 'NEO', id: 'totalLiq_NEOUSDT' },
-        { base: 'NEX', id: 'totalLiq_NEXUSDT' },
-        { base: 'NET', id: 'totalLiq_NETUSDT' },
-        { base: 'NEA', id: 'totalLiq_NEAUSDT' },
-        { base: 'NRY', id: 'totalLiq_NRYUSDT' },
-        { base: 'NCL', id: 'totalLiq_NCLUSDT' }
-    ];
-    totalPairs.forEach(({ base, id }) => {
-        const el = document.getElementById(id);
-        if (el) {
-            const totalLiqData = data.totalLiquidity || {};
-            const key = `${base}/USDT`;
-            const value = totalLiqData[key] || 0;
-            console.log(`[Factory] 总流动性 ${key}:`, value);
-            el.innerText = parseFloat(value).toFixed(2);
-        }
-    });
-}
-
-/**
  * 获取矿工等级的多语言翻译
  * @param {string} level - 原始矿工等级（中文）
  * @returns {string} - 翻译后的等级名称
@@ -463,7 +376,6 @@ window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
-window.renderFactoryData = renderFactoryData;
 window.renderMinerLevel = renderMinerLevel;
 
 /**
