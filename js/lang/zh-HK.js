@@ -172,10 +172,6 @@ window.i18nData['zh-HK'] = {
     },
     tokens: [
         { symbol: "NEO", name: "New Energy Ore", desc: "生態核心主幣 / 挖礦核心產出", total: "1,000,000,000", dist: "挖礦產出 30% | 生態建設 20% | 團隊激勵 15% | 早期投資 15% | 社區空投 10% | 流動性 10%", mech: "挖礦線性產出，預計5年內挖完，逐年減半。" },
-        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "算力加速 / 挖礦增益憑證", total: "500,000,000", dist: "高性能節點挖礦 40% | 質押NEO獲得 25% | 生態合作 15% | 團隊 10% | 社區激勵 10%", mech: "隨算力提升逐步釋放，高算力節點優先產出。" },
-        { symbol: "NET", name: "Neo Energy Token", desc: "網絡燃料 / Gas 費代幣", total: "200,000,000", dist: "節點運行獎勵 35% | 網絡維護 30% | 流動性儲備 20% | 社區空投 15%", mech: "燃燒+銷毀機制，總量通縮。" },
-        { symbol: "NEA", name: "Neo Energy Asset", desc: "算力資產映射 / 實體礦機錨定幣", total: "動態錨定實體算力規模", dist: "實體礦機映射 60% | 算力質押挖礦 25% | 生態合作 10% | 團隊 5%", mech: "資產與實體算力一一對應。" },
-        { symbol: "NRY", name: "Neo Resource Yield", desc: "收益分紅 / 生態利潤權益", total: "300,000,000", dist: "生態利潤分紅 50% | 長期持有獎勵 25% | 節點貢獻激勵 15% | 團隊儲備 10%", mech: "按季度利潤分配，持有即可分紅。" },
         { symbol: "NCL", name: "Neo Core Link", desc: "跨鏈樞紐 / 生態互通媒介", total: "400,000,000", dist: "跨鏈節點獎勵 40% | 生態合作 30% | 社區治理 15% | 團隊開發 15%", mech: "跨鏈交互、協議對接時逐步釋放。" }
     ],
 

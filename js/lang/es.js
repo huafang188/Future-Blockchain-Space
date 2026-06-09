@@ -141,11 +141,7 @@ window.i18nData['es'] = {
     },
     tokens: [
         { symbol: "NEO", name: "New Energy Ore", desc: "Token principal del ecosistema / Salida principal de minería", total: "1,000,000,000", dist: "Minería 30% | Ecosistema 20% | Equipo 15% | Inversores iniciales 15% | Airdrop 10% | Liquidez 10%", mech: "Emisión lineal en 5 años, halving anual." },
-        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Acelerador de potencia / Certificado de boost de minería", total: "500,000,000", dist: "Nodos de rendimiento 40% | Staking NEO 25% | Socios 15% | Equipo 10% | Comunidad 10%", mech: "Liberación gradual basada en el crecimiento de la potencia de red." },
-        { symbol: "NET", name: "Neo Energy Token", desc: "Combustible de red / Token para comisiones de Gas", total: "200,000,000", dist: "Premios de nodos 35% | Mantenimiento 30% | Reserva de liquidez 20% | Airdrop 15%", mech: "Mecanismo de quema y deflación." },
-        { symbol: "NEA", name: "Neo Energy Asset", desc: "Mapeo de activos de hash / Anclaje a minero físico", total: "Dinámico según potencia total", dist: "Mapeo de mineros físicos 60% | Staking 25% | Socios 10% | Equipo 5%", mech: "Correspondencia 1:1 con el hardware de minería físico." },
-        { symbol: "NRY", name: "Neo Resource Yield", desc: "Derechos de dividendos / Participación en beneficios", total: "300,000,000", dist: "Distribución de utilidades 50% | Premios por holding 25% | Colaboradores 15% | Reserva del equipo 10%", mech: "Distribución trimestral de beneficios a los holders." },
-        { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Medio de interoperabilidad", total: "400,000,000", dist: "Premios nodos cross-chain 40% | Alianzas 30% | Gobernanza 15% | Desarrollo 15%", mech: "Liberación durante la integración de protocolos y servicios." },
+        { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Medio de interoperabilidad", total: "400,000,000", dist: "Premios nodos cross-chain 40% | Alianzas 30% | Gobernanza 15% | Desarrollo 15%", mech: "Liberación durante la integración de protocolos y servicios." }
     ],
 
     // --- 9. Fábrica de Minería ---

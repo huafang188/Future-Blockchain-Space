@@ -192,10 +192,6 @@ window.i18nData['de'] = {
     },
     tokens: [
         { symbol: "NEO", name: "New Energy Ore", desc: "Kern-Token / Haupt-Mining-Ertrag", total: "1.000.000.000", dist: "Mining 30% | Ökosystem 20% | Team 15% | Frühe Investoren 15% | Airdrop 10% | Liquidität 10%", mech: "Lineare Mining-Ausgabe über 5 Jahre, jährliches Halving." },
-        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Rechenbeschleuniger / Mining-Boost-Zertifikat", total: "500.000.000", dist: "Hochleistungsknoten 40% | NEO Staking 25% | Partner 15% | Team 10% | Community 10%", mech: "Schrittweise Freigabe bei steigender Netzwerkleistung." },
-        { symbol: "NET", name: "Neo Energy Token", desc: "Netzwerkgas / Gebühren-Token", total: "200.000.000", dist: "Knoten-Belohnungen 35% | Wartung 30% | Liquiditätsreserve 20% | Airdrop 15%", mech: "Burn- & Deflationsmechanismus." },
-        { symbol: "NEA", name: "Neo Energy Asset", desc: "Hash-Asset-Mapping / Physischer Miner-Anchor", total: "Dynamisch basierend auf Hashpower", dist: "Miner-Mapping 60% | Staking 25% | Ökosystem 10% | Team 5%", mech: "1:1-Anbindung an physische Mining-Hardware." },
-        { symbol: "NRY", name: "Neo Resource Yield", desc: "Dividendenrechte / Gewinnbeteiligung", total: "300.000.000", dist: "Gewinnausschüttung 50% | Haltedauer-Bonus 25% | Mitwirkende 15% | Teamreserve 10%", mech: "Quartalsweise Gewinnausschüttung an Halter." },
         { symbol: "NCL", name: "Neo Core Link", desc: "Cross-Chain Hub / Interoperabilitätsmedium", total: "400.000.000", dist: "Cross-Chain Belohnungen 40% | Partnerschaften 30% | Governance 15% | Entwicklung 15%", mech: "Freigabe bei Protokollintegration und Service-Koppelung." }
     ],
 

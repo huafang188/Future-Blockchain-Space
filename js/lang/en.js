@@ -228,10 +228,6 @@ window.i18nData['en'] = {
     },
     tokens: [
         { symbol: "NEO", name: "New Energy Ore", desc: "Eco mainnet coin / Mining core output", total: "1,000,000,000", dist: "Mining 30% | Ecosystem 20% | Team 15% | Early Investors 15% | Airdrop 10% | Liquidity 10%", mech: "Linear mining output, halving annually over 5 years." },
-        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Hash power accelerator / Mining boost", total: "500,000,000", dist: "High-performance nodes 40% | NEO Staking 25% | Partners 15% | Team 10% | Incentives 10%", mech: "Gradual release based on hash power growth." },
-        { symbol: "NET", name: "Neo Energy Token", desc: "Network fuel / Gas fee token", total: "200,000,000", dist: "Node rewards 35% | Maintenance 30% | Liquidity 20% | Community 15%", mech: "Burn & Deflation mechanism." },
-        { symbol: "NEA", name: "Neo Energy Asset", desc: "Hash asset mapping / Physical miner anchor", total: "Dynamic based on total hash power", dist: "Miner mapping 60% | Staking 25% | Ecosystem 10% | Team 5%", mech: "1:1 mapping with physical mining equipment." },
-        { symbol: "NRY", name: "Neo Resource Yield", desc: "Dividend rights / Eco profit sharing", total: "300,000,000", dist: "Dividends 50% | Staking rewards 25% | Contributors 15% | Team 10%", mech: "Quarterly profit distribution for holders." },
         { symbol: "NCL", name: "Neo Core Link", desc: "Cross-chain hub / Interoperability medium", total: "400,000,000", dist: "Node rewards 40% | Partnerships 30% | Community 15% | Team 15%", mech: "Gradual release during protocol docking." }
     ],
 

@@ -192,10 +192,6 @@ window.i18nData['it'] = {
     },
     tokens: [
         { symbol: "NEO", name: "New Energy Ore", desc: "Main token ecosistema / Output principale mining", total: "1.000.000.000", dist: "Mining 30% | Ecosistema 20% | Team 15% | Investitori 15% | Airdrop 10% | Liquidità 10%", mech: "Emissione lineare in 5 anni, halving annuale." },
-        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Acceleratore calcolo / Certificato boost mining", total: "500.000.000", dist: "Nodi performance 40% | Staking NEO 25% | Partner 15% | Team 10% | Comunità 10%", mech: "Rilascio graduale in base alla crescita della potenza di calcolo." },
-        { symbol: "NET", name: "Neo Energy Token", desc: "Carburante rete / Token per commissioni Gas", total: "200.000.000", dist: "Premi nodi 35% | Manutenzione rete 30% | Riserva liquidità 20% | Airdrop 15%", mech: "Meccanismo di combustione e deflazione." },
-        { symbol: "NEA", name: "Neo Energy Asset", desc: "Asset mapping / Ancoraggio miner fisico", total: "Dinamica in base alla potenza totale", dist: "Mapping miner fisici 60% | Staking 25% | Ecosistema 10% | Team 5%", mech: "Corrispondenza 1:1 con l'hardware di mining fisico." },
-        { symbol: "NRY", name: "Neo Resource Yield", desc: "Diritti dividendi / Condivisione profitti ecosistema", total: "300.000.000", dist: "Distribuzione utili 50% | Premi holding 25% | Contributori 15% | Riserva team 10%", mech: "Distribuzione trimestrale dei profitti ai possessori." },
         { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Media di interoperabilità", total: "400.000.000", dist: "Premi nodi cross-chain 40% | Partnership 30% | Governance 15% | Sviluppo 15%", mech: "Rilascio durante l'integrazione di protocolli e servizi." }
     ],
 

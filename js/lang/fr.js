@@ -192,10 +192,6 @@ window.i18nData['fr'] = {
     },
     tokens: [
         { symbol: "NEO", name: "New Energy Ore", desc: "Jeton principal / Revenu de minage", total: "1,000,000,000", dist: "Minage 30% | Écosystème 20% | Équipe 15% | Investisseurs 15% | Airdrop 10% | Liquidité 10%", mech: "Libération linéaire, fin de production en 5 ans, halving annuel." },
-        { symbol: "NEX", name: "Neo Energy Xtreme", desc: "Accélérateur / Boost de rendement", total: "500,000,000", dist: "Nœuds performance 40% | Staking NEO 25% | Partenaires 15% | Équipe 10% | Communauté 10%", mech: "Libération progressive selon la puissance du réseau." },
-        { symbol: "NET", name: "Neo Energy Token", desc: "Carburant réseau / Jeton de frais Gas", total: "200,000,000", dist: "Récompenses nœuds 35% | Maintenance 30% | Réserve liquidité 20% | Airdrop 15%", mech: "Mécanisme de combustion et déflation." },
-        { symbol: "NEA", name: "Neo Energy Asset", desc: "Asset mapping / Ancrage mineur physique", total: "Dynamique selon la puissance totale", dist: "Mapping mineurs 60% | Staking 25% | Écosystème 10% | Équipe 5%", mech: "Correspondance 1:1 avec le matériel de minage physique." },
-        { symbol: "NRY", name: "Neo Resource Yield", desc: "Droits aux dividendes / Partage des profits", total: "300,000,000", dist: "Dividendes 50% | Récompenses holding 25% | Contributeurs 15% | Réserve équipe 10%", mech: "Distribution trimestrielle des profits aux détenteurs." },
         { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Média d'interopérabilité", total: "400,000,000", dist: "Récompenses nœuds 40% | Partenariats 30% | Gouvernance 15% | Développement 15%", mech: "Libération lors de l'intégration des protocoles." }
     ],
 
