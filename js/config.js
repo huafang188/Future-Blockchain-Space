@@ -155,15 +155,15 @@ export function getReceiveAddress(type, userInfo = {}) {
  */
 export const CONTRACT_ADDRS = {
     'USDT': "0x55d398326f99059ff775485246999027b3197955",
-    'ETH': "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-    'BTC': "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+    'TON': "0x76Ae8974B2D9898C0359B9519e8Ca8800089f92c",
+    'SOL': "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
     'BNB': "NATIVE"
 };
 
 export const TOKEN_DECIMALS = {
     'USDT': 18,
-    'ETH': 18,
-    'BTC': 18,
+    'TON': 9,
+    'SOL': 9,
     'BNB': 18,
     'NEO': 18,
     'NEX': 18,
@@ -185,6 +185,6 @@ export const tokenConfig = {
     'NCL': { logo: 'assets/ncl_logo.webp', chartUrl: '' },
     'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
     'BNB': { logo: 'assets/BNB.webp', chartUrl: '' },
-    'ETH': { logo: 'assets/ETH.webp', chartUrl: '' },
-    'BTC': { logo: 'assets/BTC.webp', chartUrl: '' }
+    'TON': { logo: 'assets/TON.webp', chartUrl: '' },
+    'SOL': { logo: 'assets/Solana.webp', chartUrl: '' }
 };

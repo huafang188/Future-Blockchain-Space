@@ -101,48 +101,20 @@ export function mountModalHandlers() {
         `);
     };
 
-    // --- 5. 金融模块 (充值/提现/兑换/内转) ---
-window.openRechargeModal = function() {
-        window.showModal("recharge", `
-            <div class="space-y-4">
-                <!-- 1. 选择充值资产区块 (上方) -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1" data-i18n="select_recharge_asset">选择充值资产</p>
-                    <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
-                        <img id="recLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
-                        <select id="recToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                                onchange="document.getElementById('recLogo').src = tokenConfig[this.value].logo;">
-                            <option value="USDT" selected>USDT (BSC)</option>
-                            <option value="BNB">BNB (Native)</option>
-                            <option value="ETH">ETH (BSC-Wrapped)</option>
-                            <option value="BTC">BTC (BSC-Wrapped)</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                    </div>
-                </div>
+    // --- 5. 金融模块 (提现/兑换) ---
 
-                <!-- 2. 数量输入区块 (下方) -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <div class="flex justify-between items-center mb-2 ml-1">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="recharge_amount">充值数量</p>
-                    </div>
-                    <input type="number" id="recAmount" placeholder="0.00" 
-                           class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
-                </div>
-
-                <button type="button" onclick="window.doRecharge()" class="action-btn w-full mt-2">确认前往钱包支付</button>
-            </div>`);
-    };
+    const WITHDRAW_TOKENS = ['USDT', 'BNB', 'TON', 'SOL', 'NCL'];
+    const SWAP_TOKENS = ['NEO', 'USDT', 'BNB', 'TON', 'SOL', 'NCL'];
 
     window.openWithdrawModal = function() {
         window.showModal("withdraw", `
             <div class="space-y-4 text-left">
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <img id="witLogo" src="${tokenConfig['NEO'].logo}" class="w-8 h-8 object-contain">
+                    <img id="witLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain">
                     <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                            onchange="document.getElementById('witLogo').src = tokenConfig[this.value].logo;">
-                        ${Object.keys(tokenConfig).map(symbol => 
-                            `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
+                            onchange="document.getElementById('witLogo').src = tokenConfig[this.value].logo; window.updateWitBalanceHint();">
+                        ${WITHDRAW_TOKENS.map(symbol => 
+                            `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
                         ).join('')}
                     </select>
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
@@ -150,9 +122,24 @@ window.openRechargeModal = function() {
                 <div class="px-1 -mb-2">
                     <span class="text-[9px] font-bold text-amber-500" data-i18n="withdraw_fee">手续费：0.5USDT</span>
                 </div>
+                <div class="px-1">
+                    <span id="witBalanceHint" class="text-[9px] font-bold text-slate-400">可用余额：0.00 USDT</span>
+                </div>
                 <input type="number" id="witAmount" placeholder="提现数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doWithdrawSignature()" class="action-btn w-full mt-2 !from-red-500">确认提现签名</button>
             </div>`);
+        // 延迟执行以确保 DOM 已渲染
+        setTimeout(() => window.updateWitBalanceHint(), 50);
+    };
+
+    window.updateWitBalanceHint = function() {
+        const symbol = document.getElementById('witToken')?.value || 'USDT';
+        const balances = window.userBalances || {};
+        const balance = parseFloat(balances[symbol] || 0).toFixed(4);
+        const hintEl = document.getElementById('witBalanceHint');
+        if (hintEl) {
+            hintEl.textContent = `可用余额：${balance} ${symbol}`;
+        }
     };
 
 window.openExchangeModal = function() {
@@ -167,11 +154,11 @@ window.openExchangeModal = function() {
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
                         <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
-                            <img id="swapFromLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
+                            <img id="swapFromLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
                             <select id="sFromToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
                                     onchange="document.getElementById('swapFromLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
-                                ${Object.keys(tokenConfig).map(symbol => 
-                                    `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
+                                ${SWAP_TOKENS.map(symbol => 
+                                    `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
                                 ).join('')}
                             </select>
                             <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
@@ -189,14 +176,19 @@ window.openExchangeModal = function() {
                     <div class="w-full px-2 py-2 bg-indigo-50 rounded-xl border border-indigo-100 mb-2">
                         <div class="flex justify-between items-center mb-1 px-1">
                             <span class="text-[9px] font-bold text-indigo-600" data-i18n="swap_slippage">滑点/买卖税</span>
-                            <span id="slippageValue" class="text-[9px] font-black text-indigo-500">3%</span>
+                            <span id="slippageValue" class="text-[9px] font-black text-indigo-500">10%</span>
                         </div>
-                        <input type="range" id="slippageSlider" min="3" max="20" step="1" value="3" 
+                        <input type="range" id="slippageSlider" min="3" max="20" step="1" value="10" 
                                oninput="window.updateSlippage(this.value)"
                                class="w-full h-1.5 bg-indigo-200 rounded-lg appearance-none cursor-pointer accent-indigo-500">
                     </div>
-                    <div class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-50 text-indigo-500">
-                        <i class="fa-solid fa-arrow-down"></i>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-50 text-indigo-500">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                        <button type="button" onclick="window.swapTokens()" class="w-10 h-10 bg-indigo-500 rounded-full shadow-md flex items-center justify-center text-white hover:bg-indigo-600 transition-colors">
+                            <i class="fa-solid fa-arrows-rotate text-sm"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -208,11 +200,11 @@ window.openExchangeModal = function() {
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
                         <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
-                            <img id="swapToLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
+                            <img id="swapToLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
                             <select id="sToToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
                                     onchange="document.getElementById('swapToLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
-                                ${Object.keys(tokenConfig).map(symbol => 
-                                    `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
+                                ${SWAP_TOKENS.map(symbol => 
+                                    `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
                                 ).join('')}
                             </select>
                             <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
@@ -228,46 +220,22 @@ window.openExchangeModal = function() {
             </div>`);
     };
 
-window.openInternalTransferModal = function() {
-        window.showModal("internal_transfer", `
-            <div class="space-y-4">
-                <!-- 1. 接收地址区块 -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2 ml-1">接收者地址</p>
-                    <input type="text" id="transAddr" placeholder="请输入 0x 地址" 
-                           class="w-full bg-transparent font-mono text-[11px] outline-none border-none p-0 text-slate-800">
-                </div>
-
-                <!-- 2. 选择资产区块 (上方) -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3 ml-1">转账资产</p>
-                    <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
-                        <img id="transLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain shrink-0">
-                        <select id="transToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                                onchange="document.getElementById('transLogo').src = tokenConfig[this.value].logo;">
-                            ${Object.keys(tokenConfig).map(symbol => 
-                                `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
-                            ).join('')}
-                        </select>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                    </div>
-                </div>
-
-                <!-- 3. 数量输入区块 (下方) -->
-                <div class="p-4 bg-slate-50 rounded-[2rem] border border-slate-100 text-left">
-                    <div class="flex justify-between items-center mb-2 ml-1">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">转账数量</p>
-                        <span class="text-[10px] font-bold text-indigo-500 cursor-pointer" onclick="window.fillMax('transToken','transAmount')">全部转出</span>
-                    </div>
-                    <div class="px-1 -mb-1">
-                        <span class="text-[9px] font-bold text-emerald-500" data-i18n="transfer_fee">手续费：0.00USDT</span>
-                    </div>
-                    <input type="number" id="transAmount" placeholder="0.00" 
-                           class="w-full bg-transparent font-black text-2xl outline-none border-none p-0 text-slate-800">
-                </div>
-
-                <button type="button" onclick="window.doInternalTransfer()" class="action-btn w-full mt-2">确认提交签名</button>
-            </div>`);
+    window.swapTokens = function() {
+        const fromEl = document.getElementById('sFromToken');
+        const toEl = document.getElementById('sToToken');
+        if (!fromEl || !toEl) return;
+        
+        const fromVal = fromEl.value;
+        const toVal = toEl.value;
+        
+        fromEl.value = toVal;
+        toEl.value = fromVal;
+        
+        // 更新 logo
+        document.getElementById('swapFromLogo').src = tokenConfig[toVal].logo;
+        document.getElementById('swapToLogo').src = tokenConfig[fromVal].logo;
+        
+        window.calcSwap();
     };
 
     // --- 6. 绑定与申请 ---
