@@ -40,10 +40,11 @@ window.i18nData['ru'] = {
 
     // --- 2.3 NCL Кроссчейн Монетная Машина ---
     ncl_machine_status: "Статус Машины",
-    ncl_status_active: "Активна",
+    ncl_status_active: "Ожидает Запуска",
     ncl_machine_name: "NCL Кроссчейн Монетная Машина",
-    ncl_spec_chain: "Кроссчейн: NEO / BNB / SOL / TON",
-    ncl_spec_output: "Суточная Выработка: ≈100 NCL/день",
+    ncl_spec_chain: "Кроссчейн: BNB / SOL / TON",
+    ncl_spec_output: "Суточная Выработка: ---NCL/день",
+    ncl_spec_price: "Цена Машины: ≈$1500/шт (Временно)",
     ncl_spec_bridge: "Мост: Мультичейн Взаимодействие Активов",
     ncl_count: "Количество",
     ncl_running: "Работает",

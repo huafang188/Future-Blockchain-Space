@@ -40,10 +40,11 @@ window.i18nData['ar'] = {
 
     // --- 2.3 آلة عملات عبر السلاسل NCL ---
     ncl_machine_status: "حالة الآلة",
-    ncl_status_active: "نشطة",
+    ncl_status_active: "قيد الإطلاق",
     ncl_machine_name: "آلة عملات عبر السلاسل NCL",
-    ncl_spec_chain: "عبر السلاسل: NEO / BNB / SOL / TON",
-    ncl_spec_output: "الإنتاج اليومي: ≈100 NCL/يوم",
+    ncl_spec_chain: "عبر السلاسل: BNB / SOL / TON",
+    ncl_spec_output: "الإنتاج اليومي: ---NCL/يوم",
+    ncl_spec_price: "سعر الآلة: ≈1500$/وحدة (مؤقت)",
     ncl_spec_bridge: "الجسر: توافق الأصول متعدد السلاسل",
     ncl_count: "الكمية",
     ncl_running: "يعمل",

@@ -39,10 +39,11 @@ window.i18nData['mn'] = {
 
     // --- 2.3 NCL Кроссчейн Монет Машин ---
     ncl_machine_status: "Машины төлөв",
-    ncl_status_active: "Идэвхтэй",
+    ncl_status_active: "Нээлт хүлээж байна",
     ncl_machine_name: "NCL Кроссчейн Монет Машин",
-    ncl_spec_chain: "Кроссчейн: NEO / BNB / SOL / TON",
-    ncl_spec_output: "Өдрийн гарц: ≈100 NCL/өдөр",
+    ncl_spec_chain: "Кроссчейн: BNB / SOL / TON",
+    ncl_spec_output: "Өдрийн гарц: ---NCL/өдөр",
+    ncl_spec_price: "Машины үнэ: ≈$1500/ширхэг (Түр)",
     ncl_spec_bridge: "Гүүр: Олон гинжит хөрөнгө хоорондын ажиллагаа",
     ncl_count: "Тоо",
     ncl_running: "Ажиллаж байна",

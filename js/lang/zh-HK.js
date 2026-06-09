@@ -39,10 +39,11 @@ window.i18nData['zh-HK'] = {
 
     // --- 2.3 NCL 跨鏈產幣機 ---
     ncl_machine_status: "產幣機狀態",
-    ncl_status_active: "已激活",
+    ncl_status_active: "待上線",
     ncl_machine_name: "NCL 跨鏈產幣機",
-    ncl_spec_chain: "跨鏈協議：NEO / BNB / SOL / TON",
-    ncl_spec_output: "日產幣量：≈100 NCL/天",
+    ncl_spec_chain: "跨鏈協議：BNB / SOL / TON",
+    ncl_spec_output: "日產幣量：---NCL/天",
+    ncl_spec_price: "產幣機價格：≈1500美元/台（暫定）",
     ncl_spec_bridge: "跨鏈橋接：多鏈資產互通",
     ncl_count: "數量",
     ncl_running: "在運行",

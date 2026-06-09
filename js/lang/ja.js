@@ -40,10 +40,11 @@ window.i18nData['ja'] = {
 
     // --- 2.3 NCL クロスチェーンコインマシン ---
     ncl_machine_status: "マシン状態",
-    ncl_status_active: "アクティブ",
+    ncl_status_active: "公開予定",
     ncl_machine_name: "NCL クロスチェーンコインマシン",
-    ncl_spec_chain: "クロスチェーン：NEO / BNB / SOL / TON",
-    ncl_spec_output: "日産出量：≈100 NCL/日",
+    ncl_spec_chain: "クロスチェーン：BNB / SOL / TON",
+    ncl_spec_output: "日産出量：---NCL/日",
+    ncl_spec_price: "マシン価格：≈1500ドル/台（暫定）",
     ncl_spec_bridge: "ブリッジ：マルチチェーン資産相互運用",
     ncl_count: "数量",
     ncl_running: "稼働中",

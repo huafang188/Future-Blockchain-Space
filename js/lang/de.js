@@ -40,10 +40,11 @@ window.i18nData['de'] = {
 
     // --- 2.3 NCL Cross-Chain Münzmaschine ---
     ncl_machine_status: "Maschinenstatus",
-    ncl_status_active: "Aktiv",
+    ncl_status_active: "Start ausstehend",
     ncl_machine_name: "NCL Cross-Chain Münzmaschine",
-    ncl_spec_chain: "Cross-Chain: NEO / BNB / SOL / TON",
-    ncl_spec_output: "Tägliche Ausgabe: ≈100 NCL/Tag",
+    ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
+    ncl_spec_output: "Tägliche Ausgabe: ---NCL/Tag",
+    ncl_spec_price: "Maschinenpreis: ≈1500$/Einheit (Vorläufig)",
     ncl_spec_bridge: "Brücke: Multi-Chain Asset Interoperabilität",
     ncl_count: "Anzahl",
     ncl_running: "Läuft",

@@ -39,10 +39,11 @@ window.i18nData['el'] = {
 
     // --- 2.3 NCL Cross-Chain Μηχανή Νομισμάτων ---
     ncl_machine_status: "Κατάσταση Μηχανής",
-    ncl_status_active: "Ενεργή",
+    ncl_status_active: "Εκκρεμεί Εκκίνηση",
     ncl_machine_name: "NCL Cross-Chain Μηχανή Νομισμάτων",
-    ncl_spec_chain: "Cross-Chain: NEO / BNB / SOL / TON",
-    ncl_spec_output: "Ημερήσια Παραγωγή: ≈100 NCL/ημέρα",
+    ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
+    ncl_spec_output: "Ημερήσια Παραγωγή: ---NCL/ημέρα",
+    ncl_spec_price: "Τιμή Μηχανής: ≈$1500/μονάδα (Προσωρινή)",
     ncl_spec_bridge: "Γέφυρα: Διαλειτουργικότητα Πολλαπλών Αλυσίδων",
     ncl_count: "Ποσότητα",
     ncl_running: "Σε Λειτουργία",
