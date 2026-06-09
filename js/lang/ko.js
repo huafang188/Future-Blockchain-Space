@@ -38,6 +38,19 @@ window.i18nData['ko'] = {
     miner_spec_ai: "AI 연산력: ≈256 EFLOPS (256경회 부동소수점 연산)",
     miner_spec_power: "최대 소비전력: 1500W",
 
+    // --- 2.3 NCL 크로스체인 코인 머신 ---
+    ncl_machine_status: "머신 상태",
+    ncl_status_active: "활성화됨",
+    ncl_machine_name: "NCL 크로스체인 코인 머신",
+    ncl_spec_chain: "크로스체인: NEO / BNB / SOL / TON",
+    ncl_spec_output: "일일 산출량: ≈100 NCL/일",
+    ncl_spec_bridge: "브리지: 멀티체인 자산 상호운용",
+    ncl_count: "수량",
+    ncl_running: "가동 중",
+    ncl_yield: "일일 산출",
+    ncl_chain: "체인 수",
+    ncl_locked: "잠금",
+
     // --- 2.5 네트워크 채굴기 현황 ---
     network_miner_title: "네트워크 채굴기 현황",
     data_syncing: "데이터 연동 중, 잠시만 기다려주세요",

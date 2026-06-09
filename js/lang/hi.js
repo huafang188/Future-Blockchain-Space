@@ -37,6 +37,19 @@ window.i18nData['hi'] = {
     miner_spec_ai: "AI कंप्यूटिंग पावर: ≈256 EFLOPS (25.6 क्वाड्रिलियन फ्लोटिंग-पॉइंट ऑपरेशंस)",
     miner_spec_power: "अधिकतम बिजली खपत: 1500W",
 
+    // --- 2.3 NCL क्रॉस-चेन सिक्का मशीन ---
+    ncl_machine_status: "मशीन स्थिति",
+    ncl_status_active: "सक्रिय",
+    ncl_machine_name: "NCL क्रॉस-चेन सिक्का मशीन",
+    ncl_spec_chain: "क्रॉस-चेन: NEO / BNB / SOL / TON",
+    ncl_spec_output: "दैनिक उत्पादन: ≈100 NCL/दिन",
+    ncl_spec_bridge: "ब्रिज: मल्टी-चेन संपत्ति इंटरऑपरेबिलिटी",
+    ncl_count: "संख्या",
+    ncl_running: "चल रहा है",
+    ncl_yield: "दैनिक उपज",
+    ncl_chain: "चेन",
+    ncl_locked: "लॉक",
+
     // --- 2.5 नेटवर्क खनन उपकरण स्थिति ---
     network_miner_title: "नेटवर्क खनन उपकरण स्थिति",
     data_syncing: "डेटा सिंक हो रहा है, कृपया प्रतीक्षा करें",

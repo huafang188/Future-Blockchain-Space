@@ -38,6 +38,19 @@ window.i18nData['ja'] = {
     miner_spec_ai: "AI算力：≈256 EFLOPS（25.6京回の浮動小数点演算）",
     miner_spec_power: "最大消費電力：1500W",
 
+    // --- 2.3 NCL クロスチェーンコインマシン ---
+    ncl_machine_status: "マシン状態",
+    ncl_status_active: "アクティブ",
+    ncl_machine_name: "NCL クロスチェーンコインマシン",
+    ncl_spec_chain: "クロスチェーン：NEO / BNB / SOL / TON",
+    ncl_spec_output: "日産出量：≈100 NCL/日",
+    ncl_spec_bridge: "ブリッジ：マルチチェーン資産相互運用",
+    ncl_count: "数量",
+    ncl_running: "稼働中",
+    ncl_yield: "日産出",
+    ncl_chain: "チェーン数",
+    ncl_locked: "ロック",
+
     // --- 2.5 ネットワークマイナー状況 ---
     network_miner_title: "ネットワークマイナー状況",
     data_syncing: "データ連携中、しばらくお待ちください",

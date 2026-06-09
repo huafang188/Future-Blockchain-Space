@@ -37,6 +37,19 @@ window.i18nData['mn'] = {
     miner_spec_ai: "AI тооцоолох хүч: ≈256 EFLOPS (25.6 квадриллион хөвөгч цэгийн үйлдэл)",
     miner_spec_power: "Хамгийн их хүч зарцуулалт: 1500W",
 
+    // --- 2.3 NCL Кроссчейн Монет Машин ---
+    ncl_machine_status: "Машины төлөв",
+    ncl_status_active: "Идэвхтэй",
+    ncl_machine_name: "NCL Кроссчейн Монет Машин",
+    ncl_spec_chain: "Кроссчейн: NEO / BNB / SOL / TON",
+    ncl_spec_output: "Өдрийн гарц: ≈100 NCL/өдөр",
+    ncl_spec_bridge: "Гүүр: Олон гинжит хөрөнгө хоорондын ажиллагаа",
+    ncl_count: "Тоо",
+    ncl_running: "Ажиллаж байна",
+    ncl_yield: "Өдрийн гарц",
+    ncl_chain: "Гинж",
+    ncl_locked: "Түгжээтэй",
+
     // --- 2.5 Сүлжээний уул уурхайн машин ---
     network_miner_title: "Сүлжээний уул уурхайн машин",
     data_syncing: "Өгөгдөл синкчлэгдэж байна, түр хүлээнэ үү",

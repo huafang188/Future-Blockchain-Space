@@ -38,6 +38,19 @@ window.i18nData['ar'] = {
     miner_spec_ai: "قوة حساب الذكاء الاصطناعي: ≈256 EFLOPS (25.6 كوادريليون عملية فاصلة عائمة)",
     miner_spec_power: "أقصى استهلاك للطاقة: 1500W",
 
+    // --- 2.3 آلة عملات عبر السلاسل NCL ---
+    ncl_machine_status: "حالة الآلة",
+    ncl_status_active: "نشطة",
+    ncl_machine_name: "آلة عملات عبر السلاسل NCL",
+    ncl_spec_chain: "عبر السلاسل: NEO / BNB / SOL / TON",
+    ncl_spec_output: "الإنتاج اليومي: ≈100 NCL/يوم",
+    ncl_spec_bridge: "الجسر: توافق الأصول متعدد السلاسل",
+    ncl_count: "الكمية",
+    ncl_running: "يعمل",
+    ncl_yield: "الإنتاج اليومي",
+    ncl_chain: "السلاسل",
+    ncl_locked: "مغلق",
+
     // --- 2.5 حالة أجهزة التعدين في الشبكة ---
     network_miner_title: "حالة أجهزة التعدين في الشبكة",
     data_syncing: "جارٍ مزامنة البيانات، يرجى الانتظار",

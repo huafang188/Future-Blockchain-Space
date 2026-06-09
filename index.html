@@ -731,6 +731,72 @@
     </div>
 </section>
 
+<!-- ========== NCL 跨链产币机 ========== -->
+<section class="miner-card mt-6">
+    <div class="miner-grid-bg"></div>
+    <div class="relative z-10">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-[10px] font-bold text-black uppercase tracking-widest" data-i18n="ncl_machine_status">产币机状态</span>
+            <span class="bg-purple-50 text-purple-500 px-3 py-1 rounded-full text-[9px] font-bold border border-purple-100" data-i18n="ncl_status_active">已激活</span>
+        </div>
+
+        <div class="miner-header">
+            <img src="assets/ncl_logo.webp" class="miner-img-small" loading="lazy" onerror="this.src='assets/head_logo.webp'">
+            <div class="miner-info-text">
+                <h3 data-i18n="ncl_machine_name">NCL 跨链产币机</h3>
+                <div class="space-y-1 text-[10px] text-slate-600">
+                    <p data-i18n="ncl_spec_chain">跨链协议：NEO / BNB / SOL / TON</p>
+                    <p data-i18n="ncl_spec_output">日产币量：≈100 NCL/天</p>
+                    <p data-i18n="ncl_spec_bridge">跨链桥接：多链资产互通</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据展示 -->
+        <div class="miner-stats-grid">
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="ncl_count">数量</span>
+                <span id="ncl_count" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="ncl_running">在运行</span>
+                <span id="ncl_running" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="ncl_yield">日产量</span>
+                <span id="ncl_daily" class="stat-value">0.00</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="ncl_chain">跨链数</span>
+                <span id="ncl_chain_count" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="ncl_locked">锁仓</span>
+                <span id="ncl_locked" class="stat-value">0.00</span>
+            </div>
+        </div>
+
+        <!-- 购买按钮：5 种支付方式 -->
+        <div class="grid grid-cols-3 gap-3 mt-6">
+            <button disabled class="action-btn opacity-50 cursor-not-allowed">
+                <span>NEO 购买</span>
+            </button>
+            <button disabled class="action-btn opacity-50 cursor-not-allowed">
+                <span>BNB 购买</span>
+            </button>
+            <button disabled class="action-btn opacity-50 cursor-not-allowed">
+                <span>SOL 购买</span>
+            </button>
+            <button disabled class="action-btn opacity-50 cursor-not-allowed">
+                <span>TON 购买</span>
+            </button>
+            <button disabled class="action-btn opacity-50 cursor-not-allowed col-span-1">
+                <span>USDT 购买</span>
+            </button>
+        </div>
+    </div>
+</section>
+
 <!-- ========== 全网矿机运行情况 (Network Miner Status) ========== -->
 <section class="network-miner-section mt-6">
     <div class="glass-card rounded-[2rem] p-6">

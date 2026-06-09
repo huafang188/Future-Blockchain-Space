@@ -38,6 +38,19 @@ window.i18nData['ru'] = {
     miner_spec_ai: "AI вычислительная мощность: ≈256 EFLOPS (25,6 квадриллионов операций с плавающей точкой)",
     miner_spec_power: "Максимальное энергопотребление: 1500W",
 
+    // --- 2.3 NCL Кроссчейн Монетная Машина ---
+    ncl_machine_status: "Статус Машины",
+    ncl_status_active: "Активна",
+    ncl_machine_name: "NCL Кроссчейн Монетная Машина",
+    ncl_spec_chain: "Кроссчейн: NEO / BNB / SOL / TON",
+    ncl_spec_output: "Суточная Выработка: ≈100 NCL/день",
+    ncl_spec_bridge: "Мост: Мультичейн Взаимодействие Активов",
+    ncl_count: "Количество",
+    ncl_running: "Работает",
+    ncl_yield: "Суточная Выработка",
+    ncl_chain: "Цепей",
+    ncl_locked: "Заблокировано",
+
     // --- 2.5 Статус сети майнеров ---
     network_miner_title: "Статус сети майнеров",
     data_syncing: "Синхронизация данных, ожидайте",

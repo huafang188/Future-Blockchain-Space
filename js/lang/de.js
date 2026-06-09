@@ -38,6 +38,19 @@ window.i18nData['de'] = {
     miner_spec_ai: "AI-Rechenleistung: ≈256 EFLOPS (25,6 Billiarden Gleitkommaoperationen)",
     miner_spec_power: "Max. Leistungsaufnahme: 1500W",
 
+    // --- 2.3 NCL Cross-Chain Münzmaschine ---
+    ncl_machine_status: "Maschinenstatus",
+    ncl_status_active: "Aktiv",
+    ncl_machine_name: "NCL Cross-Chain Münzmaschine",
+    ncl_spec_chain: "Cross-Chain: NEO / BNB / SOL / TON",
+    ncl_spec_output: "Tägliche Ausgabe: ≈100 NCL/Tag",
+    ncl_spec_bridge: "Brücke: Multi-Chain Asset Interoperabilität",
+    ncl_count: "Anzahl",
+    ncl_running: "Läuft",
+    ncl_yield: "Tägliche Ausbeute",
+    ncl_chain: "Chains",
+    ncl_locked: "Gesperrt",
+
     // --- 2.5 Netzwerk-Miner-Status ---
     network_miner_title: "Netzwerk-Miner-Status",
     data_syncing: "Datensynchronisierung, bitte warten",

@@ -38,6 +38,19 @@ window.i18nData['zh-CN'] = {
     miner_spec_ai: "AI算力：≈256 EFLOPS（25.6亿亿次浮点运算总功）",
     miner_spec_power: "最大功耗：1500W",
 
+    // --- 2.3 NCL 跨链产币机 ---
+    ncl_machine_status: "产币机状态",
+    ncl_status_active: "已激活",
+    ncl_machine_name: "NCL 跨链产币机",
+    ncl_spec_chain: "跨链协议：NEO / BNB / SOL / TON",
+    ncl_spec_output: "日产币量：≈100 NCL/天",
+    ncl_spec_bridge: "跨链桥接：多链资产互通",
+    ncl_count: "数量",
+    ncl_running: "在运行",
+    ncl_yield: "日产量",
+    ncl_chain: "跨链数",
+    ncl_locked: "锁仓",
+
     // --- 2.5 全网矿机运行情况 ---
     network_miner_title: "全网矿机运行情况",
     data_syncing: "数据对接中，敬请期待",

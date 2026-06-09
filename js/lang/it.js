@@ -38,6 +38,19 @@ window.i18nData['it'] = {
     miner_spec_ai: "Potenza di Calcolo AI: ≈256 EFLOPS (25,6 quadrilioni di operazioni in virgola mobile)",
     miner_spec_power: "Consumo Massimo: 1500W",
 
+    // --- 2.3 Macchina per Monete Cross-Chain NCL ---
+    ncl_machine_status: "Stato della Macchina",
+    ncl_status_active: "Attiva",
+    ncl_machine_name: "Macchina per Monete Cross-Chain NCL",
+    ncl_spec_chain: "Cross-Chain: NEO / BNB / SOL / TON",
+    ncl_spec_output: "Produzione Giornaliera: ≈100 NCL/giorno",
+    ncl_spec_bridge: "Ponte: Interoperabilità Multi-catena",
+    ncl_count: "Quantità",
+    ncl_running: "In Funzione",
+    ncl_yield: "Produzione Giornaliera",
+    ncl_chain: "Catene",
+    ncl_locked: "Bloccato",
+
     // --- 2.5 Stato dei Miner della Rete ---
     network_miner_title: "Stato dei Miner della Rete",
     data_syncing: "Sincronizzazione dati in corso, attendere",

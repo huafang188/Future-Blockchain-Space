@@ -37,6 +37,19 @@ window.i18nData['el'] = {
     miner_spec_ai: "Υπολογιστική Ισχύς AI: ≈256 EFLOPS (25,6 τετράκις εκατομμύρια πράξεις κινητής υποδιαστολής)",
     miner_spec_power: "Μέγιστη Κατανάλωση Ενέργειας: 1500W",
 
+    // --- 2.3 NCL Cross-Chain Μηχανή Νομισμάτων ---
+    ncl_machine_status: "Κατάσταση Μηχανής",
+    ncl_status_active: "Ενεργή",
+    ncl_machine_name: "NCL Cross-Chain Μηχανή Νομισμάτων",
+    ncl_spec_chain: "Cross-Chain: NEO / BNB / SOL / TON",
+    ncl_spec_output: "Ημερήσια Παραγωγή: ≈100 NCL/ημέρα",
+    ncl_spec_bridge: "Γέφυρα: Διαλειτουργικότητα Πολλαπλών Αλυσίδων",
+    ncl_count: "Ποσότητα",
+    ncl_running: "Σε Λειτουργία",
+    ncl_yield: "Ημερήσια Απόδοση",
+    ncl_chain: "Αλυσίδες",
+    ncl_locked: "Κλειδωμένο",
+
     // --- 2.5 Κατάσταση Συσκευών Εξόρυξης Δικτύου ---
     network_miner_title: "Κατάσταση Συσκευών Εξόρυξης Δικτύου",
     data_syncing: "Συγχρονισμός δεδομένων σε εξέλιξη, παρακαλώ περιμένετε",
