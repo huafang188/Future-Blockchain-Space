@@ -24,7 +24,7 @@ import { mountModalHandlers } from './modal-handler.js';
 import { mountCalculationHandlers } from './calculations.js';
 import { mountActionExecutors } from './action-executor.js';
 
-import { CHAIN_CONFIG, setCurrentChain, getCurrentChainConfig, TOKEN_DECIMALS } from './config.js';
+import { CHAIN_CONFIG, setCurrentChain, TOKEN_DECIMALS } from './config.js';
 
 // 导出到 window
 window.CHAIN_CONFIG = CHAIN_CONFIG;
@@ -119,6 +119,33 @@ function mountAllGlobals() {
         }
     };
 
+    // 检测钱包环境
+    function detectWalletEnv() {
+        // Bitget 钱包
+        if (window.bitkeep && window.bitkeep.ethereum) return 'bitget';
+        // TP 钱包 (TokenPocket)
+        if (window.tokenpocket && window.tokenpocket.ethereum) return 'tokenpocket';
+        // 通用 EVM 钱包
+        if (window.ethereum) return 'evm';
+        return 'none';
+    }
+
+    // 更新链选择器 UI
+    function updateChainUI(chain) {
+        window.currentChain = chain;
+        setCurrentChain(chain);
+        const chainConfig = CHAIN_CONFIG[chain];
+        if (chainConfig) {
+            document.getElementById('selectedChainText').textContent = chain;
+            document.getElementById('selectedChainIcon').src = chainConfig.icon;
+        }
+        localStorage.setItem('selectedChain', chain);
+        
+        // 更新弹窗中的代币选项
+        if (window.updateWithdrawTokens) window.updateWithdrawTokens();
+        if (window.updateSwapTokens) window.updateSwapTokens();
+    }
+
     // 区块链选择函数
     window.selectChain = async function(chain) {
         // 关闭下拉菜单
@@ -128,27 +155,33 @@ function mountAllGlobals() {
         // 如果选择的是当前链，直接返回
         if (chain === window.currentChain) return;
         
-        // 请求钱包切换网络
-        if (window.ethereum) {
+        const walletEnv = detectWalletEnv();
+        
+        if (chain === 'BSC') {
+            // EVM 链：使用标准钱包切换 API
+            if (walletEnv === 'none') {
+                alert('请在 Web3 钱包浏览器中操作');
+                return;
+            }
+            
             try {
-                const chainConfig = window.CHAIN_CONFIG[chain];
-                if (!chainConfig) {
-                    alert('不支持的链: ' + chain);
-                    return;
-                }
+                const chainConfig = CHAIN_CONFIG['BSC'];
+                const provider = walletEnv === 'bitget' ? window.bitkeep.ethereum : 
+                                 walletEnv === 'tokenpocket' ? window.tokenpocket.ethereum : 
+                                 window.ethereum;
                 
-                // 尝试切换到目标链
-                await window.ethereum.request({
+                await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: chainConfig.chainId }],
                 });
-                
-                // 如果链不存在，尝试添加
             } catch (switchError) {
                 if (switchError.code === 4902) {
                     try {
-                        const chainConfig = window.CHAIN_CONFIG[chain];
-                        await window.ethereum.request({
+                        const chainConfig = CHAIN_CONFIG['BSC'];
+                        const provider = walletEnv === 'bitget' ? window.bitkeep.ethereum : 
+                                         walletEnv === 'tokenpocket' ? window.tokenpocket.ethereum : 
+                                         window.ethereum;
+                        await provider.request({
                             method: 'wallet_addEthereumChain',
                             params: [{
                                 chainId: chainConfig.chainId,
@@ -159,33 +192,36 @@ function mountAllGlobals() {
                             }]
                         });
                     } catch (addError) {
-                        alert('添加链失败: ' + (addError.message || '未知错误'));
+                        alert('添加 BSC 链失败: ' + (addError.message || '未知错误'));
                         return;
                     }
                 } else if (switchError.code === 4001) {
-                    // 用户拒绝
-                    return;
+                    return; // 用户拒绝
                 } else {
-                    alert('切换链失败: ' + (switchError.message || '未知错误'));
+                    alert('切换 BSC 链失败: ' + (switchError.message || '未知错误'));
                     return;
                 }
             }
-        } else {
-            alert('请在 Web3 钱包浏览器中操作');
-            return;
+            
+            updateChainUI('BSC');
+            
+        } else if (chain === 'TON') {
+            // TON 链：非 EVM，直接切换 UI + 检测 TON 钱包
+            const tonWallet = window.tonConnectUI || window.tonconnect || window.ton;
+            if (!tonWallet && !window.bitkeep?.ton && !window.tokenpocket?.ton) {
+                // 即使没有检测到 TON 钱包，也允许切换 UI（用户可能在 TON 钱包浏览器中打开）
+                console.log('[Chain] 未检测到 TON 钱包，但已切换至 TON 链 UI');
+            }
+            updateChainUI('TON');
+            
+        } else if (chain === 'SOL') {
+            // Solana 链：非 EVM，直接切换 UI + 检测 Solana 钱包
+            const solWallet = window.solana || window.bitkeep?.solana || window.tokenpocket?.solana;
+            if (!solWallet) {
+                console.log('[Chain] 未检测到 Solana 钱包，但已切换至 SOL 链 UI');
+            }
+            updateChainUI('SOL');
         }
-        
-        // 切换成功后更新 UI
-        window.currentChain = chain;
-        document.getElementById('selectedChainText').textContent = chain;
-        document.getElementById('selectedChainIcon').src = window.CHAIN_CONFIG[chain].icon;
-        
-        // 持久化到 localStorage
-        localStorage.setItem('selectedChain', chain);
-        
-        // 更新提现/兑换弹窗中的代币选项（如果弹窗已打开）
-        if (window.updateWithdrawTokens) window.updateWithdrawTokens();
-        if (window.updateSwapTokens) window.updateSwapTokens();
     };
     
     // 切换区块链下拉菜单
