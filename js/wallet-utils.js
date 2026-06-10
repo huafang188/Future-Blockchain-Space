@@ -81,28 +81,50 @@ async function connectEVMWallet() {
  * 2b. TON 链钱包连接
  */
 async function connectTONWallet() {
-    // 尝试多种 TON 钱包 API
-    const tonProvider = window.tonConnectUI || window.tonconnect || window.ton || window.bitkeep?.ton || window.tokenpocket?.ton;
+    // Bitget 钱包 TON API: window.bitkeep.ton
+    // 使用 send('ton_requestAccounts') 获取账户
+    // 注意：切换链后可能需要短暂延迟才能获取到 ton provider
+    let tonProvider = window.bitkeep?.ton || window.tokenpocket?.ton || window.tonconnect;
+    
+    // 如果没有立即找到，等待一小段时间重试（钱包注入可能需要时间）
+    if (!tonProvider) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        tonProvider = window.bitkeep?.ton || window.tokenpocket?.ton || window.tonconnect;
+    }
     
     if (!tonProvider) {
-        // 降级方案：提示用户在 TON 钱包浏览器中打开
-        alert("请在支持 TON 的钱包浏览器中打开（如 Bitget 钱包-TON 模式、Tonkeeper 等）");
+        // 再等待一次
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        tonProvider = window.bitkeep?.ton || window.tokenpocket?.ton || window.tonconnect;
+    }
+    
+    if (!tonProvider) {
+        alert("请在支持 TON 的钱包浏览器中打开（如 Bitget 钱包-TON 模式、Tonkeeper 等）\n\n提示：请确保钱包已切换到 TON 网络");
         return;
     }
     
     try {
         let address;
         
-        if (tonProvider.connect) {
+        if (tonProvider.send) {
+            // Bitget 钱包标准 API: send('ton_requestAccounts')
+            const accounts = await tonProvider.send('ton_requestAccounts');
+            address = accounts[0];
+        } else if (tonProvider.connect) {
             // TON Connect UI 方式
             const wallet = await tonProvider.connect();
             address = wallet.account.address;
-        } else if (tonProvider.request && tonProvider.requestAccounts) {
+        } else if (tonProvider.requestAccounts) {
             // 直接请求账户
             const accounts = await tonProvider.requestAccounts();
             address = accounts[0];
         } else {
             alert("TON 钱包连接方式不支持");
+            return;
+        }
+        
+        if (!address) {
+            alert("未获取到 TON 地址");
             return;
         }
         
