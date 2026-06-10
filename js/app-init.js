@@ -329,46 +329,50 @@ function initApp() {
     });
 
     /**
-     * 3. 监听钱包账号与链的变化
-     * 修复核心：防止 TP 钱包等插件重复发送 accountsChanged 导致的死循环
+     * 3. 监听钱包账号与链的变化（仅 EVM 链）
      */
-    if (window.ethereum) {
-        // 监听账号切换
-        window.ethereum.on('accountsChanged', (accounts) => {
-            // 获取当前本地存储的旧地址进行对比
-            const oldAddr = (localStorage.getItem('fbs_address') || "").toLowerCase();
-            const newAddr = (accounts[0] || "").toLowerCase();
+    const savedChain = localStorage.getItem('selectedChain') || 'BSC';
+    if (savedChain === 'BSC') {
+        const provider = window.bitkeep?.ethereum || window.tokenpocket?.ethereum || window.ethereum;
+        if (provider) {
+            // 监听账号切换
+            provider.on('accountsChanged', (accounts) => {
+                const oldAddr = (localStorage.getItem('fbs_address') || "").toLowerCase();
+                const newAddr = (accounts[0] || "").toLowerCase();
 
-            console.log("[Wallet] 检测到账号信号:", newAddr || "空");
+                console.log("[Wallet] 检测到账号信号:", newAddr || "空");
 
-            // --- 核心修复：只有当地址【真正】发生改变时才执行重载 ---
-            if (newAddr !== oldAddr) {
-                console.log("[Wallet] 地址发生真实变更，正在更新状态...");
-                
-                if (newAddr) {
-                    // 切换到了新账号
-                    localStorage.setItem('fbs_address', accounts[0]);
-                    localStorage.setItem('user_logout_manual', 'false');
+                if (newAddr !== oldAddr) {
+                    console.log("[Wallet] 地址发生真实变更，正在更新状态...");
+                    
+                    if (newAddr) {
+                        localStorage.setItem('fbs_address', accounts[0]);
+                        localStorage.setItem('fbs_chain', 'BSC');
+                        localStorage.setItem('user_logout_manual', 'false');
+                    } else {
+                        localStorage.removeItem('fbs_address');
+                        localStorage.setItem('user_logout_manual', 'true');
+                    }
+                    
+                    location.reload();
                 } else {
-                    // 用户在插件内断开了所有连接
-                    localStorage.removeItem('fbs_address');
-                    localStorage.setItem('user_logout_manual', 'true');
+                    console.log("[Wallet] 地址与本地一致，拦截重复刷新信号");
                 }
-                
-                // 执行刷新以确保所有数据（飞书/资产）重新加载
-                location.reload();
-            } else {
-                console.log("[Wallet] 地址与本地一致，拦截重复刷新信号");
-            }
-        });
+            });
 
-        // 链切换 (监听是否离开 BSC)
-        window.ethereum.on('chainChanged', (chainId) => {
-            console.log("[Wallet] 网络变更:", chainId);
-            location.reload();
-        });
+            // 链切换监听（仅当钱包端切换了 EVM 链时重载）
+            provider.on('chainChanged', (chainId) => {
+                console.log("[Wallet] EVM 网络变更:", chainId);
+                // 如果当前 UI 选中的是 BSC，但钱包切到了其他 EVM 链，提示用户
+                const uiChain = window.currentChain || 'BSC';
+                if (uiChain === 'BSC' && chainId !== '0x38' && chainId !== '56') {
+                    alert('检测到钱包已切换至其他 EVM 链，请切换回 BSC 或在前端选择器中切换链');
+                }
+                location.reload();
+            });
+        }
     } else {
-        console.warn("[App] 未检测到 Web3 环境，请在钱包 DApp 浏览器中访问");
+        console.log(`[App] 当前链 ${savedChain} 为非 EVM 链，跳过 EVM 事件监听`);
     }
 }
 

@@ -20,14 +20,32 @@ export function mountWalletClickHandler() {
 }
 
 /**
- * 2. 连接钱包核心逻辑
+ * 2. 连接钱包核心逻辑（根据当前链选择对应钱包 API）
  */
 export async function connectWallet() {
-    if (!window.ethereum) return alert("请在钱包内置浏览器中打开");
+    const chain = window.currentChain || 'BSC';
+    console.log(`[Wallet] 连接钱包，当前链: ${chain}`);
+    
+    if (chain === 'BSC') {
+        await connectEVMWallet();
+    } else if (chain === 'TON') {
+        await connectTONWallet();
+    } else if (chain === 'SOL') {
+        await connectSOLWallet();
+    }
+}
+
+/**
+ * 2a. EVM 链钱包连接（BSC）
+ */
+async function connectEVMWallet() {
+    // 兼容 Bitget / TP / 通用 EVM 钱包
+    const provider = window.bitkeep?.ethereum || window.tokenpocket?.ethereum || window.ethereum;
+    if (!provider) return alert("请在钱包内置浏览器中打开");
 
     try {
         // A. 请求授权获取账号
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await provider.request({ method: 'eth_requestAccounts' });
         if (!accounts || accounts.length === 0) return;
         const address = accounts[0]; 
         
@@ -35,28 +53,119 @@ export async function connectWallet() {
         const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
         const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
         
-        await window.ethereum.request({ 
+        await provider.request({ 
             method: 'personal_sign', 
             params: [hexMsg, address] 
         });
         
         // C. 更新状态标记
         localStorage.setItem('fbs_address', address);
-        localStorage.setItem('user_logout_manual', 'false'); // 核心：清除手动退出标记，允许下次自动重连
+        localStorage.setItem('fbs_chain', 'BSC');
+        localStorage.setItem('user_logout_manual', 'false');
         currentAddress = address;
         
-        console.log("[Wallet] 手动连接成功:", address);
-        
-        // D. 完成登录流程
+        console.log("[Wallet] EVM 连接成功:", address);
         finishLogin();
 
     } catch (e) { 
         console.error("[Wallet] 连接取消或失败:", e); 
-        // 4001 是用户拒绝签名的标准错误码
         if (e.code === 4001) {
             alert("您已取消签名授权");
         } else {
             alert("连接失败，请检查钱包状态");
+        }
+    }
+}
+
+/**
+ * 2b. TON 链钱包连接
+ */
+async function connectTONWallet() {
+    // 尝试多种 TON 钱包 API
+    const tonProvider = window.tonConnectUI || window.tonconnect || window.ton || window.bitkeep?.ton || window.tokenpocket?.ton;
+    
+    if (!tonProvider) {
+        // 降级方案：提示用户在 TON 钱包浏览器中打开
+        alert("请在支持 TON 的钱包浏览器中打开（如 Bitget 钱包-TON 模式、Tonkeeper 等）");
+        return;
+    }
+    
+    try {
+        let address;
+        
+        if (tonProvider.connect) {
+            // TON Connect UI 方式
+            const wallet = await tonProvider.connect();
+            address = wallet.account.address;
+        } else if (tonProvider.request && tonProvider.requestAccounts) {
+            // 直接请求账户
+            const accounts = await tonProvider.requestAccounts();
+            address = accounts[0];
+        } else {
+            alert("TON 钱包连接方式不支持");
+            return;
+        }
+        
+        // TON 地址格式转换（raw 格式转 user-friendly 格式）
+        const displayAddr = address.replace(/\+/g, '-').replace(/\//g, '_');
+        
+        localStorage.setItem('fbs_address', displayAddr);
+        localStorage.setItem('fbs_chain', 'TON');
+        localStorage.setItem('user_logout_manual', 'false');
+        currentAddress = displayAddr;
+        
+        console.log("[Wallet] TON 连接成功:", displayAddr);
+        finishLogin();
+        
+    } catch (e) {
+        console.error("[Wallet] TON 连接失败:", e);
+        alert("TON 钱包连接失败: " + (e.message || '未知错误'));
+    }
+}
+
+/**
+ * 2c. Solana 链钱包连接
+ */
+async function connectSOLWallet() {
+    // 尝试多种 Solana 钱包 API
+    const solProvider = window.solana || window.bitkeep?.solana || window.tokenpocket?.solana;
+    
+    if (!solProvider) {
+        alert("请在支持 Solana 的钱包浏览器中打开（如 Bitget 钱包-Solana 模式、Phantom 等）");
+        return;
+    }
+    
+    try {
+        // 连接 Solana 钱包
+        const resp = await solProvider.connect();
+        const address = resp.publicKey ? resp.publicKey.toString() : solProvider.publicKey?.toString();
+        
+        if (!address) {
+            alert("未获取到 Solana 地址");
+            return;
+        }
+        
+        // Solana 钱包通常不需要签名即可连接（只读模式）
+        // 如果需要签名验证，可以添加 signMessage
+        if (solProvider.signMessage) {
+            const msg = new TextEncoder().encode(`FBS Login\nAddress: ${address}\nTime: ${Date.now()}`);
+            await solProvider.signMessage(msg, 'utf8');
+        }
+        
+        localStorage.setItem('fbs_address', address);
+        localStorage.setItem('fbs_chain', 'SOL');
+        localStorage.setItem('user_logout_manual', 'false');
+        currentAddress = address;
+        
+        console.log("[Wallet] SOL 连接成功:", address);
+        finishLogin();
+        
+    } catch (e) {
+        console.error("[Wallet] SOL 连接失败:", e);
+        if (e.code === 4001 || e.message?.includes('rejected')) {
+            alert("您已取消连接授权");
+        } else {
+            alert("Solana 钱包连接失败: " + (e.message || '未知错误'));
         }
     }
 }
@@ -141,15 +250,22 @@ export function setCurrentAddress(addr) {
 }
 
 /**
- * 7. 监听钱包账户变化，自动连接新账户
+ * 7. 监听钱包账户变化，自动连接新账户（仅 EVM 链）
  */
 export function mountAccountChangeListener() {
-    if (!window.ethereum) return;
+    const chain = window.currentChain || 'BSC';
+    if (chain !== 'BSC') {
+        console.log(`[Wallet] 当前链 ${chain} 不支持账户变化监听`);
+        return;
+    }
     
-    console.log("[Wallet] 挂载账户变化监听器");
+    const provider = window.bitkeep?.ethereum || window.tokenpocket?.ethereum || window.ethereum;
+    if (!provider) return;
+    
+    console.log("[Wallet] 挂载 EVM 账户变化监听器");
     
     // 监听账户变化事件
-    window.ethereum.on('accountsChanged', async (accounts) => {
+    provider.on('accountsChanged', async (accounts) => {
         console.log("[Wallet] 检测到账户变化:", accounts);
         
         // 如果没有账户，重置UI
@@ -179,13 +295,14 @@ export function mountAccountChangeListener() {
             const msg = `FBS Auto Connect\nAddress: ${newAddress}\nTime: ${Date.now()}`;
             const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
             
-            await window.ethereum.request({ 
+            await provider.request({ 
                 method: 'personal_sign', 
                 params: [hexMsg, newAddress] 
             });
             
             // 更新状态
             localStorage.setItem('fbs_address', newAddress);
+            localStorage.setItem('fbs_chain', 'BSC');
             localStorage.setItem('user_logout_manual', 'false');
             currentAddress = newAddress;
             
