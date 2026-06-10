@@ -24,6 +24,12 @@ import { mountModalHandlers } from './modal-handler.js';
 import { mountCalculationHandlers } from './calculations.js';
 import { mountActionExecutors } from './action-executor.js';
 
+import { CHAIN_CONFIG, setCurrentChain, getCurrentChainConfig, TOKEN_DECIMALS } from './config.js';
+
+// 导出到 window
+window.CHAIN_CONFIG = CHAIN_CONFIG;
+window.TOKEN_DECIMALS = TOKEN_DECIMALS;
+
 /**
  * 1. 全局挂载器
  * 核心：将所有分散在模块中的函数强制导出给 window 变量
@@ -114,18 +120,72 @@ function mountAllGlobals() {
     };
 
     // 区块链选择函数
-    window.selectChain = function(chain) {
+    window.selectChain = async function(chain) {
         // 关闭下拉菜单
         const wrapper = document.querySelector('.custom-select-wrapper');
         wrapper.classList.remove('open');
         
-        if (chain === 'BSC') {
-            // BSC 链点击无反应（当前已选中）
-            return;
+        // 如果选择的是当前链，直接返回
+        if (chain === window.currentChain) return;
+        
+        // 请求钱包切换网络
+        if (window.ethereum) {
+            try {
+                const chainConfig = window.CHAIN_CONFIG[chain];
+                if (!chainConfig) {
+                    alert('不支持的链: ' + chain);
+                    return;
+                }
+                
+                // 尝试切换到目标链
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: chainConfig.chainId }],
+                });
+                
+                // 如果链不存在，尝试添加
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        const chainConfig = window.CHAIN_CONFIG[chain];
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: chainConfig.chainId,
+                                chainName: chainConfig.chainName,
+                                nativeCurrency: chainConfig.nativeCurrency,
+                                rpcUrls: chainConfig.rpcUrls,
+                                blockExplorerUrls: chainConfig.blockExplorerUrls
+                            }]
+                        });
+                    } catch (addError) {
+                        alert('添加链失败: ' + (addError.message || '未知错误'));
+                        return;
+                    }
+                } else if (switchError.code === 4001) {
+                    // 用户拒绝
+                    return;
+                } else {
+                    alert('切换链失败: ' + (switchError.message || '未知错误'));
+                    return;
+                }
+            }
         } else {
-            // TON 和 SOLANA 链显示 "come soon"
-            alert('🚀 ' + chain + ' Chain: Coming Soon');
+            alert('请在 Web3 钱包浏览器中操作');
+            return;
         }
+        
+        // 切换成功后更新 UI
+        window.currentChain = chain;
+        document.getElementById('selectedChainText').textContent = chain;
+        document.getElementById('selectedChainIcon').src = window.CHAIN_CONFIG[chain].icon;
+        
+        // 持久化到 localStorage
+        localStorage.setItem('selectedChain', chain);
+        
+        // 更新提现/兑换弹窗中的代币选项（如果弹窗已打开）
+        if (window.updateWithdrawTokens) window.updateWithdrawTokens();
+        if (window.updateSwapTokens) window.updateSwapTokens();
     };
     
     // 切换区块链下拉菜单
@@ -186,6 +246,16 @@ function initApp() {
                 }, 300);
             }
         }, 200);
+        
+        // --- 2.0.5 恢复上次选择的链 ---
+        const savedChain = localStorage.getItem('selectedChain') || 'BSC';
+        window.currentChain = savedChain;
+        setCurrentChain(savedChain);
+        const chainConfig = CHAIN_CONFIG[savedChain];
+        if (chainConfig) {
+            document.getElementById('selectedChainText').textContent = savedChain;
+            document.getElementById('selectedChainIcon').src = chainConfig.icon;
+        }
         
         // --- 2.1 基础环境初始化 ---
         const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';

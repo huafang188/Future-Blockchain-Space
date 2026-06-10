@@ -1,6 +1,5 @@
-import { RECEIVE_ADDRS, CONTRACT_ADDRS, BSC_CHAIN_ID, getReceiveAddress } from './config.js';
+import { getReceiveAddress, getContractAddress, getCurrentChainConfig } from './config.js';
 import { postTransactionRecord } from './api-service.js';
-import { refreshAssetDisplay } from './ui-render.js';
 
 // 导入 fetchUserData 用于刷新数据
 let fetchUserDataFunc = null;
@@ -22,43 +21,43 @@ async function refreshUserDataAfterTransaction() {
     }
 }
 
-// 当前用户信息（从全局状态获取）
-function getUserInfo() {
-    return window.currentUserInfo || {};
-}
-
 /**
- * 🛠️ 辅助：将文字转为钱包兼容的 Hex 格式
+ * ️ 辅助：将文字转为钱包兼容的 Hex 格式
  */
 const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
 
 /**
- * 🔒 核心：强制切换/添加 币安智能链 (BSC)
+ * 🔒 核心：强制切换/添加当前选中的区块链
  */
-async function ensureBSCNetwork() {
+async function ensureNetwork() {
     if (!window.ethereum) {
         alert("请在 Web3 钱包浏览器中打开");
         return false;
     }
+    
+    const chainConfig = getCurrentChainConfig();
+    const targetChainId = chainConfig.chainId;
+    const targetChainIdDecimal = String(chainConfig.chainIdDecimal);
+    
     try {
         const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
-        // 兼容处理：有些钱包返回十进制 '56'，有些返回十六进制 '0x38'
-        if (currentChainId !== BSC_CHAIN_ID && currentChainId !== '56') {
+        // 兼容处理：有些钱包返回十进制，有些返回十六进制
+        if (currentChainId !== targetChainId && currentChainId !== targetChainIdDecimal) {
             try {
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: BSC_CHAIN_ID }],
+                    params: [{ chainId: targetChainId }],
                 });
             } catch (switchError) {
                 if (switchError.code === 4902) {
                     await window.ethereum.request({
                         method: 'wallet_addEthereumChain',
                         params: [{
-                            chainId: BSC_CHAIN_ID,
-                            chainName: 'Binance Smart Chain',
-                            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                            blockExplorerUrls: ['https://bscscan.com/']
+                            chainId: chainConfig.chainId,
+                            chainName: chainConfig.chainName,
+                            nativeCurrency: chainConfig.nativeCurrency,
+                            rpcUrls: chainConfig.rpcUrls,
+                            blockExplorerUrls: chainConfig.blockExplorerUrls
                         }]
                     });
                 } else {
@@ -68,7 +67,7 @@ async function ensureBSCNetwork() {
         }
         return true;
     } catch (error) {
-        alert("请切换至 BSC 网络后再进行操作");
+        alert(`请切换至 ${chainConfig.chainName} 网络后再进行操作`);
         return false;
     }
 }
@@ -78,7 +77,7 @@ async function ensureBSCNetwork() {
  * 增加：金额清洗与余额预检查逻辑
  */
 async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr) {
-    if (!await ensureBSCNetwork()) return;
+    if (!await ensureNetwork()) return;
 
     try {
         // --- 1. 金额强力清洗：只保留数字和小数点 ---
@@ -94,11 +93,15 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
         let tx;
-        if (tokenSymbol === 'BNB') {
-            // 原生代币检查
-            const bnbBalance = await provider.getBalance(userAddress);
-            const amountInWei = ethers.parseEther(cleanAmount);
-            if (bnbBalance < amountInWei) throw new Error("您的钱包 BNB 余额不足");
+        const chainConfig = getCurrentChainConfig();
+        const nativeSymbol = chainConfig.nativeCurrency.symbol;
+        
+        if (tokenSymbol === nativeSymbol) {
+            // 原生代币转账
+            const balance = await provider.getBalance(userAddress);
+            const decimals = chainConfig.nativeCurrency.decimals;
+            const amountInWei = ethers.parseUnits(cleanAmount, decimals);
+            if (balance < amountInWei) throw new Error(`您的钱包 ${nativeSymbol} 余额不足`);
 
             tx = await signer.sendTransaction({
                 to: targetAddr,
@@ -106,7 +109,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             });
         } else {
             // 合约代币 (USDT等)
-            const contractAddr = CONTRACT_ADDRS[tokenSymbol];
+            const contractAddr = getContractAddress(tokenSymbol);
             if (!contractAddr) throw new Error("不支持的代币合约");
             
             const contract = new ethers.Contract(contractAddr, [
@@ -116,7 +119,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
             // 预检查代币余额
             const balance = await contract.balanceOf(userAddress);
-            const amountToPay = ethers.parseUnits(cleanAmount, 18);
+            const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || 18;
+            const amountToPay = ethers.parseUnits(cleanAmount, decimals);
             
             if (balance < amountToPay) {
                 throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 数量不足`);
@@ -162,7 +166,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
  * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定、团队、矿机转让、内转)
  */
 async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
-    if (!await ensureBSCNetwork()) return;
+    if (!await ensureNetwork()) return;
 
     try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -201,21 +205,18 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
 // 🚀 全局映射挂载
 // ==========================================
 
-// 1. 充值（支持按团队分流）
+// 1. 充值
 window.doRecharge = async function() {
     const symbol = document.getElementById('recToken')?.value;
     const amount = document.getElementById('recAmount')?.value;
     if (!amount || parseFloat(amount) <= 0) return alert("请输入正确金额");
     
-    // 获取用户信息进行地址分流
-    const userInfo = getUserInfo();
-    const receiveAddr = getReceiveAddress('RECHARGE', userInfo);
-    
-    console.log(`[Recharge] 分流地址: ${receiveAddr} (团队: ${userInfo.team || '默认'})`);
+    const receiveAddr = getReceiveAddress('RECHARGE');
+    console.log(`[Recharge] 收款地址: ${receiveAddr} (链: ${window.currentChain || 'BSC'})`);
     await executeOnChainTransfer("RECHARGE", symbol, amount, receiveAddr);
 };
 
-// 2. 购买矿机 & 缴纳电费（支持按团队分流）
+// 2. 购买矿机 & 缴纳电费
 window.doChainPay = async function(bizType) {
     let rawValue = "";
     if (bizType === 'MINER') {
@@ -228,12 +229,10 @@ window.doChainPay = async function(bizType) {
     const amount = rawValue.replace(/[^\d.]/g, '');
     if (!amount || parseFloat(amount) <= 0) return alert("金额计算异常，请重试");
 
-    // 获取用户信息进行地址分流
-    const userInfo = getUserInfo();
     const addrType = (bizType === 'MINER') ? 'MINER' : 'ELECTRIC';
-    const target = getReceiveAddress(addrType, userInfo);
+    const target = getReceiveAddress(addrType);
     
-    console.log(`[${bizType}] 分流地址: ${target} (团队: ${userInfo.team || '默认'})`);
+    console.log(`[${bizType}] 收款地址: ${target} (链: ${window.currentChain || 'BSC'})`);
     // 强制使用 USDT 支付
     await executeOnChainTransfer(bizType, "USDT", amount, target);
 };

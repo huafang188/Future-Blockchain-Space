@@ -103,17 +103,36 @@ export function mountModalHandlers() {
 
     // --- 5. 金融模块 (提现/兑换) ---
 
-    const WITHDRAW_TOKENS = ['USDT', 'BNB', 'TON', 'SOL', 'NCL'];
-    const SWAP_TOKENS = ['NEO', 'USDT', 'BNB', 'TON', 'SOL', 'NCL'];
+    // 各链支持的代币
+    const CHAIN_TOKENS = {
+        'BSC': {
+            withdraw: ['USDT', 'BNB', 'TON', 'SOL', 'NCL'],
+            swap: ['NEO', 'USDT', 'BNB', 'TON', 'SOL', 'NCL']
+        },
+        'TON': {
+            withdraw: ['USDT', 'TON', 'NCL'],
+            swap: ['NEO', 'USDT', 'TON', 'NCL']
+        },
+        'SOL': {
+            withdraw: ['USDT', 'SOL', 'NCL'],
+            swap: ['NEO', 'USDT', 'SOL', 'NCL']
+        }
+    };
+
+    function getChainTokens() {
+        const chain = window.currentChain || 'BSC';
+        return CHAIN_TOKENS[chain] || CHAIN_TOKENS['BSC'];
+    }
 
     window.openWithdrawModal = function() {
+        const tokens = getChainTokens().withdraw;
         window.showModal("withdraw", `
             <div class="space-y-4 text-left">
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
                     <img id="witLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain">
                     <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
                             onchange="document.getElementById('witLogo').src = tokenConfig[this.value].logo; window.updateWitBalanceHint();">
-                        ${WITHDRAW_TOKENS.map(symbol => 
+                        ${tokens.map(symbol => 
                             `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
                         ).join('')}
                     </select>
@@ -143,6 +162,7 @@ export function mountModalHandlers() {
     };
 
 window.openExchangeModal = function() {
+        const tokens = getChainTokens().swap;
         window.showModal("exchange", `
             <div class="space-y-3">
                 <!-- 兑出区域 -->
@@ -157,7 +177,7 @@ window.openExchangeModal = function() {
                             <img id="swapFromLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
                             <select id="sFromToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
                                     onchange="document.getElementById('swapFromLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
-                                ${SWAP_TOKENS.map(symbol => 
+                                ${tokens.map(symbol => 
                                     `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
                                 ).join('')}
                             </select>
@@ -203,7 +223,7 @@ window.openExchangeModal = function() {
                             <img id="swapToLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
                             <select id="sToToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
                                     onchange="document.getElementById('swapToLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
-                                ${SWAP_TOKENS.map(symbol => 
+                                ${tokens.map(symbol => 
                                     `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
                                 ).join('')}
                             </select>
@@ -235,6 +255,50 @@ window.openExchangeModal = function() {
         document.getElementById('swapFromLogo').src = tokenConfig[toVal].logo;
         document.getElementById('swapToLogo').src = tokenConfig[fromVal].logo;
         
+        window.calcSwap();
+    };
+
+    // 链切换时更新弹窗代币选项
+    window.updateWithdrawTokens = function() {
+        const select = document.getElementById('witToken');
+        if (!select) return;
+        const tokens = getChainTokens().withdraw;
+        const currentVal = select.value;
+        select.innerHTML = tokens.map(symbol => 
+            `<option value="${symbol}" ${symbol === currentVal ? 'selected' : ''}>${symbol}</option>`
+        ).join('');
+        // 如果当前选中的代币不在新列表中，默认选第一个
+        if (!tokens.includes(currentVal)) {
+            select.value = tokens[0];
+            document.getElementById('witLogo').src = tokenConfig[tokens[0]].logo;
+        }
+        window.updateWitBalanceHint();
+    };
+
+    window.updateSwapTokens = function() {
+        const fromSelect = document.getElementById('sFromToken');
+        const toSelect = document.getElementById('sToToken');
+        if (!fromSelect || !toSelect) return;
+        const tokens = getChainTokens().swap;
+        const fromVal = fromSelect.value;
+        const toVal = toSelect.value;
+        
+        fromSelect.innerHTML = tokens.map(symbol => 
+            `<option value="${symbol}" ${symbol === fromVal ? 'selected' : ''}>${symbol}</option>`
+        ).join('');
+        toSelect.innerHTML = tokens.map(symbol => 
+            `<option value="${symbol}" ${symbol === toVal ? 'selected' : ''}>${symbol}</option>`
+        ).join('');
+        
+        // 如果当前选中的代币不在新列表中，默认选第一个和第二个
+        if (!tokens.includes(fromVal)) {
+            fromSelect.value = tokens[0];
+            document.getElementById('swapFromLogo').src = tokenConfig[tokens[0]].logo;
+        }
+        if (!tokens.includes(toVal)) {
+            toSelect.value = tokens[1] || tokens[0];
+            document.getElementById('swapToLogo').src = tokenConfig[tokens[1] || tokens[0]].logo;
+        }
         window.calcSwap();
     };
 

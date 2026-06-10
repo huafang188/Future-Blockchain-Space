@@ -2,36 +2,84 @@
  * 基础配置
  */
 export const API_BASE = "https://api.neoneo.ink/api/user";
-export const BSC_CHAIN_ID = '0x38';
 
 /**
- * 收款地址配置 - 支持多组地址用于客户分流
+ * 多链配置
+ */
+export const CHAIN_CONFIG = {
+    'BSC': {
+        chainId: '0x38',
+        chainIdDecimal: 56,
+        chainName: 'BNB Smart Chain',
+        nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+        rpcUrls: ['https://bsc-dataseed.binance.org/'],
+        blockExplorerUrls: ['https://bscscan.com/'],
+        icon: 'assets/币安智能链.png'
+    },
+    'TON': {
+        chainId: '0x357',
+        chainIdDecimal: 855,
+        chainName: 'TON Chain',
+        nativeCurrency: { name: 'TON', symbol: 'TON', decimals: 9 },
+        rpcUrls: ['https://toncenter.com'],
+        blockExplorerUrls: ['https://tonscan.org/'],
+        icon: 'assets/TON.webp'
+    },
+    'SOL': {
+        chainId: '0x82',
+        chainIdDecimal: 130,
+        chainName: 'Solana',
+        nativeCurrency: { name: 'SOL', symbol: 'SOL', decimals: 9 },
+        rpcUrls: ['https://api.mainnet-beta.solana.com'],
+        blockExplorerUrls: ['https://solscan.io/'],
+        icon: 'assets/Solana.webp'
+    }
+};
+
+/**
+ * 当前选中的链（默认 BSC）
+ */
+export let CURRENT_CHAIN = 'BSC';
+
+/**
+ * 获取当前链配置
+ */
+export function getCurrentChainConfig() {
+    return CHAIN_CONFIG[CURRENT_CHAIN] || CHAIN_CONFIG['BSC'];
+}
+
+/**
+ * 设置当前链
+ */
+export function setCurrentChain(chain) {
+    if (CHAIN_CONFIG[chain]) {
+        CURRENT_CHAIN = chain;
+    }
+}
+
+/**
+ * 收款地址配置 - 按链区分
+ */
+export const CHAIN_RECEIVE_ADDRS = {
+    'BSC': {
+        ELECTRIC: "0xa59Ee12770664e002E6e0dDcAC447707AD873F33",
+        MINER: "0x8007c1F954D46f98D108EB6E0dD979406C5Bb444"
+    },
+    'TON': {
+        ELECTRIC: "UQBYus42aiF7FhyecH-WgZnKDydikIVyJusFCKMnUXQcjj2y",
+        MINER: "UQDG6EoKX4wBcYVFcDYhnf6gVJBVwX1vLRxXo8WDZEv_cp5B"
+    },
+    'SOL': {
+        ELECTRIC: "DJtb4QyA61BvKLAQeTnRz2s8p98KBv8yTF48SGf6sQ1s",
+        MINER: "7eUfQwcrkMkKAQ5VKbshC8humahAFaeAeNurUsM2U43u"
+    }
+};
+
+/**
+ * 兼容旧版 RECEIVE_ADDRS（默认 BSC）
  */
 export const RECEIVE_ADDRS = {
-    // 默认地址组（普通用户）
-    DEFAULT: {
-        RECHARGE: "0x0e2DAE4E3445F7C64DB6Fa661cf6FAA44448db5c",
-        ELECTRIC: "0xD75231EAb3cC3B1a11a356926176fC5809C3778E",
-        MINER: "0xfB58e5ff840dA66dc26F44866D3739bfCaAECb43"
-    },
-    // 团队A地址组
-    TEAM_A: {
-        RECHARGE: "0xTeamA_Recharge_Address",
-        ELECTRIC: "0xTeamA_Electric_Address",
-        MINER: "0xTeamA_Miner_Address"
-    },
-    // 团队B地址组
-    TEAM_B: {
-        RECHARGE: "0xTeamB_Recharge_Address",
-        ELECTRIC: "0xTeamB_Electric_Address",
-        MINER: "0xTeamB_Miner_Address"
-    },
-    // 团队C地址组
-    TEAM_C: {
-        RECHARGE: "0xTeamC_Recharge_Address",
-        ELECTRIC: "0xTeamC_Electric_Address",
-        MINER: "0xTeamC_Miner_Address"
-    }
+    DEFAULT: CHAIN_RECEIVE_ADDRS['BSC']
 };
 
 /**
@@ -116,49 +164,48 @@ export function findTopLevelInviter(inviterChain = []) {
 }
 
 /**
- * 获取收款地址（支持按团队分流）
+ * 获取收款地址（支持按链区分）
  * @param {string} type - 地址类型: RECHARGE, ELECTRIC, MINER
- * @param {Object} userInfo - 用户信息（包含 team 字段）
+ * @param {string} chain - 链名称: BSC, TON, SOL（默认当前链）
  * @returns {string} 收款地址
  */
-export function getReceiveAddress(type, userInfo = {}) {
-    let group = 'DEFAULT';
-    
-    // 优先使用后端返回的团队字段（来自推荐关系列表中的"团队"列）
-    if (userInfo.team) {
-        const teamKey = userInfo.team.toLowerCase().trim();
-        // 尝试直接匹配
-        if (TEAM_STRATEGY[teamKey]) {
-            group = TEAM_STRATEGY[teamKey];
-        }
-        // 尝试映射匹配
-        else if (TEAM_STRATEGY[userInfo.team]) {
-            group = TEAM_STRATEGY[userInfo.team];
-        }
+export function getReceiveAddress(type, chain) {
+    const targetChain = chain || CURRENT_CHAIN;
+    const chainAddrs = CHAIN_RECEIVE_ADDRS[targetChain];
+    if (chainAddrs && chainAddrs[type]) {
+        return chainAddrs[type];
     }
-    // 如果没有团队字段，但有推荐链，则根据推荐链找到最高层级团队
-    else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
-        const topInviter = findTopLevelInviter(userInfo.inviterChain);
-        group = TEAM_STRATEGY[topInviter.team] || TEAM_STRATEGY['default'];
-    }
-    
-    // 返回对应地址，如果不存在则回退到默认地址
-    if (RECEIVE_ADDRS[group] && RECEIVE_ADDRS[group][type]) {
-        return RECEIVE_ADDRS[group][type];
-    }
-    
-    return RECEIVE_ADDRS.DEFAULT[type] || RECEIVE_ADDRS.DEFAULT.RECHARGE;
+    // 回退到 BSC 默认地址
+    return CHAIN_RECEIVE_ADDRS['BSC'][type] || CHAIN_RECEIVE_ADDRS['BSC'].RECHARGE;
 }
 
 /**
- * 合约地址与精度配置
+ * 合约地址与精度配置（按链区分，仅 USDT 合约，其他代币为链原生）
  */
-export const CONTRACT_ADDRS = {
-    'USDT': "0x55d398326f99059ff775485246999027b3197955",
-    'TON': "0x76Ae8974B2D9898C0359B9519e8Ca8800089f92c",
-    'SOL': "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
-    'BNB': "NATIVE"
+export const CHAIN_CONTRACT_ADDRS = {
+    'BSC': {
+        'USDT': "0x55d398326f99059ff775485246999027b3197955"
+    },
+    'TON': {
+        'USDT': "UQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_p0p"
+    },
+    'SOL': {
+        'USDT': "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
+    }
 };
+
+/**
+ * 兼容旧版 CONTRACT_ADDRS（默认 BSC）
+ */
+export const CONTRACT_ADDRS = CHAIN_CONTRACT_ADDRS['BSC'];
+
+/**
+ * 根据当前链获取合约地址（仅 USDT 有合约，其他代币返回 null 表示原生）
+ */
+export function getContractAddress(tokenSymbol) {
+    const chainAddrs = CHAIN_CONTRACT_ADDRS[CURRENT_CHAIN] || CHAIN_CONTRACT_ADDRS['BSC'];
+    return chainAddrs[tokenSymbol] || null;
+}
 
 export const TOKEN_DECIMALS = {
     'USDT': 18,
