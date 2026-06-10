@@ -105,6 +105,7 @@ async function connectTONWallet() {
     
     try {
         let address;
+        let provider = tonProvider;
         
         if (tonProvider.send) {
             // Bitget 钱包标准 API: send('ton_requestAccounts')
@@ -114,6 +115,7 @@ async function connectTONWallet() {
             // TON Connect UI 方式
             const wallet = await tonProvider.connect();
             address = wallet.account.address;
+            provider = tonProvider; // 保存引用用于后续签名
         } else if (tonProvider.requestAccounts) {
             // 直接请求账户
             const accounts = await tonProvider.requestAccounts();
@@ -130,6 +132,23 @@ async function connectTONWallet() {
         
         // TON 地址格式转换（raw 格式转 user-friendly 格式）
         const displayAddr = address.replace(/\+/g, '-').replace(/\//g, '_');
+        
+        // 签名验证（类似 EVM 的 personal_sign）
+        if (provider.send) {
+            const msg = `FBS Login\nAddress: ${displayAddr}\nTime: ${Date.now()}`;
+            try {
+                // Bitget TON 钱包支持 ton_personalSign 或 ton_rawSign
+                await provider.send('ton_personalSign', [msg]);
+            } catch (signErr) {
+                // 降级到 ton_rawSign
+                try {
+                    await provider.send('ton_rawSign', [msg]);
+                } catch (e2) {
+                    console.log("[Wallet] TON 签名跳过（钱包可能不支持）:", e2.message);
+                    // 签名失败不阻断登录流程
+                }
+            }
+        }
         
         localStorage.setItem('fbs_address', displayAddr);
         localStorage.setItem('fbs_chain', 'TON');

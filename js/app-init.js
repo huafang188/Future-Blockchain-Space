@@ -155,6 +155,24 @@ function mountAllGlobals() {
         // 如果选择的是当前链，直接返回
         if (chain === window.currentChain) return;
         
+        // 如果已登录，先登出再切换链
+        const savedAddr = localStorage.getItem('fbs_address');
+        if (savedAddr) {
+            const shouldSwitch = confirm(`切换链将退出当前登录，是否继续？\n\n当前链: ${window.currentChain || 'BSC'}\n目标链: ${chain}`);
+            if (!shouldSwitch) return;
+            
+            // 清除登录状态
+            localStorage.setItem('user_logout_manual', 'true');
+            localStorage.removeItem('fbs_address');
+            localStorage.removeItem('fbs_chain');
+            
+            // 重置 UI
+            if (typeof window.resetWalletUI === 'function') window.resetWalletUI();
+            if (typeof window.renderHistory === 'function') window.renderHistory([]);
+            if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
+            if (typeof window.renderTokenList === 'function') window.renderTokenList({});
+        }
+        
         const walletEnv = detectWalletEnv();
         
         if (chain === 'BSC') {
@@ -206,21 +224,22 @@ function mountAllGlobals() {
             updateChainUI('BSC');
             
         } else if (chain === 'TON') {
-            // TON 链：非 EVM，直接切换 UI + 检测 TON 钱包
-            const tonWallet = window.tonConnectUI || window.tonconnect || window.ton;
-            if (!tonWallet && !window.bitkeep?.ton && !window.tokenpocket?.ton) {
-                // 即使没有检测到 TON 钱包，也允许切换 UI（用户可能在 TON 钱包浏览器中打开）
-                console.log('[Chain] 未检测到 TON 钱包，但已切换至 TON 链 UI');
-            }
+            // TON 链：非 EVM，直接切换 UI
             updateChainUI('TON');
             
         } else if (chain === 'SOL') {
-            // Solana 链：非 EVM，直接切换 UI + 检测 Solana 钱包
-            const solWallet = window.solana || window.bitkeep?.solana || window.tokenpocket?.solana;
-            if (!solWallet) {
-                console.log('[Chain] 未检测到 Solana 钱包，但已切换至 SOL 链 UI');
-            }
+            // Solana 链：非 EVM，直接切换 UI
             updateChainUI('SOL');
+        }
+        
+        // 切换完成后，如果之前已登录，提示用户重新连接
+        if (savedAddr) {
+            setTimeout(() => {
+                const shouldConnect = confirm(`已切换至 ${chain} 链，是否立即连接钱包？`);
+                if (shouldConnect && typeof window.connectWallet === 'function') {
+                    window.connectWallet();
+                }
+            }, 300);
         }
     };
     
