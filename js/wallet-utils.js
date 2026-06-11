@@ -1,5 +1,3 @@
-let currentAddress = localStorage.getItem('fbs_address');
-
 /**
  * 1. 挂载全局钱包点击事件
  * 处理逻辑：未连接时去连接，已连接时点击则触发退出登录
@@ -62,7 +60,6 @@ async function connectEVMWallet() {
         localStorage.setItem('fbs_address', address);
         localStorage.setItem('fbs_chain', 'BSC');
         localStorage.setItem('user_logout_manual', 'false');
-        currentAddress = address;
         
         console.log("[Wallet] EVM 连接成功:", address);
         finishLogin();
@@ -153,7 +150,6 @@ async function connectTONWallet() {
         localStorage.setItem('fbs_address', displayAddr);
         localStorage.setItem('fbs_chain', 'TON');
         localStorage.setItem('user_logout_manual', 'false');
-        currentAddress = displayAddr;
         
         console.log("[Wallet] TON 连接成功:", displayAddr);
         finishLogin();
@@ -196,7 +192,6 @@ async function connectSOLWallet() {
         localStorage.setItem('fbs_address', address);
         localStorage.setItem('fbs_chain', 'SOL');
         localStorage.setItem('user_logout_manual', 'false');
-        currentAddress = address;
         
         console.log("[Wallet] SOL 连接成功:", address);
         finishLogin();
@@ -215,13 +210,14 @@ async function connectSOLWallet() {
  * 3. 完成登录后的动作（更新UI + 拉取数据）
  */
 export function finishLogin() {
+    const addr = localStorage.getItem('fbs_address');
     // 1. 更新按钮显示
-    updateWalletUI(currentAddress);
+    updateWalletUI(addr);
     
     // 2. 立即拉取飞书后台资产数据
-    // 注意：fetchUserData 内部已删除“新用户自动弹窗”逻辑
+    // 注意：fetchUserData 内部已删除"新用户自动弹窗"逻辑
     if (typeof window.fetchUserData === 'function') {
-        window.fetchUserData(currentAddress);
+        window.fetchUserData(addr);
     }
     
     // 3. 如果是在某个交互弹窗中触发的登录，自动关闭弹窗
@@ -271,23 +267,39 @@ export function logout() {
         localStorage.setItem('user_logout_manual', 'true');
         localStorage.removeItem('fbs_address');
         
-        // 清理当前状态并刷新页面回到初始态
-        location.reload();
+        // 立即更新 UI 为未连接状态
+        if (typeof window.syncWalletUI === 'function') {
+            window.syncWalletUI();
+        } else {
+            resetWalletUI();
+        }
     }
 }
 
 /**
- * 外部调用接口：获取当前本地存储的地址
+ * 获取当前地址（始终从 localStorage 读取最新值）
  */
 export function getCurrentAddress() {
     return localStorage.getItem('fbs_address');
 }
 
 /**
- * 外部调用接口：手动更新当前地址变量
+ * 同步钱包 UI 状态（根据 localStorage 自动显示已连接/未连接）
+ */
+export function syncWalletUI() {
+    const addr = localStorage.getItem('fbs_address');
+    if (addr) {
+        updateWalletUI(addr);
+    } else {
+        resetWalletUI();
+    }
+}
+
+/**
+ * 外部调用接口：手动更新当前地址（同时更新 localStorage）
  */
 export function setCurrentAddress(addr) {
-    currentAddress = addr;
+    localStorage.setItem('fbs_address', addr);
 }
 
 /**
@@ -316,9 +328,10 @@ export function mountAccountChangeListener() {
         }
         
         const newAddress = accounts[0];
+        const storedAddress = localStorage.getItem('fbs_address');
         
         // 如果是同一个地址，不需要处理
-        if (newAddress === currentAddress) {
+        if (newAddress === storedAddress) {
             console.log("[Wallet] 地址未变化");
             return;
         }
@@ -345,7 +358,6 @@ export function mountAccountChangeListener() {
             localStorage.setItem('fbs_address', newAddress);
             localStorage.setItem('fbs_chain', 'BSC');
             localStorage.setItem('user_logout_manual', 'false');
-            currentAddress = newAddress;
             
             console.log("[Wallet] 自动连接新账户成功:", newAddress);
             

@@ -2,7 +2,8 @@ import {
     mountWalletClickHandler, 
     updateWalletUI, 
     resetWalletUI,
-    mountAccountChangeListener
+    mountAccountChangeListener,
+    syncWalletUI
 } from './wallet-utils.js';
 
 import { 
@@ -56,6 +57,9 @@ function mountAllGlobals() {
     mountModalHandlers();             // 挂载弹窗与复制逻辑 (modal-handler)
     mountCalculationHandlers();       // 挂载计算器逻辑 (calculations)
     mountActionExecutors();           // 挂载业务交互逻辑 (action-executor)
+
+    // 导出 syncWalletUI 到全局
+    window.syncWalletUI = syncWalletUI;
 
     console.log("[Init] 全局函数挂载完成");
     
@@ -348,7 +352,29 @@ function initApp() {
     });
 
     /**
-     * 3. 监听钱包账号与链的变化（仅 EVM 链）
+     * 3. 监听 localStorage 变化（跨标签页或同页内）
+     * 用于钱包切换、链切换、退出登录时同步 UI
+     */
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'fbs_address' || e.key === 'fbs_chain') {
+            console.log('[App] 检测到 storage 变化，同步钱包 UI');
+            syncWalletUI();
+        }
+    });
+
+    // 同页面内 localStorage 变化监听（通过轮询检测）
+    let lastKnownAddress = localStorage.getItem('fbs_address');
+    setInterval(() => {
+        const currentAddr = localStorage.getItem('fbs_address');
+        if (currentAddr !== lastKnownAddress) {
+            console.log('[App] 检测到地址变化，同步钱包 UI');
+            lastKnownAddress = currentAddr;
+            syncWalletUI();
+        }
+    }, 500);
+
+    /**
+     * 4. 监听钱包账号与链的变化（仅 EVM 链）
      */
     const savedChain = localStorage.getItem('selectedChain') || 'BSC';
     if (savedChain === 'BSC') {
