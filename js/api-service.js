@@ -41,9 +41,13 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         return { success: false };
     }
 
+    const chain = localStorage.getItem('fbs_chain') || 'BSC';
+    // EVM 链地址统一小写，TON 和 SOL 保持原始格式
+    const cleanAddr = chain === 'BSC' ? address.toLowerCase().trim() : address.trim();
+
     const payload = {
         action: action,        
-        address: address.toLowerCase().trim(),      
+        address: cleanAddr,      
         type: type,            
         amount: String(amount),
         symbol: symbol,        
@@ -101,7 +105,9 @@ export async function fetchUserData(address) {
     
     try {
         console.log(`[API] 正在从后端同步数据: ${address}`);
-        const cleanAddr = address.toLowerCase().trim();
+        const chain = localStorage.getItem('fbs_chain') || 'BSC';
+        // EVM 链地址统一小写，TON 和 SOL 保持原始格式
+        const cleanAddr = chain === 'BSC' ? address.toLowerCase().trim() : address.trim();
         
         const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
         

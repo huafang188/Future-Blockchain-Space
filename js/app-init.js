@@ -382,8 +382,8 @@ function initApp() {
         if (provider) {
             // 监听账号切换
             provider.on('accountsChanged', (accounts) => {
-                const oldAddr = (localStorage.getItem('fbs_address') || "").toLowerCase();
-                const newAddr = (accounts[0] || "").toLowerCase();
+                const oldAddr = localStorage.getItem('fbs_address') || "";
+                const newAddr = accounts[0] || "";
 
                 console.log("[Wallet] 检测到账号信号:", newAddr || "空");
 
@@ -394,12 +394,14 @@ function initApp() {
                         localStorage.setItem('fbs_address', accounts[0]);
                         localStorage.setItem('fbs_chain', 'BSC');
                         localStorage.setItem('user_logout_manual', 'false');
+                        // 同步 UI 而不是刷新页面
+                        if (typeof window.syncWalletUI === 'function') window.syncWalletUI();
+                        if (typeof window.fetchUserData === 'function') window.fetchUserData(accounts[0]);
                     } else {
                         localStorage.removeItem('fbs_address');
                         localStorage.setItem('user_logout_manual', 'true');
+                        if (typeof window.syncWalletUI === 'function') window.syncWalletUI();
                     }
-                    
-                    location.reload();
                 } else {
                     console.log("[Wallet] 地址与本地一致，拦截重复刷新信号");
                 }
