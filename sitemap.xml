@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.neoneo.ink/</loc>
-    <lastmod>2026-06-04</lastmod>
-    <priority>1.0</priority>
-    <changefreq>daily</changefreq>
-  </url>
-  <url>
-    <loc>https://www.neoneo.ink/index.html</loc>
-    <lastmod>2026-06-04</lastmod>
-    <priority>0.9</priority>
-    <changefreq>daily</changefreq>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://www.neoneo.ink/</loc>
+        <lastmod>2026-06-15</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.neoneo.ink/" />
+        <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.neoneo.ink/?lang=zh-CN" />
+        <xhtml:link rel="alternate" hreflang="zh-HK" href="https://www.neoneo.ink/?lang=zh-HK" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.neoneo.ink/?lang=en" />
+    </url>
 </urlset>
