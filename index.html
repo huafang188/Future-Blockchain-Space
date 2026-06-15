@@ -776,63 +776,76 @@
 
 <!-- ========== 全网矿机运行情况 (Network Miner Status) ========== -->
 <section class="network-miner-section mt-6">
-    <div class="glass-card rounded-[2rem] p-6">
+    <div class="glass-card rounded-[2rem] p-6 bg-white/30 backdrop-blur-lg">
         <div class="flex items-center gap-2 mb-4 px-1">
             <span class="w-1.5 h-4 bg-cyan-500 rounded-full"></span>
             <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="network_miner_title">全网矿机运行情况</h3>
         </div>
         
-        <!-- 数据对接提示 -->
-        <div class="text-sm text-slate-500 mb-4" data-i18n="data_syncing">数据对接中，敬请期待</div>
-        
-        <!-- 数据网格: 4x2 布局 -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="network_miner_total">全网运行矿机总数</div>
-                <div id="network_miner_total" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">TH/s</div>
+        <!-- 数据网格: 单列布局 -->
+        <div class="space-y-2">
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="network_miner_total">全网运行矿机总数</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="network_miner_total" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">170,000</div>
+                    <div class="text-[8px] text-slate-400">台</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="network_daily_output">全网NEO日产量</div>
-                <div id="network_daily_output" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">NEO</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="network_daily_output">全网NEO日产量</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="network_daily_output" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">1,652,400</div>
+                    <div class="text-[8px] text-slate-400">NEO</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="single_miner_output">单台矿机NEO产量</div>
-                <div id="single_miner_output" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">NEO/台</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="single_miner_output">单台矿机NEO产量</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="single_miner_output" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">9.72</div>
+                    <div class="text-[8px] text-slate-400">NEO/台</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="today_new_original">今日新增原始矿机</div>
-                <div id="today_new_original" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">台</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="today_new_original">今日新增原始矿机</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="today_new_original" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">2,328</div>
+                    <div class="text-[8px] text-slate-400">台</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="today_new_synthetic">今日新增合成矿机</div>
-                <div id="today_new_synthetic" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">台</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="today_new_synthetic">今日新增合成矿机</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="today_new_synthetic" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">6,794</div>
+                    <div class="text-[8px] text-slate-400">台</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="neo_holders">NEO持有者数量</div>
-                <div id="neo_holders" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">地址</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="neo_holders">NEO持有者数量</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="neo_holders" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">173,594</div>
+                    <div class="text-[8px] text-slate-400">地址</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="neo_total_output">NEO产出总量</div>
-                <div id="neo_total_output" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">NEO</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="neo_total_output">NEO产出总量</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="neo_total_output" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">83,980,219</div>
+                    <div class="text-[8px] text-slate-400">NEO</div>
+                </div>
             </div>
             
-            <div class="bg-white/60 rounded-2xl p-4 border border-slate-100 text-center">
-                <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-2" data-i18n="neo_burned">NEO销毁数量</div>
-                <div id="neo_burned" class="text-2xl font-black text-slate-800" style="font-family: 'Orbitron', monospace;">0</div>
-                <div class="text-[9px] text-slate-400 mt-1">NEO</div>
+            <div class="flex items-center justify-between py-1">
+                <div class="text-[10px] text-slate-500 uppercase tracking-wider" data-i18n="neo_burned">NEO销毁数量</div>
+                <div class="flex items-baseline gap-1.5">
+                    <div id="neo_burned" class="text-lg font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">2,043,985</div>
+                    <div class="text-[8px] text-slate-400">NEO</div>
+                </div>
             </div>
         </div>
     </div>
