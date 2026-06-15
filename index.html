@@ -682,6 +682,11 @@
         </div>
     </div>
 
+    <!-- NEO K线图 -->
+    <div class="relative w-full h-48 bg-slate-900/5 rounded-2xl mt-6 border border-white/50 overflow-hidden shadow-inner">
+        <canvas id="chart-NEO-miner" class="w-full h-full"></canvas>
+    </div>
+
     <div class="grid grid-cols-3 gap-4 mt-6">
 <button onclick="openMinerModal('buy')" class="action-btn">
     <span data-i18n="buy_miner">购买矿机</span>
@@ -740,6 +745,11 @@
                 <span class="stat-label" data-i18n="ncl_locked">锁仓</span>
                 <span id="ncl_locked" class="stat-value">0.00</span>
             </div>
+        </div>
+
+        <!-- NCL K线图 -->
+        <div class="relative w-full h-48 bg-slate-900/5 rounded-2xl mt-6 border border-white/50 overflow-hidden shadow-inner">
+            <canvas id="chart-NCL-miner" class="w-full h-full"></canvas>
         </div>
 
         <!-- 购买按钮：5 种支付方式 -->
@@ -831,16 +841,6 @@
 <section class="factory-section space-y-6 mt-6">
 </section>
 
-</div>
-
-<div id="page-stats" class="page-view hidden space-y-6">
-    <div class="px-2">
-        <h3 class="text-xl font-black text-slate-800 uppercase italic tracking-tighter" data-i18n="stats_title">代币详情与参数</h3>
-        <p class="text-[10px] text-slate-400 font-bold uppercase" data-i18n="stats_subtitle">Tokenomics & Market Data</p>
-    </div>
-
-    <div id="token-detail-list" class="space-y-6">
-        </div>
 </div>
 
         <div id="page-user" class="page-view hidden space-y-6">
@@ -957,10 +957,6 @@
             <button onclick="switchPage('mine')" id="nav-mine" class="nav-item">
                 <i class="fas fa-microchip"></i>
                 <span data-i18n="nav_mine">矿场</span>
-            </button>
-            <button onclick="switchPage('stats')" id="nav-stats" class="nav-item">
-                <i class="fas fa-chart-line"></i>
-                <span data-i18n="nav_market">看板</span>
             </button>
             <button onclick="switchPage('user')" id="nav-user" class="nav-item">
                 <i class="fas fa-circle-user"></i>

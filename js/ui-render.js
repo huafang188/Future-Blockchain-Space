@@ -564,6 +564,184 @@ function renderPriceCharts() {
             }
         });
     });
+
+    // 渲染矿机页面的 NEO K线图
+    const minerCanvas = document.getElementById('chart-NEO-miner');
+    if (minerCanvas && typeof Chart !== 'undefined') {
+        const basePrice = parseFloat(prices['NEO']) || 1;
+        const colors = trendColors['NEO'];
+        const symbolHistory = priceHistory['NEO'] || [];
+        const labels = [];
+        const data = [];
+
+        if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
+            const sortedHistory = [...symbolHistory].sort((a, b) => {
+                const dateA = parseDate(a.execute_time);
+                const dateB = parseDate(b.execute_time);
+                return dateA - dateB;
+            });
+            const recentHistory = sortedHistory.slice(-30);
+            recentHistory.forEach(record => {
+                const date = parseDate(record.execute_time);
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                data.push(parseFloat(record.price) || 0);
+            });
+        } else {
+            let price = basePrice * 0.65;
+            for (let i = 0; i < 30; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - (30 - 1 - i));
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                const volatility = basePrice * 0.03;
+                const drift = (basePrice - price) / (30 - i) * 0.15;
+                const noise = (Math.random() - 0.48) * volatility;
+                price = Math.max(basePrice * 0.3, price + drift + noise);
+                data.push(parseFloat(price.toFixed(4)));
+            }
+        }
+
+        if (minerCanvas._chart) minerCanvas._chart.destroy();
+        const ctx = minerCanvas.getContext('2d');
+        minerCanvas._chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    borderColor: colors.line,
+                    backgroundColor: colors.fill,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: colors.line
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `$${ctx.parsed.y.toFixed(4)}`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        grid: { display: false },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 8 },
+                            maxTicksLimit: 6
+                        }
+                    },
+                    y: {
+                        display: true,
+                        grid: { color: 'rgba(148,163,184,0.08)' },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 8 },
+                            callback: v => '$' + v.toFixed(2)
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // 渲染矿机页面的 NCL K线图
+    const nclMinerCanvas = document.getElementById('chart-NCL-miner');
+    if (nclMinerCanvas && typeof Chart !== 'undefined') {
+        const basePrice = parseFloat(prices['NCL']) || 1;
+        const colors = trendColors['NCL'];
+        const symbolHistory = priceHistory['NCL'] || [];
+        const labels = [];
+        const data = [];
+
+        if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
+            const sortedHistory = [...symbolHistory].sort((a, b) => {
+                const dateA = parseDate(a.execute_time);
+                const dateB = parseDate(b.execute_time);
+                return dateA - dateB;
+            });
+            const recentHistory = sortedHistory.slice(-30);
+            recentHistory.forEach(record => {
+                const date = parseDate(record.execute_time);
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                data.push(parseFloat(record.price) || 0);
+            });
+        } else {
+            let price = basePrice * 0.65;
+            for (let i = 0; i < 30; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - (30 - 1 - i));
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                const volatility = basePrice * 0.03;
+                const drift = (basePrice - price) / (30 - i) * 0.15;
+                const noise = (Math.random() - 0.48) * volatility;
+                price = Math.max(basePrice * 0.3, price + drift + noise);
+                data.push(parseFloat(price.toFixed(4)));
+            }
+        }
+
+        if (nclMinerCanvas._chart) nclMinerCanvas._chart.destroy();
+        const ctx = nclMinerCanvas.getContext('2d');
+        nclMinerCanvas._chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    borderColor: colors.line,
+                    backgroundColor: colors.fill,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: colors.line
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `$${ctx.parsed.y.toFixed(4)}`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        grid: { display: false },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 8 },
+                            maxTicksLimit: 6
+                        }
+                    },
+                    y: {
+                        display: true,
+                        grid: { color: 'rgba(148,163,184,0.08)' },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 8 },
+                            callback: v => '$' + v.toFixed(2)
+                        }
+                    }
+                }
+            }
+        });
+    }
 }
 
 // 全局挂载，方便外部调用
