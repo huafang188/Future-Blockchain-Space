@@ -259,7 +259,12 @@ export function renderTokenList(balances = {}) {
         const config = tokenConfig[symbol];
         
         // 获取单价 (不区分大小写)
-        const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0; 
+        // GRAM 兼容 TON 价格 key（后端可能还未同步改名）
+        const priceKey = symbol.toUpperCase();
+        let unitPrice = parseFloat(livePrices[priceKey]) || 0;
+        if (unitPrice === 0 && priceKey === 'GRAM') {
+            unitPrice = parseFloat(livePrices['TON']) || 0;
+        }
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         
