@@ -106,12 +106,12 @@ export function mountModalHandlers() {
     // 各链支持的代币
     const CHAIN_TOKENS = {
         'BSC': {
-            withdraw: ['USDT', 'BNB', 'TON', 'SOL', 'NCL'],
-            swap: ['NEO', 'USDT', 'BNB', 'TON', 'SOL', 'NCL']
+            withdraw: ['USDT', 'BNB', 'GRAM', 'SOL', 'NCL'],
+            swap: ['NEO', 'USDT', 'BNB', 'GRAM', 'SOL', 'NCL']
         },
         'TON': {
-            withdraw: ['USDT', 'TON', 'NCL'],
-            swap: ['NEO', 'USDT', 'TON', 'NCL']
+            withdraw: ['USDT', 'GRAM', 'NCL'],
+            swap: ['NEO', 'USDT', 'GRAM', 'NCL']
         },
         'SOL': {
             withdraw: ['USDT', 'SOL', 'NCL'],
@@ -129,11 +129,11 @@ export function mountModalHandlers() {
         window.showModal("withdraw", `
             <div class="space-y-4 text-left">
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <img id="witLogo" src="${tokenConfig['USDT'].logo}" class="w-8 h-8 object-contain">
+                    <img id="witLogo" src="${tokenConfig[tokens[0]].logo}" class="w-8 h-8 object-contain">
                     <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                            onchange="document.getElementById('witLogo').src = tokenConfig[this.value].logo; window.updateWitBalanceHint();">
+                            onchange="if(tokenConfig[this.value]){document.getElementById('witLogo').src = tokenConfig[this.value].logo;} window.updateWitBalanceHint();">
                         ${tokens.map(symbol => 
-                            `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
+                            `<option value="${symbol}" ${symbol === tokens[0] ? 'selected' : ''}>${symbol}</option>`
                         ).join('')}
                     </select>
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
@@ -174,11 +174,11 @@ window.openExchangeModal = function() {
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
                         <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
-                            <img id="swapFromLogo" src="${tokenConfig['NEO'].logo}" class="w-6 h-6 object-contain">
+                            <img id="swapFromLogo" src="${tokenConfig[tokens[0]].logo}" class="w-6 h-6 object-contain">
                             <select id="sFromToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
-                                    onchange="document.getElementById('swapFromLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
+                                    onchange="if(tokenConfig[this.value]){document.getElementById('swapFromLogo').src = tokenConfig[this.value].logo;} window.calcSwap();">
                                 ${tokens.map(symbol => 
-                                    `<option value="${symbol}" ${symbol === 'NEO' ? 'selected' : ''}>${symbol}</option>`
+                                    `<option value="${symbol}" ${symbol === tokens[0] ? 'selected' : ''}>${symbol}</option>`
                                 ).join('')}
                             </select>
                             <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
@@ -220,11 +220,11 @@ window.openExchangeModal = function() {
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
                         <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
-                            <img id="swapToLogo" src="${tokenConfig['USDT'].logo}" class="w-6 h-6 object-contain">
+                            <img id="swapToLogo" src="${tokenConfig[tokens.length > 1 ? tokens[1] : tokens[0]].logo}" class="w-6 h-6 object-contain">
                             <select id="sToToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
-                                    onchange="document.getElementById('swapToLogo').src = tokenConfig[this.value].logo; window.calcSwap();">
+                                    onchange="if(tokenConfig[this.value]){document.getElementById('swapToLogo').src = tokenConfig[this.value].logo;} window.calcSwap();">
                                 ${tokens.map(symbol => 
-                                    `<option value="${symbol}" ${symbol === 'USDT' ? 'selected' : ''}>${symbol}</option>`
+                                    `<option value="${symbol}" ${symbol === (tokens.length > 1 ? tokens[1] : tokens[0]) ? 'selected' : ''}>${symbol}</option>`
                                 ).join('')}
                             </select>
                             <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
@@ -359,11 +359,16 @@ window.openExchangeModal = function() {
 
     // --- 辅助：创建带Logo的自定义币种选择器 ---
     function createTokenSelector(selectId, imgId, selectedSymbol) {
+        // 确保 selectedSymbol 在 tokenConfig 中存在，否则取第一个
+        if (!tokenConfig[selectedSymbol]) {
+            const keys = Object.keys(tokenConfig);
+            selectedSymbol = keys.length > 0 ? keys[0] : 'USDT';
+        }
         return `
             <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
                 <img id="${imgId}" src="${tokenConfig[selectedSymbol].logo}" class="w-8 h-8 object-contain shrink-0">
                 <select id="${selectId}" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer" 
-                        onchange="document.getElementById('${imgId}').src = tokenConfig[this.value].logo; if(this.id.startsWith('s') && window.calcSwap) window.calcSwap();">
+                        onchange="if(tokenConfig[this.value]){document.getElementById('${imgId}').src = tokenConfig[this.value].logo;} if(this.id.startsWith('s') && window.calcSwap) window.calcSwap();">
                     ${Object.keys(tokenConfig).map(symbol => 
                         `<option value="${symbol}" ${symbol === selectedSymbol ? 'selected' : ''}>${symbol}</option>`
                     ).join('')}

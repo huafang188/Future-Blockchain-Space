@@ -232,6 +232,6 @@ export const tokenConfig = {
     'NCL': { logo: 'assets/ncl_logo.webp', chartUrl: '' },
     'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
     'BNB': { logo: 'assets/BNB.webp', chartUrl: '' },
-    'TON': { logo: 'assets/TON.webp', chartUrl: '' },
+    'GRAM': { logo: 'assets/GRAM.svg', chartUrl: '' },
     'SOL': { logo: 'assets/Solana.webp', chartUrl: '' }
 };
