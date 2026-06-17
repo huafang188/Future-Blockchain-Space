@@ -171,6 +171,11 @@ function mountAllGlobals() {
             localStorage.removeItem('fbs_address');
             localStorage.removeItem('fbs_chain');
             
+            // 清空全局数据缓存
+            if (window.userBalances) window.userBalances = {};
+            if (window.lastFetchedData) window.lastFetchedData = null;
+            if (window.currentUserInfo) window.currentUserInfo = null;
+            
             // 重置 UI
             if (typeof window.resetWalletUI === 'function') window.resetWalletUI();
             if (typeof window.renderHistory === 'function') window.renderHistory([]);

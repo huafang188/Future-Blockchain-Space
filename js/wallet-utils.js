@@ -214,8 +214,11 @@ async function connectTONWallet() {
  * 2c. Solana 链钱包连接
  */
 async function connectSOLWallet() {
-    // 尝试多种 Solana 钱包 API
-    const solProvider = window.solana || window.bitkeep?.solana || window.tokenpocket?.solana;
+    // 尝试多种 Solana 钱包 API（兼容旧浏览器，不使用 optional chaining）
+    let solProvider = null;
+    if (window.solana) solProvider = window.solana;
+    else if (window.bitkeep && window.bitkeep.solana) solProvider = window.bitkeep.solana;
+    else if (window.tokenpocket && window.tokenpocket.solana) solProvider = window.tokenpocket.solana;
     
     if (!solProvider) {
         alert("请在支持 Solana 的钱包浏览器中打开（如 Bitget 钱包-Solana 模式、Phantom 等）");
@@ -225,7 +228,12 @@ async function connectSOLWallet() {
     try {
         // 连接 Solana 钱包
         const resp = await solProvider.connect();
-        const address = resp.publicKey ? resp.publicKey.toString() : solProvider.publicKey?.toString();
+        let address = null;
+        if (resp && resp.publicKey) {
+            address = resp.publicKey.toString();
+        } else if (solProvider.publicKey) {
+            address = solProvider.publicKey.toString();
+        }
         
         if (!address) {
             alert("未获取到 Solana 地址");
@@ -248,7 +256,7 @@ async function connectSOLWallet() {
         
     } catch (e) {
         console.error("[Wallet] SOL 连接失败:", e);
-        if (e.code === 4001 || e.message?.includes('rejected')) {
+        if (e.code === 4001 || (e.message && e.message.includes('rejected'))) {
             alert("您已取消连接授权");
         } else {
             alert("Solana 钱包连接失败: " + (e.message || '未知错误'));
@@ -316,6 +324,30 @@ export function logout() {
         // 设置手动退出标记，彻底阻止下一次的自动重连判断
         localStorage.setItem('user_logout_manual', 'true');
         localStorage.removeItem('fbs_address');
+        localStorage.removeItem('fbs_chain');
+        
+        // 清空全局数据缓存，防止余额残留
+        if (window.userBalances) window.userBalances = {};
+        if (window.lastFetchedData) window.lastFetchedData = null;
+        if (window.currentUserInfo) window.currentUserInfo = null;
+        
+        // 清空列表显示
+        if (typeof window.renderHistory === 'function') window.renderHistory([]);
+        if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
+        if (typeof window.renderTokenList === 'function') window.renderTokenList({});
+        
+        // 重置团队/矿机数据显示
+        const teamFields = ['team_directCount', 'team_directSales', 'team_totalCount', 'team_totalSales', 'team_totalReward'];
+        teamFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = '0';
+        });
+        
+        const minerFields = ['miner_count', 'miner_running', 'miner_daily', 'miner_deadline', 'miner_locked'];
+        minerFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = '0';
+        });
         
         // 立即更新 UI 为未连接状态
         if (typeof window.syncWalletUI === 'function') {
@@ -340,7 +372,20 @@ export function syncWalletUI() {
     const addr = localStorage.getItem('fbs_address');
     if (addr) {
         updateWalletUI(addr);
+        // 切换账户时重新拉取数据
+        if (typeof window.fetchUserData === 'function') {
+            window.fetchUserData(addr);
+        }
     } else {
+        // 未登录状态：清空所有数据缓存和显示
+        if (window.userBalances) window.userBalances = {};
+        if (window.lastFetchedData) window.lastFetchedData = null;
+        if (window.currentUserInfo) window.currentUserInfo = null;
+        
+        if (typeof window.renderHistory === 'function') window.renderHistory([]);
+        if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
+        if (typeof window.renderTokenList === 'function') window.renderTokenList({});
+        
         resetWalletUI();
     }
 }
@@ -395,6 +440,10 @@ export function mountAccountChangeListener() {
         
         // 自动连接新账户（需要签名）
         try {
+            // 先清空旧数据，防止切换过程中显示旧账户数据
+            if (window.userBalances) window.userBalances = {};
+            if (window.lastFetchedData) window.lastFetchedData = null;
+            
             // 请求签名确认
             const msg = `FBS Auto Connect\nAddress: ${newAddress}\nTime: ${Date.now()}`;
             const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -433,6 +482,12 @@ export function mountAccountChangeListener() {
             localStorage.removeItem('fbs_address');
             localStorage.removeItem('fbs_chain');
             localStorage.setItem('user_logout_manual', 'true');
+            
+            // 清空全局数据缓存
+            if (window.userBalances) window.userBalances = {};
+            if (window.lastFetchedData) window.lastFetchedData = null;
+            if (window.currentUserInfo) window.currentUserInfo = null;
+            
             // 同步 UI
             if (typeof window.syncWalletUI === 'function') window.syncWalletUI();
             // 提示重新连接
