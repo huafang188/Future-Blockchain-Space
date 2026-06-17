@@ -132,10 +132,12 @@ window.i18nData['fr'] = {
 
     // --- 7. Mapping des statuts Backend (Clés en chinois pour compatibilité) ---
     已提交: "Soumis",
+    待处理: "En attente",
     处理中: "En cours",
     成功: "Succès",
     失败: "Échec",
     充值: "Dépôt",
+    挖矿: "Minage",
     提现: "Retrait",
     兑换: "Échange",
     内部转账: "Transfert Interne",

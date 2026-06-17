@@ -27,10 +27,24 @@ async function refreshUserDataAfterTransaction() {
 const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
 
 /**
+ * 兼容旧浏览器的 EVM Provider 检测
+ */
+function getEVMProvider() {
+    if (window.bitkeep) {
+        if (window.bitkeep.ethereum) return window.bitkeep.ethereum;
+        if (typeof window.bitkeep.request === 'function') return window.bitkeep;
+    }
+    if (window.tokenpocket && window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
+    if (window.ethereum) return window.ethereum;
+    return null;
+}
+
+/**
  * 🔒 核心：强制切换/添加当前选中的区块链
  */
 async function ensureNetwork() {
-    if (!window.ethereum) {
+    const provider = getEVMProvider();
+    if (!provider) {
         alert("请在 Web3 钱包浏览器中打开");
         return false;
     }
@@ -40,17 +54,17 @@ async function ensureNetwork() {
     const targetChainIdDecimal = String(chainConfig.chainIdDecimal);
     
     try {
-        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        const currentChainId = await provider.request({ method: 'eth_chainId' });
         // 兼容处理：有些钱包返回十进制，有些返回十六进制
         if (currentChainId !== targetChainId && currentChainId !== targetChainIdDecimal) {
             try {
-                await window.ethereum.request({
+                await provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: targetChainId }],
                 });
             } catch (switchError) {
                 if (switchError.code === 4902) {
-                    await window.ethereum.request({
+                    await provider.request({
                         method: 'wallet_addEthereumChain',
                         params: [{
                             chainId: chainConfig.chainId,
@@ -86,7 +100,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             throw new Error("无效的金额格式");
         }
 
-        const provider = new ethers.BrowserProvider(window.ethereum);
+        const evmProvider = getEVMProvider();
+        const provider = new ethers.BrowserProvider(evmProvider);
         const signer = await provider.getSigner();
         const userAddress = await signer.getAddress();
 
@@ -169,11 +184,12 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
     if (!await ensureNetwork()) return;
 
     try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const evmProvider = getEVMProvider();
+        const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
         const msg = `Future Space Action\nType: ${bizType}\nAmount: ${amount}\nToken: ${symbol}\nTime: ${Date.now()}`;
-        const signature = await window.ethereum.request({ 
+        const signature = await evmProvider.request({ 
             method: 'personal_sign', 
             params: [toHex(msg), address] 
         });

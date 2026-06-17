@@ -3,7 +3,8 @@ import {
     updateWalletUI, 
     resetWalletUI,
     mountAccountChangeListener,
-    syncWalletUI
+    syncWalletUI,
+    detectWalletEnv
 } from './wallet-utils.js';
 
 import { 
@@ -372,55 +373,6 @@ function initApp() {
             syncWalletUI();
         }
     }, 500);
-
-    /**
-     * 4. 监听钱包账号与链的变化（仅 EVM 链）
-     */
-    const savedChain = localStorage.getItem('selectedChain') || 'BSC';
-    if (savedChain === 'BSC') {
-        const provider = window.bitkeep?.ethereum || window.tokenpocket?.ethereum || window.ethereum;
-        if (provider) {
-            // 监听账号切换
-            provider.on('accountsChanged', (accounts) => {
-                const oldAddr = localStorage.getItem('fbs_address') || "";
-                const newAddr = accounts[0] || "";
-
-                console.log("[Wallet] 检测到账号信号:", newAddr || "空");
-
-                if (newAddr !== oldAddr) {
-                    console.log("[Wallet] 地址发生真实变更，正在更新状态...");
-                    
-                    if (newAddr) {
-                        localStorage.setItem('fbs_address', accounts[0]);
-                        localStorage.setItem('fbs_chain', 'BSC');
-                        localStorage.setItem('user_logout_manual', 'false');
-                        // 同步 UI 而不是刷新页面
-                        if (typeof window.syncWalletUI === 'function') window.syncWalletUI();
-                        if (typeof window.fetchUserData === 'function') window.fetchUserData(accounts[0]);
-                    } else {
-                        localStorage.removeItem('fbs_address');
-                        localStorage.setItem('user_logout_manual', 'true');
-                        if (typeof window.syncWalletUI === 'function') window.syncWalletUI();
-                    }
-                } else {
-                    console.log("[Wallet] 地址与本地一致，拦截重复刷新信号");
-                }
-            });
-
-            // 链切换监听（仅当钱包端切换了 EVM 链时重载）
-            provider.on('chainChanged', (chainId) => {
-                console.log("[Wallet] EVM 网络变更:", chainId);
-                // 如果当前 UI 选中的是 BSC，但钱包切到了其他 EVM 链，提示用户
-                const uiChain = window.currentChain || 'BSC';
-                if (uiChain === 'BSC' && chainId !== '0x38' && chainId !== '56') {
-                    alert('检测到钱包已切换至其他 EVM 链，请切换回 BSC 或在前端选择器中切换链');
-                }
-                location.reload();
-            });
-        }
-    } else {
-        console.log(`[App] 当前链 ${savedChain} 为非 EVM 链，跳过 EVM 事件监听`);
-    }
 }
 
 // --- 启动程序 ---

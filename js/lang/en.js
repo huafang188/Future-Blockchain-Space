@@ -187,10 +187,12 @@ window.i18nData['en'] = {
 
     // --- 7. Backend Status Mapping (Keep Key in Chinese to match raw data) ---
     已提交: "Submitted",
+    待处理: "Pending",
     处理中: "Processing",
     成功: "Success",
     失败: "Failed",
     充值: "Deposit",
+    挖矿: "Mining",
     提现: "Withdraw",
     兑换: "Swap",
     内部转账: "Internal Transfer",

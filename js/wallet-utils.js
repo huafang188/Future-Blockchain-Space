@@ -18,6 +18,34 @@ export function mountWalletClickHandler() {
 }
 
 /**
+ * 兼容旧浏览器的 EVM Provider 检测
+ * 不使用 optional chaining (?.)，兼容 Android 10 等老旧浏览器
+ */
+function getEVMProvider() {
+    // Bitget 钱包：兼容 window.bitkeep 和 window.bitkeep.ethereum
+    if (window.bitkeep) {
+        if (window.bitkeep.ethereum) return window.bitkeep.ethereum;
+        // 老版本 Bitget 可能直接挂在 window.bitkeep 上
+        if (typeof window.bitkeep.request === 'function') return window.bitkeep;
+    }
+    // TP 钱包
+    if (window.tokenpocket && window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
+    // 通用 EVM 钱包
+    if (window.ethereum) return window.ethereum;
+    return null;
+}
+
+/**
+ * 检测钱包环境（兼容旧浏览器）
+ */
+export function detectWalletEnv() {
+    if (window.bitkeep && window.bitkeep.ethereum) return 'bitget';
+    if (window.tokenpocket && window.tokenpocket.ethereum) return 'tokenpocket';
+    if (window.ethereum) return 'evm';
+    return 'none';
+}
+
+/**
  * 2. 连接钱包核心逻辑（根据当前链选择对应钱包 API）
  */
 export async function connectWallet() {
@@ -38,7 +66,7 @@ export async function connectWallet() {
  */
 async function connectEVMWallet() {
     // 兼容 Bitget / TP / 通用 EVM 钱包
-    const provider = window.bitkeep?.ethereum || window.tokenpocket?.ethereum || window.ethereum;
+    const provider = getEVMProvider();
     if (!provider) return alert("请在钱包内置浏览器中打开");
 
     try {
@@ -312,7 +340,7 @@ export function mountAccountChangeListener() {
         return;
     }
     
-    const provider = window.bitkeep?.ethereum || window.tokenpocket?.ethereum || window.ethereum;
+    const provider = getEVMProvider();
     if (!provider) return;
     
     console.log("[Wallet] 挂载 EVM 账户变化监听器");
@@ -370,6 +398,25 @@ export function mountAccountChangeListener() {
             if (e.code === 4001) {
                 console.log("[Wallet] 用户取消自动连接签名");
             }
+        }
+    });
+    
+    // 监听链变化事件
+    provider.on('chainChanged', (chainId) => {
+        console.log("[Wallet] EVM 网络变更:", chainId);
+        // 链切换时清除登录状态，提示用户重新连接
+        const storedChain = localStorage.getItem('fbs_chain');
+        if (storedChain === 'BSC') {
+            // 清除登录状态
+            localStorage.removeItem('fbs_address');
+            localStorage.removeItem('fbs_chain');
+            localStorage.setItem('user_logout_manual', 'true');
+            // 同步 UI
+            if (typeof window.syncWalletUI === 'function') window.syncWalletUI();
+            // 提示重新连接
+            setTimeout(() => {
+                alert('检测到钱包网络已切换，请重新连接钱包');
+            }, 300);
         }
     });
 }

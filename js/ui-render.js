@@ -363,6 +363,50 @@ export function renderHistory(history = []) {
         return;
     }
 
+    // 获取当前语言包
+    const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    const langData = (window.i18nData && window.i18nData[lang]) || {};
+
+    // 交易类型多语言映射
+    function translateType(type) {
+        if (langData[type]) return langData[type];
+        // 兜底：常见类型映射
+        const fallback = {
+            '挖矿': 'Mining',
+            '兑换': 'Exchange',
+            '提现': 'Withdraw',
+            '充值': 'Recharge',
+            '矿机转让': 'Miner Transfer',
+            '内部转账': 'Internal Transfer'
+        };
+        return fallback[type] || type;
+    }
+
+    // 状态颜色映射
+    function getStatusStyle(status) {
+        const s = status.trim();
+        if (s === '已提交' || s === 'Submitted') return 'color: #3b82f6;'; // 蓝色
+        if (s === '待处理' || s === 'Pending') return 'color: #f59e0b;'; // 橙色
+        if (s === '处理中' || s === 'Processing') return 'color: #8b5cf6;'; // 紫色
+        if (s === '成功' || s === 'Success') return 'color: #10b981;'; // 绿色
+        if (s === '失败' || s === 'Failed') return 'color: #ef4444;'; // 红色
+        return 'color: #94a3b8;'; // 默认灰色
+    }
+
+    // 状态多语言映射
+    function translateStatus(status) {
+        const s = status.trim();
+        if (langData[s]) return langData[s];
+        const fallback = {
+            '已提交': 'Submitted',
+            '待处理': 'Pending',
+            '处理中': 'Processing',
+            '成功': 'Success',
+            '失败': 'Failed'
+        };
+        return fallback[s] || s;
+    }
+
     container.innerHTML = history.map(item => {
         const type = item['交易类型'] || item.type || 'Transaction';
         const amount = parseFloat(item['交易数量'] || item.amount || 0);
@@ -371,8 +415,14 @@ export function renderHistory(history = []) {
         const time = item['交易时间'] || item.time || '--';
         const tokenLogo = getTokenLogo(symbol);
         
-        // 判断资金流向渲染颜色
-        const isPositive = amount > 0 || type.includes('充值') || type.includes('奖励') || type.includes('收益');
+        // 判断资金流向渲染颜色（仅用于图标背景）
+        const isPositive = amount > 0 || type.includes('充值') || type.includes('奖励') || type.includes('收益') || type.includes('挖矿');
+
+        const translatedType = translateType(type);
+        const translatedStatus = translateStatus(status);
+        const statusStyle = getStatusStyle(status);
+        // 去掉 +/- 符号
+        const displayAmount = Math.abs(amount);
 
         return `
         <div class="flex items-center justify-between p-4 mb-2 bg-white/50 rounded-2xl border border-slate-50 hover:border-blue-100 transition-all">
@@ -381,13 +431,13 @@ export function renderHistory(history = []) {
                     ${tokenLogo}
                 </div>
                 <div>
-                    <p class="text-[11px] font-black text-slate-800 tracking-tight">${type}</p>
+                    <p class="text-[11px] font-black text-slate-800 tracking-tight">${translatedType}</p>
                     <p class="text-[8px] text-slate-400 font-bold uppercase">${time}</p>
                 </div>
             </div>
             <div class="text-right">
-                <p class="text-xs font-black ${isPositive ? 'text-emerald-500' : 'text-slate-800'}">${isPositive ? '+' : ''}${amount} ${symbol}</p>
-                <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">${status}</p>
+                <p class="text-xs font-black ${isPositive ? 'text-emerald-500' : 'text-slate-800'}">${displayAmount} ${symbol}</p>
+                <p class="text-[8px] font-bold uppercase tracking-tighter" style="${statusStyle}">${translatedStatus}</p>
             </div>
         </div>`;
     }).join('');

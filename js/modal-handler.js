@@ -334,6 +334,21 @@ window.openExchangeModal = function() {
             // 使用 flex 并强制覆盖 display
             overlay.style.setProperty('display', 'flex', 'important');
             
+            // 阻止弹窗内所有 input/textarea 的 Enter 键提交表单
+            contentEl.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, true);
+            
+            // 阻止弹窗内所有 button 的默认表单提交行为
+            contentEl.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    e.preventDefault();
+                }
+            }, true);
+            
             // 触发局部语言渲染
             if (window.i18nRender) {
                 const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';

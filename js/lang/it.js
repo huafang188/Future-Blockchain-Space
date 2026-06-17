@@ -132,10 +132,12 @@ window.i18nData['it'] = {
 
     // --- 7. Mappatura Stati Backend (Chiavi in cinese per compatibilità) ---
     已提交: "Inviato",
+    待处理: "In Attesa",
     处理中: "In corso",
     成功: "Successo",
     失败: "Fallito",
     充值: "Deposito",
+    挖矿: "Mining",
     提现: "Prelievo",
     兑换: "Scambio",
     内部转账: "Trasferimento Interno",
