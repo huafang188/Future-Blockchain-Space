@@ -105,8 +105,8 @@ window.i18nData['es'] = {
     btn_bind_inviter: "Vincular Invitador",
 
     // --- 4. Tablero de Mercado ---
-    24h_high: "Máximo 24h",
-    24h_low: "Mínimo 24h",
+    "24h_high": "Máximo 24h",
+    "24h_low": "Mínimo 24h",
 
     // --- 5. Transacciones ---
 

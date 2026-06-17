@@ -109,18 +109,24 @@ async function connectTONWallet() {
     // Bitget 钱包 TON API: window.bitkeep.ton
     // 使用 send('ton_requestAccounts') 获取账户
     // 注意：切换链后可能需要短暂延迟才能获取到 ton provider
-    let tonProvider = window.bitkeep?.ton || window.tokenpocket?.ton || window.tonconnect;
+    let tonProvider = window.bitkeep && window.bitkeep.ton ? window.bitkeep.ton : null;
+    if (!tonProvider && window.tokenpocket && window.tokenpocket.ton) tonProvider = window.tokenpocket.ton;
+    if (!tonProvider && window.tonconnect) tonProvider = window.tonconnect;
     
     // 如果没有立即找到，等待一小段时间重试（钱包注入可能需要时间）
     if (!tonProvider) {
         await new Promise(resolve => setTimeout(resolve, 500));
-        tonProvider = window.bitkeep?.ton || window.tokenpocket?.ton || window.tonconnect;
+        tonProvider = window.bitkeep && window.bitkeep.ton ? window.bitkeep.ton : null;
+        if (!tonProvider && window.tokenpocket && window.tokenpocket.ton) tonProvider = window.tokenpocket.ton;
+        if (!tonProvider && window.tonconnect) tonProvider = window.tonconnect;
     }
     
     if (!tonProvider) {
         // 再等待一次
         await new Promise(resolve => setTimeout(resolve, 1000));
-        tonProvider = window.bitkeep?.ton || window.tokenpocket?.ton || window.tonconnect;
+        tonProvider = window.bitkeep && window.bitkeep.ton ? window.bitkeep.ton : null;
+        if (!tonProvider && window.tokenpocket && window.tokenpocket.ton) tonProvider = window.tokenpocket.ton;
+        if (!tonProvider && window.tonconnect) tonProvider = window.tonconnect;
     }
     
     if (!tonProvider) {
@@ -130,7 +136,6 @@ async function connectTONWallet() {
     
     try {
         let address;
-        let provider = tonProvider;
         
         if (tonProvider.send) {
             // Bitget 钱包标准 API: send('ton_requestAccounts')
@@ -140,7 +145,6 @@ async function connectTONWallet() {
             // TON Connect UI 方式
             const wallet = await tonProvider.connect();
             address = wallet.account.address;
-            provider = tonProvider; // 保存引用用于后续签名
         } else if (tonProvider.requestAccounts) {
             // 直接请求账户
             const accounts = await tonProvider.requestAccounts();
@@ -159,18 +163,36 @@ async function connectTONWallet() {
         const displayAddr = address.replace(/\+/g, '-').replace(/\//g, '_');
         
         // 签名验证（类似 EVM 的 personal_sign）
-        if (provider.send) {
+        // 切换链后 provider 可能已更新，重新获取最新 provider
+        let freshProvider = window.bitkeep && window.bitkeep.ton ? window.bitkeep.ton : tonProvider;
+        if (freshProvider && freshProvider.send) {
             const msg = `FBS Login\nAddress: ${displayAddr}\nTime: ${Date.now()}`;
             try {
-                // Bitget TON 钱包支持 ton_personalSign 或 ton_rawSign
-                await provider.send('ton_personalSign', [msg]);
+                // Bitget TON 钱包签名：使用 ton_sign 或 ton_personalSign
+                // 注意：不同版本 Bitget 钱包 API 不同
+                if (freshProvider.send) {
+                    // 尝试 ton_sign（较新版本）
+                    await freshProvider.send('ton_sign', {
+                        address: address,
+                        message: msg
+                    });
+                } else {
+                    throw new Error("provider.send not available");
+                }
             } catch (signErr) {
-                // 降级到 ton_rawSign
+                console.log("[Wallet] TON ton_sign 失败，尝试 ton_personalSign:", signErr.message);
                 try {
-                    await provider.send('ton_rawSign', [msg]);
-                } catch (e2) {
-                    console.log("[Wallet] TON 签名跳过（钱包可能不支持）:", e2.message);
-                    // 签名失败不阻断登录流程
+                    await freshProvider.send('ton_personalSign', [msg]);
+                } catch (signErr2) {
+                    console.log("[Wallet] TON ton_personalSign 失败，尝试 ton_rawSign:", signErr2.message);
+                    try {
+                        // ton_rawSign 需要 hex 编码的消息
+                        const hexMsg = Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
+                        await freshProvider.send('ton_rawSign', [hexMsg]);
+                    } catch (e2) {
+                        console.log("[Wallet] TON 签名跳过（钱包可能不支持）:", e2.message);
+                        // 签名失败不阻断登录流程
+                    }
                 }
             }
         }
