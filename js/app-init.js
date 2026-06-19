@@ -22,6 +22,8 @@ import {
     renderNews 
 } from './ui-render.js';
 
+import { updateNetworkMinerDisplay } from './network-miner-stats.js';
+
 import { mountModalHandlers } from './modal-handler.js';
 import { mountCalculationHandlers } from './calculations.js';
 import { mountActionExecutors } from './action-executor.js';
@@ -331,6 +333,9 @@ function initApp() {
         // 预渲染静态组件 (公告、看板)
         if (window.renderNews) renderNews(savedLang);
         if (window.renderStatsPage) renderStatsPage(savedLang);
+        
+        // 初始化全网矿机数据
+        if (window.updateNetworkMinerDisplay) window.updateNetworkMinerDisplay();
 
         // --- 2.2 登录态恢复逻辑 ---
         const currentAddress = localStorage.getItem('fbs_address');
