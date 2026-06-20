@@ -20,42 +20,81 @@ export function mountWalletClickHandler() {
 /**
  * 兼容旧浏览器的 EVM Provider 检测
  * 不使用 optional chaining (?.)，兼容 Android 10 等老旧浏览器
+ * 所有属性访问都包裹 try-catch，防止旧浏览器访问 getter 时抛出异常
  */
 function getEVMProvider() {
-    // Bitget 钱包：兼容 window.bitkeep 和 window.bitkeep.ethereum
-    if (window.bitkeep) {
-        if (window.bitkeep.ethereum) return window.bitkeep.ethereum;
-        // 老版本 Bitget 可能直接挂在 window.bitkeep 上
-        if (typeof window.bitkeep.request === 'function') return window.bitkeep;
-        // 某些版本 Bitget 的 ethereum 属性可能是 undefined，但 window.bitkeep 本身可用
-        return window.bitkeep;
-    }
-    // TP 钱包：兼容多种注入方式
-    if (window.tokenpocket) {
-        if (window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
-        // 老版本 TP 钱包可能直接提供 request 方法
-        if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
-    }
-    // 通用 EVM 钱包
-    if (window.ethereum) return window.ethereum;
+    // 1. 优先检测 window.ethereum（大多数钱包的标准注入方式）
+    try {
+        if (window.ethereum && typeof window.ethereum.request === 'function') {
+            return window.ethereum;
+        }
+    } catch (e) { /* ignore */ }
+
+    // 2. Bitget 钱包：多种检测路径
+    try {
+        if (window.bitkeep) {
+            // 标准路径
+            try {
+                if (window.bitkeep.ethereum && typeof window.bitkeep.ethereum.request === 'function') {
+                    return window.bitkeep.ethereum;
+                }
+            } catch (e) { /* bitkeep.ethereum getter 可能抛异常 */ }
+
+            // 老版本 Bitget 可能直接挂在 window.bitkeep 上
+            if (typeof window.bitkeep.request === 'function') return window.bitkeep;
+
+            // 某些版本 Bitget 的 ethereum 属性可能是 undefined，但 window.bitkeep 本身可用
+            if (typeof window.bitkeep.send === 'function') return window.bitkeep;
+
+            // 兜底：直接返回 bitkeep 对象
+            return window.bitkeep;
+        }
+    } catch (e) { /* ignore */ }
+
+    // 3. TP 钱包：兼容多种注入方式
+    try {
+        if (window.tokenpocket) {
+            try {
+                if (window.tokenpocket.ethereum && typeof window.tokenpocket.ethereum.request === 'function') {
+                    return window.tokenpocket.ethereum;
+                }
+            } catch (e) { /* tokenpocket.ethereum getter 可能抛异常 */ }
+
+            // 老版本 TP 钱包可能直接提供 request 方法
+            if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
+
+            // TP 钱包的 toEthereum 方法
+            if (typeof window.tokenpocket.toEthereum === 'function') {
+                return window.tokenpocket.toEthereum();
+            }
+
+            // 兜底
+            return window.tokenpocket;
+        }
+    } catch (e) { /* ignore */ }
+
     return null;
 }
 
 /**
  * 异步检测 EVM Provider（带重试机制，兼容老旧手机钱包注入慢的问题）
+ * Android 10 等老旧手机需要更长的等待时间
  */
-async function getEVMProviderWithRetry(maxRetries = 3, delayMs = 500) {
+async function getEVMProviderWithRetry(maxRetries, delayMs) {
+    maxRetries = maxRetries || 5;
+    delayMs = delayMs || 1000;
+
     let provider = getEVMProvider();
     if (provider) return provider;
-    
+
     // 钱包注入可能需要时间，尤其是老旧手机
     for (let i = 0; i < maxRetries; i++) {
-        console.log(`[Wallet] Provider 未就绪，等待 ${delayMs}ms 后重试 (${i + 1}/${maxRetries})`);
-        await new Promise(resolve => setTimeout(resolve, delayMs));
+        console.log('[Wallet] Provider 未就绪，等待 ' + delayMs + 'ms 后重试 (' + (i + 1) + '/' + maxRetries + ')');
+        await new Promise(function(resolve) { setTimeout(resolve, delayMs); });
         provider = getEVMProvider();
         if (provider) return provider;
     }
-    
+
     return null;
 }
 
@@ -89,49 +128,71 @@ export async function connectWallet() {
  * 2a. EVM 链钱包连接（BSC）
  */
 async function connectEVMWallet() {
-    // 兼容 Bitget / TP / 通用 EVM 钱包，带重试机制
-    const provider = await getEVMProviderWithRetry(3, 800);
+    // 兼容 Bitget / TP / 通用 EVM 钱包，带重试机制（Android 10 需要更长时间）
+    const provider = await getEVMProviderWithRetry(5, 1000);
     if (!provider) return alert("请在钱包内置浏览器中打开");
 
     try {
         // A. 请求授权获取账号
-        const accounts = await provider.request({ method: 'eth_requestAccounts' });
-        if (!accounts || accounts.length === 0) return;
-        const address = accounts[0]; 
-        
-        // B. 安全签名确认（Hex 转换确保手机端兼容性）
-        const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
-        const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
-        
-        // 兼容 TP 钱包的签名 API
+        // 兼容旧钱包：eth_requestAccounts -> eth_accounts -> provider.enable()
+        var accounts = null;
         try {
-            await provider.request({ 
-                method: 'personal_sign', 
-                params: [hexMsg, address] 
+            accounts = await provider.request({ method: 'eth_requestAccounts' });
+        } catch (reqErr) {
+            console.log('[Wallet] eth_requestAccounts 失败，尝试 eth_accounts:', reqErr.message);
+            try {
+                accounts = await provider.request({ method: 'eth_accounts' });
+            } catch (accErr) {
+                console.log('[Wallet] eth_accounts 失败，尝试 enable():', accErr.message);
+                // 最老版本的钱包使用 enable() 方法
+                if (typeof provider.enable === 'function') {
+                    accounts = await provider.enable();
+                } else {
+                    throw accErr;
+                }
+            }
+        }
+
+        if (!accounts || accounts.length === 0) return;
+        var address = accounts[0];
+
+        // B. 安全签名确认（Hex 转换确保手机端兼容性）
+        var msg = 'FBS Login\nAddress: ' + address + '\nTime: ' + Date.now();
+        var hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+
+        // 兼容多种签名 API：personal_sign -> eth_sign -> 直接跳过
+        try {
+            await provider.request({
+                method: 'personal_sign',
+                params: [hexMsg, address]
             });
         } catch (signErr) {
-            console.log("[Wallet] personal_sign 失败，尝试 eth_sign:", signErr.message);
-            // TP 钱包可能使用 eth_sign
-            await provider.request({ 
-                method: 'eth_sign', 
-                params: [address, hexMsg] 
-            });
+            console.log('[Wallet] personal_sign 失败，尝试 eth_sign:', signErr.message);
+            try {
+                await provider.request({
+                    method: 'eth_sign',
+                    params: [address, hexMsg]
+                });
+            } catch (signErr2) {
+                console.log('[Wallet] eth_sign 也失败，跳过签名验证:', signErr2.message);
+                // 老旧钱包可能不支持签名，跳过但不阻断登录
+            }
         }
-        
+
         // C. 更新状态标记
         localStorage.setItem('fbs_address', address);
         localStorage.setItem('fbs_chain', 'BSC');
         localStorage.setItem('user_logout_manual', 'false');
-        
-        console.log("[Wallet] EVM 连接成功:", address);
+
+        console.log('[Wallet] EVM 连接成功:', address);
         finishLogin();
 
-    } catch (e) { 
-        console.error("[Wallet] 连接取消或失败:", e); 
+    } catch (e) {
+        console.error('[Wallet] 连接取消或失败:', e);
         if (e.code === 4001) {
-            alert("您已取消签名授权");
+            alert('您已取消签名授权');
         } else {
-            alert("连接失败，请检查钱包状态");
+            alert('连接失败，请检查钱包状态');
         }
     }
 }

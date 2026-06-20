@@ -28,18 +28,46 @@ const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b =>
 
 /**
  * 兼容旧浏览器的 EVM Provider 检测
+ * 所有属性访问都包裹 try-catch，防止旧浏览器访问 getter 时抛出异常
  */
 function getEVMProvider() {
-    if (window.bitkeep) {
-        if (window.bitkeep.ethereum) return window.bitkeep.ethereum;
-        if (typeof window.bitkeep.request === 'function') return window.bitkeep;
-        return window.bitkeep;
-    }
-    if (window.tokenpocket) {
-        if (window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
-        if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
-    }
-    if (window.ethereum) return window.ethereum;
+    // 1. 优先检测 window.ethereum（大多数钱包的标准注入方式）
+    try {
+        if (window.ethereum && typeof window.ethereum.request === 'function') {
+            return window.ethereum;
+        }
+    } catch (e) { /* ignore */ }
+
+    // 2. Bitget 钱包
+    try {
+        if (window.bitkeep) {
+            try {
+                if (window.bitkeep.ethereum && typeof window.bitkeep.ethereum.request === 'function') {
+                    return window.bitkeep.ethereum;
+                }
+            } catch (e) { /* getter 可能抛异常 */ }
+            if (typeof window.bitkeep.request === 'function') return window.bitkeep;
+            if (typeof window.bitkeep.send === 'function') return window.bitkeep;
+            return window.bitkeep;
+        }
+    } catch (e) { /* ignore */ }
+
+    // 3. TP 钱包
+    try {
+        if (window.tokenpocket) {
+            try {
+                if (window.tokenpocket.ethereum && typeof window.tokenpocket.ethereum.request === 'function') {
+                    return window.tokenpocket.ethereum;
+                }
+            } catch (e) { /* getter 可能抛异常 */ }
+            if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
+            if (typeof window.tokenpocket.toEthereum === 'function') {
+                return window.tokenpocket.toEthereum();
+            }
+            return window.tokenpocket;
+        }
+    } catch (e) { /* ignore */ }
+
     return null;
 }
 
