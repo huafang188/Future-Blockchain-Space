@@ -33,8 +33,12 @@ function getEVMProvider() {
     if (window.bitkeep) {
         if (window.bitkeep.ethereum) return window.bitkeep.ethereum;
         if (typeof window.bitkeep.request === 'function') return window.bitkeep;
+        return window.bitkeep;
     }
-    if (window.tokenpocket && window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
+    if (window.tokenpocket) {
+        if (window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
+        if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
+    }
     if (window.ethereum) return window.ethereum;
     return null;
 }

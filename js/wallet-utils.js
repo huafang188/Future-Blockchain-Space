@@ -27,11 +27,35 @@ function getEVMProvider() {
         if (window.bitkeep.ethereum) return window.bitkeep.ethereum;
         // 老版本 Bitget 可能直接挂在 window.bitkeep 上
         if (typeof window.bitkeep.request === 'function') return window.bitkeep;
+        // 某些版本 Bitget 的 ethereum 属性可能是 undefined，但 window.bitkeep 本身可用
+        return window.bitkeep;
     }
-    // TP 钱包
-    if (window.tokenpocket && window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
+    // TP 钱包：兼容多种注入方式
+    if (window.tokenpocket) {
+        if (window.tokenpocket.ethereum) return window.tokenpocket.ethereum;
+        // 老版本 TP 钱包可能直接提供 request 方法
+        if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
+    }
     // 通用 EVM 钱包
     if (window.ethereum) return window.ethereum;
+    return null;
+}
+
+/**
+ * 异步检测 EVM Provider（带重试机制，兼容老旧手机钱包注入慢的问题）
+ */
+async function getEVMProviderWithRetry(maxRetries = 3, delayMs = 500) {
+    let provider = getEVMProvider();
+    if (provider) return provider;
+    
+    // 钱包注入可能需要时间，尤其是老旧手机
+    for (let i = 0; i < maxRetries; i++) {
+        console.log(`[Wallet] Provider 未就绪，等待 ${delayMs}ms 后重试 (${i + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        provider = getEVMProvider();
+        if (provider) return provider;
+    }
+    
     return null;
 }
 
@@ -65,8 +89,8 @@ export async function connectWallet() {
  * 2a. EVM 链钱包连接（BSC）
  */
 async function connectEVMWallet() {
-    // 兼容 Bitget / TP / 通用 EVM 钱包
-    const provider = getEVMProvider();
+    // 兼容 Bitget / TP / 通用 EVM 钱包，带重试机制
+    const provider = await getEVMProviderWithRetry(3, 800);
     if (!provider) return alert("请在钱包内置浏览器中打开");
 
     try {
@@ -79,10 +103,20 @@ async function connectEVMWallet() {
         const msg = `FBS Login\nAddress: ${address}\nTime: ${Date.now()}`;
         const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
         
-        await provider.request({ 
-            method: 'personal_sign', 
-            params: [hexMsg, address] 
-        });
+        // 兼容 TP 钱包的签名 API
+        try {
+            await provider.request({ 
+                method: 'personal_sign', 
+                params: [hexMsg, address] 
+            });
+        } catch (signErr) {
+            console.log("[Wallet] personal_sign 失败，尝试 eth_sign:", signErr.message);
+            // TP 钱包可能使用 eth_sign
+            await provider.request({ 
+                method: 'eth_sign', 
+                params: [address, hexMsg] 
+            });
+        }
         
         // C. 更新状态标记
         localStorage.setItem('fbs_address', address);
