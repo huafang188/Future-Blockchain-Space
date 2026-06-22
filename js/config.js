@@ -33,6 +33,69 @@ export const CHAIN_CONFIG = {
         rpcUrls: ['https://api.mainnet-beta.solana.com'],
         blockExplorerUrls: ['https://solscan.io/'],
         icon: 'assets/Solana.webp'
+    },
+    'SUI': {
+        chainId: '0x535549',
+        chainIdDecimal: 54241,
+        chainName: 'Sui',
+        nativeCurrency: { name: 'SUI', symbol: 'SUI', decimals: 9 },
+        rpcUrls: ['https://fullnode.mainnet.sui.io:443'],
+        blockExplorerUrls: ['https://suiexplorer.com/'],
+        icon: 'assets/sui.webp'
+    },
+    'TRON': {
+        chainId: '0x2b6653dc',
+        chainIdDecimal: 728126422,
+        chainName: 'TRON',
+        nativeCurrency: { name: 'TRX', symbol: 'TRX', decimals: 6 },
+        rpcUrls: ['https://api.trongrid.io'],
+        blockExplorerUrls: ['https://tronscan.org/'],
+        icon: 'assets/tron.webp'
+    },
+    'ETH': {
+        chainId: '0x1',
+        chainIdDecimal: 1,
+        chainName: 'Ethereum',
+        nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+        rpcUrls: ['https://eth.llamarpc.com'],
+        blockExplorerUrls: ['https://etherscan.io/'],
+        icon: 'assets/Ethereum.webp'
+    },
+    'SEI': {
+        chainId: '0x705',
+        chainIdDecimal: 1797,
+        chainName: 'Sei EVM',
+        nativeCurrency: { name: 'SEI', symbol: 'SEI', decimals: 18 },
+        rpcUrls: ['https://rpc.sei-apis.com'],
+        blockExplorerUrls: ['https://seiscan.io/'],
+        icon: 'assets/Sei.webp'
+    },
+    'ARB': {
+        chainId: '0xa4b1',
+        chainIdDecimal: 42161,
+        chainName: 'Arbitrum',
+        nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+        rpcUrls: ['https://arbitrum.llamarpc.com'],
+        blockExplorerUrls: ['https://arbiscan.io/'],
+        icon: 'assets/arbitrum.webp'
+    },
+    'SONIC': {
+        chainId: '0x2126',
+        chainIdDecimal: 8486,
+        chainName: 'Sonic',
+        nativeCurrency: { name: 'SONIC', symbol: 'SONIC', decimals: 18 },
+        rpcUrls: ['https://rpc.sonic.game'],
+        blockExplorerUrls: ['https://explorer.sonic.game/'],
+        icon: 'assets/Sonic.webp'
+    },
+    'XLAYER': {
+        chainId: '0x7f',
+        chainIdDecimal: 127,
+        chainName: 'X Layer',
+        nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+        rpcUrls: ['https://rpc.xlayer.tech'],
+        blockExplorerUrls: ['https://scan.xlayer.tech/'],
+        icon: 'assets/OKX.webp'
     }
 };
 
@@ -72,6 +135,34 @@ export const CHAIN_RECEIVE_ADDRS = {
     'SOL': {
         ELECTRIC: "DJtb4QyA61BvKLAQeTnRz2s8p98KBv8yTF48SGf6sQ1s",
         MINER: "7eUfQwcrkMkKAQ5VKbshC8humahAFaeAeNurUsM2U43u"
+    },
+    'SUI': {
+        ELECTRIC: "0x0",
+        MINER: "0x0"
+    },
+    'TRON': {
+        ELECTRIC: "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb",
+        MINER: "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
+    },
+    'ETH': {
+        ELECTRIC: "0x0000000000000000000000000000000000000000",
+        MINER: "0x0000000000000000000000000000000000000000"
+    },
+    'SEI': {
+        ELECTRIC: "0x0000000000000000000000000000000000000000",
+        MINER: "0x0000000000000000000000000000000000000000"
+    },
+    'ARB': {
+        ELECTRIC: "0x0000000000000000000000000000000000000000",
+        MINER: "0x0000000000000000000000000000000000000000"
+    },
+    'SONIC': {
+        ELECTRIC: "0x0000000000000000000000000000000000000000",
+        MINER: "0x0000000000000000000000000000000000000000"
+    },
+    'XLAYER': {
+        ELECTRIC: "0x0000000000000000000000000000000000000000",
+        MINER: "0x0000000000000000000000000000000000000000"
     }
 };
 
