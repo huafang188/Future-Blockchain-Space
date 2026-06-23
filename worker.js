@@ -22,9 +22,12 @@ const TABLE_IDS = {
 // 缓存机制：存储公共数据，减少重复查询
 const cache = {
   prices: { data: null, time: 0 },
-  okxPrices: { data: null, time: 0 }
+  okxPrices: { data: null, time: 0 },
+  // 用户数据缓存：10秒内同一用户请求返回缓存
+  users: new Map()
 };
 const CACHE_DURATION = 5 * 60 * 1000; // 5分钟缓存
+const USER_CACHE_DURATION = 10 * 1000; // 10秒用户缓存
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -129,22 +132,42 @@ export default {
       }
 
       // ==========================================
-      // 【GET 逻辑】性能优化：使用筛选API + 缓存
+      // 【GET 逻辑】优化版：全量查询 + 用户数据缓存
       // ==========================================
       if (address) {
-        // 1. 获取公共数据（价格配置 + OKX价格）- 使用缓存
+        const requestStart = Date.now();
+        
+        // 1. 检查用户数据缓存（10秒内不重复查询）
+        const cacheKey = `${address}_${Date.now()}`;
+        const userCacheKey = address.toLowerCase();
+        const cachedUserData = cache.users.get(userCacheKey);
+        
+        if (cachedUserData && (Date.now() - cachedUserData.time) < USER_CACHE_DURATION) {
+          console.log(`[GET] 使用缓存数据，用户: ${address}`);
+          
+          // 返回缓存的用户数据 + 重新获取的价格
+          const { allPrices, priceHistory } = await getCachedPrices(feishuToken);
+          
+          return jsonResponse({
+            ...cachedUserData.data,
+            allPrices,
+            priceHistory,
+            cached: true,
+            requestTime: Date.now() - requestStart
+          });
+        }
+
+        // 2. 获取公共数据（价格配置 + OKX价格）- 使用缓存
         let allPrices = { "USDT": 1.0, "SOL": 0, "GRAM": 0, "BNB": 0 };
         let priceHistory = {};
         const tokenSymbols = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
         tokenSymbols.forEach(sym => { priceHistory[sym] = []; });
 
-        // 1.1 OKX价格缓存
+        // 2.1 OKX价格缓存
         const now = Date.now();
         if (cache.okxPrices.data && (now - cache.okxPrices.time) < CACHE_DURATION) {
-          // 使用缓存的OKX价格
           Object.assign(allPrices, cache.okxPrices.data);
         } else {
-          // 重新获取OKX价格
           const okxRes = await fetch('https://www.okx.com/api/v5/market/tickers?instType=SPOT').then(r => r.json()).catch(() => ({ data: [] }));
           if (okxRes?.data) {
             okxRes.data.forEach(t => {
@@ -157,13 +180,11 @@ export default {
           }
         }
 
-        // 1.2 飞书价格配置缓存
+        // 2.2 飞书价格配置缓存
         if (cache.prices.data && (now - cache.prices.time) < CACHE_DURATION) {
-          // 使用缓存的价格配置
           Object.assign(allPrices, cache.prices.data.allPrices);
           priceHistory = cache.prices.data.priceHistory;
         } else {
-          // 重新获取价格配置（这个表数据量小，可以全量查询）
           const priceD = await queryTable(feishuToken, TABLE_IDS.price_config);
           
           if (priceD?.items) {
@@ -187,7 +208,6 @@ export default {
             });
           }
 
-          // 从历史数据中提取最新价格
           tokenSymbols.forEach(sym => {
             if (priceHistory[sym].length > 0) {
               priceHistory[sym].sort((a, b) => {
@@ -202,33 +222,59 @@ export default {
             }
           });
 
-          // 缓存价格数据
           cache.prices.data = { allPrices, priceHistory };
           cache.prices.time = now;
         }
 
-        // 2. 使用飞书筛选API，只查询特定用户的数据（性能优化核心）
-        const [userInfo, userBalances, userTeam, userMiner, userHistory, userTransfers] = await Promise.all([
-          queryUserByAddress(feishuToken, TABLE_IDS.recommend_rel, address),
-          queryUserByAddress(feishuToken, TABLE_IDS.user_balance, address),
-          queryUserByAddress(feishuToken, TABLE_IDS.user_team, address),
-          queryUserByAddress(feishuToken, TABLE_IDS.user_miner, address),
-          queryUserByAddress(feishuToken, TABLE_IDS.tx_history, address),
-          queryUserByAddress(feishuToken, TABLE_IDS.transfer_log, address)
+        // 3. 并行查询用户相关数据（全量查询，然后在前端过滤）
+        const [relD, balD, teamD, minerD, txD, logD] = await Promise.all([
+          queryTable(feishuToken, TABLE_IDS.recommend_rel),
+          queryTable(feishuToken, TABLE_IDS.user_balance),
+          queryTable(feishuToken, TABLE_IDS.user_team),
+          queryTable(feishuToken, TABLE_IDS.user_miner),
+          queryTable(feishuToken, TABLE_IDS.tx_history),
+          queryTable(feishuToken, TABLE_IDS.transfer_log)
         ]);
 
-        // 3. 新用户处理
+        // 4. 在内存中查找用户数据（保持原有逻辑）
+        const findFields = (data) => {
+          if (!data?.items || data.items.length === 0) return null;
+          
+          const found = data.items.find(i => {
+            const f = i.fields || {};
+            const storedAddr = String(f["用户"] || f["#用户"] || "").trim();
+            return storedAddr.toLowerCase() === address.toLowerCase() || storedAddr === address;
+          });
+          
+          if (found) {
+            const cleanFields = {};
+            Object.keys(found.fields).forEach(k => {
+              cleanFields[k.replace(/^#/, '')] = found.fields[k];
+            });
+            return cleanFields;
+          }
+          return null;
+        };
+
+        const userInfo = findFields(relD);
+        
+        // 5. 新用户处理
         if (!userInfo || Object.keys(userInfo).length === 0) {
           return jsonResponse({ 
             newUser: true, 
             address, 
             allPrices, 
-            priceHistory
+            priceHistory,
+            requestTime: Date.now() - requestStart
           });
         }
 
-        // 4. 整理返回对象
-        return jsonResponse({
+        const userBalances = findFields(balD) || {};
+        const userTeam = findFields(teamD) || {};
+        const userMiner = findFields(minerD) || {};
+
+        // 6. 整理返回对象
+        const responseData = {
           newUser: false,
           address,
           allPrices,
@@ -239,25 +285,52 @@ export default {
             "注册时间": userInfo["注册时间"] || "---",
             "团队": userInfo["团队"] || userInfo["所属团队"] || ""
           },
-          balances: userBalances || {},
+          balances: userBalances,
           team: {
-            "直推人数": Number(userTeam?.["直推人数"] || 0),
-            "直推业绩": Number(userTeam?.["直推业绩"] || 0),
-            "团队人数": Number(userTeam?.["团队人数"] || 0),
-            "团队业绩": Number(userTeam?.["团队业绩"] || 0),
-            "累计奖励": Number(userTeam?.["累计奖励"] || 0),
-            "矿工等级": userTeam?.["矿工等级"] || ""
+            "直推人数": Number(userTeam["直推人数"] || 0),
+            "直推业绩": Number(userTeam["直推业绩"] || 0),
+            "团队人数": Number(userTeam["团队人数"] || 0),
+            "团队业绩": Number(userTeam["团队业绩"] || 0),
+            "累计奖励": Number(userTeam["累计奖励"] || 0),
+            "矿工等级": userTeam["矿工等级"] || ""
           },
           miner: {
-            "矿机数量": userMiner?.["矿机数量"] || 0,
-            "在运行": userMiner?.["在运行"] || 0,
-            "日产量": userMiner?.["日产量"] || 0,
-            "挖矿期限": userMiner?.["挖矿期限"] || "---",
-            "锁仓数量": userMiner?.["锁仓数量"] || 0
+            "矿机数量": userMiner["矿机数量"] || 0,
+            "在运行": userMiner["在运行"] || 0,
+            "日产量": userMiner["日产量"] || 0,
+            "挖矿期限": userMiner["挖矿期限"] || "---",
+            "锁仓数量": userMiner["锁仓数量"] || 0
           },
-          history: (userHistory || []).reverse(),
-          transfers: (userTransfers || []).reverse()
+          history: (txD?.items || [])
+            .filter(i => {
+              const storedAddr = String(i.fields["用户"] || "").trim();
+              return storedAddr.toLowerCase() === address.toLowerCase() || storedAddr === address;
+            })
+            .map(i => i.fields)
+            .reverse(),
+          transfers: (logD?.items || [])
+            .filter(i => {
+              const storedAddr = String(i.fields["用户"] || "").trim();
+              return storedAddr.toLowerCase() === address.toLowerCase() || storedAddr === address;
+            })
+            .map(i => i.fields)
+            .reverse(),
+          requestTime: Date.now() - requestStart
+        };
+
+        // 7. 缓存用户数据（10秒）
+        cache.users.set(userCacheKey, {
+          time: Date.now(),
+          data: responseData
         });
+
+        // 8. 定期清理过期缓存（每100次请求清理一次）
+        if (Math.random() < 0.01) {
+          cleanupCache();
+        }
+
+        console.log(`[GET] 查询完成，耗时: ${responseData.requestTime}ms`);
+        return jsonResponse(responseData);
       }
 
       return jsonResponse({ status: "active", api_version: "2.1.0" });
@@ -317,7 +390,70 @@ async function queryTable(token, tableId) {
 }
 
 /**
- * 🚀 性能优化：使用飞书筛选API，只查询特定用户的数据
+ * � 获取缓存的价格数据（用于缓存命中时快速返回）
+ */
+async function getCachedPrices(token) {
+  const now = Date.now();
+  
+  let allPrices = { "USDT": 1.0, "SOL": 0, "GRAM": 0, "BNB": 0 };
+  let priceHistory = {};
+  const tokenSymbols = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
+  tokenSymbols.forEach(sym => { priceHistory[sym] = []; });
+
+  // OKX价格缓存
+  if (cache.okxPrices.data && (now - cache.okxPrices.time) < CACHE_DURATION) {
+    Object.assign(allPrices, cache.okxPrices.data);
+  } else {
+    const okxRes = await fetch('https://www.okx.com/api/v5/market/tickers?instType=SPOT').then(r => r.json()).catch(() => ({ data: [] }));
+    if (okxRes?.data) {
+      okxRes.data.forEach(t => {
+        if (t.instId === "SOL-USDT") allPrices["SOL"] = parseFloat(t.last);
+        if (t.instId === "TON-USDT") allPrices["GRAM"] = parseFloat(t.last);
+        if (t.instId === "BNB-USDT") allPrices["BNB"] = parseFloat(t.last);
+      });
+      cache.okxPrices.data = { "SOL": allPrices["SOL"], "GRAM": allPrices["GRAM"], "BNB": allPrices["BNB"] };
+      cache.okxPrices.time = now;
+    }
+  }
+
+  // 价格配置缓存
+  if (cache.prices.data && (now - cache.prices.time) < CACHE_DURATION) {
+    Object.assign(allPrices, cache.prices.data.allPrices);
+    priceHistory = cache.prices.data.priceHistory;
+  }
+
+  return { allPrices, priceHistory };
+}
+
+/**
+ * 🧹 清理过期缓存
+ */
+function cleanupCache() {
+  const now = Date.now();
+  
+  // 清理用户缓存
+  for (const [key, value] of cache.users.entries()) {
+    if (now - value.time > USER_CACHE_DURATION) {
+      cache.users.delete(key);
+    }
+  }
+  
+  // 清理价格缓存
+  if (cache.prices.data && (now - cache.prices.time) > CACHE_DURATION) {
+    cache.prices.data = null;
+    cache.prices.time = 0;
+  }
+  
+  if (cache.okxPrices.data && (now - cache.okxPrices.time) > CACHE_DURATION) {
+    cache.okxPrices.data = null;
+    cache.okxPrices.time = 0;
+  }
+  
+  console.log(`[Cache] 清理完成，当前用户缓存: ${cache.users.size}`);
+}
+
+/**
+ * �🚀 性能优化：使用飞书筛选API，只查询特定用户的数据
  * @param {string} token - 飞书访问令牌
  * @param {string} tableId - 表格ID
  * @param {string} address - 用户钱包地址
@@ -327,17 +463,15 @@ async function queryUserByAddress(token, tableId, address) {
   const baseUrl = `https://open.feishu.cn/open-apis/bitable/v1/apps/${FEISHU_CONFIG.app_token}/tables/${tableId}/records/search`;
   
   // 构建筛选条件：匹配用户地址字段
+  // 尝试多种可能的字段名和格式
   const filterConditions = [
-    {
-      field_name: "用户",
-      operator: "is",
-      value: [address]
-    },
-    {
-      field_name: "用户",
-      operator: "contains",
-      value: [address.toLowerCase()]
-    }
+    // 精确匹配（大写）
+    { field_name: "用户", operator: "is", value: address },
+    // 精确匹配（小写）
+    { field_name: "用户", operator: "is", value: address.toLowerCase() },
+    // 包含匹配
+    { field_name: "用户", operator: "contains", value: address },
+    { field_name: "用户", operator: "contains", value: address.toLowerCase() }
   ];
 
   try {
@@ -359,8 +493,11 @@ async function queryUserByAddress(token, tableId, address) {
     const data = await res.json();
 
     if (!data.data?.items || data.data.items.length === 0) {
+      console.log(`[queryUserByAddress] 表 ${tableId} 未找到用户 ${address}`);
       return null;
     }
+
+    console.log(`[queryUserByAddress] 表 ${tableId} 找到 ${data.data.items.length} 条记录`);
 
     // 根据表格类型返回不同格式
     // 推荐关系、余额、团队、矿机表：返回单条记录的字段对象
