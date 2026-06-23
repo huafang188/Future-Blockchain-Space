@@ -405,7 +405,8 @@ export function renderHistory(history = []) {
 
     // 状态多语言映射
     function translateStatus(status) {
-        const s = status.trim();
+        // 确保 status 是字符串
+        const s = String(status || '').trim();
         if (langData[s]) return langData[s];
         const fallback = {
             '已提交': 'Submitted',
