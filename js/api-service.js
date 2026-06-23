@@ -142,14 +142,20 @@ export async function fetchUserData(address) {
     
     try {
         console.log(`[API] 正在从后端同步数据: ${address} (链: ${chain})`);
+        const requestStart = Date.now();
         // EVM 链地址统一小写，TON 和 SOL 保持原始格式
         const cleanAddr = chain === 'BSC' ? address.toLowerCase().trim() : address.trim();
         
         const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
+        const requestDuration = Date.now() - requestStart;
         
         if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
         
+        const parseStart = Date.now();
         const data = await res.json();
+        const parseDuration = Date.now() - parseStart;
+        
+        console.log(`[API] 请求耗时: ${requestDuration}ms, JSON解析: ${parseDuration}ms, 总计: ${requestDuration + parseDuration}ms`);
         console.log("[API] 后端原始数据包:", data);
 
         // 缓存数据供其他模块使用
