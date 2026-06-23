@@ -4,7 +4,12 @@
 export const API_BASE = "https://api.neoneo.ink/api/user";
 
 /**
- * 多链配置
+ * 激活的链列表（只有这些链才会触发实际数据请求）
+ */
+export const ACTIVE_CHAINS = ['BSC', 'TON', 'SOL'];
+
+/**
+ * 多链配置（保留所有链用于显示，但只有 ACTIVE_CHAINS 中的链才激活）
  */
 export const CHAIN_CONFIG = {
     'BSC': {
@@ -14,7 +19,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
         rpcUrls: ['https://bsc-dataseed.binance.org/'],
         blockExplorerUrls: ['https://bscscan.com/'],
-        icon: 'assets/币安智能链.png'
+        icon: 'assets/币安智能链.png',
+        active: true
     },
     'TON': {
         chainId: '0x357',
@@ -23,7 +29,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'TON', symbol: 'TON', decimals: 9 },
         rpcUrls: ['https://toncenter.com'],
         blockExplorerUrls: ['https://tonscan.org/'],
-        icon: 'assets/TON.webp'
+        icon: 'assets/TON.webp',
+        active: true
     },
     'SOL': {
         chainId: '0x82',
@@ -32,7 +39,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'SOL', symbol: 'SOL', decimals: 9 },
         rpcUrls: ['https://api.mainnet-beta.solana.com'],
         blockExplorerUrls: ['https://solscan.io/'],
-        icon: 'assets/Solana.webp'
+        icon: 'assets/Solana.webp',
+        active: true
     },
     'SUI': {
         chainId: '0x535549',
@@ -41,7 +49,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'SUI', symbol: 'SUI', decimals: 9 },
         rpcUrls: ['https://fullnode.mainnet.sui.io:443'],
         blockExplorerUrls: ['https://suiexplorer.com/'],
-        icon: 'assets/sui.webp'
+        icon: 'assets/sui.webp',
+        active: false
     },
     'TRON': {
         chainId: '0x2b6653dc',
@@ -50,7 +59,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'TRX', symbol: 'TRX', decimals: 6 },
         rpcUrls: ['https://api.trongrid.io'],
         blockExplorerUrls: ['https://tronscan.org/'],
-        icon: 'assets/tron.webp'
+        icon: 'assets/tron.webp',
+        active: false
     },
     'ETH': {
         chainId: '0x1',
@@ -59,7 +69,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
         rpcUrls: ['https://eth.llamarpc.com'],
         blockExplorerUrls: ['https://etherscan.io/'],
-        icon: 'assets/Ethereum.webp'
+        icon: 'assets/Ethereum.webp',
+        active: false
     },
     'SEI': {
         chainId: '0x705',
@@ -68,7 +79,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'SEI', symbol: 'SEI', decimals: 18 },
         rpcUrls: ['https://rpc.sei-apis.com'],
         blockExplorerUrls: ['https://seiscan.io/'],
-        icon: 'assets/Sei.webp'
+        icon: 'assets/Sei.webp',
+        active: false
     },
     'ARB': {
         chainId: '0xa4b1',
@@ -77,7 +89,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
         rpcUrls: ['https://arbitrum.llamarpc.com'],
         blockExplorerUrls: ['https://arbiscan.io/'],
-        icon: 'assets/arbitrum.webp'
+        icon: 'assets/arbitrum.webp',
+        active: false
     },
     'SONIC': {
         chainId: '0x2126',
@@ -86,7 +99,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'SONIC', symbol: 'SONIC', decimals: 18 },
         rpcUrls: ['https://rpc.sonic.game'],
         blockExplorerUrls: ['https://explorer.sonic.game/'],
-        icon: 'assets/Sonic.webp'
+        icon: 'assets/Sonic.webp',
+        active: false
     },
     'XLAYER': {
         chainId: '0x7f',
@@ -95,7 +109,8 @@ export const CHAIN_CONFIG = {
         nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
         rpcUrls: ['https://rpc.xlayer.tech'],
         blockExplorerUrls: ['https://scan.xlayer.tech/'],
-        icon: 'assets/OKX.webp'
+        icon: 'assets/OKX.webp',
+        active: false
     }
 };
 

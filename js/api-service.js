@@ -1,10 +1,13 @@
-import { API_BASE, getTeamByInviter, findTopLevelInviter } from './config.js';
+import { API_BASE, getTeamByInviter, findTopLevelInviter, ACTIVE_CHAINS } from './config.js';
 
 // 用于管理请求取消，彻底解决并发请求导致的 "Failed to fetch" 报错
 let fetchController = null;
 
 // CSRF token 管理
 let csrfToken = null;
+
+// 请求去重：存储当前正在进行的请求
+let pendingRequest = null;
 
 /**
  * 生成或获取 CSRF token
@@ -98,14 +101,47 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 export async function fetchUserData(address) {
     if (!address) return;
 
+    const chain = localStorage.getItem('fbs_chain') || 'BSC';
+    
+    // 检查是否为激活的链，非激活链不发起请求
+    if (!ACTIVE_CHAINS.includes(chain)) {
+        console.log(`[API] 当前链 ${chain} 未激活，跳过数据请求`);
+        return;
+    }
+
+    // 请求去重：如果有相同地址和链的请求正在进行，则等待该请求完成
+    const requestKey = `${chain}:${address}`;
+    if (pendingRequest && pendingRequest.key === requestKey) {
+        console.log(`[API] 检测到重复请求 (${requestKey})，等待已有请求完成`);
+        try {
+            return await pendingRequest.promise;
+        } catch (e) {
+            // 如果等待时出错，忽略并继续执行新请求
+            console.warn(`[API] 等待重复请求时出错: ${e.message}`);
+        }
+    }
+
     // 终止上一次未完成的请求，防止数据混乱和 Failed to fetch 报错
     if (fetchController) fetchController.abort();
     fetchController = new AbortController();
     const { signal } = fetchController;
     
+    // 创建新的请求承诺用于去重
+    let resolvePromise, rejectPromise;
+    const requestPromise = new Promise((resolve, reject) => {
+        resolvePromise = resolve;
+        rejectPromise = reject;
+    });
+    
+    pendingRequest = {
+        key: requestKey,
+        promise: requestPromise,
+        resolve: resolvePromise,
+        reject: rejectPromise
+    };
+    
     try {
-        console.log(`[API] 正在从后端同步数据: ${address}`);
-        const chain = localStorage.getItem('fbs_chain') || 'BSC';
+        console.log(`[API] 正在从后端同步数据: ${address} (链: ${chain})`);
         // EVM 链地址统一小写，TON 和 SOL 保持原始格式
         const cleanAddr = chain === 'BSC' ? address.toLowerCase().trim() : address.trim();
         
@@ -245,6 +281,17 @@ export async function fetchUserData(address) {
         } else {
             console.error("[API] 同步用户数据失败:", e);
         }
+        // 清理 pendingRequest
+        if (pendingRequest && pendingRequest.key === requestKey) {
+            pendingRequest.reject(e);
+            pendingRequest = null;
+        }
+    }
+    
+    // 清理 pendingRequest
+    if (pendingRequest && pendingRequest.key === requestKey) {
+        pendingRequest.resolve();
+        pendingRequest = null;
     }
 }
 

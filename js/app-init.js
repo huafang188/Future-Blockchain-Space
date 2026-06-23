@@ -28,7 +28,7 @@ import { mountModalHandlers } from './modal-handler.js';
 import { mountCalculationHandlers } from './calculations.js';
 import { mountActionExecutors } from './action-executor.js';
 
-import { CHAIN_CONFIG, setCurrentChain, TOKEN_DECIMALS } from './config.js';
+import { CHAIN_CONFIG, setCurrentChain, TOKEN_DECIMALS, ACTIVE_CHAINS } from './config.js';
 
 // 导出到 window
 window.CHAIN_CONFIG = CHAIN_CONFIG;
@@ -158,6 +158,12 @@ function mountAllGlobals() {
         // 关闭下拉菜单
         const wrapper = document.querySelector('.custom-select-wrapper');
         wrapper.classList.remove('open');
+        
+        // 如果链未激活，提示用户
+        if (!ACTIVE_CHAINS.includes(chain)) {
+            alert(`${CHAIN_CONFIG[chain]?.chainName || chain} 链暂未开放，敬请期待！`);
+            return;
+        }
         
         // 如果选择的是当前链，直接返回
         if (chain === window.currentChain) return;
