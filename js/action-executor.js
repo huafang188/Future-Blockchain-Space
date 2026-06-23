@@ -4,6 +4,9 @@ import { postTransactionRecord } from './api-service.js';
 // 导入 fetchUserData 用于刷新数据
 let fetchUserDataFunc = null;
 
+// 🚨 防重复提交标记
+let isSubmitting = false;
+
 // 初始化 fetchUserData 函数引用
 function initFetchUserData() {
     if (!fetchUserDataFunc && window.fetchUserData) {
@@ -213,7 +216,17 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
  * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定、团队、矿机转让、内转)
  */
 async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
-    if (!await ensureNetwork()) return;
+    // 🚨 防重复提交检查
+    if (isSubmitting) {
+        console.warn("[Executors] 检测到重复提交，已忽略本次请求");
+        return;
+    }
+    isSubmitting = true;
+
+    if (!await ensureNetwork()) {
+        isSubmitting = false;
+        return;
+    }
 
     try {
         const evmProvider = getEVMProvider();
@@ -246,6 +259,9 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             alert("签名操作失败，请重试");
         }
         if (window.closeModal) window.closeModal();
+    } finally {
+        // ✅ 确保无论成功或失败，都重置提交状态
+        isSubmitting = false;
     }
 }
 
