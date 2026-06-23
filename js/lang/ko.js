@@ -117,6 +117,10 @@ window.i18nData['ko'] = {
     neo_update_thanks: "모든 사용자 및 파트너님들의 동반에 감사드립니다.",
     neo_update_signature: "NEO 팀 드림",
 
+    // --- Latest Announcement ---
+    neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
+    neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
+
     // --- 6. 채굴기 구매 팝업 ---
     buy_num_placeholder: "수량 입력 (1-100)",
     confirm_pay_bsc: "결제 확인 (BSC)",
