@@ -226,13 +226,14 @@ export const TEAM_LEVELS = {
 
 /**
  * 根据推荐码获取所属团队
- * @param {string} inviterCode - 推荐码
+ * @param {string|number} inviterCode - 推荐码
  * @returns {string} 团队标识
  */
 export function getTeamByInviter(inviterCode) {
     if (!inviterCode) return 'DEFAULT';
     
-    const code = inviterCode.toUpperCase().trim();
+    // 确保 inviterCode 是字符串类型
+    const code = String(inviterCode).toUpperCase().trim();
     
     for (const [team, codes] of Object.entries(INVITER_TEAM_MAP)) {
         if (codes.includes(code)) {
