@@ -83,16 +83,33 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         if (result.success || result.code === 0) {
             console.log(`[API] ${type} 后端写入成功`);
             
-            // 成功后关闭所有可能存在的弹窗（先关闭，避免卡住）
+            // 显示成功提示（让用户知道绑定成功）
+            alert(`✅ ${type}成功！正在刷新数据...`);
+            
+            // 成功后关闭所有可能存在的弹窗
             if (window.closeModal) window.closeModal();
             
             // 成功后执行局部数据同步（不刷新页面）
             try {
                 await fetchUserData(address);
+                
+                // 数据刷新成功后，显示用户的推荐人和推荐码
+                if (type === "绑定关系") {
+                    const userInfo = window.currentUserInfo;
+                    if (userInfo) {
+                        const inviter = userInfo.inviter || '---';
+                        const myCode = userInfo.inviteCode || '---';
+                        alert(`✅ 绑定成功！\n\n您的推荐人: ${inviter}\n您的推荐码: ${myCode}\n\n数据已自动刷新`);
+                    }
+                }
             } catch (syncError) {
                 // 数据同步失败不影响主流程，但要提示用户
                 console.error("[API] 数据同步失败:", syncError);
-                handleApiError("数据同步失败，请手动刷新页面查看最新状态");
+                if (type === "绑定关系") {
+                    alert(`✅ 绑定已提交成功！\n\n但数据刷新失败，请手动刷新页面查看您的推荐人和推荐码`);
+                } else {
+                    handleApiError("数据同步失败，请手动刷新页面查看最新状态");
+                }
             }
             
             return { success: true, data: result };
