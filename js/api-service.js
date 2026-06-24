@@ -59,14 +59,23 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 
     console.log(`[API] 发起 POST 请求 [${action}]:`, payload);
 
+    // 创建超时控制器（30秒超时）
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+        controller.abort();
+    }, 30000); // 30秒超时
+
     try {
         const response = await fetch(API_BASE, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
         
         const result = await response.json();
 
@@ -86,6 +95,11 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
             return { success: false };
         }
     } catch (e) {
+        // 捕获超时错误
+        if (e.name === 'AbortError') {
+            handleApiError("请求超时，请检查网络连接或稍后重试");
+            return { success: false, error: "timeout" };
+        }
         // 捕获因刷新页面导致的连接中断
         if (e.message === 'Failed to fetch') return { success: false };
         console.error("[API] POST 请求异常:", e);

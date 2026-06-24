@@ -244,12 +244,16 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, ...extraFields });
             if (res.success) {
                 alert(`✅ ${bizType}申请已成功提交`);
-                if (window.closeModal) window.closeModal();
                 // 延迟500ms后刷新用户数据（等待后端处理完成）
                 setTimeout(async () => {
                     await refreshUserDataAfterTransaction();
                 }, 500);
+            } else {
+                // 失败时也需要关闭弹窗
+                console.warn(`[Executors] ${bizType}提交失败:`, res.error);
             }
+            // ✅ 无论成功或失败都关闭弹窗
+            if (window.closeModal) window.closeModal();
         }
     } catch (e) {
         console.error("[Executors] 签名异常:", e);
