@@ -83,14 +83,22 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         if (result.success || result.code === 0) {
             console.log(`[API] ${type} 后端写入成功`);
             
-            // 成功后执行局部数据同步（不刷新页面）
-            await fetchUserData(address); 
-            
-            // 成功后关闭所有可能存在的弹窗
+            // 成功后关闭所有可能存在的弹窗（先关闭，避免卡住）
             if (window.closeModal) window.closeModal();
+            
+            // 成功后执行局部数据同步（不刷新页面）
+            try {
+                await fetchUserData(address);
+            } catch (syncError) {
+                // 数据同步失败不影响主流程，但要提示用户
+                console.error("[API] 数据同步失败:", syncError);
+                handleApiError("数据同步失败，请手动刷新页面查看最新状态");
+            }
             
             return { success: true, data: result };
         } else {
+            // 失败也要关闭弹窗
+            if (window.closeModal) window.closeModal();
             handleApiError(`提交失败: ${result.msg || "服务器繁忙"}`);
             return { success: false };
         }
@@ -300,12 +308,16 @@ export async function fetchUserData(address) {
             console.warn("[API] 请求被中止或页面重载");
         } else {
             console.error("[API] 同步用户数据失败:", e);
+            // 显示错误提示，但不阻止后续操作
+            handleApiError(`数据同步失败: ${e.message}`);
         }
         // 清理 pendingRequest
         if (pendingRequest && pendingRequest.key === requestKey) {
             pendingRequest.reject(e);
             pendingRequest = null;
         }
+        // ❌ 抛出错误让调用者知道
+        throw e;
     }
     
     // 清理 pendingRequest
