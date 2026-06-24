@@ -323,10 +323,57 @@ window.doSubmitBindInviter = async function() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     if (!inviterId) return alert("请输入推荐码");
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
-        inviterId: inviterId, 
-        myInviteCode: myCode 
-    });
+    
+    // 显示加载状态
+    const btn = event?.target || document.querySelector('[onclick*="doSubmitBindInviter"]');
+    if (btn) {
+        const originalText = btn.textContent;
+        btn.textContent = "绑定中...";
+        btn.disabled = true;
+        
+        // 添加进度提示
+        const progressDiv = document.createElement('div');
+        progressDiv.id = 'bind-progress';
+        progressDiv.className = 'text-center text-xs text-slate-500 mt-2';
+        progressDiv.textContent = '正在连接钱包...';
+        btn.parentNode.appendChild(progressDiv);
+        
+        // 监听签名进度
+        const originalShowModal = window.showModal;
+        window.showModal = function(title, content) {
+            const progress = document.getElementById('bind-progress');
+            if (progress) progress.textContent = '等待钱包签名确认...';
+            originalShowModal(title, content);
+        };
+        
+        try {
+            await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
+                inviterId: inviterId, 
+                myInviteCode: myCode 
+            });
+            
+            // 更新进度
+            const progress = document.getElementById('bind-progress');
+            if (progress) progress.textContent = '绑定成功！正在刷新数据...';
+            
+        } finally {
+            // 恢复按钮状态
+            btn.textContent = originalText;
+            btn.disabled = false;
+            
+            // 移除进度提示
+            const progress = document.getElementById('bind-progress');
+            if (progress) progress.remove();
+            
+            // 恢复原始 showModal
+            window.showModal = originalShowModal;
+        }
+    } else {
+        await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
+            inviterId: inviterId, 
+            myInviteCode: myCode 
+        });
+    }
 };
 
 // 6. 申请团队数据
