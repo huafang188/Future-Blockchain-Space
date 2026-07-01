@@ -393,3 +393,65 @@ function initApp() {
 
 // --- 启动程序 ---
 initApp();
+
+// --- Moscow Time & Weather ---
+function updateMoscowTime() {
+    const now = new Date();
+    const options = {
+        timeZone: 'Europe/Moscow',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        weekday: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    
+    const moscowTime = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Europe/Moscow',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).format(now);
+    
+    const moscowDate = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Europe/Moscow',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        weekday: 'short'
+    }).format(now);
+    
+    const timeEl = document.getElementById('moscowTime');
+    const dateEl = document.getElementById('moscowDate');
+    
+    if (timeEl) timeEl.textContent = moscowTime;
+    if (dateEl) dateEl.textContent = moscowDate.toUpperCase();
+}
+
+async function fetchMoscowWeather() {
+    try {
+        const response = await fetch('https://wttr.in/Moscow?format=%C+%t&lang=en');
+        if (!response.ok) throw new Error('Weather fetch failed');
+        
+        const weatherText = await response.text();
+        const weatherEl = document.getElementById('moscowWeather');
+        if (weatherEl) {
+            weatherEl.innerHTML = `<i class="fas fa-cloud-sun mr-2"></i>${weatherText.trim()}`;
+        }
+    } catch (e) {
+        console.error('[Moscow] Weather fetch failed:', e);
+        const weatherEl = document.getElementById('moscowWeather');
+        if (weatherEl) {
+            weatherEl.innerHTML = '<i class="fas fa-cloud-sun mr-2"></i>Weather unavailable';
+        }
+    }
+}
+
+updateMoscowTime();
+setInterval(updateMoscowTime, 1000);
+fetchMoscowWeather();
+setInterval(fetchMoscowWeather, 600000);

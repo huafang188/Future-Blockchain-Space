@@ -147,6 +147,7 @@ window.i18nData['zh-CN'] = {
     important_announcement: "公告",
     news_title_short: "新闻",
     neo_update_title: "NEO 生态近期重要战略更新：通过先进的互操作性与 NCL 计划拓展 NEO 生态",
+    moscow_title: "莫斯科",
     neo_update_greeting: "尊敬的 NEO 社区成员与合作伙伴：我们非常高兴地向大家宣布一系列重大里程碑与战略扩张计划，这标志着 NEO 生态正式迈入全新的发展篇章。",
     neo_update_s1_title: "秉持包容理念：拓展多链版图",
     neo_update_s1: "我们深信，真正的创新孕育于开放与包容的生态，而非封闭的孤岛。继成功支持币安智能链（BSC）之后，我们已正式完成系统升级，并新增了对 TON 与 Solana (SOL) 的原生支持。展望未来，我们的路线图已明确规划了对 SUI、Tron、Ethereum、Sei EVM、Arbitrum、Sonic 以及 X Layer 等全球领先区块链平台的后续集成。通过与这些行业顶尖技术的融合，我们的目标是赋予用户绝对的选择自由，实现各网络之间无缝、无摩擦的跨链切换。",
