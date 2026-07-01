@@ -147,7 +147,6 @@ window.i18nData['en'] = {
     important_announcement: "Important Announcement",
     news_title_short: "News",
     neo_update_title: "NEO Ecosystem Strategic Update: Expanding Through Advanced Interoperability & NCL Initiative",
-    moscow_title: "MOSCOW",
     neo_update_greeting: "Dear NEO Community Members and Partners, We are thrilled to announce a series of major milestones and strategic expansion plans, marking NEO's entry into a new chapter of development.",
     neo_update_s1_title: "Embracing Inclusivity: Expanding Multi-Chain Presence",
     neo_update_s1: "We firmly believe that true innovation thrives in an open and inclusive ecosystem, not in closed silos. Following our successful support for Binance Smart Chain (BSC), we have officially completed a system upgrade and added native support for TON and Solana (SOL). Looking ahead, our roadmap clearly outlines subsequent integrations with SUI, Tron, Ethereum, Sei EVM, Arbitrum, Sonic, and X Layer. By merging with these industry-leading technologies, our goal is to give users absolute freedom of choice, enabling seamless, frictionless cross-chain switching across networks.",
