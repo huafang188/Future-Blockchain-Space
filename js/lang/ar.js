@@ -1,8 +1,10 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['ar'] = {
     // --- 1. Global & Navigation ---
-    title: "مصفوفة تعدين النظام البيئي NEO",
+    title: "مصفوفة تعدين NEO",
     connect: "ربط المحفظة",
+    moscow_time: "وقت موسكو",
+    miner_deploy_tip: "وقت نشر Майнер هو 2-12 ساعة. يختلف وقت التسوية اليومية لـ NEO قليلاً حسب المنطقة، حوالي 00:00-03:00 بتوقيت موسكو",
     connected: "متصل",
     total_value: "إجمالي قيمة الأصول",
     loading: "جارٍ التحميل...",

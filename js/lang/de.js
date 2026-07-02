@@ -1,8 +1,10 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['de'] = {
     // --- 1. Global & Navigation ---
-    title: "NEO Mining-Matrix",
+    title: "NEO Mining Matrix",
     connect: "Wallet verbinden",
+    moscow_time: "Moskauer Zeit",
+    miner_deploy_tip: "Miner-Bereitstellungszeit beträgt 2-12 Stunden. Die tägliche NEO-Abrechnungszeit variiert je nach Region geringfügig, ungefähr von 00:00 bis 03:00 Moskauer Zeit",
     connected: "Verbunden",
     total_value: "Gesamtwert der Assets",
     loading: "Laden...",

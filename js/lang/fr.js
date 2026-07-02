@@ -3,6 +3,8 @@ window.i18nData['fr'] = {
     // --- 1. Global & Navigation ---
     title: "Matrice de Minage NEO",
     connect: "Connecter Portefeuille",
+    moscow_time: "Heure de Moscou",
+    miner_deploy_tip: "Le temps de déploiement du miner est de 2 à 12 heures. L'heure de règlement quotidien NEO varie légèrement selon les régions, environ de 00:00 à 03:00 heure de Moscou",
     connected: "Connecté",
     total_value: "Valeur Totale des Actifs",
     loading: "Chargement...",

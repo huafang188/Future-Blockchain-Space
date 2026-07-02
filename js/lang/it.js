@@ -1,8 +1,10 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['it'] = {
-    // --- 1. Global & Navigazione ---
+    // --- 1. Globale & Navigazione ---
     title: "Matrice di Mining NEO",
     connect: "Connetti Wallet",
+    moscow_time: "Ora di Mosca",
+    miner_deploy_tip: "Il tempo di deploy del miner è di 2-12 ore. L'ora di regolamento giornaliero NEO varia leggermente a seconda della regione, circa dalle 00:00 alle 03:00 ora di Mosca",
     connected: "Connesso",
     total_value: "Valore Totale Asset",
     loading: "Caricamento...",

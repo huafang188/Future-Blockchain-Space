@@ -391,5 +391,78 @@ function initApp() {
     }, 500);
 }
 
+// --- 莫斯科时间与天气功能 ---
+window.initMoscowTime = function() {
+    function updateTime() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', {
+            timeZone: 'Europe/Moscow',
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+        const dateStr = now.toLocaleDateString(currentLang, {
+            timeZone: 'Europe/Moscow',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            weekday: 'short'
+        });
+        
+        const timeEl = document.getElementById('moscowTime');
+        const dateEl = document.getElementById('moscowDate');
+        
+        if (timeEl) timeEl.textContent = timeStr;
+        if (dateEl) dateEl.textContent = dateStr;
+    }
+    
+    function getWeatherEmoji(code) {
+        if (code >= 0 && code <= 3) return '☀️';
+        if (code >= 45 && code <= 48) return '🌫️';
+        if (code >= 51 && code <= 67) return '🌧️';
+        if (code >= 71 && code <= 77) return '❄️';
+        if (code >= 80 && code <= 82) return '🌦️';
+        if (code >= 95 && code <= 99) return '⛈️';
+        return '🌤️';
+    }
+    
+    async function fetchWeather() {
+        try {
+            const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current_weather=true');
+            const data = await response.json();
+            
+            if (data.current_weather) {
+                const emoji = getWeatherEmoji(data.current_weather.weathercode);
+                const temp = Math.round(data.current_weather.temperature);
+                
+                const emojiEl = document.getElementById('weatherEmoji');
+                const tempEl = document.getElementById('weatherTemp');
+                
+                if (emojiEl) emojiEl.textContent = emoji;
+                if (tempEl) tempEl.textContent = `${temp}°C`;
+            }
+        } catch (e) {
+            console.log('[Moscow Time] Weather fetch failed, using default');
+        }
+    }
+    
+    updateTime();
+    fetchWeather();
+    
+    setInterval(updateTime, 1000);
+    setInterval(fetchWeather, 300000);
+};
+
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        if (typeof window.initMoscowTime === 'function') {
+            window.initMoscowTime();
+        }
+    }, 300);
+});
+
 // --- 启动程序 ---
 initApp();

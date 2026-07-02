@@ -64,262 +64,7 @@
     }
     </script>
 
-<style>
-/* NCL Banner */
-.ncl-banner {
-    padding: 1.5rem 1rem;
-    margin-bottom: 1.5rem;
-}
 
-.ncl-banner-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    position: relative;
-}
-
-/* Pixel Robot */
-.pixel-robot {
-    position: relative;
-    width: 32px;
-    height: 42px;
-    flex-shrink: 0;
-}
-
-.robot-left {
-    animation: robot-bounce 1.5s ease-in-out infinite;
-}
-
-.robot-right {
-    animation: robot-bounce 1.5s ease-in-out infinite 0.75s;
-}
-
-@keyframes robot-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.robot-body {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-/* Robot Head - pixel style */
-.robot-head {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 18px;
-    height: 14px;
-    background: #06b6d4;
-    image-rendering: pixelated;
-    box-shadow:
-        /* Top edge pixels */
-        -7px -7px 0 0 #0891b2,
-        -4px -7px 0 0 #0891b2,
-        -1px -7px 0 0 #0891b2,
-        1px -7px 0 0 #0891b2,
-        4px -7px 0 0 #0891b2,
-        7px -7px 0 0 #0891b2;
-}
-
-.robot-head::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 4px;
-    background: #67e8f9;
-    box-shadow:
-        -3px -3px 0 0 #67e8f9,
-        3px -3px 0 0 #67e8f9;
-}
-
-.robot-eye {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #fef08a;
-    top: 4px;
-    animation: robot-blink 3s ease-in-out infinite;
-}
-
-.robot-eye:first-child {
-    left: 3px;
-}
-
-.robot-eye:last-child {
-    right: 3px;
-}
-
-@keyframes robot-blink {
-    0%, 45%, 55%, 100% { transform: scaleY(1); }
-    50% { transform: scaleY(0.1); }
-}
-
-/* Robot Torso */
-.robot-torso {
-    position: absolute;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 16px;
-    height: 14px;
-    background: #f97316;
-    box-shadow:
-        inset 0 0 0 1px #ea580c;
-}
-
-.robot-torso::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background: #fbbf24;
-    border-radius: 50%;
-    animation: chest-glow 2s ease-in-out infinite;
-}
-
-@keyframes chest-glow {
-    0%, 100% { opacity: 0.6; box-shadow: 0 0 4px #fbbf24; }
-    50% { opacity: 1; box-shadow: 0 0 12px #fbbf24; }
-}
-
-/* Robot Arms */
-.robot-arm {
-    position: absolute;
-    top: 16px;
-    width: 6px;
-    height: 12px;
-    background: #ec4899;
-}
-
-.arm-left {
-    left: 1px;
-    animation: arm-swing-left 2s ease-in-out infinite;
-    transform-origin: top center;
-}
-
-.arm-right {
-    right: 1px;
-    animation: arm-swing-right 2s ease-in-out infinite;
-    transform-origin: top center;
-}
-
-@keyframes arm-swing-left {
-    0%, 100% { transform: rotate(10deg); }
-    50% { transform: rotate(-10deg); }
-}
-
-@keyframes arm-swing-right {
-    0%, 100% { transform: rotate(-10deg); }
-    50% { transform: rotate(10deg); }
-}
-
-/* Robot Legs */
-.robot-leg {
-    position: absolute;
-    top: 30px;
-    width: 6px;
-    height: 12px;
-    background: #10b981;
-}
-
-.leg-left {
-    left: 7px;
-    animation: leg-walk-left 1.5s ease-in-out infinite;
-    transform-origin: top center;
-}
-
-.leg-right {
-    right: 7px;
-    animation: leg-walk-right 1.5s ease-in-out infinite;
-    transform-origin: top center;
-}
-
-@keyframes leg-walk-left {
-    0%, 100% { transform: rotate(8deg); }
-    50% { transform: rotate(-8deg); }
-}
-
-@keyframes leg-walk-right {
-    0%, 100% { transform: rotate(-8deg); }
-    50% { transform: rotate(8deg); }
-}
-
-/* NCL Text */
-.ncl-text {
-    display: flex;
-    align-items: center;
-    gap: 1px;
-    flex-wrap: nowrap;
-    justify-content: center;
-    white-space: nowrap;
-}
-
-.ncl-letter {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: #8b5cf6;
-    text-shadow: 1px 1px 0 #6d28d9, 2px 2px 0 rgba(139, 92, 246, 0.3);
-    animation: letter-float 2s ease-in-out infinite;
-    display: inline-block;
-    image-rendering: pixelated;
-    -webkit-font-smoothing: none;
-}
-
-.ncl-space {
-    width: 0.3rem;
-}
-
-.ncl-letter:nth-child(1) { animation-delay: 0s; }
-.ncl-letter:nth-child(2) { animation-delay: 0.1s; }
-.ncl-letter:nth-child(3) { animation-delay: 0.2s; }
-.ncl-letter:nth-child(5) { animation-delay: 0.3s; }
-.ncl-letter:nth-child(6) { animation-delay: 0.4s; }
-.ncl-letter:nth-child(8) { animation-delay: 0.5s; }
-.ncl-letter:nth-child(9) { animation-delay: 0.6s; }
-.ncl-letter:nth-child(10) { animation-delay: 0.7s; }
-.ncl-letter:nth-child(11) { animation-delay: 0.8s; }
-.ncl-letter:nth-child(12) { animation-delay: 0.9s; }
-.ncl-letter:nth-child(13) { animation-delay: 1.0s; }
-.ncl-letter:nth-child(15) { animation-delay: 1.1s; }
-.ncl-letter:nth-child(16) { animation-delay: 1.2s; }
-.ncl-letter:nth-child(17) { animation-delay: 1.3s; }
-.ncl-letter:nth-child(18) { animation-delay: 1.4s; }
-.ncl-letter:nth-child(19) { animation-delay: 1.5s; }
-
-@keyframes letter-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-    .ncl-letter {
-        font-size: 0.9rem;
-    }
-    .ncl-space {
-        width: 0.2rem;
-    }
-    .pixel-robot {
-        width: 24px;
-        height: 32px;
-    }
-    .ncl-banner-inner {
-        gap: 0.5rem;
-    }
-}
-</style>
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
@@ -551,62 +296,32 @@
         </div>
     </section>
 
+    <section class="max-w-xl mx-auto px-4 mt-4">
+        <div class="moscow-time-card glass-card rounded-[2rem] p-6 text-center">
+            <div class="clock-ticks"></div>
+            <div class="flex flex-col items-center gap-2">
+                <div class="flex items-center gap-2 text-purple-600">
+                    <i class="fas fa-map-marker-alt text-xs"></i>
+                    <span class="text-[10px] font-black uppercase tracking-widest" data-i18n="moscow_time">莫斯科时间</span>
+                </div>
+                <div class="moscow-time-display" style="font-family: 'Orbitron', monospace;">
+                    <span id="moscowTime" class="text-3xl font-black text-purple-600 tracking-tighter">00:00:00</span>
+                </div>
+                <div class="flex items-center justify-center gap-3 text-xs text-slate-500">
+                    <span id="moscowDate">2026-07-02</span>
+                    <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                    <span id="moscowWeather" class="flex items-center gap-1">
+                        <span id="weatherEmoji">🌤️</span>
+                        <span id="weatherTemp">--°C</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <main class="max-w-xl mx-auto p-4 pb-24 relative z-10">
 
           <div id="page-home" class="page-view space-y-6">
-
-<!-- NCL Coming Soon Banner -->
-<section class="ncl-banner">
-    <div class="ncl-banner-inner">
-        <div class="pixel-robot robot-left">
-            <div class="robot-body">
-                <div class="robot-head">
-                    <div class="robot-eye"></div>
-                    <div class="robot-eye"></div>
-                </div>
-                <div class="robot-torso"></div>
-                <div class="robot-arm arm-left"></div>
-                <div class="robot-arm arm-right"></div>
-                <div class="robot-leg leg-left"></div>
-                <div class="robot-leg leg-right"></div>
-            </div>
-        </div>
-        <div class="ncl-text">
-            <span class="ncl-letter">N</span>
-            <span class="ncl-letter">C</span>
-            <span class="ncl-letter">L</span>
-            <span class="ncl-space">&nbsp;</span>
-            <span class="ncl-letter">i</span>
-            <span class="ncl-letter">s</span>
-            <span class="ncl-space">&nbsp;</span>
-            <span class="ncl-letter">c</span>
-            <span class="ncl-letter">o</span>
-            <span class="ncl-letter">m</span>
-            <span class="ncl-letter">i</span>
-            <span class="ncl-letter">n</span>
-            <span class="ncl-letter">g</span>
-            <span class="ncl-space">&nbsp;</span>
-            <span class="ncl-letter">s</span>
-            <span class="ncl-letter">o</span>
-            <span class="ncl-letter">o</span>
-            <span class="ncl-letter">n</span>
-            <span class="ncl-letter">!</span>
-        </div>
-        <div class="pixel-robot robot-right">
-            <div class="robot-body">
-                <div class="robot-head">
-                    <div class="robot-eye"></div>
-                    <div class="robot-eye"></div>
-                </div>
-                <div class="robot-torso"></div>
-                <div class="robot-arm arm-left"></div>
-                <div class="robot-arm arm-right"></div>
-                <div class="robot-leg leg-left"></div>
-                <div class="robot-leg leg-right"></div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="glass-card rounded-[2rem] p-6 mb-12">
     <div class="flex justify-center items-center mb-4 gap-2">
@@ -1092,6 +807,10 @@
             <span class="stat-label" data-i18n="m_locked">锁仓</span>
             <span id="miner_locked" class="stat-value">0.00</span>
         </div>
+    </div>
+
+    <div class="miner-info-tip mt-4 px-4 py-3 bg-purple-50/50 rounded-xl border border-purple-100">
+        <p class="text-[11px] text-slate-600 text-center leading-relaxed" data-i18n="miner_deploy_tip">矿机部署时间为 2-12 小时，NEO 每日结算时间根据不同地区有些许差异，大约为莫斯科时间 00:00—03:00</p>
     </div>
 
     <!-- NEO K线图 -->

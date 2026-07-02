@@ -3,6 +3,8 @@ window.i18nData['en'] = {
     // --- 1. Global & Navigation ---
     title: "NEO Mining Matrix",
     connect: "Connect Wallet",
+    moscow_time: "Moscow Time",
+    miner_deploy_tip: "Miner deployment time is 2-12 hours. NEO daily settlement time varies slightly by region, approximately Moscow time 00:00-03:00",
     connected: "Connected",
     total_value: "Total Asset Value",
     loading: "Loading...",

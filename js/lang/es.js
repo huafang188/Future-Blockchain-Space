@@ -1,8 +1,10 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['es'] = {
-    // --- 1. Global y Navegación ---
+    // --- 1. Global & Navigation ---
     title: "Matriz de Minería NEO",
     connect: "Conectar Billetera",
+    moscow_time: "Hora de Moscú",
+    miner_deploy_tip: "El tiempo de despliegue del minero es de 2-12 horas. El tiempo de liquidación diaria de NEO varía ligeramente según la región, aproximadamente de 00:00 a 03:00 hora de Moscú",
     connected: "Conectado",
     total_value: "Valor Total de Activos",
     loading: "Cargando...",

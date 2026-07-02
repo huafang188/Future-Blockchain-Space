@@ -576,6 +576,119 @@ body::before {
 .font-black, .font-extrabold { font-weight: 700 !important; }
 .font-bold { font-weight: 600 !important; }
 
+/* 莫斯科时间卡片 */
+.moscow-time-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.04);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.02),
+        0 0 30px rgba(139, 92, 246, 0.02),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.moscow-time-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(139, 92, 246, 0.04) 0%,
+        transparent 50%
+    );
+    animation: time-glow 8s ease-in-out infinite;
+}
+
+@keyframes time-glow {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+        opacity: 0.4;
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+.moscow-time-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    transform: translate(-50%, -50%);
+    border: 2px solid transparent;
+    border-top-color: rgba(139, 92, 246, 0.15);
+    border-radius: 50%;
+    animation: clock-second 60s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes clock-second {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.moscow-time-card .clock-ticks {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    height: 85%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.moscow-time-card .clock-ticks::before,
+.moscow-time-card .clock-ticks::after {
+    content: '';
+    position: absolute;
+    background: rgba(139, 92, 246, 0.1);
+}
+
+.moscow-time-card .clock-ticks::before {
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 6px;
+    transform: translateX(-50%);
+}
+
+.moscow-time-card .clock-ticks::after {
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    height: 6px;
+    transform: translateX(-50%);
+}
+
+.moscow-time-display {
+    position: relative;
+    z-index: 1;
+    text-shadow: 
+        0 2px 4px rgba(139, 92, 246, 0.15),
+        0 0 20px rgba(139, 92, 246, 0.08);
+}
+
+.moscow-time-card:hover {
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.05),
+        0 0 40px rgba(139, 92, 246, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
 /* 隐藏滚动条 */
 ::-webkit-scrollbar { display: none; }
 
