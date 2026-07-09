@@ -343,7 +343,11 @@ export function renderTokenList(balances = {}) {
  */
 function getTokenLogo(symbol) {
     const logoMap = {
-        'NEO': '💜',
+        'NEO': '<img src="assets/NEO.webp" alt="NEO" class="w-full h-full object-contain">',
+        'NEX': '<img src="assets/NEX.webp" alt="NEX" class="w-full h-full object-contain">',
+        'NEA': '<img src="assets/NEA.webp" alt="NEA" class="w-full h-full object-contain">',
+        'NRY': '<img src="assets/NRY.webp" alt="NRY" class="w-full h-full object-contain">',
+        'NCL': '<img src="assets/NCL.webp" alt="NCL" class="w-full h-full object-contain">',
         'GAS': '⛽',
         'ETH': '🟣',
         'BTC': '₿',

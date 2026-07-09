@@ -331,12 +331,12 @@ export const TOKEN_DECIMALS = {
  * 代币视觉配置
  */
 export const tokenConfig = {
-    'NEO': { logo: 'assets/neo_logo.webp', chartUrl: '' },
-    'NEX': { logo: 'assets/nex_logo.webp', chartUrl: '' },
+    'NEO': { logo: 'assets/NEO.webp', chartUrl: '' },
+    'NEX': { logo: 'assets/NEX.webp', chartUrl: '' },
     'NET': { logo: 'assets/net_logo.webp', chartUrl: '' },
-    'NEA': { logo: 'assets/nea_logo.webp', chartUrl: '' },
-    'NRY': { logo: 'assets/nry_logo.webp', chartUrl: '' },
-    'NCL': { logo: 'assets/ncl_logo.webp', chartUrl: '' },
+    'NEA': { logo: 'assets/NEA.webp', chartUrl: '' },
+    'NRY': { logo: 'assets/NRY.webp', chartUrl: '' },
+    'NCL': { logo: 'assets/NCL.webp', chartUrl: '' },
     'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
     'BNB': { logo: 'assets/BNB.webp', chartUrl: '' },
     'GRAM': { logo: 'assets/GRAM.svg', chartUrl: '' },
