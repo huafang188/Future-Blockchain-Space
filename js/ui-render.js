@@ -535,7 +535,7 @@ function renderPriceCharts() {
     const tokenSymbols = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
     const days = 30;
     const trendColors = {
-        NEO: { line: '#6366f1', fill: 'rgba(99,102,241,0.1)' },
+        NEO: { line: '#22c55e', fill: 'rgba(34,197,94,0.15)' },
         NEX: { line: '#06b6d4', fill: 'rgba(6,182,212,0.1)' },
         NET: { line: '#10b981', fill: 'rgba(16,185,129,0.1)' },
         NEA: { line: '#f59e0b', fill: 'rgba(245,158,11,0.1)' },
@@ -680,12 +680,16 @@ function renderPriceCharts() {
 
         if (minerCanvas._chart) minerCanvas._chart.destroy();
         const ctx = minerCanvas.getContext('2d');
+        
+        const animatedData = new Array(data.length).fill(null);
+        let animationStep = 0;
+        
         minerCanvas._chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    data: data,
+                    data: animatedData,
                     borderColor: colors.line,
                     backgroundColor: colors.fill,
                     borderWidth: 2,
@@ -727,9 +731,32 @@ function renderPriceCharts() {
                             callback: v => '$' + v.toFixed(2)
                         }
                     }
+                },
+                animation: {
+                    duration: 0
                 }
             }
         });
+        
+        const animateChart = () => {
+            if (animationStep <= data.length) {
+                for (let i = 0; i < animationStep; i++) {
+                    minerCanvas._chart.data.datasets[0].data[i] = data[i];
+                }
+                minerCanvas._chart.update('none');
+                animationStep++;
+                requestAnimationFrame(animateChart);
+            } else {
+                setTimeout(() => {
+                    animationStep = 0;
+                    minerCanvas._chart.data.datasets[0].data.fill(null);
+                    minerCanvas._chart.update('none');
+                    animateChart();
+                }, 3000);
+            }
+        };
+        
+        setTimeout(animateChart, 500);
     }
 
     // 渲染矿机页面的 NCL K线图
