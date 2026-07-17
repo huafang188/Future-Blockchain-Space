@@ -34,6 +34,7 @@
     <link rel="alternate" hreflang="it" href="https://www.neoneo.ink?lang=it" />
     <link rel="alternate" hreflang="ar" href="https://www.neoneo.ink?lang=ar" />
     <link rel="alternate" hreflang="el" href="https://www.neoneo.ink?lang=el" />
+    <link rel="alternate" hreflang="ug" href="https://www.neoneo.ink?lang=ug" />
     <link rel="alternate" hreflang="hi" href="https://www.neoneo.ink?lang=hi" />
     <link rel="alternate" hreflang="mn" href="https://www.neoneo.ink?lang=mn" />
     <meta property="og:title" content="NEO生态挖矿矩阵">
@@ -133,6 +134,7 @@
             <div class="relative">
                 <div class="w-16 h-16 border-4 border-purple-200 rounded-full"></div>
                 <div class="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-purple-600 rounded-full animate-spin"></div>
+                <img src="assets/NEO.webp" alt="NEO Logo" class="absolute inset-2 w-12 h-12 object-contain loading-logo" />
             </div>
             <p class="mt-4 text-purple-600 font-bold text-sm" data-i18n="loading">加载中...</p>
         </div>
@@ -260,18 +262,16 @@
                         <div class="custom-select-option" data-lang="mn" onclick="selectLang('mn')"><span>🇲🇳 Монгол</span></div>
                         <div class="custom-select-option" data-lang="hi" onclick="selectLang('hi')"><span>🇮🇳 हिन्दी</span></div>
                         <div class="custom-select-option" data-lang="el" onclick="selectLang('el')"><span>🇬🇷 Ελληνικά</span></div>
+                        <div class="custom-select-option" data-lang="ug" onclick="selectLang('ug')"><span>🇨🇳 ئۇيغۇرچە</span></div>
                     </div>
                 </div>
         </div>
     </header>
 
     <section class="max-w-xl mx-auto px-4 mt-4">
-        <div class="glass-card blockchain-card rounded-[2.5rem] p-8 text-center border-b-2 border-blue-500/10">
-            <!-- 区块链网格背景 -->
+        <div class="glass-card blockchain-card rounded-[2.5rem] p-4 flex flex-col items-center gap-0 relative overflow-hidden">
             <div class="blockchain-grid"></div>
-            <!-- NEO 背景文字 -->
             <div class="neo-bg-image"></div>
-            <!-- 浮动粒子效果 -->
             <div class="floating-particles">
                 <div class="particle"></div>
                 <div class="particle"></div>
@@ -279,45 +279,43 @@
                 <div class="particle"></div>
                 <div class="particle"></div>
             </div>
-            <!-- 紫色卫星旋转动画 -->
             <div class="satellite-container">
                 <div class="satellite"></div>
             </div>
-            <!-- 内容层 -->
-            <div class="relative z-10">
-                <div id="walletAddr" data-i18n="connect" onclick="handleWalletClick()" class="cursor-pointer font-black bg-purple-50 text-purple-600 px-4 py-2 rounded-full text-[10px] border border-purple-100 mb-4 inline-block">
-                    连接钱包
+
+            <div class="relative z-10 w-full flex flex-row items-center justify-between px-2">
+                <div class="text-left">
+                    <div id="walletAddr" data-i18n="connect" onclick="handleWalletClick()" class="cursor-pointer font-black bg-purple-50 text-purple-600 px-4 py-2 rounded-full text-[10px] border border-purple-100 inline-block">
+                        连接钱包
+                    </div>
+                    <div id="minerLevel" class="miner-level-badge bg-gradient-to-r from-slate-100 to-slate-50 text-slate-400 px-3 py-1 rounded-full text-[9px] font-bold border border-slate-100 inline-block opacity-0">
+                        矿工等级
+                    </div>
                 </div>
-                <div id="minerLevel" class="miner-level-badge bg-gradient-to-r from-slate-100 to-slate-50 text-slate-400 px-3 py-1 rounded-full text-[9px] font-bold border border-slate-100 mb-2 inline-block opacity-0">
-                    矿工等级
-                </div>
-                <p class="text-black text-[10px] font-black uppercase tracking-widest mb-1" data-i18n="total_value">总资产价值</p>
-                <div class="text-4xl font-black text-black tracking-tighter" style="font-family: 'Orbitron', monospace;">
-                    $ <span id="totalValue">0.00</span>
+                <div class="text-right">
+                    <p class="text-black text-[10px] font-black uppercase tracking-widest mb-1" data-i18n="total_value">总资产价值</p>
+                    <div class="text-3xl font-black text-black tracking-tighter" style="font-family: 'Orbitron', monospace;">
+                        $ <span id="totalValue"><span class="tv-int">0</span><span class="tv-dec text-[0.5em] align-baseline">.00</span></span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="max-w-xl mx-auto px-4 mt-4">
-        <div class="moscow-time-card glass-card rounded-[2rem] p-6 text-center">
-            <div class="clock-ticks"></div>
-            <div class="flex flex-col items-center gap-2">
+            <div class="relative z-10 flex flex-row items-center justify-center gap-3 text-xs text-slate-500 w-full">
                 <div class="flex items-center gap-2 text-purple-600">
                     <i class="fas fa-map-marker-alt text-xs"></i>
-                    <span class="text-[10px] font-black uppercase tracking-widest" data-i18n="moscow_time">莫斯科时间</span>
+                    <span class="font-black uppercase tracking-widest" data-i18n="moscow_time">莫斯科时间</span>
                 </div>
+                <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
                 <div class="moscow-time-display" style="font-family: 'Orbitron', monospace;">
-                    <span id="moscowTime" class="text-3xl font-black text-purple-600 tracking-tighter">00:00:00</span>
+                    <span id="moscowTime" class="text-lg font-black text-purple-600 tracking-tighter">00:00:00</span>
                 </div>
-                <div class="flex items-center justify-center gap-3 text-xs text-slate-500">
-                    <span id="moscowDate">2026-07-02</span>
-                    <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
-                    <span id="moscowWeather" class="flex items-center gap-1">
-                        <span id="weatherEmoji">🌤️</span>
-                        <span id="weatherTemp">--°C</span>
-                    </span>
-                </div>
+                <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                <span id="moscowDate">2026-07-02</span>
+                <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                <span id="moscowWeather" class="flex items-center gap-1">
+                    <span id="weatherEmoji">🌤️</span>
+                    <span id="weatherTemp">--°C</span>
+                </span>
             </div>
         </div>
     </section>
@@ -1132,7 +1130,8 @@
         'ar': 'js/lang/ar.js',
         'mn': 'js/lang/mn.js',
         'hi': 'js/lang/hi.js',
-        'el': 'js/lang/el.js'
+        'el': 'js/lang/el.js',
+        'ug': 'js/lang/ug.js'
     };
     
     window.loadLanguage = function(lang) {

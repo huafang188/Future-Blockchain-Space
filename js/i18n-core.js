@@ -90,7 +90,8 @@ window.i18nRender = function(lang) {
             'ar': '🇸🇦 AR',
             'mn': '🇲🇳 MN',
             'hi': '🇮🇳 HI',
-            'el': '🇬🇷 EL'
+            'el': '🇬🇷 EL',
+            'ug': '🇨🇳 ئۇيغۇر'
         };
         langTextEl.textContent = langNames[lang] || lang;
     }

@@ -48,7 +48,8 @@ export function updateNumberWithAnimation(elementId, value, options = {}) {
         duration = 1200, 
         decimals = 2, 
         prefix = '', 
-        suffix = '' 
+        suffix = '',
+        splitDecimal = false
     } = options;
     
     const startValue = parseFloat(element.innerText.replace(/[^0-9.-]/g, '')) || 0;
@@ -60,10 +61,22 @@ export function updateNumberWithAnimation(elementId, value, options = {}) {
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const currentValue = startValue + (value - startValue) * easeOutQuart;
         
-        element.innerText = `${prefix}${currentValue.toLocaleString(undefined, {
+        const formatted = currentValue.toLocaleString(undefined, {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
-        })}${suffix}`;
+        });
+        
+        if (splitDecimal) {
+            const parts = formatted.split('.');
+            const intPart = parts[0];
+            const decPart = parts[1] ? `.${parts[1]}` : '';
+            const intEl = element.querySelector('.tv-int');
+            const decEl = element.querySelector('.tv-dec');
+            if (intEl) intEl.textContent = intPart;
+            if (decEl) decEl.textContent = decPart;
+        } else {
+            element.innerText = `${prefix}${formatted}${suffix}`;
+        }
         
         if (progress < 1) {
             requestAnimationFrame(animate);
@@ -120,7 +133,7 @@ export function refreshAssetDisplay(balances = {}) {
     // 刷新总资产
     const totalEl = document.getElementById('totalValue');
     if (totalEl) {
-        updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2 });
+        updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2, splitDecimal: true });
     }
 }
 
@@ -302,7 +315,7 @@ export function renderTokenList(balances = {}) {
         // 带动画更新页面顶部的总资产数值显示
         const totalEl = document.getElementById('totalValue');
         if (totalEl) {
-            updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2 });
+            updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2, splitDecimal: true });
         }
         
         // 带动画更新各个代币的价格、余额和价值
