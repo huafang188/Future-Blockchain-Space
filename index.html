@@ -49,7 +49,18 @@
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <script>
+        tailwind.config = {
+            future: {
+                removeDeprecatedGapUtilities: true,
+                purgeLayersByDefault: true,
+            },
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
     
     <!-- 结构化数据 Schema -->
     <script type="application/ld+json">
@@ -541,7 +552,7 @@
                 </ul>
             </div>
             <div class="rounded-xl overflow-hidden shadow-sm">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20cryptocurrency%20mining%20farm%20with%20green%20energy%20sources%2C%20solar%20panels%2C%20clean%20technology%2C%20professional%20setup&image_size=landscape_16_9" alt="基础设施" class="w-full h-48 object-cover">
+                <img src="assets/ai_bg.svg" alt="基础设施" class="w-full h-48 object-cover">
             </div>
         </div>
     </div>
@@ -567,7 +578,7 @@
                 </ul>
             </div>
             <div class="rounded-xl overflow-hidden shadow-sm">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=blockchain%20token%20economy%20diagram%2C%20multiple%20tokens%20flow%2C%20governance%20structure%2C%20blue%20tech%20visualization&image_size=landscape_16_9" alt="治理架构" class="w-full h-48 object-cover">
+                <img src="assets/NEO.webp" alt="治理架构" class="w-full h-48 object-cover">
             </div>
         </div>
     </div>
@@ -592,7 +603,7 @@
                 </ul>
             </div>
             <div class="rounded-xl overflow-hidden shadow-sm">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=blockchain%20security%20technology%2C%20distributed%20ledger%20verification%2C%20cryptographic%20security%20system%2C%20purple%20tech%20aesthetic&image_size=landscape_16_9" alt="技术保障" class="w-full h-48 object-cover">
+                <img src="assets/Ethereum.webp" alt="技术保障" class="w-full h-48 object-cover">
             </div>
         </div>
     </div>
@@ -618,7 +629,7 @@
                 </ul>
             </div>
             <div class="rounded-xl overflow-hidden shadow-sm">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=renewable%20energy%20sources%2C%20solar%20panels%20and%20wind%20turbines%2C%20clean%20energy%20infrastructure%2C%20green%20technology%20landscape&image_size=landscape_16_9" alt="绿色能源" class="w-full h-48 object-cover">
+                <img src="assets/网页背景.webp" alt="绿色能源" class="w-full h-48 object-cover">
             </div>
         </div>
     </div>
