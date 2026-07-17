@@ -305,23 +305,22 @@
                 </div>
                 <div class="text-right">
                     <p class="text-black text-[10px] font-black uppercase tracking-widest mb-1" data-i18n="total_value">总资产价值</p>
-                    <div class="text-3xl font-black text-black tracking-tighter" style="font-family: 'Orbitron', monospace;">
+                    <div class="text-xl font-black text-black tracking-tighter" style="font-family: 'Orbitron', monospace;">
                         $ <span id="totalValue"><span class="tv-int">0</span><span class="tv-dec text-[0.5em] align-baseline">.00</span></span>
                     </div>
                 </div>
             </div>
 
             <div class="relative z-10 flex flex-row items-center justify-center gap-3 text-xs text-slate-500 w-full">
-                <div class="flex items-center gap-2 text-purple-600">
-                    <i class="fas fa-map-marker-alt text-xs"></i>
-                    <span class="font-black uppercase tracking-widest" data-i18n="moscow_time">莫斯科时间</span>
+                <div class="flex flex-col items-center text-purple-600">
+                    <i class="fas fa-map-marker-alt text-[10px] mb-0.5"></i>
+                    <span class="font-black text-[9px] tracking-wider" data-i18n="moscow_time">莫斯科时间</span>
                 </div>
                 <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
-                <div class="moscow-time-display" style="font-family: 'Orbitron', monospace;">
+                <div class="moscow-time-display flex flex-col items-center" style="font-family: 'Orbitron', monospace;">
                     <span id="moscowTime" class="text-lg font-black text-purple-600 tracking-tighter">00:00:00</span>
+                    <span id="moscowDate" class="text-[9px] text-slate-400 mt-0.5">2026-07-02</span>
                 </div>
-                <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
-                <span id="moscowDate">2026-07-02</span>
                 <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
                 <span id="moscowWeather" class="flex items-center gap-1">
                     <span id="weatherEmoji">🌤️</span>
