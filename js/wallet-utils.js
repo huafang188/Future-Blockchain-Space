@@ -493,6 +493,11 @@ export function resetWalletUI() {
 }
 
 /**
+ * 存储已注册的事件监听器，用于退出时清理
+ */
+const registeredListeners = [];
+
+/**
  * 6. 登出逻辑
  */
 export function logout() {
@@ -524,6 +529,20 @@ export function logout() {
             const el = document.getElementById(id);
             if (el) el.innerText = '0';
         });
+        
+        // 移除所有钱包事件监听器，防止退出后自动连接
+        const provider = getEVMProvider();
+        if (provider) {
+            registeredListeners.forEach(({ event, handler }) => {
+                try {
+                    provider.removeListener(event, handler);
+                    console.log('[Wallet] 移除事件监听器:', event);
+                } catch (e) {
+                    console.log('[Wallet] 移除监听器失败:', e.message);
+                }
+            });
+            registeredListeners.length = 0;
+        }
         
         // 立即更新 UI 为未连接状态
         if (typeof window.syncWalletUI === 'function') {
@@ -588,8 +607,8 @@ export function mountAccountChangeListener() {
     
     console.log("[Wallet] 挂载 EVM 账户变化监听器");
     
-    // 监听账户变化事件
-    provider.on('accountsChanged', async (accounts) => {
+    // 账户变化处理函数
+    const accountsChangedHandler = async (accounts) => {
         console.log("[Wallet] 检测到账户变化:", accounts);
         
         // 检查是否是手动登出状态 - 优先检查
@@ -646,10 +665,10 @@ export function mountAccountChangeListener() {
                 console.log("[Wallet] 用户取消自动连接签名");
             }
         }
-    });
+    };
     
-    // 监听链变化事件
-    provider.on('chainChanged', (chainId) => {
+    // 链变化处理函数
+    const chainChangedHandler = (chainId) => {
         console.log("[Wallet] EVM 网络变更:", chainId);
         // 链切换时清除登录状态，提示用户重新连接
         const storedChain = localStorage.getItem('fbs_chain');
@@ -671,5 +690,15 @@ export function mountAccountChangeListener() {
                 alert('检测到钱包网络已切换，请重新连接钱包');
             }, 300);
         }
-    });
+    };
+    
+    // 注册监听器并保存引用
+    provider.on('accountsChanged', accountsChangedHandler);
+    provider.on('chainChanged', chainChangedHandler);
+    
+    // 保存到数组，用于退出时清理
+    registeredListeners.push(
+        { event: 'accountsChanged', handler: accountsChangedHandler },
+        { event: 'chainChanged', handler: chainChangedHandler }
+    );
 }
