@@ -8,6 +8,12 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    /* 阻止系统字体大小调整 */
+    font-size: 16px;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
     /* 全局背景图片 */
     background-image: url('assets/网页背景.webp');
     background-repeat: no-repeat;
