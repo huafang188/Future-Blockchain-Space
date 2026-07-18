@@ -496,6 +496,7 @@ export function resetWalletUI() {
  * 存储已注册的事件监听器，用于退出时清理
  */
 const registeredListeners = [];
+let listenersMounted = false;
 
 /**
  * 6. 登出逻辑
@@ -543,6 +544,9 @@ export function logout() {
             });
             registeredListeners.length = 0;
         }
+        
+        // 重置标志，允许下次登录时重新注册监听器
+        listenersMounted = false;
         
         // 立即更新 UI 为未连接状态
         if (typeof window.syncWalletUI === 'function') {
@@ -604,6 +608,13 @@ export function mountAccountChangeListener() {
     
     const provider = getEVMProvider();
     if (!provider) return;
+    
+    // 防止重复注册
+    if (listenersMounted) {
+        console.log("[Wallet] 监听器已挂载，跳过重复注册");
+        return;
+    }
+    listenersMounted = true;
     
     console.log("[Wallet] 挂载 EVM 账户变化监听器");
     
