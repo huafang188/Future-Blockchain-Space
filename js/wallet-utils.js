@@ -500,13 +500,19 @@ let listenersMounted = false;
 
 /**
  * 6. 登出逻辑
+ * @param {boolean} showConfirm - 是否显示确认对话框（默认true）
  */
-export function logout() {
-    if (confirm("确定要退出登录吗？\n退出后下次访问将不会自动重连。")) {
-        // 设置手动退出标记，彻底阻止下一次的自动重连判断
-        localStorage.setItem('user_logout_manual', 'true');
-        localStorage.removeItem('fbs_address');
-        localStorage.removeItem('fbs_chain');
+export function logout(showConfirm) {
+    if (showConfirm === undefined) showConfirm = true;
+    
+    if (showConfirm && !confirm("确定要退出登录吗？")) {
+        return;
+    }
+    
+    // 不保存登录状态，清空所有数据
+    localStorage.removeItem('fbs_address');
+    localStorage.removeItem('fbs_chain');
+    localStorage.removeItem('user_logout_manual');
         
         // 清空全局数据缓存，防止余额残留
         if (window.userBalances) window.userBalances = {};
@@ -554,7 +560,6 @@ export function logout() {
         } else {
             resetWalletUI();
         }
-    }
 }
 
 /**
@@ -618,63 +623,25 @@ export function mountAccountChangeListener() {
     
     console.log("[Wallet] 挂载 EVM 账户变化监听器");
     
-    // 账户变化处理函数
+    // 账户变化处理函数 - 用户切换钱包后重置状态，等待手动连接
     const accountsChangedHandler = async (accounts) => {
         console.log("[Wallet] 检测到账户变化:", accounts);
         
-        // 检查是否是手动登出状态 - 优先检查
-        const isManualLogout = localStorage.getItem('user_logout_manual');
-        if (isManualLogout === 'true') {
-            console.log("[Wallet] 用户已手动登出，忽略账户变化");
-            return;
-        }
+        const storedAddress = localStorage.getItem('fbs_address');
         
         // 如果没有账户，重置UI
         if (!accounts || accounts.length === 0) {
             console.log("[Wallet] 钱包已锁定或无账户");
+            resetWalletUI();
             return;
         }
         
         const newAddress = accounts[0];
-        const storedAddress = localStorage.getItem('fbs_address');
         
-        // 如果是同一个地址，不需要处理
-        if (newAddress === storedAddress) {
-            console.log("[Wallet] 地址未变化");
-            return;
-        }
-        
-        // 自动连接新账户（需要签名）
-        try {
-            // 先清空旧数据，防止切换过程中显示旧账户数据
-            if (window.userBalances) window.userBalances = {};
-            if (window.lastFetchedData) window.lastFetchedData = null;
-            
-            // 请求签名确认
-            const msg = `FBS Auto Connect\nAddress: ${newAddress}\nTime: ${Date.now()}`;
-            const hexMsg = '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
-            
-            await provider.request({ 
-                method: 'personal_sign', 
-                params: [hexMsg, newAddress] 
-            });
-            
-            // 更新状态
-            localStorage.setItem('fbs_address', newAddress);
-            localStorage.setItem('fbs_chain', 'BSC');
-            localStorage.setItem('user_logout_manual', 'false');
-            
-            console.log("[Wallet] 自动连接新账户成功:", newAddress);
-            
-            // 完成登录流程
-            finishLogin();
-            
-        } catch (e) {
-            console.error("[Wallet] 自动连接失败:", e);
-            // 用户取消签名，保持原状态或重置
-            if (e.code === 4001) {
-                console.log("[Wallet] 用户取消自动连接签名");
-            }
+        // 如果地址变化，重置状态，等待用户手动连接新钱包
+        if (newAddress !== storedAddress) {
+            console.log("[Wallet] 钱包地址变化，重置登录状态");
+            logout(false);
         }
     };
     

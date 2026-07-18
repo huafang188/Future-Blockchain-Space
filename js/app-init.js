@@ -344,28 +344,17 @@ function initApp() {
         if (window.updateNetworkMinerDisplay) window.updateNetworkMinerDisplay();
 
         // --- 2.2 登录态恢复逻辑 ---
-        const currentAddress = localStorage.getItem('fbs_address');
-        const isManualLogout = localStorage.getItem('user_logout_manual');
-
-        // 规则：本地有地址 且 用户没有手动点过“退出登录”
-        if (currentAddress && isManualLogout !== 'true') {
-            console.log(`[App] 自动连接地址: ${currentAddress}`);
-            
-            // 更新导航栏钱包 UI（显示缩略地址）
-            updateWalletUI(currentAddress);
-            
-            // 核心：拉取飞书后台的所有资产、团队、记录数据
-        fetchUserData(currentAddress);
-            
-        } else {
-            console.log("[App] 处于未登录或手动登出状态，等待手动连接");
-            resetWalletUI(); // 显示“连接钱包”按钮
-            
-            // 初始清空列表，防止显示旧的缓存数据
-            if (window.renderHistory) window.renderHistory([]); 
-            if (window.renderTransfers) window.renderTransfers([]);
-            if (window.renderTokenList) window.renderTokenList({});
-        }
+        // 不自动连接，必须用户手动点击连接钱包
+        console.log("[App] 等待用户手动连接钱包");
+        resetWalletUI();
+        
+        // 清空所有缓存数据
+        if (window.renderHistory) window.renderHistory([]); 
+        if (window.renderTransfers) window.renderTransfers([]);
+        if (window.renderTokenList) window.renderTokenList({});
+        localStorage.removeItem('fbs_address');
+        localStorage.removeItem('fbs_chain');
+        localStorage.removeItem('user_logout_manual');
     });
 
     /**
