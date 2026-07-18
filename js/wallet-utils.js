@@ -14,15 +14,23 @@ export function mountWalletClickHandler() {
         }
     };
 
-    const walletBtn = document.getElementById('walletAddr');
-    if (walletBtn) {
-        walletBtn.addEventListener('click', handleWalletClick);
-        walletBtn.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.95)';
-        });
-        walletBtn.addEventListener('touchend', function() {
-            this.style.transform = 'scale(1)';
-        });
+    function bindEvents() {
+        const walletBtn = document.getElementById('walletAddr');
+        if (walletBtn) {
+            walletBtn.addEventListener('click', handleWalletClick);
+            walletBtn.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            walletBtn.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindEvents);
+    } else {
+        bindEvents();
     }
 }
 
