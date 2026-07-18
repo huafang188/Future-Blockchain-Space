@@ -757,6 +757,11 @@ function renderPriceCharts() {
         };
         
         setTimeout(animateChart, 500);
+        
+        const priceElement = document.getElementById('neo-price-value');
+        if (priceElement) {
+            priceElement.textContent = `$${basePrice.toFixed(4)}`;
+        }
     }
 
     // 渲染矿机页面的 NCL K线图
