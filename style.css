@@ -407,6 +407,7 @@ body::before {
     background-size: 20px 20px;
     animation: gridMove 20s linear infinite;
     pointer-events: none;
+    z-index: 1;
 }
 
 @keyframes gridMove {

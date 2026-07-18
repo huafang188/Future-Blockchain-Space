@@ -7,14 +7,23 @@ export function mountWalletClickHandler() {
         console.log("[Wallet] 按钮点击");
         const savedAddr = localStorage.getItem('fbs_address');
         
-        // 如果本地已存有地址，点击则视为“登出”操作
         if (savedAddr) {
             logout();
         } else {
-            // 否则执行“连接”操作
             connectWallet();
         }
     };
+
+    const walletBtn = document.getElementById('walletAddr');
+    if (walletBtn) {
+        walletBtn.addEventListener('click', handleWalletClick);
+        walletBtn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+        });
+        walletBtn.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
+    }
 }
 
 /**
@@ -450,11 +459,10 @@ export function finishLogin() {
 export function updateWalletUI(addr) {
     const el = document.getElementById('walletAddr');
     if (el) {
-        // 显示格式如 0x1234...abcd
         const displayAddr = addr.slice(0, 6) + '...' + addr.slice(-4);
         el.innerText = displayAddr;
-        el.removeAttribute('data-i18n'); // 移除“连接钱包”的多语言标签
-        el.className = "cursor-pointer font-black bg-emerald-50 text-emerald-600 px-4 py-2 rounded-full text-[10px] border border-emerald-100 mb-4 inline-block";
+        el.removeAttribute('data-i18n');
+        el.className = "cursor-pointer font-black bg-emerald-50 text-emerald-600 px-4 py-2 rounded-full text-[10px] border border-emerald-100 mb-4 inline-block transition-transform active:scale-95 focus:outline-none";
     }
 }
 
@@ -465,8 +473,8 @@ export function resetWalletUI() {
     const el = document.getElementById('walletAddr');
     if (el) {
         el.innerText = '连接钱包';
-        el.setAttribute('data-i18n', 'connect'); // 恢复多语言标记
-        el.className = "cursor-pointer font-black bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] border border-blue-100 mb-4 inline-block";
+        el.setAttribute('data-i18n', 'connect');
+        el.className = "cursor-pointer font-black bg-purple-50 text-purple-600 px-4 py-2 rounded-full text-[10px] border border-purple-100 mb-4 inline-block transition-transform active:scale-95 focus:outline-none";
         
         // 触发一次全局多语言翻译，使“连接钱包”根据当前语言显示
         if (window.i18nRender) {
