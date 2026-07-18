@@ -592,6 +592,13 @@ export function mountAccountChangeListener() {
     provider.on('accountsChanged', async (accounts) => {
         console.log("[Wallet] 检测到账户变化:", accounts);
         
+        // 检查是否是手动登出状态 - 优先检查
+        const isManualLogout = localStorage.getItem('user_logout_manual');
+        if (isManualLogout === 'true') {
+            console.log("[Wallet] 用户已手动登出，忽略账户变化");
+            return;
+        }
+        
         // 如果没有账户，重置UI
         if (!accounts || accounts.length === 0) {
             console.log("[Wallet] 钱包已锁定或无账户");
@@ -604,13 +611,6 @@ export function mountAccountChangeListener() {
         // 如果是同一个地址，不需要处理
         if (newAddress === storedAddress) {
             console.log("[Wallet] 地址未变化");
-            return;
-        }
-        
-        // 检查是否是手动登出状态
-        const isManualLogout = localStorage.getItem('user_logout_manual');
-        if (isManualLogout === 'true') {
-            console.log("[Wallet] 用户已手动登出，跳过自动连接");
             return;
         }
         
