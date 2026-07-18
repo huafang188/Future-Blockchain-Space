@@ -221,6 +221,11 @@ export async function fetchUserData(address) {
                 normalizedPrices[key.toUpperCase()] = parseFloat(data.allPrices[key]);
             });
             window.currentPrices = normalizedPrices; 
+            
+            if (window.updateNeoPriceDisplay) {
+                const neoPrice = normalizedPrices['NEO'] || 0;
+                window.updateNeoPriceDisplay(neoPrice);
+            }
         }
 
         // --- 历史价格数据 ---

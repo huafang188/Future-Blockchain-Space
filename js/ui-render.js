@@ -757,10 +757,13 @@ function renderPriceCharts() {
         };
         
         setTimeout(animateChart, 500);
-        
+        updateNeoPriceDisplay(basePrice);
+    }
+
+    function updateNeoPriceDisplay(price) {
         const priceElement = document.getElementById('neo-price-value');
         if (priceElement) {
-            priceElement.textContent = `$${basePrice.toFixed(4)}`;
+            priceElement.textContent = `$${price.toFixed(4)}`;
         }
     }
 
@@ -861,3 +864,4 @@ window.renderTokenList = renderTokenList;
 window.renderHistory = renderHistory;
 window.renderTransfers = renderTransfers;
 window.renderPriceCharts = renderPriceCharts;
+window.updateNeoPriceDisplay = updateNeoPriceDisplay;
