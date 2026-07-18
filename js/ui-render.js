@@ -527,6 +527,13 @@ function parseDate(dateStr) {
     return new Date(dateStr);
 }
 
+function updateNeoPriceDisplay(price) {
+    const priceElement = document.getElementById('neo-price-value');
+    if (priceElement) {
+        priceElement.textContent = `$${price.toFixed(4)}`;
+    }
+}
+
 function renderPriceCharts() {
     if (typeof Chart === 'undefined') return;
 
@@ -758,13 +765,6 @@ function renderPriceCharts() {
         
         setTimeout(animateChart, 500);
         updateNeoPriceDisplay(basePrice);
-    }
-
-    function updateNeoPriceDisplay(price) {
-        const priceElement = document.getElementById('neo-price-value');
-        if (priceElement) {
-            priceElement.textContent = `$${price.toFixed(4)}`;
-        }
     }
 
     // 渲染矿机页面的 NCL K线图
