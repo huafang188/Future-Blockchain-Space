@@ -336,7 +336,18 @@ function initApp() {
 
         // --- 2.2 登录态恢复逻辑 ---
         // 不保留登录状态，必须用户手动点击连接钱包
-        console.log('[App] 等待用户手动连接钱包');
+        console.log('[App] 清除登录状态，等待用户手动连接钱包');
+        
+        // 清除 localStorage 中的钱包数据，确保点击"连接钱包"时不会触发退出逻辑
+        localStorage.removeItem('fbs_address');
+        localStorage.removeItem('fbs_chain');
+        localStorage.removeItem('user_logout_manual');
+        
+        // 清空全局数据缓存
+        if (window.userBalances) window.userBalances = {};
+        if (window.lastFetchedData) window.lastFetchedData = null;
+        if (window.currentUserInfo) window.currentUserInfo = null;
+        
         resetWalletUI();
                 
         // 清空列表缓存（数据会在连接钱包后重新拉取）
