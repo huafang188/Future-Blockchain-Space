@@ -126,16 +126,7 @@ function mountAllGlobals() {
         }
     };
 
-    // 检测钱包环境
-    function detectWalletEnv() {
-        // Bitget 钱包
-        if (window.bitkeep && window.bitkeep.ethereum) return 'bitget';
-        // TP 钱包 (TokenPocket)
-        if (window.tokenpocket && window.tokenpocket.ethereum) return 'tokenpocket';
-        // 通用 EVM 钱包
-        if (window.ethereum) return 'evm';
-        return 'none';
-    }
+    // 检测钱包环境（使用 wallet-utils.js 导出的 detectWalletEnv）
 
     // 更新链选择器 UI
     function updateChainUI(chain) {
@@ -344,17 +335,14 @@ function initApp() {
         if (window.updateNetworkMinerDisplay) window.updateNetworkMinerDisplay();
 
         // --- 2.2 登录态恢复逻辑 ---
-        // 不自动连接，必须用户手动点击连接钱包
-        console.log("[App] 等待用户手动连接钱包");
+        // 不保留登录状态，必须用户手动点击连接钱包
+        console.log('[App] 等待用户手动连接钱包');
         resetWalletUI();
-        
-        // 清空所有缓存数据
+                
+        // 清空列表缓存（数据会在连接钱包后重新拉取）
         if (window.renderHistory) window.renderHistory([]); 
-        if (window.renderTransfers) window.renderTransfers([]);
+        if (window.renderTransfers) window.renderTransfers([]); 
         if (window.renderTokenList) window.renderTokenList({});
-        localStorage.removeItem('fbs_address');
-        localStorage.removeItem('fbs_chain');
-        localStorage.removeItem('user_logout_manual');
     });
 
     /**
@@ -368,16 +356,36 @@ function initApp() {
         }
     });
 
-    // 同页面内 localStorage 变化监听（通过轮询检测）
-    let lastKnownAddress = localStorage.getItem('fbs_address');
-    setInterval(() => {
-        const currentAddr = localStorage.getItem('fbs_address');
-        if (currentAddr !== lastKnownAddress) {
-            console.log('[App] 检测到地址变化，同步钱包 UI');
-            lastKnownAddress = currentAddr;
-            syncWalletUI();
+    // 同页面内 localStorage 变化监听（通过自定义事件，替代轮询）
+    // 重写 localStorage 方法以触发事件
+    const origSetItem = localStorage.setItem.bind(localStorage);
+    const origRemoveItem = localStorage.removeItem.bind(localStorage);
+
+    localStorage.setItem = function(key, value) {
+        origSetItem(key, value);
+        if (key === 'fbs_address' || key === 'fbs_chain') {
+            window.dispatchEvent(new CustomEvent('fbs-storage-change', { detail: { key } }));
         }
-    }, 500);
+    };
+    localStorage.removeItem = function(key) {
+        origRemoveItem(key);
+        if (key === 'fbs_address' || key === 'fbs_chain') {
+            window.dispatchEvent(new CustomEvent('fbs-storage-change', { detail: { key } }));
+        }
+    };
+
+    // 防抖处理：300ms 内的多次变化只触发一次同步
+    let syncWalletTimeout = null;
+    window.addEventListener('fbs-storage-change', () => {
+        console.log('[App] 检测到地址变化，同步钱包 UI');
+        if (syncWalletTimeout) {
+            clearTimeout(syncWalletTimeout);
+        }
+        syncWalletTimeout = setTimeout(() => {
+            syncWalletUI();
+            syncWalletTimeout = null;
+        }, 300);
+    });
 }
 
 // --- 莫斯科时间与天气功能 ---

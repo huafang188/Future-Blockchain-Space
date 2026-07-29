@@ -126,7 +126,17 @@ async function ensureNetwork() {
  * 增加：金额清洗与余额预检查逻辑
  */
 async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr) {
-    if (!await ensureNetwork()) return;
+    // 防重复提交
+    if (isSubmitting) {
+        console.warn("[Executors] 上一笔交易正在处理中，请勿重复提交");
+        return;
+    }
+    isSubmitting = true;
+
+    if (!await ensureNetwork()) {
+        isSubmitting = false;
+        return;
+    }
 
     try {
         // --- 1. 金额强力清洗：只保留数字和小数点 ---
@@ -209,6 +219,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
         alert("❌ 交易失败: " + msg);
         if (window.closeModal) window.closeModal();
+    } finally {
+        isSubmitting = false;
     }
 }
 
@@ -323,13 +335,13 @@ window.doExchangeSignature = async function() {
 };
 
 // 5. 绑定推荐人
-window.doSubmitBindInviter = async function() {
+window.doSubmitBindInviter = async function(event) {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     if (!inviterId) return alert("请输入推荐码");
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
     
     // 显示加载状态
-    const btn = event?.target || document.querySelector('[onclick*="doSubmitBindInviter"]');
+    const btn = document.getElementById('btn_bind_inviter');
     if (btn) {
         const originalText = btn.textContent;
         btn.textContent = "绑定中...";

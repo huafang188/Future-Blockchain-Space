@@ -1,6 +1,19 @@
 import { tokenConfig } from './config.js';
 
 /**
+ * HTML 转义函数，防止 XSS
+ */
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/**
  * 数字滚动动画函数
  * @param {HTMLElement} element - 目标元素
  * @param {number} targetValue - 目标值
@@ -436,11 +449,11 @@ export function renderHistory(history = []) {
     }
 
     container.innerHTML = history.map(item => {
-        const type = item['交易类型'] || item.type || 'Transaction';
+        const type = escapeHtml(item['交易类型'] || item.type || 'Transaction');
         const amount = parseFloat(item['交易数量'] || item.amount || 0);
-        const symbol = item['交易代币'] || item.symbol || '';
+        const symbol = escapeHtml(item['交易代币'] || item.symbol || '');
         const status = item['交易状态'] || item.status || 'Success';
-        const time = item['交易时间'] || item.time || '--';
+        const time = escapeHtml(item['交易时间'] || item.time || '--');
         const tokenLogo = getTokenLogo(symbol);
         
         // 判断资金流向渲染颜色（仅用于图标背景）
@@ -484,10 +497,11 @@ export function renderTransfers(transfers = []) {
     }
 
     container.innerHTML = transfers.map(tx => {
-        const addr = tx['接收者'] || tx.address || tx.receiver || 'Unknown';
-        const amount = tx['接收数量'] || tx.amount || '0';
-        const symbol = tx['接收类型'] || tx.symbol || '';
-        const time = tx['转账时间'] || tx.time || '--';
+        const rawAddr = tx['接收者'] || tx.address || tx.receiver || 'Unknown';
+        const addr = escapeHtml(rawAddr.length > 12 ? (rawAddr.substring(0, 6) + '...' + rawAddr.slice(-4)) : rawAddr);
+        const amount = escapeHtml(tx['接收数量'] || tx.amount || '0');
+        const symbol = escapeHtml(tx['接收类型'] || tx.symbol || '');
+        const time = escapeHtml(tx['转账时间'] || tx.time || '--');
 
         return `
         <div class="flex justify-between items-center p-4 rounded-2xl hover:bg-slate-50/50 transition-colors border-b border-slate-50/50 last:border-none">
@@ -495,7 +509,7 @@ export function renderTransfers(transfers = []) {
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
                     <span class="text-[10px] font-black text-slate-700 tracking-tighter">
-                        ${addr.length > 12 ? (addr.substring(0, 6) + '...' + addr.slice(-4)) : addr}
+                        ${addr}
                     </span>
                 </div>
                 <span class="text-[9px] text-slate-400 uppercase font-black pl-3.5">${time}</span>
@@ -534,13 +548,127 @@ function updateNeoPriceDisplay(price) {
     }
 }
 
+/**
+ * 构建 K 线图表数据（历史数据或模拟数据）
+ */
+function buildChartData(symbol, basePrice, days = 30) {
+    const priceHistory = window.priceHistory || {};
+    const symbolHistory = priceHistory[symbol] || [];
+    const labels = [];
+    const data = [];
+
+    if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
+        const sortedHistory = [...symbolHistory].sort((a, b) => {
+            const dateA = parseDate(a.execute_time);
+            const dateB = parseDate(b.execute_time);
+            return dateA - dateB;
+        });
+        const recentHistory = sortedHistory.slice(-days);
+        recentHistory.forEach(record => {
+            const date = parseDate(record.execute_time);
+            labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+            data.push(parseFloat(record.price) || 0);
+        });
+    } else {
+        let price = basePrice * 0.65;
+        for (let i = 0; i < days; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() - (days - 1 - i));
+            labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+            const volatility = basePrice * 0.03;
+            const drift = (basePrice - price) / (days - i) * 0.15;
+            const noise = (Math.random() - 0.48) * volatility;
+            price = Math.max(basePrice * 0.3, price + drift + noise);
+            data.push(parseFloat(price.toFixed(4)));
+        }
+    }
+    return { labels, data };
+}
+
+/**
+ * 通用 K 线图渲染函数
+ */
+function renderChart(canvas, labels, data, colors, animated = false) {
+    if (!canvas || typeof Chart === 'undefined') return null;
+    if (canvas._chart) canvas._chart.destroy();
+
+    const ctx = canvas.getContext('2d');
+    const chartData = animated ? new Array(data.length).fill(null) : data;
+
+    canvas._chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: chartData,
+                borderColor: colors.line,
+                backgroundColor: colors.fill,
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHoverBackgroundColor: colors.line
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => `$${ctx.parsed.y.toFixed(4)}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8', font: { size: 8 }, maxTicksLimit: 6 }
+                },
+                y: {
+                    display: true,
+                    grid: { color: 'rgba(148,163,184,0.08)' },
+                    ticks: { color: '#94a3b8', font: { size: 8 }, callback: v => '$' + v.toFixed(2) }
+                }
+            },
+            ...(animated ? { animation: { duration: 0 } } : {})
+        }
+    });
+
+    if (animated) {
+        let animationStep = 0;
+        const animateChart = () => {
+            if (animationStep <= data.length) {
+                for (let i = 0; i < animationStep; i++) {
+                    canvas._chart.data.datasets[0].data[i] = data[i];
+                }
+                canvas._chart.update('none');
+                animationStep++;
+                requestAnimationFrame(animateChart);
+            } else {
+                setTimeout(() => {
+                    animationStep = 0;
+                    canvas._chart.data.datasets[0].data.fill(null);
+                    canvas._chart.update('none');
+                    animateChart();
+                }, 3000);
+            }
+        };
+        setTimeout(animateChart, 500);
+    }
+
+    return canvas._chart;
+}
+
 function renderPriceCharts() {
     if (typeof Chart === 'undefined') return;
 
     const prices = window.currentPrices || {};
-    const priceHistory = window.priceHistory || {};
     const tokenSymbols = ['NEO', 'NEX', 'NET', 'NEA', 'NRY', 'NCL'];
-    const days = 30;
     const trendColors = {
         NEO: { line: '#22c55e', fill: 'rgba(34,197,94,0.15)' },
         NEX: { line: '#06b6d4', fill: 'rgba(6,182,212,0.1)' },
@@ -550,310 +678,31 @@ function renderPriceCharts() {
         NCL: { line: '#8b5cf6', fill: 'rgba(139,92,246,0.1)' }
     };
 
+    // 渲染行情页 K 线图
     tokenSymbols.forEach(symbol => {
         const canvas = document.getElementById(`chart-${symbol}`);
         if (!canvas) return;
-
         const basePrice = parseFloat(prices[symbol]) || 1;
         const colors = trendColors[symbol] || trendColors.NEO;
-        const labels = [];
-        const data = [];
-
-        // 获取该代币的历史价格数据
-        const symbolHistory = priceHistory[symbol] || [];
-        
-        if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
-            // 使用真实历史数据
-            // 按时间排序（旧到新）
-            const sortedHistory = [...symbolHistory].sort((a, b) => {
-                const dateA = parseDate(a.execute_time);
-                const dateB = parseDate(b.execute_time);
-                return dateA - dateB;
-            });
-
-            // 取最近的 days 条数据
-            const recentHistory = sortedHistory.slice(-days);
-
-            recentHistory.forEach(record => {
-                const date = parseDate(record.execute_time);
-                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
-                data.push(parseFloat(record.price) || 0);
-            });
-        } else {
-            // 使用模拟数据作为 fallback
-            let price = basePrice * 0.65;
-            for (let i = 0; i < days; i++) {
-                const date = new Date();
-                date.setDate(date.getDate() - (days - 1 - i));
-                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
-
-                const volatility = basePrice * 0.03;
-                const drift = (basePrice - price) / (days - i) * 0.15;
-                const noise = (Math.random() - 0.48) * volatility;
-                price = Math.max(basePrice * 0.3, price + drift + noise);
-                data.push(parseFloat(price.toFixed(4)));
-            }
-        }
-
-        if (canvas._chart) canvas._chart.destroy();
-
-        const ctx = canvas.getContext('2d');
-        canvas._chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: data,
-                    borderColor: colors.line,
-                    backgroundColor: colors.fill,
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHoverBackgroundColor: colors.line
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { intersect: false, mode: 'index' },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => `$${ctx.parsed.y.toFixed(4)}`
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        display: true,
-                        grid: { display: false },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 8 },
-                            maxTicksLimit: 6
-                        }
-                    },
-                    y: {
-                        display: true,
-                        grid: { color: 'rgba(148,163,184,0.08)' },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 8 },
-                            callback: v => '$' + v.toFixed(2)
-                        }
-                    }
-                }
-            }
-        });
+        const { labels, data } = buildChartData(symbol, basePrice);
+        renderChart(canvas, labels, data, colors);
     });
 
-    // 渲染矿机页面的 NEO K线图
+    // 渲染矿机页面的 NEO K线图（带动画）
     const minerCanvas = document.getElementById('chart-NEO-miner');
-    if (minerCanvas && typeof Chart !== 'undefined') {
+    if (minerCanvas) {
         const basePrice = parseFloat(prices['NEO']) || 1;
-        const colors = trendColors['NEO'];
-        const symbolHistory = priceHistory['NEO'] || [];
-        const labels = [];
-        const data = [];
-
-        if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
-            const sortedHistory = [...symbolHistory].sort((a, b) => {
-                const dateA = parseDate(a.execute_time);
-                const dateB = parseDate(b.execute_time);
-                return dateA - dateB;
-            });
-            const recentHistory = sortedHistory.slice(-30);
-            recentHistory.forEach(record => {
-                const date = parseDate(record.execute_time);
-                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
-                data.push(parseFloat(record.price) || 0);
-            });
-        } else {
-            let price = basePrice * 0.65;
-            for (let i = 0; i < 30; i++) {
-                const date = new Date();
-                date.setDate(date.getDate() - (30 - 1 - i));
-                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
-                const volatility = basePrice * 0.03;
-                const drift = (basePrice - price) / (30 - i) * 0.15;
-                const noise = (Math.random() - 0.48) * volatility;
-                price = Math.max(basePrice * 0.3, price + drift + noise);
-                data.push(parseFloat(price.toFixed(4)));
-            }
-        }
-
-        if (minerCanvas._chart) minerCanvas._chart.destroy();
-        const ctx = minerCanvas.getContext('2d');
-        
-        const animatedData = new Array(data.length).fill(null);
-        let animationStep = 0;
-        
-        minerCanvas._chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: animatedData,
-                    borderColor: colors.line,
-                    backgroundColor: colors.fill,
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHoverBackgroundColor: colors.line
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { intersect: false, mode: 'index' },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => `$${ctx.parsed.y.toFixed(4)}`
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        display: true,
-                        grid: { display: false },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 8 },
-                            maxTicksLimit: 6
-                        }
-                    },
-                    y: {
-                        display: true,
-                        grid: { color: 'rgba(148,163,184,0.08)' },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 8 },
-                            callback: v => '$' + v.toFixed(2)
-                        }
-                    }
-                },
-                animation: {
-                    duration: 0
-                }
-            }
-        });
-        
-        const animateChart = () => {
-            if (animationStep <= data.length) {
-                for (let i = 0; i < animationStep; i++) {
-                    minerCanvas._chart.data.datasets[0].data[i] = data[i];
-                }
-                minerCanvas._chart.update('none');
-                animationStep++;
-                requestAnimationFrame(animateChart);
-            } else {
-                setTimeout(() => {
-                    animationStep = 0;
-                    minerCanvas._chart.data.datasets[0].data.fill(null);
-                    minerCanvas._chart.update('none');
-                    animateChart();
-                }, 3000);
-            }
-        };
-        
-        setTimeout(animateChart, 500);
+        const { labels, data } = buildChartData('NEO', basePrice);
+        renderChart(minerCanvas, labels, data, trendColors['NEO'], true);
         updateNeoPriceDisplay(basePrice);
     }
 
     // 渲染矿机页面的 NCL K线图
     const nclMinerCanvas = document.getElementById('chart-NCL-miner');
-    if (nclMinerCanvas && typeof Chart !== 'undefined') {
+    if (nclMinerCanvas) {
         const basePrice = parseFloat(prices['NCL']) || 1;
-        const colors = trendColors['NCL'];
-        const symbolHistory = priceHistory['NCL'] || [];
-        const labels = [];
-        const data = [];
-
-        if (symbolHistory.length > 0 && symbolHistory[0] && symbolHistory[0].price) {
-            const sortedHistory = [...symbolHistory].sort((a, b) => {
-                const dateA = parseDate(a.execute_time);
-                const dateB = parseDate(b.execute_time);
-                return dateA - dateB;
-            });
-            const recentHistory = sortedHistory.slice(-30);
-            recentHistory.forEach(record => {
-                const date = parseDate(record.execute_time);
-                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
-                data.push(parseFloat(record.price) || 0);
-            });
-        } else {
-            let price = basePrice * 0.65;
-            for (let i = 0; i < 30; i++) {
-                const date = new Date();
-                date.setDate(date.getDate() - (30 - 1 - i));
-                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
-                const volatility = basePrice * 0.03;
-                const drift = (basePrice - price) / (30 - i) * 0.15;
-                const noise = (Math.random() - 0.48) * volatility;
-                price = Math.max(basePrice * 0.3, price + drift + noise);
-                data.push(parseFloat(price.toFixed(4)));
-            }
-        }
-
-        if (nclMinerCanvas._chart) nclMinerCanvas._chart.destroy();
-        const ctx = nclMinerCanvas.getContext('2d');
-        nclMinerCanvas._chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: data,
-                    borderColor: colors.line,
-                    backgroundColor: colors.fill,
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 4,
-                    pointHoverBackgroundColor: colors.line
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { intersect: false, mode: 'index' },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => `$${ctx.parsed.y.toFixed(4)}`
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        display: true,
-                        grid: { display: false },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 8 },
-                            maxTicksLimit: 6
-                        }
-                    },
-                    y: {
-                        display: true,
-                        grid: { color: 'rgba(148,163,184,0.08)' },
-                        ticks: {
-                            color: '#94a3b8',
-                            font: { size: 8 },
-                            callback: v => '$' + v.toFixed(2)
-                        }
-                    }
-                }
-            }
-        });
+        const { labels, data } = buildChartData('NCL', basePrice);
+        renderChart(nclMinerCanvas, labels, data, trendColors['NCL']);
     }
 }
 

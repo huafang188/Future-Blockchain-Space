@@ -308,7 +308,7 @@ window.openExchangeModal = function() {
             <div class="space-y-4">
                 <p class="text-xs text-amber-600 bg-amber-50 p-4 rounded-2xl" data-i18n="register_desc">请输入邀请码以激活账户</p>
                 <input type="text" id="input_inviter_id" placeholder="推荐人 ID" class="w-full p-4 bg-slate-50 rounded-2xl font-black outline-none border-none">
-                <button type="button" onclick="window.doSubmitBindInviter()" class="action-btn w-full !from-amber-500">立即绑定签名</button>
+                <button type="button" id="btn_bind_inviter" onclick="window.doSubmitBindInviter(event)" class="action-btn w-full !from-amber-500">立即绑定签名</button>
             </div>`);
     };
 
@@ -334,20 +334,26 @@ window.openExchangeModal = function() {
             // 使用 flex 并强制覆盖 display
             overlay.style.setProperty('display', 'flex', 'important');
             
-            // 阻止弹窗内所有 input/textarea 的 Enter 键提交表单
-            contentEl.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
-                    e.preventDefault();
-                    return false;
-                }
-            }, true);
+            // 阻止弹窗内所有 input/textarea 的 Enter 键提交表单（使用命名函数避免重复绑定）
+            if (!contentEl._modalKeyHandler) {
+                contentEl._modalKeyHandler = function(e) {
+                    if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+                        e.preventDefault();
+                        return false;
+                    }
+                };
+                contentEl.addEventListener('keydown', contentEl._modalKeyHandler, true);
+            }
             
             // 阻止弹窗内所有 button 的默认表单提交行为
-            contentEl.addEventListener('click', function(e) {
-                if (e.target.tagName === 'BUTTON') {
-                    e.preventDefault();
-                }
-            }, true);
+            if (!contentEl._modalClickHandler) {
+                contentEl._modalClickHandler = function(e) {
+                    if (e.target.tagName === 'BUTTON') {
+                        e.preventDefault();
+                    }
+                };
+                contentEl.addEventListener('click', contentEl._modalClickHandler, true);
+            }
             
             // 触发局部语言渲染
             if (window.i18nRender) {

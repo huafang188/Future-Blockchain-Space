@@ -118,9 +118,13 @@ window.i18nData['es'] = {
 
     // --- Traducción del Nivel de Minero ---
     钻石大师: "Maestro Diamante",
+    钻石节点: "Nodo Diamante",
     钻石矿工: "Minero Diamante",
-    黄金矿工: "Minero de Oro",
-    白银矿工: "Minero de Plata",
+    黄金节点: "Nodo Oro",
+    黄金矿工: "Minero Oro",
+    白银节点: "Nodo Plata",
+    白银矿工: "Minero Plata",
+    未激活: "Inactivo",
 
     // --- 7. Noticias y Anuncios ---
     news_title: "Anuncios y Noticias",

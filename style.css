@@ -693,8 +693,13 @@ body::before {
     transition: all 0.3s ease;
 }
 
-/* 隐藏滚动条 */
-::-webkit-scrollbar { display: none; }
+/* 滚动条：移动端隐藏，桌面端显示细滚动条 */
+::-webkit-scrollbar { width: 0; height: 0; }
+@media (hover: hover) and (pointer: fine) {
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+}
 
 /* 轮播样式 */
 .carousel-item {

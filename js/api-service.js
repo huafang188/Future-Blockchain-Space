@@ -83,9 +83,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         if (result.success || result.code === 0) {
             console.log(`[API] ${type} 后端写入成功`);
             
-            // 显示成功提示（让用户知道绑定成功）
-            alert(`✅ ${type}成功！正在刷新数据...`);
-            
             // 成功后关闭所有可能存在的弹窗
             if (window.closeModal) window.closeModal();
             
@@ -136,10 +133,14 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 /**
  * 2. 获取用户完整数据并同步渲染 UI (GET)
  * 包含资产余额、实时单价、团队业绩、矿机运行状态
+ * @param {string} address - 用户地址
+ * @param {Object} options - 配置选项
+ * @param {boolean} options.silent - 静默模式，不显示加载提示
  */
-export async function fetchUserData(address) {
+export async function fetchUserData(address, options = {}) {
     if (!address) return;
 
+    const { silent = false } = options;
     const chain = localStorage.getItem('fbs_chain') || 'BSC';
     
     // 检查是否为激活的链，非激活链不发起请求
@@ -180,7 +181,9 @@ export async function fetchUserData(address) {
     };
     
     try {
-        console.log(`[API] 正在从后端同步数据: ${address} (链: ${chain})`);
+        if (!silent) {
+            console.log(`[API] 正在从后端同步数据: ${address} (链: ${chain})`);
+        }
         const requestStart = Date.now();
         // EVM 链地址统一小写，TON 和 SOL 保持原始格式
         const cleanAddr = chain === 'BSC' ? address.toLowerCase().trim() : address.trim();
@@ -194,15 +197,17 @@ export async function fetchUserData(address) {
         const data = await res.json();
         const parseDuration = Date.now() - parseStart;
         
-        console.log(`[API] 请求耗时: ${requestDuration}ms, JSON解析: ${parseDuration}ms, 总计: ${requestDuration + parseDuration}ms`);
-        console.log("[API] 后端原始数据包:", data);
+        if (!silent) {
+            console.log(`[API] 请求耗时: ${requestDuration}ms, JSON解析: ${parseDuration}ms, 总计: ${requestDuration + parseDuration}ms`);
+            console.log("[API] 后端原始数据包:", data);
+        }
 
         // 缓存数据供其他模块使用
         window.lastFetchedData = data;
 
         // --- 核心逻辑：新用户初始化，取消自动弹窗 ---
         if (data.newUser) {
-            console.log("[API] 该地址为新用户，待手动绑定");
+            if (!silent) console.log("[API] 该地址为新用户，待手动绑定");
             updateText('info_inviteCode', '---');
             updateText('info_inviter', '---');
             // 此处清空资产显示，防止显示上一个钱包的数据
@@ -214,7 +219,7 @@ export async function fetchUserData(address) {
             return;
         }
 
-        // --- 核心逻辑：单价 Key 标准化 ---
+        // 🚀 优化：分阶段渲染 - 第一阶段立即渲染价格和余额
         if (data.allPrices) {
             const normalizedPrices = {};
             Object.keys(data.allPrices).forEach(key => {
@@ -228,102 +233,120 @@ export async function fetchUserData(address) {
             }
         }
 
-        // --- 历史价格数据 ---
-        if (data.priceHistory) {
-            window.priceHistory = data.priceHistory;
-        }
-
         // 将用户资产存入全局供 calculations.js 使用
         window.userBalances = data.balances || {};
 
-        // --- 团队识别与推荐链处理 ---
-        const userInfo = {
-            inviteCode: data.info?.["推荐码"],
-            inviter: data.info?.["推荐人"],
-            inviterChain: data.info?.["推荐链"] || [],
-            team: null,
-            topInviter: null
-        };
-        
-        // 1. 优先使用后端返回的团队信息（来自推荐关系列表中的"团队"列）
-        if (data.info?.["团队"]) {
-            userInfo.team = data.info["团队"];
+        // 🚀 优化：立即渲染资产列表（不等待其他数据）
+        if (window.renderTokenList) {
+            window.renderTokenList(data.balances || {});
         }
-        // 2. 如果有推荐链，找到最高层级的推荐码并确定团队
-        else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
-            const topResult = findTopLevelInviter(userInfo.inviterChain);
-            userInfo.topInviter = topResult.inviter;
-            userInfo.team = topResult.team;
-        }
-        // 3. 如果只有直接推荐人，根据推荐人确定团队
-        else if (userInfo.inviter) {
-            userInfo.team = getTeamByInviter(userInfo.inviter);
-            userInfo.topInviter = userInfo.inviter;
-        }
-        
-        // 保存到全局状态
-        window.currentUserInfo = userInfo;
-        console.log(`[Team] 用户团队识别结果: ${userInfo.team} (最高层级推荐人: ${userInfo.topInviter || '无'})`);
 
-        // C. 渲染资料信息
-        updateText('info_inviteCode', data.info?.["推荐码"]);
-        updateText('info_inviter', data.info?.["推荐人"]);
-        updateText('info_regTime', data.info?.["注册时间"]);
-        
-        // 控制绑定推荐人按钮显示：已绑定则隐藏
-        const bindBtn = document.getElementById('btn_bind_inviter');
-        if (bindBtn) {
-            if (data.info?.["推荐人"] && data.info["推荐人"] !== '---' && data.info["推荐人"] !== '') {
-                bindBtn.style.display = 'none';
-            } else {
-                bindBtn.style.display = 'block';
+        // 🚀 优化：使用 requestIdleCallback 延迟渲染非关键内容
+        const renderNonCritical = () => {
+            // 历史价格数据
+            if (data.priceHistory) {
+                window.priceHistory = data.priceHistory;
             }
-        }
 
-        // D. 渲染团队数据（从后端获取）
-        let teamData = {
-            directCount: 0,
-            directSales: 0,
-            totalCount: 0,
-            totalSales: 0,
-            totalReward: 0
-        };
-        
-        // 直接使用后端返回的团队数据
-        if (data.team) {
-            teamData = {
-                directCount: data.team["直推人数"] || 0,
-                directSales: data.team["直推业绩"] || 0,
-                totalCount: data.team["团队人数"] || 0,
-                totalSales: data.team["团队业绩"] || 0,
-                totalReward: data.team["累计奖励"] || 0
+            // --- 团队识别与推荐链处理 ---
+            const userInfo = {
+                inviteCode: data.info?.["推荐码"],
+                inviter: data.info?.["推荐人"],
+                inviterChain: data.info?.["推荐链"] || [],
+                team: null,
+                topInviter: null
             };
+            
+            // 1. 优先使用后端返回的团队信息（来自推荐关系列表中的"团队"列）
+            if (data.info?.["团队"]) {
+                userInfo.team = data.info["团队"];
+            }
+            // 2. 如果有推荐链，找到最高层级的推荐码并确定团队
+            else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
+                const topResult = findTopLevelInviter(userInfo.inviterChain);
+                userInfo.topInviter = topResult.inviter;
+                userInfo.team = topResult.team;
+            }
+            // 3. 如果只有直接推荐人，根据推荐人确定团队
+            else if (userInfo.inviter) {
+                userInfo.team = getTeamByInviter(userInfo.inviter);
+                userInfo.topInviter = userInfo.inviter;
+            }
+            
+            // 保存到全局状态
+            window.currentUserInfo = userInfo;
+            if (!silent) console.log(`[Team] 用户团队识别结果: ${userInfo.team} (最高层级推荐人: ${userInfo.topInviter || '无'})`);
+
+            // C. 渲染资料信息
+            updateText('info_inviteCode', data.info?.["推荐码"]);
+            updateText('info_inviter', data.info?.["推荐人"]);
+            updateText('info_regTime', data.info?.["注册时间"]);
+            
+            // 控制绑定推荐人按钮显示：已绑定则隐藏
+            const bindBtn = document.getElementById('btn_bind_inviter');
+            if (bindBtn) {
+                if (data.info?.["推荐人"] && data.info["推荐人"] !== '---' && data.info["推荐人"] !== '') {
+                    bindBtn.style.display = 'none';
+                } else {
+                    bindBtn.style.display = 'block';
+                }
+            }
+
+            // D. 渲染团队数据（从后端获取）
+            let teamData = {
+                directCount: 0,
+                directSales: 0,
+                totalCount: 0,
+                totalSales: 0,
+                totalReward: 0
+            };
+            
+            // 直接使用后端返回的团队数据
+            if (data.team) {
+                teamData = {
+                    directCount: data.team["直推人数"] || 0,
+                    directSales: data.team["直推业绩"] || 0,
+                    totalCount: data.team["团队人数"] || 0,
+                    totalSales: data.team["团队业绩"] || 0,
+                    totalReward: data.team["累计奖励"] || 0
+                };
+            }
+            
+            // 渲染团队数据
+            updateText('team_directCount', teamData.directCount);
+            updateText('team_directSales', teamData.directSales.toFixed(2));
+            updateText('team_totalCount', teamData.totalCount);
+            updateText('team_totalSales', teamData.totalSales.toFixed(2));
+            updateText('team_totalReward', teamData.totalReward.toFixed(2));
+
+            // E. 渲染矿机数据 (严格匹配飞书文字列名)
+            if (data.miner) {
+                updateText('miner_count', data.miner["矿机数量"]);
+                updateText('miner_running', data.miner["在运行"]);
+                updateText('miner_daily', data.miner["日产量"]);
+                updateText('miner_deadline', data.miner["挖矿期限"]); 
+                updateText('miner_locked', data.miner["锁仓数量"]);
+            }
+
+            // F. 渲染矿工等级
+            renderMinerLevel(data);
+
+            // F. 执行各 UI 模块的渲染函数
+            if (window.renderHistory) window.renderHistory(data.history || []);
+            if (window.renderTransfers) window.renderTransfers(data.transfers || []);
+            
+            // 🚀 优化：K线图延迟渲染，避免阻塞主线程
+            setTimeout(() => {
+                if (window.renderPriceCharts) window.renderPriceCharts();
+            }, 100);
+        };
+
+        // 使用 requestIdleCallback 或 setTimeout 延迟渲染非关键内容
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(renderNonCritical, { timeout: 200 });
+        } else {
+            setTimeout(renderNonCritical, 50);
         }
-        
-        // 渲染团队数据
-        updateText('team_directCount', teamData.directCount);
-        updateText('team_directSales', teamData.directSales.toFixed(2));
-        updateText('team_totalCount', teamData.totalCount);
-        updateText('team_totalSales', teamData.totalSales.toFixed(2));
-        updateText('team_totalReward', teamData.totalReward.toFixed(2));
-
-        // E. 渲染矿机数据 (严格匹配飞书文字列名)
-        if (data.miner) {
-            updateText('miner_count', data.miner["矿机数量"]);
-            updateText('miner_running', data.miner["在运行"]);
-            updateText('miner_daily', data.miner["日产量"]);
-            updateText('miner_deadline', data.miner["挖矿期限"]); 
-            updateText('miner_locked', data.miner["锁仓数量"]);
-        }
-
-        // F. 渲染矿工等级
-        renderMinerLevel(data);
-
-        // F. 执行各 UI 模块的渲染函数
-        if (window.renderTokenList) window.renderTokenList(data.balances || {});
-        if (window.renderHistory) window.renderHistory(data.history || []);
-        if (window.renderTransfers) window.renderTransfers(data.transfers || []);
-        if (window.renderPriceCharts) window.renderPriceCharts();
 
     } catch (e) {
         if (e.name === 'AbortError' || e.message === 'Failed to fetch') {
@@ -331,7 +354,9 @@ export async function fetchUserData(address) {
         } else {
             console.error("[API] 同步用户数据失败:", e);
             // 显示错误提示，但不阻止后续操作
-            handleApiError(`数据同步失败: ${e.message}`);
+            if (!silent) {
+                handleApiError(`数据同步失败: ${e.message}`);
+            }
         }
         // 清理 pendingRequest
         if (pendingRequest && pendingRequest.key === requestKey) {
@@ -419,7 +444,15 @@ function getMinerLevelTranslation(level) {
 
 /**
  * 渲染矿工等级（直接从飞书多维表格读取预填写的数据）
- * 矿工等级分为：白银矿工、黄金矿工、钻石矿工、钻石大师
+ * 矿工等级分为8级（从低到高）：
+ * 0. 未激活 - 灰色
+ * 1. 白银矿工 - 银色
+ * 2. 白银节点 - 银蓝色
+ * 3. 黄金矿工 - 金色
+ * 4. 黄金节点 - 金橙色
+ * 5. 钻石矿工 - 青蓝色
+ * 6. 钻石节点 - 蓝紫色
+ * 7. 钻石大师 - 紫粉色（最高级）
  * 数据来自用户团队表格（table=tblPKLs0jYlN0UnJ）中的"矿工等级"字段
  * 支持多语言切换
  * @param {Object} data - 后端返回的数据（可选，不传则重新渲染当前数据）
@@ -455,12 +488,16 @@ function renderMinerLevel(data) {
 
     console.log("[MinerLevel] 读取到的矿工等级:", minerLevel);
 
-    // 定义矿工等级对应的样式配置
+    // 定义矿工等级对应的样式配置（8个等级，从低到高）
     const levelStyles = {
-        '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-purple-300' },
-        '钻石矿工': { color: 'from-cyan-500 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
-        '黄金矿工': { color: 'from-amber-400 to-orange-500', textColor: 'text-white', borderColor: 'border-amber-300' },
-        '白银矿工': { color: 'from-slate-400 to-slate-300', textColor: 'text-white', borderColor: 'border-slate-300' }
+        '未激活': { color: 'from-gray-400 to-gray-500', textColor: 'text-white', borderColor: 'border-gray-300' },
+        '白银矿工': { color: 'from-slate-300 to-slate-400', textColor: 'text-white', borderColor: 'border-slate-300' },
+        '白银节点': { color: 'from-slate-400 to-blue-300', textColor: 'text-white', borderColor: 'border-blue-200' },
+        '黄金矿工': { color: 'from-amber-400 to-yellow-500', textColor: 'text-white', borderColor: 'border-amber-300' },
+        '黄金节点': { color: 'from-amber-500 to-orange-500', textColor: 'text-white', borderColor: 'border-orange-300' },
+        '钻石矿工': { color: 'from-cyan-400 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
+        '钻石节点': { color: 'from-blue-500 to-purple-500', textColor: 'text-white', borderColor: 'border-purple-300' },
+        '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-pink-300' }
     };
 
     // 如果有矿工等级数据且在配置中存在，则显示

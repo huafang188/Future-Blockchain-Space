@@ -207,9 +207,13 @@ window.i18nData['en'] = {
     
     // --- Miner Level Translation ---
     钻石大师: "Diamond Master",
+    钻石节点: "Diamond Node",
     钻石矿工: "Diamond Miner",
+    黄金节点: "Gold Node",
     黄金矿工: "Gold Miner",
+    白银节点: "Silver Node",
     白银矿工: "Silver Miner",
+    未激活: "Inactive",
 
     // --- 8. News & Announcements ---
     news_title: "Announcements",

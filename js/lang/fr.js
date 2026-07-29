@@ -152,9 +152,13 @@ window.i18nData['fr'] = {
 
     // --- Traduction du Niveau de Mineur ---
     钻石大师: "Maître Diamant",
+    钻石节点: "Nœud Diamant",
     钻石矿工: "Mineur Diamant",
-    黄金矿工: "Mineur d'Or",
-    白银矿工: "Mineur d'Argent",
+    黄金节点: "Nœud Or",
+    黄金矿工: "Mineur Or",
+    白银节点: "Nœud Argent",
+    白银矿工: "Mineur Argent",
+    未激活: "Inactif",
 
     // --- 8. Nouvelles et Annonces ---
     news_title: "Annonces et Nouvelles",

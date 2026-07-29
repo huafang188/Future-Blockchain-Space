@@ -151,10 +151,14 @@ window.i18nData['de'] = {
     缴纳电费: "Stromzahlung",
 
     // --- Miner Level Translation ---
-    钻石大师: "Diamantmeister",
-    钻石矿工: "Diamantminer",
+    钻石大师: "Diamant-Meister",
+    钻石节点: "Diamant-Knoten",
+    钻石矿工: "Diamant-Miner",
+    黄金节点: "Gold-Knoten",
     黄金矿工: "Goldminer",
+    白银节点: "Silber-Knoten",
     白银矿工: "Silberminer",
+    未激活: "Nicht aktiviert",
 
     // --- 8. News & Ankündigungen ---
     news_title: "Ankündigungen & News",

@@ -3,7 +3,7 @@
  * 处理逻辑：未连接时去连接，已连接时点击则触发退出登录
  */
 export function mountWalletClickHandler() {
-    window.handleWalletClick = function() {
+    function handleWalletClick() {
         console.log("[Wallet] 按钮点击");
         const savedAddr = localStorage.getItem('fbs_address');
         
@@ -12,7 +12,10 @@ export function mountWalletClickHandler() {
         } else {
             connectWallet();
         }
-    };
+    }
+    
+    // 同时挂载到 window 供 HTML onclick 使用
+    window.handleWalletClick = handleWalletClick;
 
     function bindEvents() {
         const walletBtn = document.getElementById('walletAddr');
@@ -265,6 +268,10 @@ async function connectEVMWallet() {
         localStorage.setItem('user_logout_manual', 'false');
 
         console.log('[Wallet] EVM 连接成功:', address);
+
+        // 等待预加载完成（如果已完成则立即返回）
+        await preloadPromise.catch(e => console.warn('[Wallet] 预加载失败，将重新请求:', e.message));
+
         finishLogin();
 
     } catch (e) {
@@ -377,10 +384,18 @@ async function connectTONWallet() {
         localStorage.setItem('fbs_address', displayAddr);
         localStorage.setItem('fbs_chain', 'TON');
         localStorage.setItem('user_logout_manual', 'false');
-        
+
         console.log("[Wallet] TON 连接成功:", displayAddr);
+
+        // 🚀 优化：连接成功后立即预加载数据
+        if (window.fetchUserData) {
+            window.fetchUserData(displayAddr, { silent: true }).catch(e =>
+                console.warn('[Wallet] TON 预加载失败:', e.message)
+            );
+        }
+
         finishLogin();
-        
+
     } catch (e) {
         console.error("[Wallet] TON 连接失败:", e);
         alert("TON 钱包连接失败: " + (e.message || '未知错误'));
@@ -427,10 +442,18 @@ async function connectSOLWallet() {
         localStorage.setItem('fbs_address', address);
         localStorage.setItem('fbs_chain', 'SOL');
         localStorage.setItem('user_logout_manual', 'false');
-        
+
         console.log("[Wallet] SOL 连接成功:", address);
+
+        // 🚀 优化：连接成功后立即预加载数据
+        if (window.fetchUserData) {
+            window.fetchUserData(address, { silent: true }).catch(e =>
+                console.warn('[Wallet] SOL 预加载失败:', e.message)
+            );
+        }
+
         finishLogin();
-        
+
     } catch (e) {
         console.error("[Wallet] SOL 连接失败:", e);
         if (e.code === 4001 || (e.message && e.message.includes('rejected'))) {
@@ -513,53 +536,53 @@ export function logout(showConfirm) {
     localStorage.removeItem('fbs_address');
     localStorage.removeItem('fbs_chain');
     localStorage.removeItem('user_logout_manual');
-        
-        // 清空全局数据缓存，防止余额残留
-        if (window.userBalances) window.userBalances = {};
-        if (window.lastFetchedData) window.lastFetchedData = null;
-        if (window.currentUserInfo) window.currentUserInfo = null;
-        
-        // 清空列表显示
-        if (typeof window.renderHistory === 'function') window.renderHistory([]);
-        if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
-        if (typeof window.renderTokenList === 'function') window.renderTokenList({});
-        
-        // 重置团队/矿机数据显示
-        const teamFields = ['team_directCount', 'team_directSales', 'team_totalCount', 'team_totalSales', 'team_totalReward'];
-        teamFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = '0';
+    
+    // 清空全局数据缓存，防止余额残留
+    if (window.userBalances) window.userBalances = {};
+    if (window.lastFetchedData) window.lastFetchedData = null;
+    if (window.currentUserInfo) window.currentUserInfo = null;
+    
+    // 清空列表显示
+    if (typeof window.renderHistory === 'function') window.renderHistory([]);
+    if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
+    if (typeof window.renderTokenList === 'function') window.renderTokenList({});
+    
+    // 重置团队/矿机数据显示
+    const teamFields = ['team_directCount', 'team_directSales', 'team_totalCount', 'team_totalSales', 'team_totalReward'];
+    teamFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = '0';
+    });
+    
+    const minerFields = ['miner_count', 'miner_running', 'miner_daily', 'miner_deadline', 'miner_locked'];
+    minerFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = '0';
+    });
+    
+    // 移除所有钱包事件监听器，防止退出后自动连接
+    const provider = getEVMProvider();
+    if (provider) {
+        registeredListeners.forEach(({ event, handler }) => {
+            try {
+                provider.removeListener(event, handler);
+                console.log('[Wallet] 移除事件监听器:', event);
+            } catch (e) {
+                console.log('[Wallet] 移除监听器失败:', e.message);
+            }
         });
-        
-        const minerFields = ['miner_count', 'miner_running', 'miner_daily', 'miner_deadline', 'miner_locked'];
-        minerFields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = '0';
-        });
-        
-        // 移除所有钱包事件监听器，防止退出后自动连接
-        const provider = getEVMProvider();
-        if (provider) {
-            registeredListeners.forEach(({ event, handler }) => {
-                try {
-                    provider.removeListener(event, handler);
-                    console.log('[Wallet] 移除事件监听器:', event);
-                } catch (e) {
-                    console.log('[Wallet] 移除监听器失败:', e.message);
-                }
-            });
-            registeredListeners.length = 0;
-        }
-        
-        // 重置标志，允许下次登录时重新注册监听器
-        listenersMounted = false;
-        
-        // 立即更新 UI 为未连接状态
-        if (typeof window.syncWalletUI === 'function') {
-            window.syncWalletUI();
-        } else {
-            resetWalletUI();
-        }
+        registeredListeners.length = 0;
+    }
+    
+    // 重置标志，允许下次登录时重新注册监听器
+    listenersMounted = false;
+    
+    // 立即更新 UI 为未连接状态
+    if (typeof window.syncWalletUI === 'function') {
+        window.syncWalletUI();
+    } else {
+        resetWalletUI();
+    }
 }
 
 /**

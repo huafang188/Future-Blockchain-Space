@@ -43,6 +43,9 @@
     <meta property="og:type" content="website">
     <title>NEO生态挖矿矩阵 - NEO Blockchain Mining | 加密货币挖矿平台</title>
     <meta name="theme-color" content="#8b5cf6">
+    <!-- DNS预解析和预连接 - 加速API请求 -->
+    <link rel="dns-prefetch" href="https://api.neoneo.ink">
+    <link rel="preconnect" href="https://api.neoneo.ink" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <!-- Orbitron 字体 - 使用国内可访问的CDN -->
@@ -770,7 +773,7 @@
             <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 hover:text-slate-600 transition-colors" title="邮箱"><i class="fas fa-envelope"></i></a>
             <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 hover:text-green-500 transition-colors" title="电话"><i class="fas fa-phone"></i></a>
         </div>
-        </div>
+    </div>
 
 <div id="page-mine" class="page-view hidden space-y-6">
 <section class="miner-card">
@@ -1143,6 +1146,7 @@
         'mn': 'js/lang/mn.js',
         'hi': 'js/lang/hi.js',
         'el': 'js/lang/el.js',
+        'es': 'js/lang/es.js',
         'ug': 'js/lang/ug.js'
     };
     
@@ -1162,20 +1166,13 @@
 </script>
 
 <script>
-    window.handleWalletClick = function() {
-        const walletBtn = document.getElementById('walletAddr');
-        if (walletBtn) walletBtn.style.transform = 'scale(0.95)';
-        setTimeout(function() {
-            if (walletBtn) walletBtn.style.transform = 'scale(1)';
-        }, 150);
-        
-        if (typeof window.connectWallet === 'function') {
-            window.connectWallet();
-        } else {
-            console.log('[Wallet] 钱包模块尚未加载，请稍候...');
+    // handleWalletClick 由 wallet-utils.js 模块提供，此处不重复定义以避免覆盖
+    // 如果模块尚未加载，提供临时占位函数
+    if (typeof window.handleWalletClick !== 'function') {
+        window.handleWalletClick = function() {
             alert('钱包模块正在加载中，请稍后重试');
-        }
-    };
+        };
+    }
 
     window.updateNeoPriceDisplay = function(price) {
         const priceElement = document.getElementById('neo-price-value');
