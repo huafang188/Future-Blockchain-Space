@@ -300,8 +300,12 @@ async function connectEVMWallet() {
 
         console.log('[Wallet] EVM 连接成功:', address);
 
-        // 等待预加载完成（如果已完成则立即返回）
-        await preloadPromise.catch(e => console.warn('[Wallet] 预加载失败，将重新请求:', e.message));
+        // 连接成功后立即预加载数据，加速后续显示
+        if (window.fetchUserData) {
+            window.fetchUserData(address, { silent: true }).catch(e =>
+                console.warn('[Wallet] EVM 预加载失败:', e.message)
+            );
+        }
 
         finishLogin();
 
