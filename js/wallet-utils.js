@@ -1,39 +1,70 @@
 /**
  * 1. 挂载全局钱包点击事件
  * 处理逻辑：未连接时去连接，已连接时点击则触发退出登录
+ *
+ * 重要：按钮在 HTML 中已通过 onclick="handleWalletClick()" 绑定点击事件，
+ * 此处仅将函数挂载到 window，不再通过 addEventListener 重复绑定，
+ * 否则点击一次会触发两次（connect 与 logout 同时执行）。
  */
 export function mountWalletClickHandler() {
+    // 防重复点击锁：连接流程进行中时，忽略后续点击
+    let isProcessing = false;
+
     function handleWalletClick() {
         console.log("[Wallet] 按钮点击");
+
+        // 防重复点击：连接或退出流程进行中时，直接忽略
+        if (isProcessing) {
+            console.log("[Wallet] 正在处理中，忽略重复点击");
+            return;
+        }
+
         const savedAddr = localStorage.getItem('fbs_address');
-        
+
         if (savedAddr) {
-            logout();
+            // 已连接状态：走退出流程
+            isProcessing = true;
+            try {
+                logout();
+            } finally {
+                // logout 是同步的（confirm 取消也会立即返回），立即解锁
+                isProcessing = false;
+            }
         } else {
-            connectWallet();
+            // 未连接状态：走连接流程
+            isProcessing = true;
+            // 连接流程是异步的，完成后解锁
+            const unlock = () => { isProcessing = false; };
+            const p = connectWallet();
+            if (p && typeof p.then === 'function') {
+                p.then(unlock, unlock);
+            } else {
+                isProcessing = false;
+            }
         }
     }
-    
-    // 同时挂载到 window 供 HTML onclick 使用
+
+    // 挂载到 window 供 HTML onclick 使用
     window.handleWalletClick = handleWalletClick;
 
-    function bindEvents() {
+    // 仅绑定触摸视觉反馈（不触发点击逻辑），提升移动端按压手感
+    function bindTouchFeedback() {
         const walletBtn = document.getElementById('walletAddr');
-        if (walletBtn) {
-            walletBtn.addEventListener('click', handleWalletClick);
+        if (walletBtn && !walletBtn.dataset.touchBound) {
+            walletBtn.dataset.touchBound = '1';
             walletBtn.addEventListener('touchstart', function() {
                 this.style.transform = 'scale(0.95)';
-            });
+            }, { passive: true });
             walletBtn.addEventListener('touchend', function() {
                 this.style.transform = 'scale(1)';
-            });
+            }, { passive: true });
         }
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bindEvents);
+        document.addEventListener('DOMContentLoaded', bindTouchFeedback);
     } else {
-        bindEvents();
+        bindTouchFeedback();
     }
 }
 
