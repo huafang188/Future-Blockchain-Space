@@ -193,15 +193,13 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const receipt = await tx.wait();
         if (receipt.status === 1) {
             const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-            // 提交成功记录到后台，不刷新页面
+            // 提交成功记录到后台 → 【刷新交给 postTransactionRecord 统一处理】
+            //   非结算类：立即 + 500ms 补刷
+            //   结算类：0s→3s→8s→15s 轮询
             const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
             if (res.success) {
                 alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新`);
                 if (window.closeModal) window.closeModal();
-                // 延迟500ms后刷新用户数据（等待后端处理完成）
-                setTimeout(async () => {
-                    await refreshUserDataAfterTransaction();
-                }, 500);
             }
         }
     } catch (e) {
@@ -256,10 +254,9 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, ...extraFields });
             if (res.success) {
                 alert(`✅ ${bizType}申请已成功提交`);
-                // 延迟500ms后刷新用户数据（等待后端处理完成）
-                setTimeout(async () => {
-                    await refreshUserDataAfterTransaction();
-                }, 500);
+                // 【刷新交给 postTransactionRecord 统一处理】
+                //   普通类（绑定/团队/矿机转让）：立即 + 500ms 补刷
+                //   结算类（兑换/提现）：0s→3s→8s→15s 轮询，余额变化提前停止
             } else {
                 // 失败时也需要关闭弹窗
                 console.warn(`[Executors] ${bizType}提交失败:`, res.error);

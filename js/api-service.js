@@ -9,6 +9,89 @@ let csrfToken = null;
 // 请求去重：存储当前正在进行的请求
 let pendingRequest = null;
 
+// ========== 交易后智能刷新 ==========
+
+/**
+ * 判断当前提交是否属于"需要 Apps Script 后台结算"类型
+ * （与 worker.js 的 shouldTriggerSettlement 关键字保持一致）
+ * 这类操作写入后不会立即影响余额，需要轮询等待结算结果
+ */
+function isSettlementSubmission(type, action) {
+  const settleActions = new Set(["exchange", "redeem", "swap", "sell", "buy", "withdraw_exchange", "兑换"]);
+  if (action && settleActions.has(String(action).toLowerCase())) return true;
+
+  const txType = String(type || "").toLowerCase();
+  const txKeywords = ["兑换", "卖出", "出售", "提现兑换", "实时结算", "exchange", "sell", "redeem", "withdraw"];
+  for (const kw of txKeywords) {
+    if (txType.includes(kw.toLowerCase())) return true;
+  }
+  return false;
+}
+
+/**
+ * 抓取当前余额快照（用于结算前后对比，变化了就停止轮询）
+ */
+function snapshotBalances() {
+  const b = window.userBalances || (window.currentUserInfo && window.currentUserInfo.balances) || {};
+  const snap = {};
+  for (const k of Object.keys(b)) {
+    const v = parseFloat(b[k]);
+    snap[k] = isNaN(v) ? String(b[k]) : v;
+  }
+  return JSON.stringify(snap);
+}
+
+/**
+ * 交易成功后的智能刷新策略
+ *  - 普通类（绑定/转让/充值等）：立即刷 1 次 → 再 500ms 补 1 次
+ *  - 结算类（兑换/提现/出售）：轮询 0s→3s→8s→15s，余额变化提前停止
+ */
+async function smartRefreshAfterTransaction(type, action, address) {
+  if (!address) return;
+  const needPolling = isSettlementSubmission(type, action);
+
+  const doRefresh = async (label) => {
+    try {
+      console.log(`[API][刷新] ${label} (${type}/${action})`);
+      await fetchUserData(address, { silent: true });
+      return true;
+    } catch (e) {
+      console.warn(`[API][刷新] ${label} 失败:`, e.message);
+      return false;
+    }
+  };
+
+  // 非结算类：立即 + 500ms 补刷
+  if (!needPolling) {
+    await doRefresh("立即");
+    setTimeout(() => doRefresh("补刷(500ms)"), 500);
+    return;
+  }
+
+  // 结算类：轮询 + 余额对比提前停止
+  console.log(`[API][轮询] 检测到结算类操作 ${type}，启动 4 次轮询刷新`);
+  const schedule = [0, 3000, 8000, 15000];
+  let initialSnapshot = null;
+
+  for (let i = 0; i < schedule.length; i++) {
+    const delay = schedule[i];
+    const label = `轮询${i + 1}/${schedule.length} (T+${delay}ms)`;
+
+    await new Promise(r => setTimeout(r, delay));
+    await doRefresh(label);
+
+    const current = snapshotBalances();
+    if (i === 0) {
+      initialSnapshot = current;
+    } else if (initialSnapshot && current !== initialSnapshot) {
+      console.log(`[API][轮询] ✅ 余额已变化，结算完成，提前结束轮询`);
+      if (window.showToast) window.showToast("结算完成，余额已更新", "success", 2500);
+      return;
+    }
+  }
+  console.log(`[API][轮询] 已完成全部 ${schedule.length} 次刷新，若余额仍未变化请稍后手动刷新`);
+}
+
 /**
  * 生成或获取 CSRF token
  */
@@ -86,27 +169,33 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
             // 成功后关闭所有可能存在的弹窗
             if (window.closeModal) window.closeModal();
             
-            // 成功后执行局部数据同步（不刷新页面）
-            try {
-                await fetchUserData(address);
-                
-                // 数据刷新成功后，显示用户的推荐人和推荐码
-                if (type === "绑定关系") {
+            // 绑定关系需要立即弹推荐人/推荐码，先立即刷一次
+            if (type === "绑定关系") {
+                try {
+                    await fetchUserData(address, { silent: true });
                     const userInfo = window.currentUserInfo;
                     if (userInfo) {
-                        const inviter = userInfo.inviter || '---';
-                        const myCode = userInfo.inviteCode || '---';
+                        const inviter = userInfo.inviter || userInfo["推荐人"] || '---';
+                        const myCode = userInfo.inviteCode || userInfo["推荐码"] || '---';
                         alert(`✅ 绑定成功！\n\n您的推荐人: ${inviter}\n您的推荐码: ${myCode}\n\n数据已自动刷新`);
                     }
-                }
-            } catch (syncError) {
-                // 数据同步失败不影响主流程，但要提示用户
-                console.error("[API] 数据同步失败:", syncError);
-                if (type === "绑定关系") {
+                } catch (syncError) {
+                    console.error("[API] 绑定关系刷新失败:", syncError);
                     alert(`✅ 绑定已提交成功！\n\n但数据刷新失败，请手动刷新页面查看您的推荐人和推荐码`);
-                } else {
-                    handleApiError("数据同步失败，请手动刷新页面查看最新状态");
                 }
+            }
+
+            // 🔥 关键：交给智能刷新策略统一处理
+            //  - 普通类（绑定/转让/充值等）：立即刷 1 次 → 500ms 再补刷 1 次
+            //  - 结算类（兑换/提现/出售等）：0s→3s→8s→15s 轮询，余额变化提前停止
+            // 用 setTimeout 0 包裹：return 返回后再跑，不阻塞用户响应
+            // 绑定关系已在上面分支立即刷新并弹窗，跳过重复刷
+            if (type !== "绑定关系") {
+                setTimeout(() => {
+                    smartRefreshAfterTransaction(type, action, address).catch(e =>
+                        console.warn("[API] 智能刷新异常:", e.message)
+                    );
+                }, 0);
             }
             
             return { success: true, data: result };
