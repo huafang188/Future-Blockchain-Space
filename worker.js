@@ -532,63 +532,76 @@ async function queryUserByAddress(token, tableId, address) {
   
   // 构建筛选条件：匹配用户地址字段 "用户"
   // 注意：POST 写入时使用 "用户" 字段名，此处与之保持一致
-  // 若字段名不存在，飞书 search API 会报错，因此不做多字段名猜测
+  // 重要：飞书 search API 的 value 必须是数组格式，传字符串会报 field validation failed
   const filterConditions = [
-    { field_name: "用户", operator: "is", value: address },
-    { field_name: "用户", operator: "is", value: address.toLowerCase() },
-    { field_name: "用户", operator: "contains", value: address },
-    { field_name: "用户", operator: "contains", value: address.toLowerCase() }
+    { field_name: "用户", operator: "is", value: [address] },
+    { field_name: "用户", operator: "is", value: [address.toLowerCase()] },
+    { field_name: "用户", operator: "contains", value: [address] },
+    { field_name: "用户", operator: "contains", value: [address.toLowerCase()] }
   ];
 
   try {
-    const res = await fetch(baseUrl, {
-      method: 'POST',
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        filter: {
-          conjunction: "or",
-          conditions: filterConditions
+    // 支持分页：交易历史等表可能有多页记录
+    let allItems = [];
+    let hasMore = true;
+    let pageToken = "";
+
+    while (hasMore) {
+      const body = {
+        filter: { conjunction: "or", conditions: filterConditions },
+        page_size: 500
+      };
+      if (pageToken) body.page_token = pageToken;
+
+      const res = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
-        page_size: 100
-      })
-    });
+        body: JSON.stringify(body)
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    // 飞书 API 报错时 data.code 非 0，打印日志便于排查
-    if (data.code && data.code !== 0) {
-      console.error(`[queryUserByAddress] 表 ${tableId} 查询失败:`, data.code, data.msg);
-      return null;
+      // 飞书 API 报错时 data.code 非 0，打印日志便于排查
+      if (data.code && data.code !== 0) {
+        console.error(`[queryUserByAddress] 表 ${tableId} 查询失败:`, data.code, data.msg);
+        return null;
+      }
+
+      if (data.data?.items) {
+        allItems = allItems.concat(data.data.items);
+      }
+      hasMore = data.data?.has_more || false;
+      pageToken = data.data?.page_token || "";
     }
 
-    if (!data.data?.items || data.data.items.length === 0) {
+    if (allItems.length === 0) {
       console.log(`[queryUserByAddress] 表 ${tableId} 未找到用户 ${address}`);
       return null;
     }
 
-    console.log(`[queryUserByAddress] 表 ${tableId} 找到 ${data.data.items.length} 条记录`);
+    console.log(`[queryUserByAddress] 表 ${tableId} 找到 ${allItems.length} 条记录`);
 
     // 根据表格类型返回不同格式
     // 推荐关系、余额、团队、矿机表：返回单条记录的字段对象
-    if (tableId === TABLE_IDS.recommend_rel || 
-        tableId === TABLE_IDS.user_balance || 
-        tableId === TABLE_IDS.user_team || 
+    if (tableId === TABLE_IDS.recommend_rel ||
+        tableId === TABLE_IDS.user_balance ||
+        tableId === TABLE_IDS.user_team ||
         tableId === TABLE_IDS.user_miner) {
-      
+
       const cleanFields = {};
-      const fields = data.data.items[0].fields || {};
+      const fields = allItems[0].fields || {};
       Object.keys(fields).forEach(k => {
         cleanFields[k.replace(/^#/, '')] = fields[k];
       });
       return cleanFields;
     }
-    
+
     // 交易历史、转账记录表：返回多条记录的字段数组
     if (tableId === TABLE_IDS.tx_history || tableId === TABLE_IDS.transfer_log) {
-      return data.data.items.map(item => {
+      return allItems.map(item => {
         const cleanFields = {};
         const fields = item.fields || {};
         Object.keys(fields).forEach(k => {
