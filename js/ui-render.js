@@ -550,6 +550,8 @@ function updateNeoPriceDisplay(price) {
 
 /**
  * 构建 K 线图表数据（历史数据或模拟数据）
+ * 真实数据：全部显示（抓取到多少条就显示多少条，不再截断）
+ * 模拟数据：仍按 days 参数生成，避免无限长
  */
 function buildChartData(symbol, basePrice, days = 30) {
     const priceHistory = window.priceHistory || {};
@@ -563,8 +565,7 @@ function buildChartData(symbol, basePrice, days = 30) {
             const dateB = parseDate(b.execute_time);
             return dateA - dateB;
         });
-        const recentHistory = sortedHistory.slice(-days);
-        recentHistory.forEach(record => {
+        sortedHistory.forEach(record => {
             const date = parseDate(record.execute_time);
             labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
             data.push(parseFloat(record.price) || 0);
@@ -640,25 +641,51 @@ function renderChart(canvas, labels, data, colors, animated = false) {
     });
 
     if (animated) {
-        let animationStep = 0;
-        const animateChart = () => {
-            if (animationStep <= data.length) {
-                for (let i = 0; i < animationStep; i++) {
-                    canvas._chart.data.datasets[0].data[i] = data[i];
-                }
-                canvas._chart.update('none');
-                animationStep++;
-                requestAnimationFrame(animateChart);
+        const TOTAL_DURATION = 2500;
+        const HOLD_DURATION = 5000;
+        const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+        let startTime = null;
+        let rafId = null;
+
+        const applyProgress = (progress) => {
+            const showCount = Math.min(data.length, Math.floor(progress * data.length) + 1);
+            for (let i = 0; i < data.length; i++) {
+                canvas._chart.data.datasets[0].data[i] = i < showCount ? data[i] : null;
+            }
+            canvas._chart.update('none');
+        };
+
+        const fadeInCanvas = () => {
+            canvas.style.opacity = '0';
+            canvas.style.transition = 'opacity 800ms ease-out';
+            requestAnimationFrame(() => {
+                canvas.style.opacity = '1';
+            });
+        };
+
+        const animateChart = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const raw = Math.min(1, elapsed / TOTAL_DURATION);
+            const eased = easeOutCubic(raw);
+            applyProgress(eased);
+
+            if (raw < 1) {
+                rafId = requestAnimationFrame(animateChart);
             } else {
+                rafId = null;
                 setTimeout(() => {
-                    animationStep = 0;
-                    canvas._chart.data.datasets[0].data.fill(null);
-                    canvas._chart.update('none');
-                    animateChart();
-                }, 3000);
+                    startTime = null;
+                    applyProgress(0);
+                    rafId = requestAnimationFrame(animateChart);
+                }, HOLD_DURATION);
             }
         };
-        setTimeout(animateChart, 500);
+
+        fadeInCanvas();
+        setTimeout(() => {
+            rafId = requestAnimationFrame(animateChart);
+        }, 600);
     }
 
     return canvas._chart;

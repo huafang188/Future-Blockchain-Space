@@ -191,7 +191,20 @@ export async function fetchUserData(address, options = {}) {
         const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
         const requestDuration = Date.now() - requestStart;
         
-        if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+        if (!res.ok) {
+            let errDetail = `HTTP Error: ${res.status}`;
+            try {
+                const errBody = await res.json();
+                console.error("[API] 后端错误响应:", errBody);
+                if (errBody?._diag) {
+                    errDetail += ` | ${errBody._diag.message || ''}`;
+                    if (errBody._diag.stack) console.error("[API] 后端堆栈:", errBody._diag.stack);
+                } else if (errBody?.error) {
+                    errDetail += ` | ${errBody.error}`;
+                }
+            } catch (_) { /* ignore body parse error */ }
+            throw new Error(errDetail);
+        }
         
         const parseStart = Date.now();
         const data = await res.json();
