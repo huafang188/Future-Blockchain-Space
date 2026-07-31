@@ -373,9 +373,13 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
                 // 【刷新交给 postTransactionRecord 统一处理】
                 //   普通类（绑定/团队/矿机转让）：立即 + 500ms 补刷
                 //   结算类（兑换/提现）：0s→3s→8s→15s 轮询，余额变化提前停止
+                //   smartRefreshAfterTransaction 完成后会自动解锁结算锁
             } else {
-                // 失败时也需要关闭弹窗
+                // 失败时也需要关闭弹窗 + 解锁结算锁
                 console.warn(`[Executors] ${bizType}提交失败:`, res.error);
+                if (isSettleAction && typeof window.unlockSettlement === 'function') {
+                    window.unlockSettlement();
+                }
             }
             // ✅ 无论成功或失败都关闭弹窗
             if (window.closeModal) window.closeModal();
@@ -388,6 +392,10 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
             alert("签名操作失败，请重试");
         }
         if (window.closeModal) window.closeModal();
+        // 🔓 失败时立即解锁结算锁（不等待 32s 超时）
+        if (isSettleAction && typeof window.unlockSettlement === 'function') {
+            window.unlockSettlement();
+        }
     } finally {
         // ✅ 确保无论成功或失败，都重置提交状态
         isSubmitting = false;
