@@ -7,6 +7,107 @@ let fetchUserDataFunc = null;
 // 🚨 防重复提交标记
 let isSubmitting = false;
 
+// 🔒 结算处理中标记（防止用户在 Apps Script 结算完成前重复提交）
+let settlementProcessing = false;
+let settlementTimer = null;
+
+/**
+ * 检查是否可以提交结算类操作
+ * 如果正在结算中，显示提示并返回 false
+ */
+function canSubmitSettlement() {
+    if (settlementProcessing) {
+        const remainMs = settlementTimer ? Math.max(0, settlementTimer._endTime - Date.now()) : 0;
+        const remainSec = Math.ceil(remainMs / 1000);
+        const msg = remainSec > 0
+            ? `⏳ 上一笔结算仍在处理中 (约剩 ${remainSec}s)，请等待完成后再试`
+            : `⏳ 上一笔结算仍在处理中，请等待完成后再试`;
+        console.warn("[Executors] 结算处理中，禁止重复提交");
+        if (window.showToast) window.showToast(msg, "warning", 3000);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * 锁定结算提交（结算开始时调用）
+ */
+function lockSettlement(maxWaitMs = 32000) {
+    settlementProcessing = true;
+    // 添加页面全局"结算中"标识
+    document.body?.classList.add('settlement-processing');
+
+    // 最大等待时间后自动解锁（防止极端情况死锁）
+    if (settlementTimer) clearTimeout(settlementTimer);
+    settlementTimer = setTimeout(() => {
+        unlockSettlement(true);
+    }, maxWaitMs);
+    settlementTimer._endTime = Date.now() + maxWaitMs;
+
+    // 显示结算中指示
+    showSettlementIndicator();
+}
+
+/**
+ * 解锁结算提交（结算完成或失败时调用）
+ */
+function unlockSettlement(forced = false) {
+    settlementProcessing = false;
+    document.body?.classList.remove('settlement-processing');
+    if (settlementTimer) {
+        clearTimeout(settlementTimer);
+        settlementTimer = null;
+    }
+    if (forced) {
+        console.warn("[Executors] 结算锁超时，强制解锁");
+    }
+    hideSettlementIndicator();
+}
+
+/**
+ * 显示结算中指示（页面顶部黄色条）
+ */
+function showSettlementIndicator() {
+    let bar = document.getElementById('settlement-indicator');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'settlement-indicator';
+        bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#f59e0b,#d97706);color:#fff;text-align:center;padding:10px 16px;font-weight:bold;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,0.2);transition:all 0.3s;';
+        document.body.appendChild(bar);
+    }
+    bar.style.display = 'block';
+    bar.innerHTML = '⏳ 结算处理中，<b>请勿重复提交</b>，数据将在结算完成后自动更新 <span id="settlement-countdown">30</span>s';
+
+    // 倒计时
+    let remain = 30;
+    const countdownEl = document.getElementById('settlement-countdown');
+    const countdownTimer = setInterval(() => {
+        remain--;
+        if (countdownEl) countdownEl.textContent = remain;
+        if (remain <= 0) clearInterval(countdownTimer);
+    }, 1000);
+
+    bar._countdownTimer = countdownTimer;
+}
+
+/**
+ * 隐藏结算中指示
+ */
+function hideSettlementIndicator() {
+    const bar = document.getElementById('settlement-indicator');
+    if (bar) {
+        if (bar._countdownTimer) clearInterval(bar._countdownTimer);
+        bar.style.transition = 'all 0.5s';
+        bar.style.opacity = '0';
+        setTimeout(() => { bar.remove(); }, 500);
+    }
+}
+
+// 暴露到全局
+window.canSubmitSettlement = canSubmitSettlement;
+window.lockSettlement = lockSettlement;
+window.unlockSettlement = unlockSettlement;
+
 // 初始化 fetchUserData 函数引用
 function initFetchUserData() {
     if (!fetchUserDataFunc && window.fetchUserData) {
@@ -231,10 +332,25 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         console.warn("[Executors] 检测到重复提交，已忽略本次请求");
         return;
     }
+
+    // 🔒 结算类操作：额外检查是否已有结算在进行
+    const settleActions = ["exchange", "redeem", "swap", "sell", "buy", "withdraw_exchange"];
+    const isSettleAction = settleActions.includes(String(feishuAction).toLowerCase()) ||
+        ["兑换", "卖出", "出售", "提现兑换", "实时结算"].some(kw => String(bizType).includes(kw));
+    if (isSettleAction && !canSubmitSettlement()) {
+        return;
+    }
+
     isSubmitting = true;
+
+    // 结算类操作：锁定提交
+    if (isSettleAction) {
+        lockSettlement(32000);
+    }
 
     if (!await ensureNetwork()) {
         isSubmitting = false;
+        if (isSettleAction) unlockSettlement();
         return;
     }
 
