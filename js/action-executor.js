@@ -6,6 +6,8 @@ let fetchUserDataFunc = null;
 
 // 🚨 防重复提交标记
 let isSubmitting = false;
+let isSubmittingSince = 0;
+const SUBMIT_TIMEOUT_MS = 60000; // 60秒强制重置，防止标志卡死
 
 // 初始化 fetchUserData 函数引用
 function initFetchUserData() {
@@ -126,15 +128,26 @@ async function ensureNetwork() {
  * 增加：金额清洗与余额预检查逻辑
  */
 async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr) {
-    // 防重复提交
+    // 防重复提交 + 超时强制重置
     if (isSubmitting) {
-        console.warn("[Executors] 上一笔交易正在处理中，请勿重复提交");
-        return;
+        const elapsed = Date.now() - isSubmittingSince;
+        if (elapsed > SUBMIT_TIMEOUT_MS) {
+            console.warn(`[Executors] isSubmitting 已卡 ${(elapsed/1000).toFixed(0)}s，强制重置`);
+            isSubmitting = false;
+        } else {
+            const msg = `⏳ 上一笔交易正在处理中，请稍候再试`;
+            console.warn("[Executors] 检测到重复提交:", msg);
+            if (window.showToast) window.showToast(msg, "warning", 3000);
+            else alert(msg);
+            return;
+        }
     }
     isSubmitting = true;
+    isSubmittingSince = Date.now();
 
     if (!await ensureNetwork()) {
         isSubmitting = false;
+        isSubmittingSince = 0;
         return;
     }
 
@@ -219,6 +232,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         if (window.closeModal) window.closeModal();
     } finally {
         isSubmitting = false;
+        isSubmittingSince = 0;
     }
 }
 
@@ -226,15 +240,27 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
  * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定、团队、矿机转让、内转)
  */
 async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
-    // 🚨 防重复提交检查
+    // 🚨 防重复提交检查 + 超时强制重置
     if (isSubmitting) {
-        console.warn("[Executors] 检测到重复提交，已忽略本次请求");
-        return;
+        const elapsed = Date.now() - isSubmittingSince;
+        if (elapsed > SUBMIT_TIMEOUT_MS) {
+            console.warn(`[Executors] isSubmitting 已卡 ${(elapsed/1000).toFixed(0)}s 超过60秒，强制重置`);
+            isSubmitting = false;
+        } else {
+            const remainSec = Math.ceil((SUBMIT_TIMEOUT_MS - elapsed) / 1000);
+            const msg = `⏳ 上一笔操作正在处理中（约剩${remainSec}s），请稍候再试`;
+            console.warn("[Executors] 检测到重复提交，已忽略本次请求:", msg);
+            if (window.showToast) window.showToast(msg, "warning", 3000);
+            else alert(msg);
+            return;
+        }
     }
     isSubmitting = true;
+    isSubmittingSince = Date.now();
 
     if (!await ensureNetwork()) {
         isSubmitting = false;
+        isSubmittingSince = 0;
         return;
     }
 
@@ -275,6 +301,7 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
     } finally {
         // ✅ 确保无论成功或失败，都重置提交状态
         isSubmitting = false;
+        isSubmittingSince = 0;
     }
 }
 
