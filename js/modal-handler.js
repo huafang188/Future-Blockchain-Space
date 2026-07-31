@@ -91,11 +91,15 @@ export function mountModalHandlers() {
 
     // --- 4. 矿机转让 ---
     window.openTransferMinerModal = function() {
-        const max = document.getElementById('miner_count')?.innerText || "0";
+        const rawCount = document.getElementById('miner_count')?.innerText || "0";
+        // 矿机数量可能是 "1+1" 格式（多币种矿机组合），解析总和作为上限
+        const sumMatch = String(rawCount).match(/^(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)$/);
+        const max = sumMatch ? (parseFloat(sumMatch[1]) + parseFloat(sumMatch[2])).toString() : rawCount;
+        const displayMax = sumMatch ? `${rawCount} (合计 ${max})` : rawCount;
         window.showModal("miner_transfer_title", `
             <div class="space-y-4 text-left">
                 <input type="text" id="minerT_Addr" placeholder="接收者地址 (0x...)" data-i18n-placeholder="receiver_address_placeholder" class="w-full p-4 bg-slate-50 rounded-2xl font-mono text-[11px] border-none outline-none">
-                <input type="number" id="minerT_Amount" placeholder="数量 (最多 ${max})" data-i18n-placeholder="amount_max_placeholder" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <input type="number" id="minerT_Amount" placeholder="数量 (最多 ${displayMax})" data-i18n-placeholder="amount_max_placeholder" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doMinerTransfer()" class="action-btn w-full mt-2">提交转让签名</button>
             </div>
         `);
