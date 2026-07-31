@@ -306,14 +306,14 @@ body::before {
     filter: brightness(0.9);
 }
 
-/* 结算处理中：禁用所有 action-btn，视觉反馈 */
-body.settlement-processing .action-btn {
+/* 结算处理中：仅禁用结算类按钮（兑换/提币），不影响其他操作 */
+body.settlement-processing .btn-settlement {
     opacity: 0.5;
     pointer-events: none;
     cursor: not-allowed;
     position: relative;
 }
-body.settlement-processing .action-btn::after {
+body.settlement-processing .btn-settlement::after {
     content: "结算中...";
     position: absolute;
     inset: 0;

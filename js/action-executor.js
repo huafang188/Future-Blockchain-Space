@@ -1,6 +1,21 @@
 import { getReceiveAddress, getContractAddress, getCurrentChainConfig } from './config.js';
 import { postTransactionRecord } from './api-service.js';
 
+// 🔓 启动时立即清理可能残留的结算锁状态（防止旧代码遗留导致按钮锁死）
+// 页面加载后 100ms 内强制执行一次清理
+if (typeof document !== 'undefined') {
+    setTimeout(() => {
+        const body = document.body;
+        if (body && body.classList.contains('settlement-processing')) {
+            console.warn('[Executors] 检测到残留结算锁，清理中...');
+            body.classList.remove('settlement-processing');
+        }
+        // 清理可能存在的结算指示条
+        const bar = document.getElementById('settlement-indicator');
+        if (bar) bar.remove();
+    }, 100);
+}
+
 // 导入 fetchUserData 用于刷新数据
 let fetchUserDataFunc = null;
 
@@ -50,8 +65,12 @@ function lockSettlement(maxWaitMs = 32000) {
 
 /**
  * 解锁结算提交（结算完成或失败时调用）
+ * 绝对安全：多次调用不会出错，幂等操作
  */
 function unlockSettlement(forced = false) {
+    if (!settlementProcessing && !document.body?.classList.contains('settlement-processing')) {
+        return; // 已经解锁，跳过
+    }
     settlementProcessing = false;
     document.body?.classList.remove('settlement-processing');
     if (settlementTimer) {
@@ -62,6 +81,7 @@ function unlockSettlement(forced = false) {
         console.warn("[Executors] 结算锁超时，强制解锁");
     }
     hideSettlementIndicator();
+    console.log("[Executors] 结算锁已释放");
 }
 
 /**
