@@ -50,12 +50,10 @@ async function smartRefreshAfterTransaction(type, action, address) {
   if (!address) return;
   const needPolling = isSettlementSubmission(type, action);
 
-  const doRefresh = async (label, forceRefresh = false) => {
+  const doRefresh = async (label) => {
     try {
-      const opts = { silent: true };
-      if (forceRefresh) opts.force = true;
-      console.log(`[API][刷新] ${label} (${type}/${action})${forceRefresh ? ' [FORCE]' : ''}`);
-      await fetchUserData(address, opts);
+      console.log(`[API][刷新] ${label} (${type}/${action})`);
+      await fetchUserData(address, { silent: true });
       return true;
     } catch (e) {
       console.warn(`[API][刷新] ${label} 失败:`, e.message);
@@ -63,89 +61,35 @@ async function smartRefreshAfterTransaction(type, action, address) {
     }
   };
 
-  // 非结算类：立即 + 500ms 补刷（不需要 force，缓存已在写入时失效）
+  // 非结算类：立即 + 500ms 补刷
   if (!needPolling) {
     await doRefresh("立即");
     setTimeout(() => doRefresh("补刷(500ms)"), 500);
     return;
   }
 
-  // 结算类：force 模式轮询 + 余额/矿机数据对比提前停止
-  // 扩展到 6 次：0s, 3s, 8s, 15s, 22s, 30s —— 覆盖 Apps Script 慢结算场景
-  console.log(`[API][轮询] 检测到结算类操作 ${type}，启动 6 次 FORCE 轮询刷新`);
-  const schedule = [0, 3000, 8000, 15000, 22000, 30000];
+  // 结算类：轮询 + 余额对比提前停止
+  console.log(`[API][轮询] 检测到结算类操作 ${type}，启动 4 次轮询刷新`);
+  const schedule = [0, 3000, 8000, 15000];
   let initialSnapshot = null;
-  let minerSnapshot = null;
-  let settled = false;
 
   for (let i = 0; i < schedule.length; i++) {
     const delay = schedule[i];
     const label = `轮询${i + 1}/${schedule.length} (T+${delay}ms)`;
 
     await new Promise(r => setTimeout(r, delay));
-    const ok = await doRefresh(label, true);  // force=true 跳过 Worker 缓存
+    await doRefresh(label);
 
-    if (!ok) continue;
-
-    // 对比余额变化（Apps Script 更新 user_balance 表）
-    const currentBal = snapshotBalances();
-    const currentMiner = snapshotMiner();
-
+    const current = snapshotBalances();
     if (i === 0) {
-      initialSnapshot = currentBal;
-      minerSnapshot = currentMiner;
-    } else if (initialSnapshot && currentBal !== initialSnapshot) {
-      console.log(`[API][轮询] ✅ 余额已变化 (T+${delay}ms)，结算完成`);
-      showSettlementDoneToast(delay);
-      settled = true;
-      break;
-    } else if (minerSnapshot && currentMiner !== minerSnapshot) {
-      console.log(`[API][轮询] ✅ 矿机数据已变化 (T+${delay}ms)，结算完成`);
-      showSettlementDoneToast(delay);
-      settled = true;
-      break;
+      initialSnapshot = current;
+    } else if (initialSnapshot && current !== initialSnapshot) {
+      console.log(`[API][轮询] ✅ 余额已变化，结算完成，提前结束轮询`);
+      if (window.showToast) window.showToast("结算完成，余额已更新", "success", 2500);
+      return;
     }
   }
-
-  // 🔓 轮询完成后解锁结算提交
-  if (typeof window.unlockSettlement === 'function') {
-    window.unlockSettlement();
-    console.log(`[API][轮询] 结算锁已释放 (settled=${settled})`);
-  }
-
-  if (!settled) {
-    console.log(`[API][轮询] 全部 ${schedule.length} 次轮询完成，数据可能仍在结算中`);
-    if (window.showToast) {
-      window.showToast("提交成功，数据可能仍在结算中，请稍后手动刷新", "info", 4000);
-    }
-  }
-}
-
-/** 快照矿机数据用于结算检测 */
-function snapshotMiner() {
-  const m = window.currentUserInfo?.miner || {};
-  return JSON.stringify({
-    count: m["矿机数量"] || "",
-    running: m["在运行"] || "",
-    daily: m["日产量"] || "",
-    locked: m["锁仓数量"] || ""
-  });
-}
-
-/** 结算完成 Toast */
-function showSettlementDoneToast(delayMs) {
-  if (window.showToast) {
-    window.showToast(`✅ 结算完成，余额已更新 (耗时 ${(delayMs / 1000).toFixed(0)}s)`, "success", 3000);
-  }
-  // 同时播放一个轻量的提示音
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880; gain.gain.value = 0.1;
-    osc.start(); osc.stop(ctx.currentTime + 0.15);
-  } catch (_) { /* ignore audio */ }
+  console.log(`[API][轮询] 已完成全部 ${schedule.length} 次刷新，若余额仍未变化请稍后手动刷新`);
 }
 
 /**
@@ -285,7 +229,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 export async function fetchUserData(address, options = {}) {
     if (!address) return;
 
-    const { silent = false, force = false } = options;
+    const { silent = false } = options;
     const chain = localStorage.getItem('fbs_chain') || 'BSC';
     
     // 检查是否为激活的链，非激活链不发起请求
@@ -294,13 +238,14 @@ export async function fetchUserData(address, options = {}) {
         return;
     }
 
-    // 请求去重：force 模式下跳过等待（因为需要最新数据）
+    // 请求去重：如果有相同地址和链的请求正在进行，则等待该请求完成
     const requestKey = `${chain}:${address}`;
-    if (!force && pendingRequest && pendingRequest.key === requestKey) {
+    if (pendingRequest && pendingRequest.key === requestKey) {
         console.log(`[API] 检测到重复请求 (${requestKey})，等待已有请求完成`);
         try {
             return await pendingRequest.promise;
         } catch (e) {
+            // 如果等待时出错，忽略并继续执行新请求
             console.warn(`[API] 等待重复请求时出错: ${e.message}`);
         }
     }
@@ -332,8 +277,7 @@ export async function fetchUserData(address, options = {}) {
         // EVM 链地址统一小写，TON 和 SOL 保持原始格式
         const cleanAddr = chain === 'BSC' ? address.toLowerCase().trim() : address.trim();
         
-        const forceParam = force ? "&force=1" : "";
-        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}${forceParam}`, { signal });
+        const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
         const requestDuration = Date.now() - requestStart;
         
         if (!res.ok) {
@@ -710,25 +654,3 @@ export async function refreshBalances() {
     }
 }
 window.refreshBalances = refreshBalances;
-
-// ========== 页面可见性自动刷新 ==========
-// 用户切回页面时，自动 force 刷新数据（确保 Apps Script 结算完成后数据能及时显示）
-let lastVisibleRefresh = 0;
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        const now = Date.now();
-        // 节流：10 秒内只刷一次
-        if (now - lastVisibleRefresh < 10000) return;
-        lastVisibleRefresh = now;
-
-        const address = window.currentAddress || localStorage.getItem('fbs_address');
-        if (!address) return;
-
-        console.log(`[API] 页面可见性恢复，FORCE 刷新数据 (${address})`);
-        fetchUserData(address, { silent: true, force: true }).then(() => {
-            console.log(`[API] 页面可见性刷新完成`);
-        }).catch(e => {
-            console.warn(`[API] 页面可见性刷新失败:`, e.message);
-        });
-    }
-});
