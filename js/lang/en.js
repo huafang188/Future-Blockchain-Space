@@ -148,6 +148,13 @@ window.i18nData['en'] = {
     // --- 5. Important Announcement ---
     important_announcement: "Important Announcement",
     news_title_short: "News",
+    news_section_title: "Announcements & News",
+    click_to_expand: "Click to expand",
+    click_to_collapse: "Click to collapse",
+    bitget_wallet_title: "Recommended: Bitget Wallet",
+    bitget_wallet_desc1: "Bitget Wallet is a decentralized crypto wallet dedicated to making cryptocurrency easy and secure for everyone. It integrates a full range of on-chain services including trading, market data, earn, rewards, DApp browser, and crypto payments.",
+    bitget_wallet_desc2: "Bitget Wallet supports over 130 mainstream blockchains and millions of tokens, aggregating hundreds of DEXs and cross-chain bridges for smooth multi-chain trading. The platform features a $300M+ user protection fund to fully safeguard your assets.",
+    bitget_wallet_download: "Download Bitget Wallet",
     neo_update_title: "NEO Ecosystem Strategic Update: Expanding Through Advanced Interoperability & NCL Initiative",
     neo_update_greeting: "Dear NEO Community Members and Partners, We are thrilled to announce a series of major milestones and strategic expansion plans, marking NEO's entry into a new chapter of development.",
     neo_update_s1_title: "Embracing Inclusivity: Expanding Multi-Chain Presence",

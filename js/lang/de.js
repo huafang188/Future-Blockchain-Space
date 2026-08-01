@@ -104,6 +104,13 @@ window.i18nData['de'] = {
     // --- 5. Wichtige Ankündigung ---
     important_announcement: "Wichtige Ankündigung",
     news_title_short: "Neuigkeiten",
+    news_section_title: "Ankündigungen und Nachrichten",
+    click_to_expand: "Zum Aufklappen klicken",
+    click_to_collapse: "Zum Zuklappen klicken",
+    bitget_wallet_title: "Wir empfehlen Bitget Wallet",
+    bitget_wallet_desc1: "Bitget Wallet ist eine dezentrale Krypto-Wallet, die sich der einfachen und sicheren Nutzung von Kryptowährungen für alle verschrieben hat. Sie integriert eine volle Palette von On-Chain-Diensten, einschließlich Handel, Marktdaten, Verdienen, Belohnungen, DApp-Browser und Krypto-Zahlungen.",
+    bitget_wallet_desc2: "Bitget Wallet unterstützt über 130 Mainstream-Blockchains und Millionen von Token, aggregiert hunderte DEXs und Cross-Chain-Bridges für reibungslosen Multi-Chain-Handel. Die Plattform verfügt über einen Benutzerschutzfonds von über 300 Millionen Dollar.",
+    bitget_wallet_download: "Bitget Wallet herunterladen",
     neo_update_title: "Wichtiges Strategisches Update des NEO-Ökosystems: Erweiterung durch Fortgeschrittene Interoperabilität und NCL-Initiative",
     neo_update_greeting: "Sehr geehrte Mitglieder der NEO-Community und Partner: Wir freuen uns, eine Reihe wichtiger Meilensteine und strategischer Expansionspläne anzukündigen, die den Eintritt des NEO-Ökosystems in ein neues Entwicklungskapitel markieren.",
     neo_update_s1_title: "Inklusivität Umarmen: Multi-Chain-Expansion",

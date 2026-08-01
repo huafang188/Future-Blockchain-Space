@@ -104,6 +104,13 @@ window.i18nData['ja'] = {
     // --- 5. 重要なお知らせ ---
     important_announcement: "重要なお知らせ",
     news_title_short: "ニュース",
+    news_section_title: "お知らせとニュース",
+    click_to_expand: "クリックして展開",
+    click_to_collapse: "クリックして折りたたむ",
+    bitget_wallet_title: "Bitget Wallet をおすすめします",
+    bitget_wallet_desc1: "Bitget Wallet は、誰もが簡単かつ安全に暗号通貨を利用できるようにする非中央集権型暗号通貨ウォレットです。取引、市場データ、資産運用、報酬、DAppブラウザ、暗号決済を含む包括的なオンチェーンサービスを統合しています。",
+    bitget_wallet_desc2: "Bitget Wallet は130以上の主要ブロックチェーンと数百万のトークンをサポートし、数百のDEXとクロスチェーンブリッジを集約してスムーズなマルチチェーン取引を実現します。プラットフォームは3億ドル以上のユーザー保護基金を設けており、資産を完全に保護します。",
+    bitget_wallet_download: "Bitget Wallet をダウンロード",
     neo_update_title: "NEO エコシステムの重要な戦略的更新：高度な相互運用性と NCL イニシアチブによる NEO エコシステムの拡大",
     neo_update_greeting: "NEO コミュニティメンバーおよびパートナーの皆様へ：私たちは一連の重要なマイルストーンと戦略的拡大計画を発表できることを嬉しく思います。これは NEO エコシステムが新しい発展の章に入ることを意味します。",
     neo_update_s1_title: "包括性の理念：マルチチェーン展開の拡大",

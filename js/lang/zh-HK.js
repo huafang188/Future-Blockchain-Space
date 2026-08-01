@@ -103,6 +103,13 @@ window.i18nData['zh-HK'] = {
     // --- 5. 重要公告 ---
     important_announcement: "重要公告",
     news_title_short: "新聞",
+    news_section_title: "公告與新聞",
+    click_to_expand: "點擊展開",
+    click_to_collapse: "點擊收起",
+    bitget_wallet_title: "推薦您使用 Bitget Wallet",
+    bitget_wallet_desc1: "Bitget Wallet 是一款去中心化的加密錢包，致力讓每個人都能輕鬆、安全地使用加密貨幣。目前已整合包括交易、市場行情、理財、獎勵、DApp 瀏覽器及加密支付在內的全方位鏈上服務。",
+    bitget_wallet_desc2: "Bitget Wallet 支援 130 多條主流公鏈和上百萬種代幣，聚合數百個 DEX 與跨鏈橋，幫助用戶實現流暢高效的多鏈交易。平台設有超 3 億美元的用戶保護基金，全面保障資產安全。",
+    bitget_wallet_download: "下載 Bitget Wallet",
     neo_update_title: "NEO 生態近期重要戰略更新：通過先進的互操作性與 NCL 計劃拓展 NEO 生態",
     neo_update_greeting: "尊敬的 NEO 社區成員與合作夥伴：我們非常高興地向大家宣佈一系列重大里程碑與戰略擴張計劃，這標誌着 NEO 生態正式邁入全新的發展篇章。",
     neo_update_s1_title: "秉持包容理念：拓展多鏈版圖",

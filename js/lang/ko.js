@@ -104,6 +104,13 @@ window.i18nData['ko'] = {
     // --- 5. 중요 공지 ---
     important_announcement: "중요 공지",
     news_title_short: "뉴스",
+    news_section_title: "공지 및 뉴스",
+    click_to_expand: "클릭하여 펼치기",
+    click_to_collapse: "클릭하여 접기",
+    bitget_wallet_title: "Bitget Wallet 추천",
+    bitget_wallet_desc1: "Bitget Wallet은 누구나 쉽고 안전하게 암호화폐를 사용할 수 있도록 설계된 탈중앙화 암호화폐 지갑입니다. 거래, 시세 조회, 수익, 보상, DApp 브라우저 및 암호화폐 결제를 포함한 모든 온체인 서비스를 통합했습니다.",
+    bitget_wallet_desc2: "Bitget Wallet은 130개 이상의 주요 블록체인과 수백만 종의 토큰을 지원하며, 수백 개의 DEX와 크로스체인 브릿지를 통합하여 원활한 멀티체인 거래를 가능하게 합니다. 플랫폼은 3억 달러 이상의 사용자 보호 기금을 운영하여 자산을 완벽하게 보호합니다.",
+    bitget_wallet_download: "Bitget Wallet 다운로드",
     neo_update_title: "NEO 생태계 중요 전략 업데이트: 고급 상호운용성과 NCL 이니셔티브를 통한 NEO 생태계 확장",
     neo_update_greeting: "NEO 커뮤니티 멤버 및 파트너 여러분: 우리는 일련의 중요한 마일스톤과 전략적 확장 계획을 발표하게 되어 기쁩니다. 이는 NEO 생태계가 새로운 발전의 장에 들어섰음을 의미합니다.",
     neo_update_s1_title: "포용의 철학: 멀티체인版图 확장",
