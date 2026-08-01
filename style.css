@@ -856,6 +856,15 @@ body::before {
     position: relative;
     width: 100%;
     padding: 8px 0;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    /* 允许垂直滚动，水平交给拖动 */
+    touch-action: pan-y;
+}
+
+.partner-scroll-container.dragging {
+    cursor: grabbing;
 }
 
 /* 合作伙伴滚动轨道 */
@@ -863,11 +872,21 @@ body::before {
     display: flex;
     gap: 24px;
     animation: scrollLeft 15s linear infinite;
+    will-change: transform;
 }
 
-/* 鼠标悬停暂停动画 */
-.partner-scroll-container:hover .partner-scroll-track {
+/* 鼠标悬停暂停动画（拖动时不暂停） */
+.partner-scroll-container:hover:not(.dragging) .partner-scroll-track {
     animation-play-state: paused;
+}
+
+/* 拖动时禁用链接默认行为与图片拖拽 */
+.partner-scroll-container.dragging a {
+    pointer-events: none;
+}
+.partner-scroll-container img {
+    -webkit-user-drag: none;
+    user-drag: none;
 }
 
 /* 从右至左滚动动画 */

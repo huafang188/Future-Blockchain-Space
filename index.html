@@ -453,10 +453,20 @@
             <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="bitget_wallet_desc1">Bitget Wallet 是一款去中心化的加密钱包，致力于让每个人都能轻松、安全地使用加密货币。目前已整合了包括交易、市场行情、理财、奖励、DApp 浏览器及加密支付在内的全方位链上服务。</p>
             <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="bitget_wallet_desc2">Bitget Wallet 支持 130 多条主流公链和上百万种代币，聚合数百个 DEX 与跨链桥，帮助用户实现流畅高效的多链交易。平台设有超 3 亿美元的用户保护基金，全面保障资产安全。</p>
         </div>
-        <a href="https://static.bitkeep.vip/apk/9560/BitgetWallet9560_bgwapp.apk" download class="inline-flex items-center gap-2 mt-2 px-6 py-2.5 rounded-full bg-[#001F29] text-white text-xs font-bold hover:bg-[#003545] transition-colors shadow-md">
-            <img src="assets/Bitget Wallet-Logomark@2x.svg" alt="Bitget" class="w-5 h-5 rounded-md">
-            <span data-i18n="bitget_wallet_download">下载 Bitget Wallet</span>
-        </a>
+        <div class="flex flex-col items-center gap-3 mt-2 w-full max-w-[240px]">
+            <a href="https://static.bitkeep.vip/apk/9560/BitgetWallet9560_bgwapp.apk" download class="inline-flex items-center justify-center gap-2 w-full px-6 py-2.5 rounded-full bg-[#001F29] text-white text-xs font-bold hover:bg-[#003545] transition-colors shadow-md">
+                <img src="assets/Bitget Wallet-Logomark@2x.svg" alt="Bitget" class="w-5 h-5 rounded-md">
+                <span data-i18n="bitget_wallet_download">下载 Bitget Wallet</span>
+            </a>
+            <a href="https://apps.apple.com/us/app/bitget-wallet-crypto-payfi/id1395301115" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full px-6 py-2.5 rounded-full bg-[#001F29] text-white text-xs font-bold hover:bg-[#003545] transition-colors shadow-md">
+                <i class="fab fa-apple text-base"></i>
+                <span>App Store</span>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.bitkeep.wallet" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full px-6 py-2.5 rounded-full bg-[#001F29] text-white text-xs font-bold hover:bg-[#003545] transition-colors shadow-md">
+                <i class="fab fa-google-play text-base"></i>
+                <span>Google Play</span>
+            </a>
+        </div>
     </div>
 </section>
 
@@ -670,7 +680,7 @@
 
 <section class="space-y-4">
     <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2" data-i18n="partners_title">Partners & Wallet</h4>
-    <div class="partner-scroll-container overflow-hidden">
+    <div class="partner-scroll-container overflow-hidden" id="partnerScrollContainer">
         <div class="partner-scroll-track">
             <a href="https://web3.bitget.cloud/wallet-download?source=0t5c0o67" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
                 <img src="assets/bitget.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform hover:scale-110">
@@ -1282,6 +1292,105 @@ function toggleNewsSection() {
             Разработано в России с использованием чистых энергоресурсов
         </div>
     </footer>
-    
+
+<script>
+(function () {
+    const container = document.getElementById('partnerScrollContainer');
+    const track = container ? container.querySelector('.partner-scroll-track') : null;
+    if (!container || !track) return;
+
+    const ANIMATION_DURATION = 15; // 与 CSS 中 scrollLeft 15s 保持一致
+    let isDragging = false;
+    let hasMoved = false;
+    let startX = 0;
+    let startTranslate = 0;
+    let currentTranslate = 0;
+    let pointerId = null;
+
+    // 解析当前 transform 的 translateX
+    function getMatrixX(el) {
+        const t = window.getComputedStyle(el).transform;
+        if (!t || t === 'none') return 0;
+        const m = t.match(/matrix3?d?\(([^)]+)\)/);
+        if (!m) return 0;
+        const v = m[1].split(',').map(s => parseFloat(s.trim()));
+        return v.length === 16 ? v[12] : v[4];
+    }
+
+    // 拖动结束后，从当前位移平滑恢复动画
+    function resumeAnimation() {
+        const trackWidth = track.scrollWidth / 2; // 复制了一份用于无缝循环
+        let x = currentTranslate;
+        if (trackWidth > 0) {
+            // 归一化到 [-trackWidth, 0]
+            x = -(((-x) % trackWidth + trackWidth) % trackWidth);
+        }
+        const progress = trackWidth > 0 ? (-x / trackWidth) : 0; // 0~1
+        const delay = -progress * ANIMATION_DURATION; // 负延迟：从该进度开始
+        track.style.transform = '';
+        track.style.animation = 'none';
+        // 触发重排以重置动画
+        void track.offsetWidth;
+        track.style.animation = `scrollLeft ${ANIMATION_DURATION}s linear infinite`;
+        track.style.animationDelay = `${delay}s`;
+    }
+
+    function onDown(e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        isDragging = true;
+        hasMoved = false;
+        startX = e.clientX;
+        // 捕获动画当前位移
+        currentTranslate = getMatrixX(track);
+        startTranslate = currentTranslate;
+        // 暂停动画并固定到当前 transform
+        track.style.animation = 'none';
+        track.style.transform = `translateX(${currentTranslate}px)`;
+        container.classList.add('dragging');
+        pointerId = e.pointerId;
+        try { container.setPointerCapture(pointerId); } catch (_) {}
+        e.preventDefault();
+    }
+
+    function onMove(e) {
+        if (!isDragging) return;
+        const delta = e.clientX - startX;
+        if (Math.abs(delta) > 4) hasMoved = true;
+        const trackWidth = track.scrollWidth / 2;
+        let newX = startTranslate + delta;
+        if (trackWidth > 0) {
+            // 循环归一化，支持无限左右拖
+            newX = -(((-newX) % trackWidth + trackWidth) % trackWidth);
+        }
+        currentTranslate = newX;
+        track.style.transform = `translateX(${newX}px)`;
+        e.preventDefault();
+    }
+
+    function onUp(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        container.classList.remove('dragging');
+        try { if (pointerId !== null) container.releasePointerCapture(pointerId); } catch (_) {}
+        pointerId = null;
+        resumeAnimation();
+    }
+
+    container.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove, { passive: false });
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+
+    // 拖动后阻止误触链接点击
+    container.addEventListener('click', function (e) {
+        if (hasMoved) {
+            e.preventDefault();
+            e.stopPropagation();
+            hasMoved = false;
+        }
+    }, true);
+})();
+</script>
+
 </body>
 </html>
