@@ -101,7 +101,8 @@ export function mountCalculationHandlers() {
         window.updateMaxHint('sFromToken', 'swapMaxBalance');
 
         if (fromPrice > 0 && toPrice > 0) {
-            const result = (amount * (fromPrice / toPrice)).toFixed(6);
+            // 实时展示比实际计算结果少 10%（含滑点/损耗）
+            const result = (amount * (fromPrice / toPrice) * 0.9).toFixed(6);
             toAmtInput.value = result;
         } else {
             toAmtInput.value = "0.000000";

@@ -143,10 +143,10 @@ export function mountModalHandlers() {
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                 </div>
                 <div class="px-1 -mb-2">
-                    <span class="text-[9px] font-bold text-amber-500" data-i18n="withdraw_fee">手续费：0.5USDT</span>
+                    <span class="text-[11px] font-bold text-amber-600" data-i18n="withdraw_fee">手续费：0.5USDT</span>
                 </div>
                 <div class="px-1">
-                    <span id="witBalanceHint" class="text-[9px] font-bold text-slate-400">可用余额：0.00 USDT</span>
+                    <span id="witBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.00 USDT</span>
                 </div>
                 <input type="number" id="witAmount" placeholder="提现数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doWithdrawSignature()" class="action-btn w-full mt-2 !from-red-500">确认提现签名</button>
@@ -172,7 +172,7 @@ window.openExchangeModal = function() {
                 <!-- 兑出区域 -->
                 <div class="p-5 bg-slate-50 rounded-[2rem] border border-slate-100">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1" data-i18n="swap_from">兑出资产</span>
+                        <span class="text-xs font-bold text-slate-700 uppercase ml-1" data-i18n="swap_from">兑出资产</span>
                         <span class="text-[10px] font-bold text-indigo-500 mr-1 cursor-pointer" onclick="window.fillMax('sFromToken','sFromAmt')" data-i18n="max_available">最大可用</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
@@ -219,7 +219,7 @@ window.openExchangeModal = function() {
                 <!-- 兑入区域 -->
                 <div class="p-5 bg-slate-50 rounded-[2rem] border border-slate-100">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase ml-1" data-i18n="expected_receive">预计兑入</span>
+                        <span class="text-xs font-bold text-slate-700 uppercase ml-1" data-i18n="expected_receive">预计兑入</span>
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
