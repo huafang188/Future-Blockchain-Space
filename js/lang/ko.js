@@ -43,10 +43,11 @@ window.i18nData['ko'] = {
     // --- 2.3 NCL 크로스체인 코인 머신 ---
     ncl_machine_status: "머신 상태",
     ncl_status_active: "출시 예정",
-    ncl_machine_name: "NCL 크로스체인 코인 머신",
+    ncl_machine_name: "NCL Монетоприемник",
+    ncl_purchase_restriction: "골드 노드 이상 사용자 한정 구매",
     ncl_spec_chain: "크로스체인: BNB / SOL / TON",
     ncl_spec_output: "일일 산출량: ---NCL/일",
-    ncl_spec_price: "머신 가격: ≈1500달러/대 (잠정)",
+    ncl_spec_price: "단위 가격: 2000 USD",
     ncl_spec_bridge: "브리지: 멀티체인 자산 상호운용",
     ncl_count: "수량",
     ncl_running: "가동 중",

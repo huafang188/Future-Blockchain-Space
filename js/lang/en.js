@@ -42,11 +42,12 @@ window.i18nData['en'] = {
 
     // --- 2.3 NCL Cross-Chain Coin Machine ---
     ncl_machine_status: "Machine Status",
-    ncl_status_active: "Pending Launch",
-    ncl_machine_name: "NCL Cross-Chain Coin Machine",
+    ncl_status_active: "Coming Soon",
+    ncl_machine_name: "NCL Монетоприемник",
+    ncl_purchase_restriction: "Limited to Gold Node and above users",
     ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
     ncl_spec_output: "Daily Output: ---NCL/day",
-    ncl_spec_price: "Machine Price: ≈$1500/unit (TBD)",
+    ncl_spec_price: "Unit Price: 2000 USD",
     ncl_spec_bridge: "Bridge: Multi-chain Asset Interoperability",
     ncl_count: "Count",
     ncl_running: "Running",

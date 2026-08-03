@@ -42,11 +42,12 @@ window.i18nData['it'] = {
 
     // --- 2.3 Macchina per Monete Cross-Chain NCL ---
     ncl_machine_status: "Stato della Macchina",
-    ncl_status_active: "In Attesa",
-    ncl_machine_name: "Macchina per Monete Cross-Chain NCL",
+    ncl_status_active: "Prossimamente",
+    ncl_machine_name: "NCL Монетоприемник",
+    ncl_purchase_restriction: "Limitato agli utenti Gold Node e superiori",
     ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
     ncl_spec_output: "Produzione Giornaliera: ---NCL/giorno",
-    ncl_spec_price: "Prezzo Macchina: ≈$1500/unità (Provvisorio)",
+    ncl_spec_price: "Prezzo unitario: 2000 USD",
     ncl_spec_bridge: "Ponte: Interoperabilità Multi-catena",
     ncl_count: "Quantità",
     ncl_running: "In Funzione",

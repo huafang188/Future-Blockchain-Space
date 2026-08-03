@@ -41,11 +41,12 @@ window.i18nData['hi'] = {
 
     // --- 2.3 NCL क्रॉस-चेन सिक्का मशीन ---
     ncl_machine_status: "मशीन स्थिति",
-    ncl_status_active: "लॉन्च प्रतीक्षित",
-    ncl_machine_name: "NCL क्रॉस-चेन सिक्का मशीन",
+    ncl_status_active: "जल्द आ रहा है",
+    ncl_machine_name: "NCL Монетоприемник",
+    ncl_purchase_restriction: "गोल्ड नोड और उच्च उपयोगकर्ताओं के लिए सीमित",
     ncl_spec_chain: "क्रॉस-चेन: BNB / SOL / TON",
     ncl_spec_output: "दैनिक उत्पादन: ---NCL/दिन",
-    ncl_spec_price: "मशीन कीमत: ≈$1500/यूनिट (अस्थायी)",
+    ncl_spec_price: "इकाई मूल्य: 2000 USD",
     ncl_spec_bridge: "ब्रिज: मल्टी-चेन संपत्ति इंटरऑपरेबिलिटी",
     ncl_count: "संख्या",
     ncl_running: "चल रहा है",

@@ -42,11 +42,12 @@ window.i18nData['zh-CN'] = {
 
     // --- 2.3 NCL 跨链产币机 ---
     ncl_machine_status: "产币机状态",
-    ncl_status_active: "待上线",
-    ncl_machine_name: "NCL 跨链产币机",
+    ncl_status_active: "即将上线",
+    ncl_machine_name: "NCL Монетоприемник",
+    ncl_purchase_restriction: "限黄金节点以上用户购买",
     ncl_spec_chain: "跨链协议：BNB / SOL / TON",
     ncl_spec_output: "日产币量：---NCL/天",
-    ncl_spec_price: "产币机价格：≈1500美元/台（暂定）",
+    ncl_spec_price: "单位价格：2000 美元",
     ncl_spec_bridge: "跨链桥接：多链资产互通",
     ncl_count: "数量",
     ncl_running: "在运行",
