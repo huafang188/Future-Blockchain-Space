@@ -56,6 +56,7 @@ window.i18nData['hi'] = {
 
     // --- 2.5 नेटवर्क खनन उपकरण स्थिति ---
     network_miner_title: "नेटवर्क खनन उपकरण स्थिति",
+    neo_total_supply: "NEO कुल आपूर्ति",
     data_syncing: "डेटा सिंक हो रहा है, कृपया प्रतीक्षा करें",
     network_miner_total: "नेटवर्क पर कुल खनन उपकरण",
     network_daily_output: "दैनिक NEO उत्पादन",

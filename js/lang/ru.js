@@ -57,6 +57,7 @@ window.i18nData['ru'] = {
 
     // --- 2.5 Статус сети майнеров ---
     network_miner_title: "Статус сети майнеров",
+    neo_total_supply: "Общий выпуск NEO",
     data_syncing: "Синхронизация данных, ожидайте",
     network_miner_total: "Всего майнеров в сети",
     network_daily_output: "Суточная добыча NEO",

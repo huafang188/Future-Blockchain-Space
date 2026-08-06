@@ -56,6 +56,7 @@ window.i18nData['zh-HK'] = {
 
     // --- 2.5 全網礦機運行情況 ---
     network_miner_title: "全網礦機運行情況",
+    neo_total_supply: "NEO總發行量",
     data_syncing: "數據對接中，敬請期待",
     network_miner_total: "全網運行礦機總數",
     network_daily_output: "全網NEO日產量",

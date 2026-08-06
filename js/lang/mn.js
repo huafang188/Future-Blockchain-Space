@@ -56,6 +56,7 @@ window.i18nData['mn'] = {
 
     // --- 2.5 Сүлжээний уул уурхайн машин ---
     network_miner_title: "Сүлжээний уул уурхайн машин",
+    neo_total_supply: "NEO нийт хангалт",
     data_syncing: "Өгөгдөл синкчлэгдэж байна, түр хүлээнэ үү",
     network_miner_total: "Сүлжээний нийт уул уурхайн машин",
     network_daily_output: "Өдрийн NEO гарц",

@@ -57,6 +57,7 @@ window.i18nData['ja'] = {
 
     // --- 2.5 ネットワークマイナー状況 ---
     network_miner_title: "ネットワークマイナー状況",
+    neo_total_supply: "NEO総発行量",
     data_syncing: "データ連携中、しばらくお待ちください",
     network_miner_total: "ネットワーク総マイナー数",
     network_daily_output: "ネットワークNEO日量",

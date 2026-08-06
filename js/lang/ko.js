@@ -57,6 +57,7 @@ window.i18nData['ko'] = {
 
     // --- 2.5 네트워크 채굴기 현황 ---
     network_miner_title: "네트워크 채굴기 현황",
+    neo_total_supply: "NEO 총 발행량",
     data_syncing: "데이터 연동 중, 잠시만 기다려주세요",
     network_miner_total: "네트워크 총 채굴기 수",
     network_daily_output: "네트워크 NEO 일일 생산량",

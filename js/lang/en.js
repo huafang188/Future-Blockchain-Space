@@ -57,6 +57,7 @@ window.i18nData['en'] = {
 
     // --- 2.5 Network Miner Status ---
     network_miner_title: "Network Miner Status",
+    neo_total_supply: "NEO Total Supply",
     data_syncing: "Data Syncing, Stay Tuned",
     network_miner_total: "Total Network Miners",
     network_daily_output: "Daily NEO Output",

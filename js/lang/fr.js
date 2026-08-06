@@ -57,6 +57,7 @@ window.i18nData['fr'] = {
 
     // --- 2.5 Statut des Mineurs du Réseau ---
     network_miner_title: "Statut des Mineurs du Réseau",
+    neo_total_supply: "Offre Totale NEO",
     data_syncing: "Synchronisation des données, veuillez patienter",
     network_miner_total: "Total des Mineurs du Réseau",
     network_daily_output: "Production Journalière NEO",

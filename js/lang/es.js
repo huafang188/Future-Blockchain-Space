@@ -57,6 +57,7 @@ window.i18nData['es'] = {
 
     // --- 2.5 Estado de los Mineros de la Red ---
     network_miner_title: "Estado de los Mineros de la Red",
+    neo_total_supply: "Suministro Total de NEO",
     data_syncing: "Sincronización de datos, espere por favor",
     network_miner_total: "Total de Mineros en la Red",
     network_daily_output: "Producción Diaria NEO",

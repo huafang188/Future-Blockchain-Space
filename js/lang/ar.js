@@ -57,6 +57,7 @@ window.i18nData['ar'] = {
 
     // --- 2.5 حالة أجهزة التعدين في الشبكة ---
     network_miner_title: "حالة أجهزة التعدين في الشبكة",
+    neo_total_supply: "إجمالي المعروض من NEO",
     data_syncing: "جارٍ مزامنة البيانات، يرجى الانتظار",
     network_miner_total: "إجمالي أجهزة التعدين في الشبكة",
     network_daily_output: "الإنتاج اليومي لـ NEO",
