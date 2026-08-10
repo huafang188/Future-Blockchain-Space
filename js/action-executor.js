@@ -36,23 +36,44 @@ const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b =>
  * 所有属性访问都包裹 try-catch，防止旧浏览器访问 getter 时抛出异常
  */
 function getEVMProvider() {
+    // 诊断日志
+    console.log('[getEVMProvider] window.ethereum:', !!window.ethereum,
+                'window.bitkeep:', !!window.bitkeep,
+                'window.tokenpocket:', !!window.tokenpocket);
+
     // 1. 优先检测 window.ethereum（大多数钱包的标准注入方式）
     try {
         if (window.ethereum && typeof window.ethereum.request === 'function') {
+            console.log('[getEVMProvider] 使用 window.ethereum');
             return window.ethereum;
         }
     } catch (e) { /* ignore */ }
 
-    // 2. Bitget 钱包
+    // 2. Bitget 钱包（优先检测 isBitkeep 标志）
+    try {
+        if (window.ethereum && window.ethereum.isBitkeep) {
+            console.log('[getEVMProvider] 使用 window.ethereum (isBitkeep)');
+            return window.ethereum;
+        }
+    } catch (e) { /* ignore */ }
+
     try {
         if (window.bitkeep) {
+            console.log('[getEVMProvider] 检测到 window.bitkeep');
             try {
                 if (window.bitkeep.ethereum && typeof window.bitkeep.ethereum.request === 'function') {
+                    console.log('[getEVMProvider] 使用 window.bitkeep.ethereum');
                     return window.bitkeep.ethereum;
                 }
             } catch (e) { /* getter 可能抛异常 */ }
-            if (typeof window.bitkeep.request === 'function') return window.bitkeep;
-            if (typeof window.bitkeep.send === 'function') return window.bitkeep;
+            if (typeof window.bitkeep.request === 'function') {
+                console.log('[getEVMProvider] 使用 window.bitkeep (request)');
+                return window.bitkeep;
+            }
+            if (typeof window.bitkeep.send === 'function') {
+                console.log('[getEVMProvider] 使用 window.bitkeep (send)');
+                return window.bitkeep;
+            }
             return window.bitkeep;
         }
     } catch (e) { /* ignore */ }
@@ -60,8 +81,10 @@ function getEVMProvider() {
     // 3. TP 钱包
     try {
         if (window.tokenpocket) {
+            console.log('[getEVMProvider] 检测到 window.tokenpocket');
             try {
                 if (window.tokenpocket.ethereum && typeof window.tokenpocket.ethereum.request === 'function') {
+                    console.log('[getEVMProvider] 使用 window.tokenpocket.ethereum');
                     return window.tokenpocket.ethereum;
                 }
             } catch (e) { /* getter 可能抛异常 */ }
@@ -73,53 +96,96 @@ function getEVMProvider() {
         }
     } catch (e) { /* ignore */ }
 
+    // 4. 多钱包环境：检查 providers 数组 (EIP-5749)
+    try {
+        if (window.ethereum && Array.isArray(window.ethereum.providers)) {
+            for (const p of window.ethereum.providers) {
+                if (p && typeof p.request === 'function') {
+                    console.log('[getEVMProvider] 使用 providers 数组中的 provider');
+                    return p;
+                }
+            }
+        }
+    } catch (e) { /* ignore */ }
+
+    console.warn('[getEVMProvider] 未检测到任何 EVM provider');
     return null;
 }
 
 /**
  * 🔒 核心：强制切换/添加当前选中的区块链
+ * 非阻塞式：切链失败不阻止后续操作（钱包可能已在正确链上）
  */
 async function ensureNetwork() {
     const provider = getEVMProvider();
     if (!provider) {
-        alert("请在 Web3 钱包浏览器中打开");
+        console.warn('[ensureNetwork] 未检测到 EVM provider');
         return false;
     }
-    
+
     const chainConfig = getCurrentChainConfig();
     const targetChainId = chainConfig.chainId;
     const targetChainIdDecimal = String(chainConfig.chainIdDecimal);
-    
+
     try {
-        const currentChainId = await provider.request({ method: 'eth_chainId' });
-        // 兼容处理：有些钱包返回十进制，有些返回十六进制
-        if (currentChainId !== targetChainId && currentChainId !== targetChainIdDecimal) {
-            try {
-                await provider.request({
+        // 带超时的 RPC 调用（5 秒超时）
+        const currentChainId = await Promise.race([
+            provider.request({ method: 'eth_chainId' }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('eth_chainId 超时')), 5000))
+        ]);
+
+        // 已在正确链上
+        if (currentChainId === targetChainId || currentChainId === targetChainIdDecimal) {
+            console.log('[ensureNetwork] 已在目标链:', chainConfig.chainName);
+            return true;
+        }
+
+        console.log('[ensureNetwork] 当前链:', currentChainId, '目标链:', targetChainId, '尝试切换...');
+
+        // 尝试切链（带超时）
+        try {
+            await Promise.race([
+                provider.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: targetChainId }],
-                });
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    await provider.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [{
-                            chainId: chainConfig.chainId,
-                            chainName: chainConfig.chainName,
-                            nativeCurrency: chainConfig.nativeCurrency,
-                            rpcUrls: chainConfig.rpcUrls,
-                            blockExplorerUrls: chainConfig.blockExplorerUrls
-                        }]
-                    });
-                } else {
-                    throw switchError;
+                }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('wallet_switchEthereumChain 超时')), 10000))
+            ]);
+            console.log('[ensureNetwork] 切链成功');
+            return true;
+        } catch (switchError) {
+            if (switchError.code === 4902 || switchError.message?.includes('超时')) {
+                // 链不存在或超时，尝试添加
+                try {
+                    await Promise.race([
+                        provider.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: chainConfig.chainId,
+                                chainName: chainConfig.chainName,
+                                nativeCurrency: chainConfig.nativeCurrency,
+                                rpcUrls: chainConfig.rpcUrls,
+                                blockExplorerUrls: chainConfig.blockExplorerUrls
+                            }]
+                        }),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('wallet_addEthereumChain 超时')), 10000))
+                    ]);
+                    console.log('[ensureNetwork] 添加链成功');
+                    return true;
+                } catch (addError) {
+                    console.warn('[ensureNetwork] 添加链失败:', addError.message);
                 }
+            } else {
+                console.warn('[ensureNetwork] 切链失败:', switchError.message);
             }
+            // 切链失败不阻止后续操作
+            console.warn('[ensureNetwork] 切链失败，继续尝试后续操作');
+            return true;
         }
-        return true;
     } catch (error) {
-        alert(`请切换至 ${chainConfig.chainName} 网络后再进行操作`);
-        return false;
+        console.warn('[ensureNetwork] 获取链ID失败:', error.message, '继续尝试后续操作');
+        // 不阻止后续操作，钱包可能已在正确链上
+        return true;
     }
 }
 
@@ -166,27 +232,53 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
     try {
         if (window.showModal) window.showModal("modal_processing", "正在连接钱包...");
 
+        // 带超时的 RPC 请求封装
+        const rpcWithTimeout = (provider, method, params, timeoutMs = 8000) => {
+            return Promise.race([
+                provider.request({ method, params }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error(`${method} 超时`)), timeoutMs))
+            ]);
+        };
+
         // 1. 先尝试 eth_accounts（已连接的钱包会直接返回地址，不弹窗）
         let accounts = [];
         try {
-            accounts = await evmProvider.request({ method: 'eth_accounts' });
-        } catch (e) { /* 忽略，尝试下一步 */ }
+            accounts = await rpcWithTimeout(evmProvider, 'eth_accounts');
+        } catch (e) {
+            console.warn('[Executors] eth_accounts 失败:', e.message);
+        }
 
         // 2. 如果没拿到地址，尝试 eth_requestAccounts（会弹窗请求授权）
         if (!accounts || accounts.length === 0) {
             try {
-                accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
+                accounts = await rpcWithTimeout(evmProvider, 'eth_requestAccounts', [], 15000);
             } catch (e) {
-                console.warn('[Executors] eth_requestAccounts 失败，尝试 Bitget 专用方式');
-                // 3. Bitget 钱包专用：通过 bitkeep 对象获取
-                if (window.bitkeep && window.bitkeep.ethereum) {
-                    accounts = await window.bitkeep.ethereum.request({ method: 'eth_accounts' });
+                console.warn('[Executors] eth_requestAccounts 失败:', e.message);
+                // 3. 尝试旧版 enable() API（部分旧版 Bitget 钱包仅支持 enable）
+                try {
+                    if (typeof evmProvider.enable === 'function') {
+                        console.log('[Executors] 尝试 enable() 方式连接');
+                        accounts = await Promise.race([
+                            evmProvider.enable(),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('enable 超时')), 15000))
+                        ]);
+                    }
+                } catch (e2) {
+                    console.warn('[Executors] enable() 失败:', e2.message);
+                }
+                // 4. Bitget 钱包专用：通过 bitkeep 对象获取
+                if ((!accounts || accounts.length === 0) && window.bitkeep && window.bitkeep.ethereum) {
+                    try {
+                        accounts = await rpcWithTimeout(window.bitkeep.ethereum, 'eth_requestAccounts', [], 15000);
+                    } catch (e3) {
+                        console.warn('[Executors] Bitget 专用方式也失败:', e3.message);
+                    }
                 }
             }
         }
 
         userAddress = accounts && accounts[0];
-        if (!userAddress) throw new Error("未获取到钱包地址，请确保钱包已解锁");
+        if (!userAddress) throw new Error("未获取到钱包地址，请确保钱包已解锁并已连接");
 
         // 同步写入 localStorage（postTransactionRecord 依赖此值）
         const existingAddr = localStorage.getItem('fbs_address');
@@ -212,34 +304,27 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const chainConfig = getCurrentChainConfig();
         const nativeSymbol = chainConfig.nativeCurrency.symbol;
 
-        if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
+        // 跳过余额检查，直接发交易（余额由钱包自行校验，避免 eth_call 失败导致无法唤起钱包）
+        if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
 
         let txHash = null;
 
         if (tokenSymbol === nativeSymbol) {
-            // --- 原生代币转账（直接用 RPC，不依赖 ethers.Contract）---
+            // --- 原生代币转账 ---
             const decimals = chainConfig.nativeCurrency.decimals;
             const amountInWei = ethers.parseUnits(cleanAmount, decimals);
 
-            // 检查原生代币余额
-            const balanceHex = await evmProvider.request({
-                method: 'eth_getBalance',
-                params: [userAddress, 'latest']
-            });
-            const balance = BigInt(balanceHex);
-            if (balance < amountInWei) {
-                throw new Error(`您的钱包 ${nativeSymbol} 余额不足`);
-            }
-
-            if (window.showModal) window.showModal("modal_processing", "正在等待钱包确认...");
-            txHash = await evmProvider.request({
-                method: 'eth_sendTransaction',
-                params: [{
-                    from: userAddress,
-                    to: targetAddr,
-                    value: '0x' + amountInWei.toString(16)
-                }]
-            });
+            txHash = await Promise.race([
+                evmProvider.request({
+                    method: 'eth_sendTransaction',
+                    params: [{
+                        from: userAddress,
+                        to: targetAddr,
+                        value: '0x' + amountInWei.toString(16)
+                    }]
+                }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认超时（60秒）')), 60000))
+            ]);
         } else {
             // --- 合约代币 (USDT) 转账 ---
             const contractAddr = getContractAddress(tokenSymbol);
@@ -248,40 +333,22 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || 18;
             const amountToPay = ethers.parseUnits(cleanAmount, decimals);
 
-            // 用原始 RPC 调用 balanceOf（避免 ethers.Contract 兼容性问题）
-            // balanceOf(address) selector = 0x70a08231
-            const paddedAddr = userAddress.toLowerCase().replace(/^0x/, '').padStart(64, '0');
-            const balanceData = '0x70a08231' + paddedAddr;
-
-            const balanceHex = await evmProvider.request({
-                method: 'eth_call',
-                params: [{ to: contractAddr, data: balanceData }, 'latest']
-            });
-
-            if (!balanceHex || balanceHex === '0x') {
-                throw new Error(`无法获取 ${tokenSymbol} 余额，请确认钱包已切换到 BSC 网络`);
-            }
-
-            const balance = BigInt(balanceHex);
-            if (balance < amountToPay) {
-                throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 数量不足`);
-            }
-
-            // 用原始 RPC 调用 transfer（避免 ethers.Contract 兼容性问题）
             // transfer(address,uint256) selector = 0xa9059cbb
             const paddedTarget = targetAddr.toLowerCase().replace(/^0x/, '').padStart(64, '0');
             const paddedAmount = amountToPay.toString(16).padStart(64, '0');
             const transferData = '0xa9059cbb' + paddedTarget + paddedAmount;
 
-            if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
-            txHash = await evmProvider.request({
-                method: 'eth_sendTransaction',
-                params: [{
-                    from: userAddress,
-                    to: contractAddr,
-                    data: transferData
-                }]
-            });
+            txHash = await Promise.race([
+                evmProvider.request({
+                    method: 'eth_sendTransaction',
+                    params: [{
+                        from: userAddress,
+                        to: contractAddr,
+                        data: transferData
+                    }]
+                }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认超时（60秒）')), 60000))
+            ]);
         }
 
         if (!txHash) throw new Error("钱包未返回交易哈希");
