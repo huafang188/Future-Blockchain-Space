@@ -1,4 +1,4 @@
-import { getReceiveAddress, getContractAddress, getCurrentChainConfig } from './config.js';
+import { getReceiveAddress, getContractAddress, getCurrentChainConfig, setCurrentChain, CHAIN_CONTRACT_ADDRS } from './config.js';
 import { postTransactionRecord } from './api-service.js';
 
 // 导入 fetchUserData 用于刷新数据
@@ -328,17 +328,33 @@ window.doChainPay = async function(bizType) {
     } else {
         rawValue = document.getElementById('elecCost')?.innerText || "0";
     }
-    
+
     // 清洗掉 $ 或 USDT 字符
     const amount = rawValue.replace(/[^\d.]/g, '');
     if (!amount || parseFloat(amount) <= 0) return alert("金额计算异常，请重试");
 
     const addrType = (bizType === 'MINER') ? 'MINER' : 'ELECTRIC';
     const target = getReceiveAddress(addrType);
-    
-    console.log(`[${bizType}] 收款地址: ${target} (链: ${window.currentChain || 'BSC'})`);
-    // 强制使用 USDT 支付
-    await executeOnChainTransfer(bizType, "USDT", amount, target);
+
+    // 检查当前链是否支持 USDT 合约支付，不支持则临时强制 BSC（不触发 UI 退出）
+    const originalChain = window.currentChain || 'BSC';
+    const hasUSDTContract = !!(CHAIN_CONTRACT_ADDRS[originalChain] && CHAIN_CONTRACT_ADDRS[originalChain]['USDT']);
+
+    if (!hasUSDTContract && originalChain !== 'BSC') {
+        console.log(`[doChainPay] 当前链 ${originalChain} 不支持 USDT 合约支付，临时切换到 BSC`);
+        // 仅切换 config.js 内部链配置，不触发 UI 退出登录
+        setCurrentChain('BSC');
+    }
+
+    console.log(`[${bizType}] 收款地址: ${target} (支付链: BSC)`);
+    try {
+        await executeOnChainTransfer(bizType, "USDT", amount, target);
+    } finally {
+        // 支付完成后恢复原链配置
+        if (!hasUSDTContract && originalChain !== 'BSC') {
+            setCurrentChain(originalChain);
+        }
+    }
 };
 
 // 3. 提币

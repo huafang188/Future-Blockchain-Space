@@ -59,7 +59,8 @@ export function mountModalHandlers() {
             alert('页面正在加载中，请稍后重试');
             return;
         }
-        if (type === 'buy') {
+        try {
+            if (type === 'buy') {
             const nums = [1, 5, 10, 20, 50, 100];
             window.showModal("buy_miner", `
                 <div class="space-y-4">
@@ -92,6 +93,10 @@ export function mountModalHandlers() {
                     </div>
                     <button type="button" onclick="window.doChainPay('ELECTRIC')" class="action-btn w-full mt-2" data-i18n="confirm_pay_bsc">确认支付 (BSC)</button>
                 </div>`);
+        }
+        } catch (err) {
+            console.error('[Modal] openMinerModal 异常:', err);
+            alert('打开弹窗失败: ' + err.message);
         }
     };
 
@@ -336,40 +341,55 @@ window.openExchangeModal = function() {
         const overlay = document.getElementById('modalOverlay');
         const titleEl = document.getElementById('modalTitle');
         const contentEl = document.getElementById('modalContent');
-        
-        if (overlay && titleEl && contentEl) {
-            titleEl.setAttribute('data-i18n', titleKey);
-            contentEl.innerHTML = html;
-            
-            // 使用 flex 并强制覆盖 display
-            overlay.style.setProperty('display', 'flex', 'important');
-            
-            // 阻止弹窗内所有 input/textarea 的 Enter 键提交表单（使用命名函数避免重复绑定）
-            if (!contentEl._modalKeyHandler) {
-                contentEl._modalKeyHandler = function(e) {
-                    if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
-                        e.preventDefault();
-                        return false;
-                    }
-                };
-                contentEl.addEventListener('keydown', contentEl._modalKeyHandler, true);
-            }
-            
-            // 阻止弹窗内所有 button 的默认表单提交行为
-            if (!contentEl._modalClickHandler) {
-                contentEl._modalClickHandler = function(e) {
-                    if (e.target.tagName === 'BUTTON') {
-                        e.preventDefault();
-                    }
-                };
-                contentEl.addEventListener('click', contentEl._modalClickHandler, true);
-            }
-            
-            // 触发局部语言渲染
-            if (window.i18nRender) {
-                const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
-                window.i18nRender(currentLang);
-            }
+
+        if (!overlay) {
+            console.error('[Modal] modalOverlay 元素不存在');
+            return;
+        }
+        if (!titleEl || !contentEl) {
+            console.error('[Modal] titleEl 或 contentEl 不存在');
+            return;
+        }
+
+        titleEl.setAttribute('data-i18n', titleKey);
+        contentEl.innerHTML = html;
+
+        // 多重保险显示弹窗（兼容各种手机浏览器）
+        // 1. 直接赋值（最广泛兼容）
+        overlay.style.display = 'flex';
+        // 2. setProperty !important（覆盖 CSS）
+        overlay.style.setProperty('display', 'flex', 'important');
+        // 3. 移除可能存在的 hidden 属性/类
+        overlay.removeAttribute('hidden');
+        overlay.classList.remove('hidden');
+        // 4. 强制重绘
+        void overlay.offsetHeight;
+
+        // 阻止弹窗内所有 input/textarea 的 Enter 键提交表单（使用命名函数避免重复绑定）
+        if (!contentEl._modalKeyHandler) {
+            contentEl._modalKeyHandler = function(e) {
+                if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+                    e.preventDefault();
+                    return false;
+                }
+            };
+            contentEl.addEventListener('keydown', contentEl._modalKeyHandler, true);
+        }
+
+        // 阻止弹窗内所有 button 的默认表单提交行为
+        if (!contentEl._modalClickHandler) {
+            contentEl._modalClickHandler = function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    e.preventDefault();
+                }
+            };
+            contentEl.addEventListener('click', contentEl._modalClickHandler, true);
+        }
+
+        // 触发局部语言渲染
+        if (window.i18nRender) {
+            const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+            window.i18nRender(currentLang);
         }
     };
 
@@ -397,6 +417,7 @@ window.openExchangeModal = function() {
     window.closeModal = () => {
         const overlay = document.getElementById('modalOverlay');
         if (overlay) {
+            overlay.style.display = 'none';
             overlay.style.setProperty('display', 'none', 'important');
         }
     };
