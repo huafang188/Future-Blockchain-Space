@@ -306,53 +306,62 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || chainConfig.nativeCurrency.decimals;
         const amountToPay = ethers.parseUnits(cleanAmount, decimals);
 
-        // --- 2. 转账前检查余额（查询失败弹确认框让用户决定）---
+        // --- 2. 转账前检查余额（多 provider 并行查询，失败直接阻止）---
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
         let userBalance = BigInt(0);
         let balanceOk = false;
 
         try {
+            // 收集所有可用 provider（Bitget 优先，更可靠）
+            const balanceProviders = [];
+            if (window.bitkeep?.ethereum?.request) balanceProviders.push(window.bitkeep.ethereum);
+            if (evmProvider && !balanceProviders.includes(evmProvider)) balanceProviders.push(evmProvider);
+
+            // 构造查询参数（原生代币用 eth_getBalance，合约代币用 eth_call）
+            let method, params;
             if (tokenSymbol === nativeSymbol) {
-                const balanceHex = await Promise.race([
-                    evmProvider.request({ method: 'eth_getBalance', params: [userAddress, 'latest'] }),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-                ]);
-                userBalance = BigInt(balanceHex);
-                balanceOk = true;
+                method = 'eth_getBalance';
+                params = [userAddress, 'latest'];
             } else {
                 const contractAddr = getContractAddress(tokenSymbol);
                 if (!contractAddr) throw new Error("不支持的代币合约");
                 const paddedAddr = userAddress.toLowerCase().replace(/^0x/, '').padStart(64, '0');
-                const balanceData = '0x70a08231' + paddedAddr;
+                method = 'eth_call';
+                params = [{ to: contractAddr, data: '0x70a08231' + paddedAddr }, 'latest'];
+            }
 
-                let balanceHex = null;
+            const queryWithTimeout = (provider) =>
+                Promise.race([
+                    provider.request({ method, params }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+                ]);
 
-                // 第一次尝试：用 evmProvider
+            let balanceHex = null;
+
+            // 并行查询所有 provider，谁先成功用谁（不支持 Promise.any 时降级为串行）
+            if (balanceProviders.length > 1 && typeof Promise.any === 'function') {
                 try {
-                    balanceHex = await Promise.race([
-                        evmProvider.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
-                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-                    ]);
-                } catch (e1) {
-                    console.warn('[Executors] 第一次余额查询失败，尝试 Bitget 专用 provider');
-                    // 第二次尝试：用 window.bitkeep.ethereum
-                    if (window.bitkeep && window.bitkeep.ethereum) {
-                        try {
-                            balanceHex = await Promise.race([
-                                window.bitkeep.ethereum.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
-                                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-                            ]);
-                        } catch (e2) {
-                            console.warn('[Executors] 第二次余额查询也失败');
-                        }
+                    balanceHex = await Promise.any(balanceProviders.map(queryWithTimeout));
+                    console.log('[Executors] 余额查询成功（并行）');
+                } catch (e) {
+                    console.warn('[Executors] 所有 provider 余额查询均失败');
+                }
+            } else {
+                // 串行降级：Bitget 优先
+                for (const p of balanceProviders) {
+                    try {
+                        balanceHex = await queryWithTimeout(p);
+                        if (balanceHex) break;
+                    } catch (e) {
+                        console.warn('[Executors] provider 查询失败，尝试下一个');
                     }
                 }
+            }
 
-                if (balanceHex && balanceHex !== '0x' && balanceHex.length > 2) {
-                    userBalance = BigInt(balanceHex);
-                    balanceOk = true;
-                }
+            if (balanceHex && balanceHex !== '0x' && balanceHex.length > 2) {
+                userBalance = BigInt(balanceHex);
+                balanceOk = true;
             }
         } catch (balErr) {
             console.warn('[Executors] 余额查询异常:', balErr.message);
