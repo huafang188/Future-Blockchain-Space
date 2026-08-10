@@ -126,6 +126,7 @@ async function ensureNetwork() {
 /**
  * 💸 逻辑 A：链上真实转账 (用于：充值、购买矿机、缴电费)
  * 增加：金额清洗与余额预检查逻辑
+ * 兼容 Bitget/TP/MetaMask 等钱包
  */
 async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr) {
     // 防重复提交 + 超时强制重置
@@ -145,6 +146,29 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
     isSubmitting = true;
     isSubmittingSince = Date.now();
 
+    const evmProvider = getEVMProvider();
+    if (!evmProvider) {
+        isSubmitting = false;
+        isSubmittingSince = 0;
+        alert("未检测到钱包，请在 Web3 钱包浏览器中打开");
+        return;
+    }
+
+    // 先显式请求账号授权（Bitget 钱包必须先请求账号才能后续操作）
+    let userAddress = null;
+    try {
+        if (window.showModal) window.showModal("modal_processing", "正在连接钱包...");
+        const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
+        userAddress = accounts && accounts[0];
+        if (!userAddress) throw new Error("未获取到钱包地址");
+        console.log('[Executors] 钱包地址:', userAddress);
+    } catch (e) {
+        isSubmitting = false;
+        isSubmittingSince = 0;
+        alert("钱包连接失败: " + (e.message || "用户拒绝连接"));
+        return;
+    }
+
     if (!await ensureNetwork()) {
         isSubmitting = false;
         isSubmittingSince = 0;
@@ -158,74 +182,126 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             throw new Error("无效的金额格式");
         }
 
-        const evmProvider = getEVMProvider();
-        const provider = new ethers.BrowserProvider(evmProvider);
-        const signer = await provider.getSigner();
-        const userAddress = await signer.getAddress();
+        const chainConfig = getCurrentChainConfig();
+        const nativeSymbol = chainConfig.nativeCurrency.symbol;
 
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
-        let tx;
-        const chainConfig = getCurrentChainConfig();
-        const nativeSymbol = chainConfig.nativeCurrency.symbol;
-        
+        let txHash = null;
+
         if (tokenSymbol === nativeSymbol) {
-            // 原生代币转账
-            const balance = await provider.getBalance(userAddress);
+            // --- 原生代币转账（直接用 RPC，不依赖 ethers.Contract）---
             const decimals = chainConfig.nativeCurrency.decimals;
             const amountInWei = ethers.parseUnits(cleanAmount, decimals);
-            if (balance < amountInWei) throw new Error(`您的钱包 ${nativeSymbol} 余额不足`);
 
-            tx = await signer.sendTransaction({
-                to: targetAddr,
-                value: amountInWei
+            // 检查原生代币余额
+            const balanceHex = await evmProvider.request({
+                method: 'eth_getBalance',
+                params: [userAddress, 'latest']
+            });
+            const balance = BigInt(balanceHex);
+            if (balance < amountInWei) {
+                throw new Error(`您的钱包 ${nativeSymbol} 余额不足`);
+            }
+
+            if (window.showModal) window.showModal("modal_processing", "正在等待钱包确认...");
+            txHash = await evmProvider.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                    from: userAddress,
+                    to: targetAddr,
+                    value: '0x' + amountInWei.toString(16)
+                }]
             });
         } else {
-            // 合约代币 (USDT等)
+            // --- 合约代币 (USDT) 转账 ---
             const contractAddr = getContractAddress(tokenSymbol);
             if (!contractAddr) throw new Error("不支持的代币合约");
-            
-            const contract = new ethers.Contract(contractAddr, [
-                "function transfer(address to, uint256 amount) public returns (bool)",
-                "function balanceOf(address owner) view returns (uint256)"
-            ], signer);
 
-            // 预检查代币余额
-            const balance = await contract.balanceOf(userAddress);
             const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || 18;
             const amountToPay = ethers.parseUnits(cleanAmount, decimals);
-            
+
+            // 用原始 RPC 调用 balanceOf（避免 ethers.Contract 兼容性问题）
+            // balanceOf(address) selector = 0x70a08231
+            const paddedAddr = userAddress.toLowerCase().replace(/^0x/, '').padStart(64, '0');
+            const balanceData = '0x70a08231' + paddedAddr;
+
+            const balanceHex = await evmProvider.request({
+                method: 'eth_call',
+                params: [{ to: contractAddr, data: balanceData }, 'latest']
+            });
+
+            if (!balanceHex || balanceHex === '0x') {
+                throw new Error(`无法获取 ${tokenSymbol} 余额，请确认钱包已切换到 BSC 网络`);
+            }
+
+            const balance = BigInt(balanceHex);
             if (balance < amountToPay) {
                 throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 数量不足`);
             }
 
-            if (window.showModal) window.showModal("modal_processing", "正在等待钱包确认...");
-            tx = await contract.transfer(targetAddr, amountToPay);
+            // 用原始 RPC 调用 transfer（避免 ethers.Contract 兼容性问题）
+            // transfer(address,uint256) selector = 0xa9059cbb
+            const paddedTarget = targetAddr.toLowerCase().replace(/^0x/, '').padStart(64, '0');
+            const paddedAmount = amountToPay.toString(16).padStart(64, '0');
+            const transferData = '0xa9059cbb' + paddedTarget + paddedAmount;
+
+            if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
+            txHash = await evmProvider.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                    from: userAddress,
+                    to: contractAddr,
+                    data: transferData
+                }]
+            });
         }
 
-        const receipt = await tx.wait();
+        if (!txHash) throw new Error("钱包未返回交易哈希");
+
+        // 等待交易确认（用 ethers 等待 receipt）
+        if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认...");
+        console.log('[Executors] 交易哈希:', txHash);
+
+        const provider = new ethers.BrowserProvider(evmProvider);
+        let receipt = null;
+        // 最多等待 120 秒
+        for (let i = 0; i < 60; i++) {
+            try {
+                receipt = await provider.getTransactionReceipt(txHash);
+                if (receipt) break;
+            } catch (e) { /* 忽略轮询错误 */ }
+            await new Promise(r => setTimeout(r, 2000));
+        }
+
+        if (!receipt) {
+            // 交易已提交但未确认，不阻塞用户
+            alert(`✅ 交易已提交，等待区块确认\n交易哈希: ${txHash}`);
+            if (window.closeModal) window.closeModal();
+            return;
+        }
+
         if (receipt.status === 1) {
             const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-            // 提交成功记录到后台 → 【刷新交给 postTransactionRecord 统一处理】
-            //   非结算类：立即 + 500ms 补刷
-            //   结算类：0s→3s→8s→15s 轮询
             const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
             if (res.success) {
                 alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新`);
                 if (window.closeModal) window.closeModal();
             }
+        } else {
+            throw new Error("交易执行失败（receipt.status !== 1）");
         }
     } catch (e) {
         console.error("[Executors] 交易异常详情:", e);
-        
+
         // 解析更加友好的错误信息
         let msg = e.message || "未知错误";
-        if (e.code === 'ACTION_REJECTED' || msg.includes("user rejected")) {
+        if (e.code === 4001 || e.code === 'ACTION_REJECTED' || msg.includes("user rejected") || msg.includes("拒绝")) {
             msg = "您已取消交易签名";
         } else if (msg.includes("insufficient funds")) {
             msg = "手续费 (BNB) 不足";
-        } else if (e.action === 'estimateGas') {
-            msg = "Gas 预估失败，请确保钱包有足够代币和 BNB 手续费";
+        } else if (msg.includes("missing revert data") || msg.includes("CALL_EXCEPTION")) {
+            msg = "合约调用失败，请确认钱包已切换到 BSC 网络且有足够余额";
         }
 
         alert("❌ 交易失败: " + msg);
