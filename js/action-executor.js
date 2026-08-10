@@ -358,27 +358,26 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             console.warn('[Executors] 余额查询异常:', balErr.message);
         }
 
-        // 余额查询成功且不足 → 直接阻止
+        // 余额查询成功且不足 → 直接阻止，提示用户补充资金
         if (balanceOk && userBalance < amountToPay) {
             const balStr = tokenSymbol === nativeSymbol
                 ? ethers.formatEther(userBalance)
                 : ethers.formatUnits(userBalance, decimals);
-            throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 余额为 ${balStr}，需要 ${cleanAmount} ${tokenSymbol}`);
+            console.warn(`[Executors] 余额不足：${balStr} < ${cleanAmount}，阻止交易`);
+            if (window.closeModal) window.closeModal();
+            alert(`⚠️ 余额不足\n\n您的 ${tokenSymbol} 余额：${balStr}\n本次需要支付：${cleanAmount} ${tokenSymbol}\n\n请先向钱包充值后重试`);
+            return;
         }
 
-        // 余额查询失败 → 弹确认框让用户决定是否继续
+        // 余额查询失败 → 直接阻止交易（必须确认余额充足才能支付，避免余额不足仍弹钱包）
         if (!balanceOk) {
-            console.warn('[Executors] 余额查询失败，弹确认框让用户决定');
+            console.warn('[Executors] 余额查询失败，阻止交易');
             if (window.closeModal) window.closeModal();
-            const userConfirm = confirm(`⚠️ 无法查询钱包余额\n\n可能原因：网络延迟或钱包 RPC 异常\n\n请确认您的 ${tokenSymbol} 余额充足后再继续。\n\n点击"确定"继续支付，点击"取消"放弃交易。`);
-            if (!userConfirm) {
-                return; // 用户取消
-            }
-            // 用户确认继续，重新打开处理中弹窗
-            if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
-        } else {
-            console.log('[Executors] 余额检查通过');
+            alert(`⚠️ 无法查询您的 ${tokenSymbol} 余额\n\n可能原因：网络延迟或钱包 RPC 异常\n\n请检查网络连接后重试，或确认钱包已正确连接 BSC 网络。\n\n如确认余额充足仍无法支付，请尝试切换钱包或联系客服。`);
+            return;
         }
+
+        console.log('[Executors] 余额检查通过，允许支付');
 
         // --- 3. 发起交易 ---
         if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
