@@ -132,66 +132,11 @@ export function getNetworkMinerStats(targetDate = new Date()) {
 
 /**
  * 更新页面上的全网矿机数据显示
- * 优先从云端 API 获取，失败时回退到本地计算
  */
-export async function updateNetworkMinerDisplay() {
-    const formatNumber = (num) => Number(num).toLocaleString('en-US');
+export function updateNetworkMinerDisplay() {
+    const stats = getNetworkMinerStats();
 
-    // 字段映射：API 返回的中文 key → 前端 DOM id
-    const keyMap = {
-        'neo_total_supply': 'neo_total_supply',
-        'NEO总发行量': 'neo_total_supply',
-        'network_miner_total': 'network_miner_total',
-        '全网矿机总数': 'network_miner_total',
-        '全网运行矿机总数': 'network_miner_total',
-        'network_daily_output': 'network_daily_output',
-        '全网NEO日产量': 'network_daily_output',
-        '全网日产量': 'network_daily_output',
-        'single_miner_output': 'single_miner_output',
-        '单台矿机产量': 'single_miner_output',
-        '单台矿机NEO产量': 'single_miner_output',
-        'today_new_original': 'today_new_original',
-        '昨日新增原始矿机': 'today_new_original',
-        'today_new_synthetic': 'today_new_synthetic',
-        '昨日新增合成矿机': 'today_new_synthetic',
-        'neo_holders': 'neo_holders',
-        'NEO持有者': 'neo_holders',
-        'NEO持有者数量': 'neo_holders',
-        'neo_total_output': 'neo_total_output',
-        'NEO产出总量': 'neo_total_output',
-        'NEO已产出总量': 'neo_total_output',
-        'neo_burned': 'neo_burned',
-        'NEO销毁数量': 'neo_burned'
-    };
-
-    let cloudData = null;
-
-    // 尝试从云端获取
-    try {
-        const res = await fetch('https://api.neoneo.ink/api/network-stats?t=' + Date.now());
-        if (res.ok) {
-            const json = await res.json();
-            if (json.success && json.data) {
-                cloudData = json.data;
-            }
-        }
-    } catch (e) {
-        console.warn('[NetworkStats] 云端获取失败，回退本地计算:', e.message);
-    }
-
-    // 云端有数据 → 使用云端；否则 → 本地计算
-    let stats;
-    if (cloudData) {
-        stats = {};
-        Object.keys(cloudData).forEach(key => {
-            const domId = keyMap[key];
-            if (domId) {
-                stats[domId] = cloudData[key];
-            }
-        });
-    } else {
-        stats = getNetworkMinerStats();
-    }
+    const formatNumber = (num) => num.toLocaleString('en-US');
 
     const elements = {
         neo_total_supply: stats.neo_total_supply,
@@ -207,7 +152,7 @@ export async function updateNetworkMinerDisplay() {
 
     Object.keys(elements).forEach(id => {
         const el = document.getElementById(id);
-        if (el && elements[id] !== undefined) {
+        if (el) {
             el.textContent = formatNumber(elements[id]);
         }
     });
