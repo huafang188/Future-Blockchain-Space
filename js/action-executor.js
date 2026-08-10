@@ -154,24 +154,51 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         return;
     }
 
-    // 先显式请求账号授权（Bitget 钱包必须先请求账号才能后续操作）
+    // 先切换到 BSC 链（Bitget 钱包在正确链上才能正常请求账号）
+    if (!await ensureNetwork()) {
+        isSubmitting = false;
+        isSubmittingSince = 0;
+        return;
+    }
+
+    // 获取钱包地址（兼容 Bitget 钱包：先试 eth_accounts，再试 eth_requestAccounts）
     let userAddress = null;
     try {
         if (window.showModal) window.showModal("modal_processing", "正在连接钱包...");
-        const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
+
+        // 1. 先尝试 eth_accounts（已连接的钱包会直接返回地址，不弹窗）
+        let accounts = [];
+        try {
+            accounts = await evmProvider.request({ method: 'eth_accounts' });
+        } catch (e) { /* 忽略，尝试下一步 */ }
+
+        // 2. 如果没拿到地址，尝试 eth_requestAccounts（会弹窗请求授权）
+        if (!accounts || accounts.length === 0) {
+            try {
+                accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
+            } catch (e) {
+                console.warn('[Executors] eth_requestAccounts 失败，尝试 Bitget 专用方式');
+                // 3. Bitget 钱包专用：通过 bitkeep 对象获取
+                if (window.bitkeep && window.bitkeep.ethereum) {
+                    accounts = await window.bitkeep.ethereum.request({ method: 'eth_accounts' });
+                }
+            }
+        }
+
         userAddress = accounts && accounts[0];
-        if (!userAddress) throw new Error("未获取到钱包地址");
-        console.log('[Executors] 钱包地址:', userAddress);
+        if (!userAddress) throw new Error("未获取到钱包地址，请确保钱包已解锁");
+
+        // 同步写入 localStorage（postTransactionRecord 依赖此值）
+        const existingAddr = localStorage.getItem('fbs_address');
+        if (!existingAddr || existingAddr.toLowerCase() !== userAddress.toLowerCase()) {
+            localStorage.setItem('fbs_address', userAddress);
+            localStorage.setItem('fbs_chain', 'BSC');
+            console.log('[Executors] 已更新 localStorage 钱包地址:', userAddress);
+        }
     } catch (e) {
         isSubmitting = false;
         isSubmittingSince = 0;
         alert("钱包连接失败: " + (e.message || "用户拒绝连接"));
-        return;
-    }
-
-    if (!await ensureNetwork()) {
-        isSubmitting = false;
-        isSubmittingSince = 0;
         return;
     }
 
@@ -259,13 +286,23 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
         if (!txHash) throw new Error("钱包未返回交易哈希");
 
-        // 等待交易确认（用 ethers 等待 receipt）
-        if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认...");
         console.log('[Executors] 交易哈希:', txHash);
 
+        // 先提交数据到后台（不等 receipt，避免轮询超时导致数据丢失）
+        const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
+        let backendSuccess = false;
+        try {
+            if (window.showModal) window.showModal("modal_processing", "正在提交交易记录...");
+            const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
+            backendSuccess = res.success || res.code === 0;
+        } catch (e) {
+            console.error('[Executors] 后台提交失败:', e);
+        }
+
+        // 然后轮询等待交易确认（不影响已提交的后台数据）
+        if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认...");
         const provider = new ethers.BrowserProvider(evmProvider);
         let receipt = null;
-        // 最多等待 120 秒
         for (let i = 0; i < 60; i++) {
             try {
                 receipt = await provider.getTransactionReceipt(txHash);
@@ -275,21 +312,18 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         }
 
         if (!receipt) {
-            // 交易已提交但未确认，不阻塞用户
-            alert(`✅ 交易已提交，等待区块确认\n交易哈希: ${txHash}`);
+            // 交易已提交但未确认，后台数据已提交
+            alert(`✅ 交易已提交${backendSuccess ? '，记录已保存' : ''}\n交易哈希: ${txHash}`);
             if (window.closeModal) window.closeModal();
             return;
         }
 
         if (receipt.status === 1) {
-            const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-            const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
-            if (res.success) {
-                alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新`);
-                if (window.closeModal) window.closeModal();
-            }
+            alert(`✅ ${typeMap[bizType] || '交易'}成功${backendSuccess ? '，资产已实时更新' : ''}`);
+            if (window.closeModal) window.closeModal();
         } else {
-            throw new Error("交易执行失败（receipt.status !== 1）");
+            alert(`⚠️ 链上交易失败，但后台${backendSuccess ? '已记录' : '未记录'}\n交易哈希: ${txHash}`);
+            if (window.closeModal) window.closeModal();
         }
     } catch (e) {
         console.error("[Executors] 交易异常详情:", e);
