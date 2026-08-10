@@ -303,35 +303,77 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
         const chainConfig = getCurrentChainConfig();
         const nativeSymbol = chainConfig.nativeCurrency.symbol;
+        const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || chainConfig.nativeCurrency.decimals;
+        const amountToPay = ethers.parseUnits(cleanAmount, decimals);
 
-        // 跳过余额检查，直接发交易（余额由钱包自行校验，避免 eth_call 失败导致无法唤起钱包）
+        // --- 2. 转账前检查余额（带超时，失败则跳过检查让钱包校验）---
+        if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
+
+        let balanceSufficient = true;
+        let balanceChecked = false;
+        try {
+            if (tokenSymbol === nativeSymbol) {
+                // 原生代币余额
+                const balanceHex = await Promise.race([
+                    evmProvider.request({ method: 'eth_getBalance', params: [userAddress, 'latest'] }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('余额查询超时')), 8000))
+                ]);
+                const balance = BigInt(balanceHex);
+                balanceChecked = true;
+                if (balance < amountToPay) {
+                    balanceSufficient = false;
+                    throw new Error(`余额不足：您的钱包中 ${nativeSymbol} 余额为 ${ethers.formatEther(balance)}，需要 ${cleanAmount}`);
+                }
+            } else {
+                // USDT 余额：eth_call balanceOf(address) = 0x70a08231
+                const contractAddr = getContractAddress(tokenSymbol);
+                const paddedAddr = userAddress.toLowerCase().replace(/^0x/, '').padStart(64, '0');
+                const balanceData = '0x70a08231' + paddedAddr;
+
+                const balanceHex = await Promise.race([
+                    evmProvider.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('余额查询超时')), 8000))
+                ]);
+
+                if (balanceHex && balanceHex !== '0x') {
+                    const balance = BigInt(balanceHex);
+                    balanceChecked = true;
+                    if (balance < amountToPay) {
+                        balanceSufficient = false;
+                        throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 数量不足，请先充值`);
+                    }
+                }
+            }
+            console.log('[Executors] 余额检查通过');
+        } catch (balanceErr) {
+            if (!balanceSufficient) {
+                // 余额明确不足，直接报错，不发起交易
+                throw balanceErr;
+            }
+            // 余额查询超时或失败，继续尝试发交易（钱包会自行校验）
+            console.warn('[Executors] 余额查询失败，继续尝试:', balanceErr.message);
+        }
+
+        // --- 3. 发起交易 ---
         if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
 
         let txHash = null;
 
         if (tokenSymbol === nativeSymbol) {
-            // --- 原生代币转账 ---
-            const decimals = chainConfig.nativeCurrency.decimals;
-            const amountInWei = ethers.parseUnits(cleanAmount, decimals);
-
             txHash = await Promise.race([
                 evmProvider.request({
                     method: 'eth_sendTransaction',
                     params: [{
                         from: userAddress,
                         to: targetAddr,
-                        value: '0x' + amountInWei.toString(16)
+                        value: '0x' + amountToPay.toString(16)
                     }]
                 }),
                 new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认超时（60秒）')), 60000))
             ]);
         } else {
-            // --- 合约代币 (USDT) 转账 ---
             const contractAddr = getContractAddress(tokenSymbol);
             if (!contractAddr) throw new Error("不支持的代币合约");
-
-            const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || 18;
-            const amountToPay = ethers.parseUnits(cleanAmount, decimals);
 
             // transfer(address,uint256) selector = 0xa9059cbb
             const paddedTarget = targetAddr.toLowerCase().replace(/^0x/, '').padStart(64, '0');
@@ -352,41 +394,46 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         }
 
         if (!txHash) throw new Error("钱包未返回交易哈希");
-
         console.log('[Executors] 交易哈希:', txHash);
 
-        // 先等待链上确认，确认成功后才提交后台数据（防止余额不足等失败交易也提交）
+        // --- 4. 用原始 RPC 轮询 receipt（不用 ethers.BrowserProvider，避免卡住）---
         if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认...");
-        const provider = new ethers.BrowserProvider(evmProvider);
         let receipt = null;
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 90; i++) { // 最多等 180 秒
             try {
-                receipt = await provider.getTransactionReceipt(txHash);
-                if (receipt) break;
-            } catch (e) { /* 忽略轮询错误 */ }
+                const receiptHex = await Promise.race([
+                    evmProvider.request({ method: 'eth_getTransactionReceipt', params: [txHash] }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('receipt 查询超时')), 10000))
+                ]);
+                if (receiptHex) {
+                    receipt = receiptHex;
+                    break;
+                }
+            } catch (e) { /* 忽略单次轮询错误 */ }
             await new Promise(r => setTimeout(r, 2000));
         }
 
         const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
 
         if (!receipt) {
-            // 交易已提交但未确认（超时 120s），不提交后台，提示用户
-            alert(`⏳ 交易已提交但未在 120 秒内确认\n交易哈希: ${txHash}\n请稍后在区块链浏览器查看确认状态`);
+            alert(`⏳ 交易已提交但未在 180 秒内确认\n交易哈希: ${txHash}\n请稍后在区块链浏览器查看确认状态`);
             if (window.closeModal) window.closeModal();
             return;
         }
 
-        if (receipt.status !== 1) {
-            // 链上交易失败（余额不足/ revert 等），不提交后台
+        // receipt.status: "0x1" = 成功, "0x0" = 失败
+        const txSuccess = receipt.status === '0x1' || receipt.status === 1 || receipt.status === true;
+
+        if (!txSuccess) {
             alert(`❌ 链上交易失败，未扣款\n交易哈希: ${txHash}\n可能原因：余额不足或合约执行失败`);
             if (window.closeModal) window.closeModal();
             return;
         }
 
-        // 链上交易成功，提交数据到后台
+        // --- 5. 链上交易成功，提交数据到后台 ---
         let backendSuccess = false;
         try {
-            if (window.showModal) window.showModal("modal_processing", "正在提交交易记录...");
+            if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
             const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
             backendSuccess = res.success || res.code === 0;
         } catch (e) {
