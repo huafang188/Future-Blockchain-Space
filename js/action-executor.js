@@ -306,7 +306,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || chainConfig.nativeCurrency.decimals;
         const amountToPay = ethers.parseUnits(cleanAmount, decimals);
 
-        // --- 2. 转账前检查余额（查询失败不阻止交易，让钱包自行校验）---
+        // --- 2. 转账前检查余额（查询失败弹确认框让用户决定）---
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
         let userBalance = BigInt(0);
@@ -326,10 +326,28 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                 const paddedAddr = userAddress.toLowerCase().replace(/^0x/, '').padStart(64, '0');
                 const balanceData = '0x70a08231' + paddedAddr;
 
-                const balanceHex = await Promise.race([
-                    evmProvider.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-                ]);
+                let balanceHex = null;
+
+                // 第一次尝试：用 evmProvider
+                try {
+                    balanceHex = await Promise.race([
+                        evmProvider.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+                    ]);
+                } catch (e1) {
+                    console.warn('[Executors] 第一次余额查询失败，尝试 Bitget 专用 provider');
+                    // 第二次尝试：用 window.bitkeep.ethereum
+                    if (window.bitkeep && window.bitkeep.ethereum) {
+                        try {
+                            balanceHex = await Promise.race([
+                                window.bitkeep.ethereum.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
+                                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+                            ]);
+                        } catch (e2) {
+                            console.warn('[Executors] 第二次余额查询也失败');
+                        }
+                    }
+                }
 
                 if (balanceHex && balanceHex !== '0x' && balanceHex.length > 2) {
                     userBalance = BigInt(balanceHex);
@@ -337,11 +355,10 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                 }
             }
         } catch (balErr) {
-            // 余额查询失败，不阻止交易，继续让钱包校验
-            console.warn('[Executors] 余额查询失败，继续交易让钱包校验:', balErr.message);
+            console.warn('[Executors] 余额查询异常:', balErr.message);
         }
 
-        // 只有查询成功且余额不足时才阻止
+        // 余额查询成功且不足 → 直接阻止
         if (balanceOk && userBalance < amountToPay) {
             const balStr = tokenSymbol === nativeSymbol
                 ? ethers.formatEther(userBalance)
@@ -349,7 +366,19 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 余额为 ${balStr}，需要 ${cleanAmount} ${tokenSymbol}`);
         }
 
-        console.log('[Executors] 余额检查完成，balanceOk:', balanceOk);
+        // 余额查询失败 → 弹确认框让用户决定是否继续
+        if (!balanceOk) {
+            console.warn('[Executors] 余额查询失败，弹确认框让用户决定');
+            if (window.closeModal) window.closeModal();
+            const userConfirm = confirm(`⚠️ 无法查询钱包余额\n\n可能原因：网络延迟或钱包 RPC 异常\n\n请确认您的 ${tokenSymbol} 余额充足后再继续。\n\n点击"确定"继续支付，点击"取消"放弃交易。`);
+            if (!userConfirm) {
+                return; // 用户取消
+            }
+            // 用户确认继续，重新打开处理中弹窗
+            if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
+        } else {
+            console.log('[Executors] 余额检查通过');
+        }
 
         // --- 3. 发起交易 ---
         if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
@@ -392,64 +421,71 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         if (!txHash) throw new Error("钱包未返回交易哈希");
         console.log('[Executors] 交易哈希:', txHash);
 
-        // --- 4. 轮询 receipt（原始 RPC，带超时）---
-        if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认...");
+        const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
+
+        // --- 4. 短时间轮询 receipt（15秒，确认交易成败）---
+        if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认链上状态...");
         let receipt = null;
-        for (let i = 0; i < 30; i++) { // 最多 60 秒
+        for (let i = 0; i < 8; i++) { // 最多 15 秒（8次 × 3s超时 + 等待）
             try {
                 const r = await Promise.race([
                     evmProvider.request({ method: 'eth_getTransactionReceipt', params: [txHash] }),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
                 ]);
                 if (r) {
                     receipt = r;
-                    console.log('[Executors] 收到 receipt:', JSON.stringify({ status: r.status, transactionHash: r.transactionHash }));
+                    console.log('[Executors] 收到 receipt:', JSON.stringify({ status: r.status }));
                     break;
                 }
             } catch (e) { /* 忽略，继续轮询 */ }
-            await new Promise(r => setTimeout(r, 2000));
+            await new Promise(r => setTimeout(r, 1500));
         }
 
-        const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-
-        // --- 5. 提交数据到后台 ---
-        // 只要拿到 txHash 就提交后台（钱包已确认扣款），receipt 仅用于提示用户
+        // --- 5. 根据 receipt 结果决定是否提交后台 ---
         let backendSuccess = false;
-        let txConfirmed = false;
 
         if (receipt) {
-            // 兼容各种 status 格式
             const status = receipt.status;
-            txConfirmed = (status === '0x1' || status === 1 || status === true || status === '1');
+            const txConfirmed = (status === '0x1' || status === 1 || status === true || status === '1');
             console.log('[Executors] 交易状态:', status, '确认:', txConfirmed);
 
             if (!txConfirmed) {
-                // 链上明确失败，不提交后台
+                // ❌ 链上明确失败（余额不足/revert），不提交后台
                 alert(`❌ 链上交易失败，未扣款\n交易哈希: ${txHash}\n可能原因：余额不足或合约执行失败`);
                 if (window.closeModal) window.closeModal();
                 return;
             }
-        } else {
-            // receipt 超时未获取到，但钱包已返回 txHash 说明交易已提交
-            console.warn('[Executors] receipt 未获取到，但交易已提交，继续提交后台');
-            txConfirmed = true; // 假设成功，后台会校验
-        }
 
-        // 提交后台
-        try {
-            if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
-            console.log('[Executors] 开始提交后台:', { type: typeMap[bizType], amount: cleanAmount, symbol: tokenSymbol });
-            const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
-            console.log('[Executors] 后台返回:', res);
-            backendSuccess = res.success || res.code === 0 || res.ok;
-        } catch (e) {
-            console.error('[Executors] 后台提交异常:', e);
-        }
+            // ✅ 链上成功，提交后台
+            try {
+                if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
+                backendSuccess = res.success || res.code === 0 || res.ok;
+            } catch (e) {
+                console.error('[Executors] 后台提交异常:', e);
+            }
 
-        if (backendSuccess) {
-            alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新\n交易哈希: ${txHash}`);
+            if (backendSuccess) {
+                alert(`✅ ${typeMap[bizType] || '交易'}成功，资产已实时更新\n交易哈希: ${txHash}`);
+            } else {
+                alert(`✅ 链上交易成功，但后台记录提交失败\n交易哈希: ${txHash}\n请联系客服手动确认`);
+            }
         } else {
-            alert(`✅ 链上交易成功，但后台记录提交失败\n交易哈希: ${txHash}\n请联系客服手动确认`);
+            // ⚠️ receipt 超时（华为手机等），余额已检查过，兜底提交后台
+            console.warn('[Executors] receipt 超时，余额已检查，兜底提交后台');
+            try {
+                if (window.showModal) window.showModal("modal_processing", "交易已提交，正在保存记录...");
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
+                backendSuccess = res.success || res.code === 0 || res.ok;
+            } catch (e) {
+                console.error('[Executors] 后台提交异常:', e);
+            }
+
+            if (backendSuccess) {
+                alert(`✅ 交易已提交，记录已保存\n交易哈希: ${txHash}\n资产将在确认后更新`);
+            } else {
+                alert(`✅ 链上交易已提交，但后台记录提交失败\n交易哈希: ${txHash}\n请联系客服手动确认`);
+            }
         }
         if (window.closeModal) window.closeModal();
     } catch (e) {
