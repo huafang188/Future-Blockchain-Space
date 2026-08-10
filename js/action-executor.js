@@ -306,7 +306,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || chainConfig.nativeCurrency.decimals;
         const amountToPay = ethers.parseUnits(cleanAmount, decimals);
 
-        // --- 2. 转账前检查余额（必须成功，失败也报错不让继续）---
+        // --- 2. 转账前检查余额（查询失败不阻止交易，让钱包自行校验）---
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
         let userBalance = BigInt(0);
@@ -316,7 +316,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             if (tokenSymbol === nativeSymbol) {
                 const balanceHex = await Promise.race([
                     evmProvider.request({ method: 'eth_getBalance', params: [userAddress, 'latest'] }),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('余额查询超时')), 8000))
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
                 ]);
                 userBalance = BigInt(balanceHex);
                 balanceOk = true;
@@ -328,7 +328,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
                 const balanceHex = await Promise.race([
                     evmProvider.request({ method: 'eth_call', params: [{ to: contractAddr, data: balanceData }, 'latest'] }),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('余额查询超时')), 8000))
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
                 ]);
 
                 if (balanceHex && balanceHex !== '0x' && balanceHex.length > 2) {
@@ -337,11 +337,11 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                 }
             }
         } catch (balErr) {
-            console.warn('[Executors] 余额查询异常:', balErr.message);
-            // 余额查询失败，不继续，防止余额不足也弹钱包
-            throw new Error("无法查询钱包余额，请检查网络连接后重试");
+            // 余额查询失败，不阻止交易，继续让钱包校验
+            console.warn('[Executors] 余额查询失败，继续交易让钱包校验:', balErr.message);
         }
 
+        // 只有查询成功且余额不足时才阻止
         if (balanceOk && userBalance < amountToPay) {
             const balStr = tokenSymbol === nativeSymbol
                 ? ethers.formatEther(userBalance)
@@ -349,7 +349,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             throw new Error(`余额不足：您的钱包中 ${tokenSymbol} 余额为 ${balStr}，需要 ${cleanAmount} ${tokenSymbol}`);
         }
 
-        console.log('[Executors] 余额检查通过');
+        console.log('[Executors] 余额检查完成，balanceOk:', balanceOk);
 
         // --- 3. 发起交易 ---
         if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
