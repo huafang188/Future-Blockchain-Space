@@ -230,7 +230,6 @@ body::before {
     justify-content: center;
     padding: 20px;
     touch-action: none;
-    -webkit-overflow-scrolling: none;
 }
 
 .modal-box {

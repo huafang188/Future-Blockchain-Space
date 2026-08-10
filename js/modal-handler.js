@@ -53,6 +53,12 @@ export function mountModalHandlers() {
 
     // --- 3. 矿机模块 (购买/电费) ---
     window.openMinerModal = function(type) {
+        // 防御性检查：确保 showModal 已加载
+        if (typeof window.showModal !== 'function') {
+            console.error('[Modal] showModal 未加载，脚本可能未完全初始化');
+            alert('页面正在加载中，请稍后重试');
+            return;
+        }
         if (type === 'buy') {
             const nums = [1, 5, 10, 20, 50, 100];
             window.showModal("buy_miner", `
@@ -391,7 +397,7 @@ window.openExchangeModal = function() {
     window.closeModal = () => {
         const overlay = document.getElementById('modalOverlay');
         if (overlay) {
-            overlay.style.display = 'none';
+            overlay.style.setProperty('display', 'none', 'important');
         }
     };
 
