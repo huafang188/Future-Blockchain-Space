@@ -355,18 +355,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
         console.log('[Executors] 交易哈希:', txHash);
 
-        // 先提交数据到后台（不等 receipt，避免轮询超时导致数据丢失）
-        const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
-        let backendSuccess = false;
-        try {
-            if (window.showModal) window.showModal("modal_processing", "正在提交交易记录...");
-            const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
-            backendSuccess = res.success || res.code === 0;
-        } catch (e) {
-            console.error('[Executors] 后台提交失败:', e);
-        }
-
-        // 然后轮询等待交易确认（不影响已提交的后台数据）
+        // 先等待链上确认，确认成功后才提交后台数据（防止余额不足等失败交易也提交）
         if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认...");
         const provider = new ethers.BrowserProvider(evmProvider);
         let receipt = null;
@@ -378,20 +367,34 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             await new Promise(r => setTimeout(r, 2000));
         }
 
+        const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
+
         if (!receipt) {
-            // 交易已提交但未确认，后台数据已提交
-            alert(`✅ 交易已提交${backendSuccess ? '，记录已保存' : ''}\n交易哈希: ${txHash}`);
+            // 交易已提交但未确认（超时 120s），不提交后台，提示用户
+            alert(`⏳ 交易已提交但未在 120 秒内确认\n交易哈希: ${txHash}\n请稍后在区块链浏览器查看确认状态`);
             if (window.closeModal) window.closeModal();
             return;
         }
 
-        if (receipt.status === 1) {
-            alert(`✅ ${typeMap[bizType] || '交易'}成功${backendSuccess ? '，资产已实时更新' : ''}`);
+        if (receipt.status !== 1) {
+            // 链上交易失败（余额不足/ revert 等），不提交后台
+            alert(`❌ 链上交易失败，未扣款\n交易哈希: ${txHash}\n可能原因：余额不足或合约执行失败`);
             if (window.closeModal) window.closeModal();
-        } else {
-            alert(`⚠️ 链上交易失败，但后台${backendSuccess ? '已记录' : '未记录'}\n交易哈希: ${txHash}`);
-            if (window.closeModal) window.closeModal();
+            return;
         }
+
+        // 链上交易成功，提交数据到后台
+        let backendSuccess = false;
+        try {
+            if (window.showModal) window.showModal("modal_processing", "正在提交交易记录...");
+            const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
+            backendSuccess = res.success || res.code === 0;
+        } catch (e) {
+            console.error('[Executors] 后台提交失败:', e);
+        }
+
+        alert(`✅ ${typeMap[bizType] || '交易'}成功${backendSuccess ? '，资产已实时更新' : '（后台记录提交失败，请联系客服）'}\n交易哈希: ${txHash}`);
+        if (window.closeModal) window.closeModal();
     } catch (e) {
         console.error("[Executors] 交易异常详情:", e);
 
