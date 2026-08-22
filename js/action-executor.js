@@ -467,7 +467,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             // ✅ 链上成功，提交后台
             try {
                 if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
-                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
+                // ⚠️ 必须传 txHash，后端才会按"链上交易记录"放行（不强制 personal_sign 二次签名）
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash });
                 backendSuccess = res.success || res.code === 0 || res.ok;
             } catch (e) {
                 console.error('[Executors] 后台提交异常:', e);
@@ -483,7 +484,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             console.warn('[Executors] receipt 超时，余额已检查，兜底提交后台');
             try {
                 if (window.showModal) window.showModal("modal_processing", "交易已提交，正在保存记录...");
-                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction");
+                // ⚠️ 必须传 txHash，后端才会按"链上交易记录"放行（不强制 personal_sign 二次签名）
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash });
                 backendSuccess = res.success || res.code === 0 || res.ok;
             } catch (e) {
                 console.error('[Executors] 后台提交异常:', e);
@@ -558,7 +560,8 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
 
         if (signature) {
             if (window.showModal) window.showModal("modal_submitting", "签名成功，正在同步后台...");
-            const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, ...extraFields });
+            // ⚠️ 必须把签名原文 message 一起发到后端，否则后端无法做 EIP-191 验签
+            const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, message: msg, ...extraFields });
             if (res.success) {
                 alert(`✅ ${bizType}申请已成功提交`);
                 // 【刷新交给 postTransactionRecord 统一处理】

@@ -1,0 +1,12 @@
+name = "fbs-worker"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# 部署前需通过 Cloudflare Dashboard / wrangler secret 配置以下密钥：
+#   GSHEETS_CLIENT_EMAIL        Google 服务账号 email
+#   GSHEETS_PRIVATE_KEY         Google 服务账号私钥（PEM）
+#   GSHEETS_SPREADSHEET_ID       Google Sheets 表 ID
+#   FEISHU_WEBHOOK               飞书自定义机器人 Webhook URL
+#   APPS_SCRIPT_EXEC_URL         Apps Script 实时结算 Web App URL
+#   DIAG_SECRET                  诊断接口 ?diagnostic=1&key=xxx 的访问密钥
+#   ALLOWED_ORIGINS              允许的 Origin 白名单，逗号分隔（如 "https://neoneo.ink,https://www.neoneo.ink"）
