@@ -133,7 +133,8 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
 
     const payload = {
         action: action,        
-        address: cleanAddr,      
+        address: cleanAddr,
+        chain: chain,                // v3.4.4 新增：Worker 端要求链类型与地址严格匹配，防 TON/SOL 假地址脚本攻击
         type: type,            
         amount: String(amount),
         symbol: symbol,        
