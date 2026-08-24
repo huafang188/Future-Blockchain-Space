@@ -1805,6 +1805,29 @@ body.agent-active .fbs-agent-wrap {
 }
 
 /* 快捷问题按钮 */
+/* AI 消息内轻量 Markdown 样式 */
+.fbs-msg-bubble .fbs-md-h {
+    font-weight: 800;
+    margin: 8px 0 4px;
+    color: #4c1d95;
+}
+.fbs-msg-bubble .fbs-md-li {
+    padding-left: 4px;
+    margin: 2px 0;
+}
+.fbs-msg-bubble .fbs-md-hr {
+    height: 1px;
+    background: rgba(139, 92, 246, 0.25);
+    margin: 8px 0;
+}
+.fbs-msg-bubble strong {
+    font-weight: 800;
+    color: #5b21b6;
+}
+.fbs-msg-bubble > div {
+    min-height: 1em;
+}
+
 .fbs-agent-quick {
     display: flex;
     gap: 6px;

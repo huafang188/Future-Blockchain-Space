@@ -39,6 +39,25 @@
         } catch (e) { /* 忽略存储错误 */ }
     }
 
+    /* ---------- 轻量 Markdown 渲染（兜底：模型偶尔输出 ** / ### / --- 时正确显示） ---------- */
+    function escapeHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function inlineMd(s) {
+        return s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    }
+    function formatAgentText(text) {
+        const safe = escapeHtml(text || '');
+        return safe.split('\n').map(function (line) {
+            const t = line.trim();
+            if (/^(-{3,}|\*{3,}|_{3,})$/.test(t)) return '<div class="fbs-md-hr"></div>';
+            let m;
+            if ((m = t.match(/^#{1,6}\s*(.*)$/))) return '<div class="fbs-md-h">' + inlineMd(m[1]) + '</div>';
+            if ((m = t.match(/^[-*]\s+(.*)$/))) return '<div class="fbs-md-li">• ' + inlineMd(m[1]) + '</div>';
+            return '<div>' + inlineMd(line) + '</div>';
+        }).join('');
+    }
+
     /* ---------- 渲染消息 ---------- */
     function renderMessage(role, content, opts) {
         opts = opts || {};
@@ -59,7 +78,11 @@
 
         const bubble = document.createElement('div');
         bubble.className = 'fbs-msg-bubble';
-        bubble.textContent = content || '';
+        if (role === 'ai') {
+            bubble.innerHTML = formatAgentText(content);
+        } else {
+            bubble.textContent = content || '';
+        }
 
         msg.appendChild(avatar);
         msg.appendChild(bubble);
