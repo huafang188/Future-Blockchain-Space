@@ -14,3 +14,16 @@ window.handleNav = function(key) {
         window.showModal('白皮书', '<div class="p-8 text-center">白皮书即将上线</div>');
     }
 };
+
+// 输入法（软键盘）弹出检测：弹出时隐藏底部导航栏，避免悬浮在键盘上方
+(function () {
+    var vv = window.visualViewport;
+    if (!vv) return;
+    var KEYBOARD_THRESHOLD = 120; // 视口高度缩小超过该值视为键盘弹出
+    function onViewportChange() {
+        var keyboardOpen = window.innerHeight - vv.height > KEYBOARD_THRESHOLD;
+        document.body.classList.toggle('keyboard-open', keyboardOpen);
+    }
+    vv.addEventListener('resize', onViewportChange);
+    vv.addEventListener('scroll', onViewportChange);
+})();

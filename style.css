@@ -59,9 +59,18 @@ body::before {
 }
 
 /* --- 2. 悬浮胶囊导航 (解决点击问题的核心) --- */
+/* 输入法弹出时隐藏底部导航栏，避免悬浮在键盘上方 */
+body.keyboard-open .nav-wrapper {
+    display: none;
+}
+/* 键盘弹出且导航隐藏时，释放聊天区预留的导航空间，输入框贴近键盘 */
+body.keyboard-open.agent-active .fbs-agent-wrap {
+    padding-bottom: 0;
+}
+
 .nav-wrapper {
     position: fixed;
-    bottom: 24px;
+    bottom: 24px; /* 恢复原始底部距离，所有页面统一 */
     left: 50%;
     transform: translateX(-50%);
     width: 92%;
@@ -1626,8 +1635,25 @@ body.agent-active > header {
 }
 body.agent-active .fbs-agent-wrap {
     top: 0;
-    border-radius: 0 0 24px 24px;
-    border-top: none;
+    bottom: 24px; /* 与其他页面导航底部距离一致 */
+    border-radius: 0 0 24px 24px; /* 底部圆角保留，与导航底部圆角一致 */
+    border-bottom: none;
+    padding-bottom: 58px; /* 预留融合导航的高度，输入栏不被遮挡 */
+}
+/* Agent 页面：底部导航与聊天卡片融为一体（同宽、同色，保留底部圆角） */
+body.agent-active .nav-wrapper {
+    bottom: 24px; /* 与其他页面导航底部距离一致 */
+    width: 100%;
+    max-width: 576px; /* 与其他页面容器 max-w-xl 一致 */
+}
+body.agent-active .bottom-nav-pill {
+    border-radius: 0 0 24px 24px; /* 保留底部圆角 */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(14px) saturate(200%);
+    -webkit-backdrop-filter: blur(14px) saturate(200%);
+    border: none;
+    border-top: 1px solid rgba(139, 92, 246, 0.1);
+    box-shadow: none;
 }
 
 /* 整屏聊天布局：fixed 铺满"页头与底部导航之间"的区域，外层不滚动，仅消息区内部滚动 */
@@ -1636,10 +1662,10 @@ body.agent-active .fbs-agent-wrap {
     top: 65px; /* 让出页面顶部 header（logo + 标题 + 链选择器） */
     left: 0;
     right: 0;
-    bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+    bottom: 80px; /* 与底部导航胶囊顶部精确贴合（24px 偏移 + 56.5px 高度），间距为 0 */
     display: flex;
     flex-direction: column;
-    max-width: 768px;
+    max-width: 576px; /* 与其他页面容器 max-w-xl 一致 */
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.82);
     backdrop-filter: blur(14px);
