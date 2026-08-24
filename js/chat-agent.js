@@ -208,17 +208,22 @@
             buffer = lines.pop() || '';
 
             for (const line of lines) {
-                if (!line.startsWith('data: ')) continue;
-                const data = line.slice(6).trim();
+                const trimmedLine = line.trim();
+                if (!trimmedLine.startsWith('data:')) continue;
+                const data = trimmedLine.slice(5).trim();
                 if (!data || data === '[DONE]') continue;
-                try {
-                    const obj = JSON.parse(data);
-                    if (obj.token) {
-                        fullText += obj.token;
-                        liveBubble.textContent = fullText;
-                        container.scrollTop = container.scrollHeight;
-                    }
-                } catch (e) { /* 忽略解析错误 */ }
+                let obj;
+                try { obj = JSON.parse(data); } catch (e) { continue; }
+                if (obj.error) {
+                    liveMsg.remove();
+                    throw new Error(obj.error);
+                }
+                const token = obj.token || obj.response || '';
+                if (token) {
+                    fullText += token;
+                    liveBubble.textContent = fullText;
+                    container.scrollTop = container.scrollHeight;
+                }
             }
         }
 
