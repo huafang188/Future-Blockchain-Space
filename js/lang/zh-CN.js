@@ -106,7 +106,7 @@ window.i18nData['zh-CN'] = {
     neo_energy_title: "NEO Energy Mining: 绿色能源算力生态系统",
     infra_title: "基础设施与硬件规格",
     infra_desc: "NEO Energy总部位于俄罗斯，在完全符合当地法律法规的框架下，构建了高性能、合规化的算力集群。",
-    infra_capacity: "装机容量：总供应量 50 万台原始矿机，合成矿机 100 万台。",
+    infra_capacity: "装机容量：总供应量 200 万台原始矿机，合成矿机 100 万台。",
     infra_performance: "性能指标：单机算力达 30 TH/S，额定功耗为 1500W。",
     infra_tech: "核心技术：集成 AI智能算力 分配系统，实现资源利用最优解。",
     governance_title: "创新治理架构：多通证协同模型",
