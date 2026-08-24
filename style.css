@@ -1620,19 +1620,35 @@ body::before {
 /* ============================================================
    🤖 Agent 聊天页面（紫色主题）
    ============================================================ */
+/* Agent 页面：隐藏页面顶部标题栏，聊天界面顶到最上 */
+body.agent-active > header {
+    display: none;
+}
+body.agent-active .fbs-agent-wrap {
+    top: 0;
+    border-radius: 0 0 24px 24px;
+    border-top: none;
+}
+
+/* 整屏聊天布局：fixed 铺满"页头与底部导航之间"的区域，外层不滚动，仅消息区内部滚动 */
 .fbs-agent-wrap {
+    position: fixed;
+    top: 65px; /* 让出页面顶部 header（logo + 标题 + 链选择器） */
+    left: 0;
+    right: 0;
+    bottom: calc(100px + env(safe-area-inset-bottom, 0px));
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 120px);
     max-width: 768px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border-radius: 20px;
     border: 1px solid rgba(139, 92, 246, 0.15);
-    box-shadow: 0 8px 32px rgba(91, 33, 182, 0.08);
+    box-shadow: 0 8px 32px rgba(91, 33, 182, 0.1);
     overflow: hidden;
+    z-index: 40; /* 低于页头 z-50，页头始终可见 */
 }
 
 /* 顶部标题栏 */

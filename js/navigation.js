@@ -4,6 +4,8 @@ window.switchPage = function(page) {
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     document.getElementById('page-' + page).classList.remove('hidden');
     document.getElementById('nav-' + page).classList.add('active');
+    // Agent 页面隐藏页面顶部标题栏，让聊天界面占据整个顶部；其他页面恢复
+    document.body.classList.toggle('agent-active', page === 'agent');
 };
 
 // 顶部导航（白皮书等）

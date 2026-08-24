@@ -281,11 +281,6 @@
             });
         }
 
-        // 隐藏快捷问题按钮（如果有对话历史）
-        const quickActions = document.getElementById('agentQuickActions');
-        if (quickActions && history.length > 0) {
-            quickActions.style.display = 'none';
-        }
     });
 
     // 切换到 agent 页面时滚动到底部
