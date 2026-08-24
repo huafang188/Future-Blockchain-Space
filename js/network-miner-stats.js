@@ -12,7 +12,7 @@ const BASELINE = {
     neo_total_supply: 1000000000,      // NEO 总发行量（恒定不变）
     network_miner_total: 393262,       // 全网运行矿机总数
     network_daily_output: 3440255,     // 全网 NEO 日产量
-    single_miner_output: 8.748,        // 单台矿机 NEO 产量（不变）
+    single_miner_output: 7.78,         // 单台矿机 NEO 产量（不变）
     today_new_original: 2340,          // 昨日新增原始矿机
     today_new_synthetic: 1092,         // 昨日新增合成矿机
     neo_holders: 93262,                // NEO 持有者数量

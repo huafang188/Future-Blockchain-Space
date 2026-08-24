@@ -202,7 +202,7 @@
     <img src="assets/NEO.webp" alt="Logo" class="w-10 h-10 bg-white rounded-full shadow-md border border-slate-100 object-contain p-1 logo-bounce">
     
     <div>
-        <h1 class="text-xl font-black tracking-tighter title-gradient" data-i18n="title">
+        <h1 class="text-[15px] font-black tracking-tighter title-gradient" data-i18n="title">
             NEO生态挖矿矩阵
         </h1>
         <p class="text-[10px] text-slate-400 tracking-wider">New Energy Ore Intelligent computing power</p>
@@ -287,7 +287,12 @@
     <section class="max-w-xl mx-auto px-4 mt-4">
         <div class="glass-card blockchain-card rounded-[2.5rem] p-4 flex flex-col items-center gap-0 relative overflow-hidden">
             <div class="blockchain-grid"></div>
-            <div class="neo-bg-image"></div>
+            <!-- 紫色动态背景：缓慢旋转的 NEO 大写字母 -->
+            <div class="fbs-neo-bg" aria-hidden="true">
+                <span class="fbs-neo-letter">N</span>
+                <span class="fbs-neo-letter">E</span>
+                <span class="fbs-neo-letter">O</span>
+            </div>
             <div class="floating-particles">
                 <div class="particle"></div>
                 <div class="particle"></div>
@@ -297,6 +302,16 @@
             </div>
             <div class="satellite-container">
                 <div class="satellite"></div>
+            </div>
+
+            <!-- 右下角动态小矿机动画 -->
+            <div class="fbs-mini-miner" aria-hidden="true">
+                <div class="fbs-mm-wheel"></div>
+                <div class="fbs-mm-body"></div>
+                <div class="fbs-mm-light"></div>
+                <div class="fbs-mm-spark fbs-mm-spark--1"></div>
+                <div class="fbs-mm-spark fbs-mm-spark--2"></div>
+                <div class="fbs-mm-spark fbs-mm-spark--3"></div>
             </div>
 
             <div class="relative z-10 w-full flex flex-row items-center justify-between px-2">
@@ -339,18 +354,53 @@
 
           <div id="page-home" class="page-view space-y-6">
 
-<section class="glass-card rounded-[2rem] mb-12 overflow-hidden">
-    <div onclick="toggleNewsSection()" class="flex justify-between items-center p-5 cursor-pointer transition-colors select-none">
-        <div class="flex items-center gap-2">
-            <i class="fas fa-bullhorn text-purple-500"></i>
-            <span class="font-black text-slate-800 text-sm" data-i18n="news_section_title">公告与新闻</span>
-        </div>
-        <div class="flex items-center gap-2">
-            <span id="news-expand-hint" class="text-[10px] text-slate-600 font-medium" data-i18n="click_to_expand">点击展开</span>
-            <i id="news-toggle-icon" class="fas fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+<section class="rounded-[2rem] mb-12 overflow-hidden" style="background: transparent;">
+    <div class="flex items-center gap-2 p-5">
+        <i class="fas fa-bullhorn text-purple-500"></i>
+        <span class="font-black text-slate-800 text-sm" data-i18n="news_section_title">公告与新闻</span>
+    </div>
+
+    <!-- 🤖 区块链机器人动态动画（纯 CSS，未来感紫色主调） -->
+    <div class="fbs-bot-wrap" aria-hidden="true">
+        <div class="fbs-bot-scene">
+            <div class="fbs-bot-grid"></div>
+            <div class="fbs-bot-orb fbs-bot-orb--1"></div>
+            <div class="fbs-bot-orb fbs-bot-orb--2"></div>
+            <div class="fbs-bot-orb fbs-bot-orb--3"></div>
+            <div class="fbs-bot">
+                <div class="fbs-bot-antenna"><span class="fbs-bot-antenna-tip"></span></div>
+                <div class="fbs-bot-head">
+                    <div class="fbs-bot-eye fbs-bot-eye--l"></div>
+                    <div class="fbs-bot-eye fbs-bot-eye--r"></div>
+                    <div class="fbs-bot-ear fbs-bot-ear--l"></div>
+                    <div class="fbs-bot-ear fbs-bot-ear--r"></div>
+                </div>
+                <div class="fbs-bot-neck"></div>
+                <div class="fbs-bot-body">
+                    <div class="fbs-bot-core"></div>
+                    <div class="fbs-bot-chest-line"></div>
+                    <div class="fbs-bot-arm fbs-bot-arm--l"></div>
+                    <div class="fbs-bot-arm fbs-bot-arm--r"></div>
+                </div>
+                <div class="fbs-bot-shadow"></div>
+            </div>
+            <div class="fbs-bot-bit fbs-bot-bit--1"></div>
+            <div class="fbs-bot-bit fbs-bot-bit--2"></div>
+            <div class="fbs-bot-bit fbs-bot-bit--3"></div>
+            <div class="fbs-bot-bit fbs-bot-bit--4"></div>
+            <div class="fbs-bot-bit fbs-bot-bit--5"></div>
+
+            <!-- 💬 AI 会话气泡（逐字出现） -->
+            <div class="fbs-bot-bubble">
+                <div class="fbs-bot-bubble-tail"></div>
+                <div class="fbs-bot-bubble-text">
+                    <span class="fbs-char" style="--i:0">N</span><span class="fbs-char" style="--i:1">E</span><span class="fbs-char" style="--i:2">O</span><span class="fbs-char" style="--i:3">'</span><span class="fbs-char" style="--i:4">s</span><span class="fbs-char" style="--i:5">&nbsp;</span><span class="fbs-char" style="--i:6">A</span><span class="fbs-char" style="--i:7">I</span><span class="fbs-char" style="--i:8">&nbsp;</span><span class="fbs-char" style="--i:9">w</span><span class="fbs-char" style="--i:10">i</span><span class="fbs-char" style="--i:11">l</span><span class="fbs-char" style="--i:12">l</span><span class="fbs-char" style="--i:13">&nbsp;</span><span class="fbs-char" style="--i:14">c</span><span class="fbs-char" style="--i:15">o</span><span class="fbs-char" style="--i:16">m</span><span class="fbs-char" style="--i:17">i</span><span class="fbs-char" style="--i:18">n</span><span class="fbs-char" style="--i:19">g</span><span class="fbs-char" style="--i:20">!</span><span class="fbs-bot-bubble-cursor">|</span>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="news-content" class="hidden px-6 pb-6">
+
+    <div id="news-content" class="px-6 pb-6">
     <div class="flex justify-center items-center mb-4 gap-2">
         <button type="button" onclick="switchNewsTab('announcement')" id="tab-announcement" class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-wider transition-all bg-purple-500 text-white shadow-sm">
             <i class="fas fa-bullhorn mr-1"></i><span data-i18n="important_announcement">重要公告</span>
@@ -362,30 +412,17 @@
 
     <div id="news-container" class="space-y-4">
         <div id="announcement-panel" class="p-4 space-y-4">
-            <h2 class="text-sm font-black text-slate-900 leading-snug tracking-tight" data-i18n="neo_update_title"></h2>
             <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_greeting"></p>
             <div class="space-y-2">
-                <h3 class="text-xs font-black text-slate-800" data-i18n="neo_update_s1_title"></h3>
                 <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_s1"></p>
             </div>
             <div class="space-y-2">
-                <h3 class="text-xs font-black text-slate-800" data-i18n="neo_update_s2_title"></h3>
                 <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_s2"></p>
             </div>
             <div class="space-y-2">
-                <h3 class="text-xs font-black text-slate-800" data-i18n="neo_update_s3_title"></h3>
                 <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_s3"></p>
             </div>
-            <div class="space-y-2">
-                <h3 class="text-xs font-black text-slate-800" data-i18n="neo_update_s4_title"></h3>
-                <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_s4"></p>
-            </div>
-            <div class="space-y-2">
-                <h3 class="text-xs font-black text-slate-800" data-i18n="neo_update_s5_title"></h3>
-                <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_s5"></p>
-            </div>
             <div class="pt-2">
-                <p class="text-[11px] text-slate-700 text-center italic font-medium" data-i18n="neo_update_thanks"></p>
                 <p class="text-[11px] text-slate-700 text-center font-bold mt-1" data-i18n="neo_update_signature"></p>
             </div>
         </div>
@@ -980,7 +1017,7 @@
             <div class="flex items-center justify-between py-1">
                 <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="single_miner_output">单台矿机NEO产量</div>
                 <div class="flex items-baseline gap-1.5">
-                    <div id="single_miner_output" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">8.748</div>
+                    <div id="single_miner_output" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #8b5cf6;">7.78</div>
                     <div class="text-xs text-slate-600">NEO/台</div>
                 </div>
             </div>
