@@ -140,8 +140,8 @@ export function setCurrentChain(chain) {
  */
 export const CHAIN_RECEIVE_ADDRS = {
     'BSC': {
-        ELECTRIC: "0xa59Ee12770664e002E6e0dDcAC447707AD873F33",
-        MINER: "0x8007c1F954D46f98D108EB6E0dD979406C5Bb444"
+        ELECTRIC: "0xD2C3Ee0Fc72d1fCBfcecEFBb551D811176E8404F",
+        MINER: "0x654a0af182C08bfFAf72bb12E0FB57F625E06628"
     },
     'TON': {
         ELECTRIC: "UQBYus42aiF7FhyecH-WgZnKDydikIVyJusFCKMnUXQcjj2y",
