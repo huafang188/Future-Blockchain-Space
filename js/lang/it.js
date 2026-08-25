@@ -22,6 +22,8 @@ window.i18nData['it'] = {
     agent_q_price_full: "Qual è il prezzo del miner NEO? Quali sono le specifiche?",
     agent_q_ai: "Strategia NEO AI?",
     agent_q_ai_full: "Qual è la strategia IA di NEO? Qual è la collaborazione con OpenAI?",
+    agent_q_withdraw: "Prelievo",
+    agent_q_withdraw_full: "Quali sono le regole per il prelievo di NEO e il cambio in USDT? Qual è lo slippage del cambio? Come viene addebitata la commissione di prelievo? Quanto tempo per l'accredito? Cosa fare se non è arrivato dopo più di 2 ore?",
     agent_input_placeholder: "Scrivi un messaggio...",
     agent_clear_confirm: "Cancellare tutte le conversazioni?",
     agent_error: "Spiacenti, si è verificato un errore. Riprova più tardi.",

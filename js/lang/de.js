@@ -22,6 +22,8 @@ window.i18nData['de'] = {
     agent_q_price_full: "Wie hoch ist der Preis des NEO Miners? Welche Spezifikationen gibt es?",
     agent_q_ai: "NEO AI-Strategie?",
     agent_q_ai_full: "Was ist die KI-Strategie von NEO? Was ist die Zusammenarbeit mit OpenAI?",
+    agent_q_withdraw: "Auszahlung",
+    agent_q_withdraw_full: "Was sind die Regeln für die Auszahlung von NEO und den Umtausch in USDT? Wie hoch ist der Umtausch-Slippage? Wie wird die Auszahlungsgebühr berechnet? Wie lange dauert die Gutschrift? Was tun, wenn nach über 2 Stunden nichts angekommen ist?",
     agent_input_placeholder: "Nachricht eingeben...",
     agent_clear_confirm: "Alle Unterhaltungen löschen?",
     agent_error: "Sorry, ein Fehler ist aufgetreten. Bitte versuche es später erneut.",

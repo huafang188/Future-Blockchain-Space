@@ -22,6 +22,8 @@ window.i18nData['zh-CN'] = {
     agent_q_price_full: "NEO 矿机的价格是多少？电费怎么算？矿机有什么规格？日产量多少？",
     agent_q_ai: "NEO AI 战略",
     agent_q_ai_full: "请详细介绍 NEO 的 AI 战略，包括与 OpenAI 的合作、去中心化 AI 算力网络、隐私安全计算和 Web3 智能体生态的布局。",
+    agent_q_withdraw: "提现相关",
+    agent_q_withdraw_full: "NEO 提现和兑换 USDT 的规则是什么？兑换滑点是多少？提现手续费怎么收？多久到账？如果超过 2 小时未到账怎么办？",
     agent_input_placeholder: "输入消息...",
     agent_clear_confirm: "清空所有对话？",
     agent_error: "抱歉，发生了错误。请稍后重试。",

@@ -22,6 +22,8 @@ window.i18nData['ja'] = {
     agent_q_price_full: "NEO マイナーの価格はいくらですか？仕様は何ですか？",
     agent_q_ai: "NEO AI戦略は？",
     agent_q_ai_full: "NEOのAI戦略は何ですか？OpenAIとの協力は何ですか？",
+    agent_q_withdraw: "出金について",
+    agent_q_withdraw_full: "NEO の出金と USDT への交換ルールは何ですか？交換のスリッページはどれくらいですか？出金手数料はどう計算されますか？着金までどのくらいかかりますか？2 時間以上経っても着金しない場合はどうすればいいですか？",
     agent_input_placeholder: "メッセージを入力...",
     agent_clear_confirm: "すべての会話を消去しますか？",
     agent_error: "申し訳ありません、エラーが発生しました。後でもう一度お試しください。",

@@ -22,6 +22,8 @@ window.i18nData['zh-HK'] = {
     agent_q_price_full: "NEO 礦機的價格是多少？有什麼規格？",
     agent_q_ai: "NEO AI 戰略？",
     agent_q_ai_full: "NEO 的 AI 戰略是什麼？與 OpenAI 有什麼合作？",
+    agent_q_withdraw: "提現相關",
+    agent_q_withdraw_full: "NEO 提現和兌換 USDT 的規則是什麼？兌換滑點是多少？提現手續費怎麼收？多久到賬？如果超過 2 小時未到賬怎麼辦？",
     agent_input_placeholder: "輸入訊息...",
     agent_clear_confirm: "清空所有對話？",
     agent_error: "抱歉，發生了錯誤。請稍後重試。",

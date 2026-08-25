@@ -22,6 +22,8 @@ window.i18nData['fr'] = {
     agent_q_price_full: "Quel est le prix du mineur NEO ? Quelles sont les spécifications ?",
     agent_q_ai: "Stratégie NEO AI ?",
     agent_q_ai_full: "Quelle est la stratégie IA de NEO ? Quelle est la collaboration avec OpenAI ?",
+    agent_q_withdraw: "Retrait",
+    agent_q_withdraw_full: "Quelles sont les règles de retrait de NEO et d'échange en USDT ? Quel est le slippage de l'échange ? Quels sont les frais de retrait ? Combien de temps pour la réception ? Que faire si rien n'est arrivé après plus de 2 heures ?",
     agent_input_placeholder: "Tapez un message...",
     agent_clear_confirm: "Effacer toutes les conversations ?",
     agent_error: "Désolé, une erreur s'est produite. Veuillez réessayer plus tard.",

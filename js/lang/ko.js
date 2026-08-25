@@ -22,6 +22,8 @@ window.i18nData['ko'] = {
     agent_q_price_full: "NEO 마이너의 가격은 얼마인가요? 사양은 어떻게 되나요?",
     agent_q_ai: "NEO AI 전략?",
     agent_q_ai_full: "NEO의 AI 전략은 무엇인가요? OpenAI와의 협력은 무엇인가요?",
+    agent_q_withdraw: "출금 관련",
+    agent_q_withdraw_full: "NEO 출금 및 USDT 교환 규칙은 무엇인가요? 교환 슬리피지는 얼마인가요? 출금 수수료는 어떻게 부과되나요? 도착까지 얼마나 걸리나요? 2시간 이상 도착하지 않으면 어떻게 해야 하나요?",
     agent_input_placeholder: "메시지 입력...",
     agent_clear_confirm: "모든 대화를 지우시겠습니까?",
     agent_error: "죄송합니다. 오류가 발생했습니다. 나중에 다시 시도해 주세요.",

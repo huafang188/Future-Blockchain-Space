@@ -22,6 +22,8 @@ window.i18nData['en'] = {
     agent_q_price_full: "What is the price of NEO miner? What are the specifications?",
     agent_q_ai: "NEO AI strategy?",
     agent_q_ai_full: "What is NEO's AI strategy? What's the collaboration with OpenAI?",
+    agent_q_withdraw: "Withdrawal",
+    agent_q_withdraw_full: "What are the rules for withdrawing NEO and exchanging it for USDT? What is the exchange slippage? What is the withdrawal fee? How long does it take? What should I do if it hasn't arrived after 2 hours?",
     agent_input_placeholder: "Type a message...",
     agent_clear_confirm: "Clear all conversations?",
     agent_error: "Sorry, an error occurred. Please try again later.",

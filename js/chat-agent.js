@@ -16,7 +16,8 @@
     const QUICK_QUESTIONS = {
         founder: "请详细介绍 NEO 生态的创始人 Igor Runets，包括他的教育背景、创立 BitRiver 的经历、布拉茨克矿场、与 Gazprom Neft 的合作、以及在 2026 年推动 AI 数据中心转型的动态。",
         price: "NEO 矿机的价格是多少？电费怎么算？矿机有什么规格？日产量多少？",
-        ai: "请详细介绍 NEO 的 AI 战略，包括与 OpenAI 的合作、去中心化 AI 算力网络、隐私安全计算和 Web3 智能体生态的布局。"
+        ai: "请详细介绍 NEO 的 AI 战略，包括与 OpenAI 的合作、去中心化 AI 算力网络、隐私安全计算和 Web3 智能体生态的布局。",
+        withdraw: "NEO 提现和兑换 USDT 的规则是什么？兑换滑点是多少？提现手续费怎么收？多久到账？如果超过 2 小时未到账怎么办？"
     };
 
     let isResponding = false;
