@@ -53,6 +53,15 @@ window.i18nData['mn'] = {
     miner_spec_hashrate: "Уул уурхайн хүч: ≈30TH/S (секундэд 30*10^12 хаш мөргөлдөөн)",
     miner_spec_ai: "AI тооцоолох хүч: ≈256 EFLOPS (25.6 квадриллион хөвөгч цэгийн үйлдэл)",
     miner_spec_power: "Хамгийн их хүч зарцуулалт: 1500W",
+    miner_view_detail: "Дэлгэрэнгүй үзэх",
+    miner_detail_title: "Майнерийн жагсаалт",
+    miner_detail_type: "Майнерийн төрөл",
+    miner_detail_params: "Майнерийн параметр",
+    miner_detail_repo: "Нээлттэй эхийн хаяг",
+    miner_detail_status_running: "Ажиллаж байна",
+    miner_detail_status_deploying: "Байрлуулж байна",
+    miner_detail_status_stopped: "Зогссон",
+    miner_detail_note: "Майнерийн дэлгэрэнгүй мэдээлэл удахгүй гарах тул хүлээж байгаарай",
 
     // --- 2.3 NCL Кроссчейн Монет Машин ---
     ncl_machine_status: "Машины төлөв",

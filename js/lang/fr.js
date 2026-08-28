@@ -54,6 +54,15 @@ window.i18nData['fr'] = {
     miner_spec_hashrate: "Hashrate de minage : ≈30TH/S (30*10^12 collisions de hachage par seconde)",
     miner_spec_ai: "Puissance de calcul IA : ≈256 EFLOPS (25,6 quadrillions d'opérations en virgule flottante)",
     miner_spec_power: "Consommation maximale : 1500W",
+    miner_view_detail: "Voir les détails",
+    miner_detail_title: "Liste des mineurs",
+    miner_detail_type: "Type de mineur",
+    miner_detail_params: "Paramètres du mineur",
+    miner_detail_repo: "Adresse open source",
+    miner_detail_status_running: "En fonctionnement",
+    miner_detail_status_deploying: "Déploiement",
+    miner_detail_status_stopped: "Arrêté",
+    miner_detail_note: "Les détails du mineur arrivent bientôt, restez à l'écoute",
 
     // --- 2.3 Machine à Pièces Cross-Chain NCL ---
     ncl_machine_status: "Statut de la Machine",

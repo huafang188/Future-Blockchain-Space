@@ -54,6 +54,15 @@ window.i18nData['ar'] = {
     miner_spec_hashrate: "معدل التجزئة للتعدين: ≈30TH/S (30*10^12 تصادم تجزئة في الثانية)",
     miner_spec_ai: "قوة حساب الذكاء الاصطناعي: ≈256 EFLOPS (25.6 كوادريليون عملية فاصلة عائمة)",
     miner_spec_power: "أقصى استهلاك للطاقة: 1500W",
+    miner_view_detail: "عرض التفاصيل",
+    miner_detail_title: "قائمة أجهزة التعدين",
+    miner_detail_type: "نوع جهاز التعدين",
+    miner_detail_params: "معلمات جهاز التعدين",
+    miner_detail_repo: "عنوان المصدر المفتوح",
+    miner_detail_status_running: "قيد التشغيل",
+    miner_detail_status_deploying: "قيد النشر",
+    miner_detail_status_stopped: "متوقف",
+    miner_detail_note: "تفاصيل جهاز التعدين قادمة قريباً، ترقبوا",
 
     // --- 2.3 آلة عملات عبر السلاسل NCL ---
     ncl_machine_status: "حالة الآلة",

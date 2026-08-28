@@ -54,6 +54,15 @@ window.i18nData['it'] = {
     miner_spec_hashrate: "Hashrate di Mining: ≈30TH/S (30*10^12 collisioni hash al secondo)",
     miner_spec_ai: "Potenza di Calcolo AI: ≈256 EFLOPS (25,6 quadrilioni di operazioni in virgola mobile)",
     miner_spec_power: "Consumo Massimo: 1500W",
+    miner_view_detail: "Vedi dettagli",
+    miner_detail_title: "Elenco dei miner",
+    miner_detail_type: "Tipo di miner",
+    miner_detail_params: "Parametri del miner",
+    miner_detail_repo: "Indirizzo open source",
+    miner_detail_status_running: "In esecuzione",
+    miner_detail_status_deploying: "Distribuzione",
+    miner_detail_status_stopped: "Fermo",
+    miner_detail_note: "I dettagli del miner arriveranno presto, restate sintonizzati",
 
     // --- 2.3 Macchina per Monete Cross-Chain NCL ---
     ncl_machine_status: "Stato della Macchina",

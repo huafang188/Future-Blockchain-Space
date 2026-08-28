@@ -54,6 +54,15 @@ window.i18nData['zh-CN'] = {
     miner_spec_hashrate: "挖矿算力：≈30TH/S（每秒30*10^12次哈希碰撞）",
     miner_spec_ai: "AI算力：≈256 EFLOPS（25.6亿亿次浮点运算总功）",
     miner_spec_power: "最大功耗：1500W",
+    miner_view_detail: "查看详情",
+    miner_detail_title: "矿机列表",
+    miner_detail_type: "矿机类型",
+    miner_detail_params: "矿机参数",
+    miner_detail_repo: "开源地址",
+    miner_detail_status_running: "运行中",
+    miner_detail_status_deploying: "部署中",
+    miner_detail_status_stopped: "已停止",
+    miner_detail_note: "矿机详情即将上线，敬请期待",
 
     // --- 2.3 NCL 跨链产币机 ---
     ncl_machine_status: "产币机状态",

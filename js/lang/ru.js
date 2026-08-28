@@ -54,6 +54,15 @@ window.i18nData['ru'] = {
     miner_spec_hashrate: "Хешрейт майнинга: ≈30TH/S (30*10^12 хеш-коллизий в секунду)",
     miner_spec_ai: "AI вычислительная мощность: ≈256 EFLOPS (25,6 квадриллионов операций с плавающей точкой)",
     miner_spec_power: "Максимальное энергопотребление: 1500W",
+    miner_view_detail: "Подробнее",
+    miner_detail_title: "Список майнеров",
+    miner_detail_type: "Тип майнера",
+    miner_detail_params: "Параметры майнера",
+    miner_detail_repo: "Открытый код",
+    miner_detail_status_running: "Работает",
+    miner_detail_status_deploying: "Развертывание",
+    miner_detail_status_stopped: "Остановлен",
+    miner_detail_note: "Детали майнеров скоро появятся, следите за обновлениями",
 
     // --- 2.3 NCL Кроссчейн Монетная Машина ---
     ncl_machine_status: "Статус Машины",

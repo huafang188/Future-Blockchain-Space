@@ -54,6 +54,15 @@ window.i18nData['ug'] = {
     miner_spec_hashrate: "كانچىلىق ھېسابلاش كۈچى: ≈30TH/S (ھەر سېكۇنتتا 30×10¹² قېتىم ھېش ھېسابلاش)",
     miner_spec_ai: "AI ھېسابلاش كۈچى: ≈256 EFLOPS (25.6 يۈز مىليون يۈز مىليون قېتىم لەيلىمە نۇقتا ھېسابلاش)",
     miner_spec_power: "ئەڭ چوڭ قۇۋۋەت: 1500W",
+    miner_view_detail: "تەپسىلاتنى كۆرۈش",
+    miner_detail_title: "كان ماشىنىسى تىزىملىكى",
+    miner_detail_type: "كان ماشىنىسى تۈرى",
+    miner_detail_params: "كان ماشىنىسى پارامېتىرلىرى",
+    miner_detail_repo: "ئوچۇق مەنبە ئادرېسى",
+    miner_detail_status_running: "ئىجرا بولۇۋاتىدۇ",
+    miner_detail_status_deploying: "ئورۇنلاشتۇرۇلۇۋاتىدۇ",
+    miner_detail_status_stopped: "توختىتىلدى",
+    miner_detail_note: "كان ماشىنىسى تەپسىلاتى پات ئارىدا ئېلان قىلىنىدۇ، ساقلاپ تۇرۇڭ",
 
     // --- 2.3 NCL كۆپ زەنجىرلىك تەڭگە ئىشلەپچىقىرىش ماشىنىسى ---
     ncl_machine_status: "تەڭگە ئىشلەپچىقىرىش ماشىنىسى ھالىتى",

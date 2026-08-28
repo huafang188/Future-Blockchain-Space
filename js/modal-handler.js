@@ -116,6 +116,38 @@ export function mountModalHandlers() {
         `);
     };
 
+    // --- 4.5 矿机详情目录（前端 mock 数据，后端接口待接入） ---
+    window.openMinerDetailModal = function() {
+        if (typeof window.showModal !== 'function') return;
+
+        // TODO: 后端接入后替换为真实接口数据（如 /api/user?action=miner_list）
+        const mockMiners = [
+            { id: 'NEO-M-100001', status: 'running', type: 'Avalon 1066', params: '30 TH/s · 1500W' },
+            { id: 'NEO-M-100002', status: 'running', type: 'Avalon 1066', params: '30 TH/s · 1500W' },
+            { id: 'NEO-M-100003', status: 'deploying', type: 'Avalon 1066', params: '30 TH/s · 1500W' }
+        ];
+
+        const statusKey = { running: 'miner_detail_status_running', deploying: 'miner_detail_status_deploying', stopped: 'miner_detail_status_stopped' };
+        const statusClass = { running: 'text-green-600 bg-green-50', deploying: 'text-amber-600 bg-amber-50', stopped: 'text-slate-500 bg-slate-100' };
+
+        const listHtml = mockMiners.map(m => `
+            <div class="miner-detail-item">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="miner-detail-id">${m.id}</span>
+                    <span class="miner-detail-status ${statusClass[m.status] || statusClass.stopped}" data-i18n="${statusKey[m.status] || statusKey.stopped}">--</span>
+                </div>
+                <div class="miner-detail-row"><span data-i18n="miner_detail_type">矿机类型</span><b>${m.type}</b></div>
+                <div class="miner-detail-row"><span data-i18n="miner_detail_params">矿机参数</span><b>${m.params}</b></div>
+                <div class="miner-detail-row"><span data-i18n="miner_detail_repo">开源地址</span><b>------</b></div>
+            </div>`).join('');
+
+        window.showModal("miner_detail_title", `
+            <div class="miner-detail-list">
+                ${listHtml}
+                <p class="miner-detail-note" data-i18n="miner_detail_note">矿机详细数据以后端实时数据为准</p>
+            </div>`);
+    };
+
     // --- 5. 金融模块 (提现/兑换) ---
 
     // 各链支持的代币

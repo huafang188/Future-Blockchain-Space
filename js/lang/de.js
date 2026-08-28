@@ -54,6 +54,15 @@ window.i18nData['de'] = {
     miner_spec_hashrate: "Mining-Hashrate: ≈30TH/S (30*10^12 Hash-Kollisionen pro Sekunde)",
     miner_spec_ai: "AI-Rechenleistung: ≈256 EFLOPS (25,6 Billiarden Gleitkommaoperationen)",
     miner_spec_power: "Max. Leistungsaufnahme: 1500W",
+    miner_view_detail: "Details ansehen",
+    miner_detail_title: "Miner-Liste",
+    miner_detail_type: "Miner-Typ",
+    miner_detail_params: "Miner-Parameter",
+    miner_detail_repo: "Open-Source-Adresse",
+    miner_detail_status_running: "Läuft",
+    miner_detail_status_deploying: "Wird bereitgestellt",
+    miner_detail_status_stopped: "Gestoppt",
+    miner_detail_note: "Miner-Details kommen bald, bleiben Sie dran",
 
     // --- 2.3 NCL Cross-Chain Münzmaschine ---
     ncl_machine_status: "Maschinenstatus",

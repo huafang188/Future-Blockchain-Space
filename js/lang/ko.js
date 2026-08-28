@@ -54,6 +54,15 @@ window.i18nData['ko'] = {
     miner_spec_hashrate: "채굴 해시레이트: ≈30TH/S (초당 30*10^12회 해시 충돌)",
     miner_spec_ai: "AI 연산력: ≈256 EFLOPS (256경회 부동소수점 연산)",
     miner_spec_power: "최대 소비전력: 1500W",
+    miner_view_detail: "상세 보기",
+    miner_detail_title: "채굴기 목록",
+    miner_detail_type: "채굴기 유형",
+    miner_detail_params: "채굴기 매개변수",
+    miner_detail_repo: "오픈소스 주소",
+    miner_detail_status_running: "가동 중",
+    miner_detail_status_deploying: "배포 중",
+    miner_detail_status_stopped: "중지됨",
+    miner_detail_note: "채굴기 상세 정보는 곧 출시됩니다. 기대해 주세요",
 
     // --- 2.3 NCL 크로스체인 코인 머신 ---
     ncl_machine_status: "머신 상태",

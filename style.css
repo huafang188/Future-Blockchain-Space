@@ -225,6 +225,41 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .stat-label { font-size: 9px; color: rgba(148, 163, 184, 0.8); font-weight: 600; text-transform: uppercase; }
 .stat-value { font-size: 14px; font-weight: 700; color: rgba(30, 41, 59, 0.9); }
 
+/* 统计网格右下角"查看详情"按钮 */
+.stat-item-detail { justify-content: flex-end; align-items: flex-end; }
+.miner-detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(147, 51, 234, 0.25);
+    background: rgba(147, 51, 234, 0.08);
+    color: #7c3aed;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.miner-detail-btn i { font-size: 9px; }
+.miner-detail-btn:active { transform: scale(0.95); background: rgba(147, 51, 234, 0.16); }
+
+/* 矿机详情弹窗列表 */
+.miner-detail-list { display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto; }
+.miner-detail-item {
+    background: rgba(248, 250, 252, 0.9);
+    border: 1px solid rgba(147, 51, 234, 0.1);
+    border-radius: 16px;
+    padding: 12px 14px;
+    text-align: left;
+}
+.miner-detail-id { font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; color: #1e293b; }
+.miner-detail-status { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.miner-detail-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 11px; color: #64748b; margin-top: 4px; }
+.miner-detail-row b { color: #334155; font-weight: 600; text-align: right; }
+.miner-detail-link { color: #7c3aed; font-weight: 600; font-size: 10px; word-break: break-all; text-align: right; }
+.miner-detail-note { font-size: 10px; color: #94a3b8; text-align: center; margin-top: 4px; }
+
 /* --- 4. 苹果风磨砂玻璃弹窗 (彻底修复样式) --- */
 #modalOverlay {
     position: fixed;

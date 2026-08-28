@@ -53,6 +53,15 @@ window.i18nData['el'] = {
     miner_spec_hashrate: "Ρυθμός Κατακερματισμού Εξόρυξης: ≈30TH/S (30*10^12 συγκρούσεις κατακερματισμού ανά δευτερόλεπτο)",
     miner_spec_ai: "Υπολογιστική Ισχύς AI: ≈256 EFLOPS (25,6 τετράκις εκατομμύρια πράξεις κινητής υποδιαστολής)",
     miner_spec_power: "Μέγιστη Κατανάλωση Ενέργειας: 1500W",
+    miner_view_detail: "Προβολή λεπτομερειών",
+    miner_detail_title: "Λίστα miner",
+    miner_detail_type: "Τύπος miner",
+    miner_detail_params: "Παράμετροι miner",
+    miner_detail_repo: "Διεύθυνση ανοιχτού κώδικα",
+    miner_detail_status_running: "Σε λειτουργία",
+    miner_detail_status_deploying: "Ανάπτυξη",
+    miner_detail_status_stopped: "Διακοπή",
+    miner_detail_note: "Οι λεπτομέρειες του miner έρχονται σύντομα, μείνετε συντονισμένοι",
 
     // --- 2.3 NCL Cross-Chain Μηχανή Νομισμάτων ---
     ncl_machine_status: "Κατάσταση Μηχανής",

@@ -54,6 +54,15 @@ window.i18nData['ja'] = {
     miner_spec_hashrate: "マイニングハッシュレート：≈30TH/S（毎秒30*10^12回のハッシュ計算）",
     miner_spec_ai: "AI算力：≈256 EFLOPS（25.6京回の浮動小数点演算）",
     miner_spec_power: "最大消費電力：1500W",
+    miner_view_detail: "詳細を見る",
+    miner_detail_title: "マイナー一覧",
+    miner_detail_type: "マイナータイプ",
+    miner_detail_params: "マイナーパラメータ",
+    miner_detail_repo: "オープンソースアドレス",
+    miner_detail_status_running: "稼働中",
+    miner_detail_status_deploying: "デプロイ中",
+    miner_detail_status_stopped: "停止中",
+    miner_detail_note: "マイナー詳細は近日公開予定です。ご期待ください",
 
     // --- 2.3 NCL クロスチェーンコインマシン ---
     ncl_machine_status: "マシン状態",

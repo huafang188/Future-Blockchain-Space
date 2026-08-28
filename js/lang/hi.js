@@ -53,6 +53,15 @@ window.i18nData['hi'] = {
     miner_spec_hashrate: "माइनिंग हैशरेट: ≈30TH/S (प्रति सेकंड 30*10^12 हैश टक्कर)",
     miner_spec_ai: "AI कंप्यूटिंग पावर: ≈256 EFLOPS (25.6 क्वाड्रिलियन फ्लोटिंग-पॉइंट ऑपरेशंस)",
     miner_spec_power: "अधिकतम बिजली खपत: 1500W",
+    miner_view_detail: "विवरण देखें",
+    miner_detail_title: "माइनर सूची",
+    miner_detail_type: "माइनर प्रकार",
+    miner_detail_params: "माइनर पैरामीटर",
+    miner_detail_repo: "ओपन सोर्स पता",
+    miner_detail_status_running: "चालू",
+    miner_detail_status_deploying: "तैनात हो रहा है",
+    miner_detail_status_stopped: "बंद",
+    miner_detail_note: "माइनर विवरण जल्द आ रहा है, बने रहें",
 
     // --- 2.3 NCL क्रॉस-चेन सिक्का मशीन ---
     ncl_machine_status: "मशीन स्थिति",
