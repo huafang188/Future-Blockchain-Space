@@ -125,6 +125,7 @@ window.i18nData['fr'] = {
     swap_slippage: "Glissement/Frais",
     swap_from: "Échanger de",
     withdraw_fee: "Frais: 0.5USDT",
+    withdraw_warning: "Les retraits arrivent sous 2 heures. Veuillez ne pas soumettre plusieurs fois pour éviter les retards dus à la congestion de la chaîne.",
     transfer_fee: "Frais: 0.00USDT",
     
     // --- 5. Annonce importante ---
@@ -183,6 +184,9 @@ window.i18nData['fr'] = {
     白银节点: "Nœud Argent",
     白银矿工: "Mineur Argent",
     未激活: "Inactif",
+    系统维护: "Maintenance du système",
+    账户锁定: "Compte verrouillé",
+    账户异常: "Compte anormal",
 
     // --- 8. Nouvelles et Annonces ---
     news_title: "Annonces et Nouvelles",

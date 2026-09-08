@@ -175,6 +175,10 @@ export function mountModalHandlers() {
         const tokens = getChainTokens().withdraw;
         window.showModal("withdraw", `
             <div class="space-y-4 text-left">
+                <div class="flex items-start gap-2 p-3 bg-amber-50 rounded-2xl border border-amber-100">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500 text-xs mt-0.5"></i>
+                    <span class="text-[11px] font-bold text-amber-700 leading-relaxed" data-i18n="withdraw_warning">提现到账时间为两小时以内，请勿重复提交，避免链上拥堵延迟到账</span>
+                </div>
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
                     <img id="witLogo" src="${tokenConfig[tokens[0]].logo}" class="w-8 h-8 object-contain">
                     <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"

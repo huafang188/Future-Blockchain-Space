@@ -600,7 +600,10 @@ function renderMinerLevel(data) {
         '黄金节点': { color: 'from-amber-500 to-orange-500', textColor: 'text-white', borderColor: 'border-orange-300' },
         '钻石矿工': { color: 'from-cyan-400 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
         '钻石节点': { color: 'from-blue-500 to-purple-500', textColor: 'text-white', borderColor: 'border-purple-300' },
-        '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-pink-300' }
+        '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-pink-300' },
+        '系统维护': { color: 'from-red-500 to-red-600', textColor: 'text-white', borderColor: 'border-red-300' },
+        '账户锁定': { color: 'from-red-600 to-red-700', textColor: 'text-white', borderColor: 'border-red-400' },
+        '账户异常': { color: 'from-red-700 to-red-800', textColor: 'text-white', borderColor: 'border-red-500' }
     };
 
     // 如果有矿工等级数据且在配置中存在，则显示

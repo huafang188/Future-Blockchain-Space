@@ -100,6 +100,7 @@ window.i18nData['es'] = {
     swap_slippage: "Deslizamiento/Comisión",
     swap_from: "Canje de",
     withdraw_fee: "Comisión: 0.5USDT",
+    withdraw_warning: "Los retiros llegan en menos de 2 horas. No envíe solicitudes repetidas para evitar retrasos por congestión de la cadena.",
     transfer_fee: "Comisión: 0.00USDT",
     
     // --- 5. Aviso importante ---
@@ -149,6 +150,9 @@ window.i18nData['es'] = {
     白银节点: "Nodo Plata",
     白银矿工: "Minero Plata",
     未激活: "Inactivo",
+    系统维护: "Mantenimiento del sistema",
+    账户锁定: "Cuenta bloqueada",
+    账户异常: "Cuenta anormal",
 
     // --- 7. Noticias y Anuncios ---
     news_title: "Anuncios y Noticias",

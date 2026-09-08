@@ -124,6 +124,7 @@ window.i18nData['zh-HK'] = {
     swap_slippage: "滑點/買賣稅",
     swap_from: "兌出資產",
     withdraw_fee: "手續費：0.5USDT",
+    withdraw_warning: "提現到賬時間為兩小時以內，請勿重複提交，避免鏈上擁堵延遲到賬",
     transfer_fee: "手續費：0.00USDT",
     
     // --- 5. 重要公告 ---
@@ -182,6 +183,9 @@ window.i18nData['zh-HK'] = {
     白银节点: "白銀節點",
     白银矿工: "白銀礦工",
     未激活: "未激活",
+    系统维护: "系統維護",
+    账户锁定: "賬戶鎖定",
+    账户异常: "賬戶異常",
 
     // --- 8. 新聞與公告 ---
     news_title: "公告與新聞",

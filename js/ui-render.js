@@ -121,14 +121,14 @@ export function refreshAssetDisplay(balances = {}) {
         // 刷新单个代币余额
         const balEl = document.getElementById(`bal_${symbol}`);
         if (balEl) {
-            updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 4 });
+            updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 6 });
         }
         
         // 刷新单个代币价值
         const valEl = document.getElementById(`val_${symbol}`);
         if (valEl) {
             updateNumberWithAnimation(`val_${symbol}`, currentTokenValue, { 
-                decimals: 2, 
+                decimals: 6, 
                 prefix: '$' 
             });
         }
@@ -137,7 +137,7 @@ export function refreshAssetDisplay(balances = {}) {
         const priceEl = document.getElementById(`price_${symbol}`);
         if (priceEl) {
             updateNumberWithAnimation(`price_${symbol}`, unitPrice, { 
-                decimals: unitPrice < 1 ? 4 : 2, 
+                decimals: 6, 
                 prefix: '$' 
             });
         }
@@ -310,13 +310,13 @@ export function renderTokenList(balances = {}) {
                 <div>
                     <div class="font-bold text-sm text-slate-800">${symbol}</div>
                     <div class="text-[10px] text-slate-400 font-black tracking-tight" id="price_${symbol}">
-                        $${unitPrice.toFixed(unitPrice < 1 ? 4 : 2)}
+                        $${unitPrice.toFixed(6)}
                     </div>
                 </div>
             </div>
             <div class="text-right">
-                <div class="font-black text-sm text-slate-800" id="bal_${symbol}">${balance.toFixed(4)}</div>
-                <div class="text-[9px] text-slate-400 font-bold" id="val_${symbol}">$${currentTokenValue.toFixed(2)}</div>
+                <div class="font-black text-sm text-slate-800" id="bal_${symbol}">${balance.toFixed(6)}</div>
+                <div class="text-[9px] text-slate-400 font-bold" id="val_${symbol}">$${currentTokenValue.toFixed(6)}</div>
             </div>
         </div>`;
     });
@@ -341,7 +341,7 @@ export function renderTokenList(balances = {}) {
             const priceEl = document.getElementById(`price_${symbol}`);
             if (priceEl) {
                 updateNumberWithAnimation(`price_${symbol}`, unitPrice, { 
-                    decimals: unitPrice < 1 ? 4 : 2, 
+                    decimals: 6, 
                     prefix: '$' 
                 });
             }
@@ -349,14 +349,14 @@ export function renderTokenList(balances = {}) {
             // 更新余额
             const balEl = document.getElementById(`bal_${symbol}`);
             if (balEl) {
-                updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 4 });
+                updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 6 });
             }
             
             // 更新价值
             const valEl = document.getElementById(`val_${symbol}`);
             if (valEl) {
                 updateNumberWithAnimation(`val_${symbol}`, currentTokenValue, { 
-                    decimals: 2, 
+                    decimals: 6, 
                     prefix: '$' 
                 });
             }

@@ -125,6 +125,7 @@ window.i18nData['it'] = {
     swap_slippage: "Slittamento/Commissione",
     swap_from: "Scambia Da",
     withdraw_fee: "Commissione: 0.5USDT",
+    withdraw_warning: "I prelievi arrivano entro 2 ore. Non inviare richieste ripetute per evitare ritardi dovuti alla congestione della rete.",
     transfer_fee: "Commissione: 0.00USDT",
     
     // --- 5. Annuncio Importante ---
@@ -183,6 +184,9 @@ window.i18nData['it'] = {
     白银节点: "Nodo Argento",
     白银矿工: "Minatore Argento",
     未激活: "Inattivo",
+    系统维护: "Manutenzione del sistema",
+    账户锁定: "Account bloccato",
+    账户异常: "Account anomalo",
 
     // --- 8. News & Annunci ---
     news_title: "Annunci e News",

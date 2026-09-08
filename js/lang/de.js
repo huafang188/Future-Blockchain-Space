@@ -125,6 +125,7 @@ window.i18nData['de'] = {
     swap_slippage: "Schlupf/Gebühr",
     swap_from: "Tausch von",
     withdraw_fee: "Gebühr: 0.5USDT",
+    withdraw_warning: "Auszahlungen treffen innerhalb von 2 Stunden ein. Bitte nicht mehrfach senden, um Verzögerungen durch Netzwerküberlastung zu vermeiden.",
     transfer_fee: "Gebühr: 0.00USDT",
     
     // --- 5. Wichtige Ankündigung ---
@@ -183,6 +184,9 @@ window.i18nData['de'] = {
     白银节点: "Silber-Knoten",
     白银矿工: "Silberminer",
     未激活: "Nicht aktiviert",
+    系统维护: "Systemwartung",
+    账户锁定: "Konto gesperrt",
+    账户异常: "Konto anomal",
 
     // --- 8. News & Ankündigungen ---
     news_title: "Ankündigungen & News",

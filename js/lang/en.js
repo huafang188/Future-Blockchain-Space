@@ -164,6 +164,7 @@ window.i18nData['en'] = {
     swap_slippage: "Slippage/Fee",
     swap_from: "Swap From",
     withdraw_fee: "Fee: 0.5USDT",
+    withdraw_warning: "Withdrawals arrive within 2 hours. Please do not submit repeatedly to avoid on-chain congestion delays.",
     transfer_fee: "Fee: 0.00USDT",
     recharge_amount: "Recharge Amount",
     select_recharge_asset: "Select Recharge Asset",
@@ -238,6 +239,9 @@ window.i18nData['en'] = {
     白银节点: "Silver Node",
     白银矿工: "Silver Miner",
     未激活: "Inactive",
+    系统维护: "System Maintenance",
+    账户锁定: "Account Locked",
+    账户异常: "Account Abnormal",
 
     // --- 8. News & Announcements ---
     news_title: "Announcements",

@@ -164,6 +164,7 @@ window.i18nData['zh-CN'] = {
     swap_slippage: "滑点/买卖税",
     swap_from: "兑出资产",
     withdraw_fee: "手续费：0.5USDT",
+    withdraw_warning: "提现到账时间为两小时以内，请勿重复提交，避免链上拥堵延迟到账",
     transfer_fee: "手续费：0.00USDT",
     recharge_amount: "充值数量",
     select_recharge_asset: "选择充值资产",
@@ -237,6 +238,9 @@ window.i18nData['zh-CN'] = {
     白银节点: "白银节点",
     白银矿工: "白银矿工",
     未激活: "未激活",
+    系统维护: "系统维护",
+    账户锁定: "账户锁定",
+    账户异常: "账户异常",
 
     // --- 8. 新闻与公告 ---
     news_title: "公告与新闻",
