@@ -576,6 +576,7 @@ function renderMinerLevel(data) {
     if (!data) {
         console.log("[MinerLevel] 没有可用的数据");
         levelEl.className = 'miner-level-badge opacity-0';
+        renderIdentityWeight('', null);
         return;
     }
 
@@ -585,9 +586,9 @@ function renderMinerLevel(data) {
         team: data.team ? Object.keys(data.team) : null
     });
 
-    // 从后端数据中直接读取矿工等级（支持多个可能的字段名）
-    const minerLevel = data.info?.["矿工等级"] || data.info?.["等级"] || 
-                       data.team?.["矿工等级"] || data.team?.["等级"] || '';
+    // 从后端数据中直接读取矿工等级（支持多个可能的字段名，去除首尾空格）
+    const minerLevel = String(data.info?.["矿工等级"] || data.info?.["等级"] || 
+                       data.team?.["矿工等级"] || data.team?.["等级"] || '').trim();
 
     console.log("[MinerLevel] 读取到的矿工等级:", minerLevel);
 
@@ -631,18 +632,19 @@ function renderIdentityWeight(minerLevel, style) {
     const identityEl = document.getElementById('identity_level');
     const weightBar = document.getElementById('weight_bar');
     const weightValue = document.getElementById('weight_value');
+    console.log("[IdentityWeight] 渲染身份与权重, 等级:", minerLevel, "元素存在:", !!identityEl, !!weightBar, !!weightValue);
     if (!identityEl || !weightBar || !weightValue) return;
 
-    // 等级 → 社区权重映射（从低到高递增）
+    // 等级 → 社区权重映射
     const levelWeightMap = {
         '未激活': 0,
-        '白银矿工': 10,
-        '白银节点': 20,
-        '黄金矿工': 35,
+        '白银矿工': 20,
+        '白银节点': 40,
+        '黄金矿工': 40,
         '黄金节点': 50,
-        '钻石矿工': 65,
-        '钻石节点': 80,
-        '钻石大师': 100,
+        '钻石矿工': 60,
+        '钻石节点': 70,
+        '钻石大师': 80,
         '系统维护': 0,
         '账户锁定': 0,
         '账户异常': 0
