@@ -415,12 +415,12 @@ export async function fetchUserData(address, options = {}) {
                 };
             }
             
-            // 渲染团队数据
+            // 渲染团队数据（业绩显示为整数）
             updateText('team_directCount', teamData.directCount);
-            updateText('team_directSales', teamData.directSales.toFixed(2));
+            updateText('team_directSales', Math.round(teamData.directSales));
             updateText('team_totalCount', teamData.totalCount);
-            updateText('team_totalSales', teamData.totalSales.toFixed(2));
-            updateText('team_totalReward', teamData.totalReward.toFixed(2));
+            updateText('team_totalSales', Math.round(teamData.totalSales));
+            updateText('team_totalReward', Math.round(teamData.totalReward));
 
             // E. 渲染矿机数据 (严格匹配飞书文字列名)
             if (data.miner) {
@@ -522,8 +522,8 @@ export function updateText(id, value) {
     // 处理数值格式化
     if (isNumberField && !isNaN(value)) {
         let num = parseFloat(value);
-        // 单价展示 4 位，其余金额/数量展示 2 位
-        let decimals = id.includes('price_') ? 4 : 2;
+        // 单价展示 4 位，业绩/奖励展示整数，其余金额/数量展示 2 位
+        let decimals = id.includes('price_') ? 4 : (id.includes('Sales') || id.includes('Reward')) ? 0 : 2;
         el.innerText = num.toLocaleString('en-US', {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
@@ -614,10 +614,58 @@ function renderMinerLevel(data) {
         levelEl.innerText = translatedLevel;
         levelEl.className = `miner-level-badge bg-gradient-to-r ${style.color} ${style.textColor} px-3 py-1 rounded-full text-[9px] font-bold border ${style.borderColor} mb-2 inline-block opacity-100 shadow-md`;
         console.log("[MinerLevel] 成功显示矿工等级:", minerLevel, "(翻译后:", translatedLevel, ")");
+        // 同步渲染"我的身份"与社区权重
+        renderIdentityWeight(minerLevel, style);
     } else {
         // 没有数据或等级不匹配，隐藏徽章
         levelEl.className = 'miner-level-badge opacity-0';
         console.log("[MinerLevel] 矿工等级数据为空或不匹配，隐藏徽章");
+        renderIdentityWeight('', null);
+    }
+}
+
+/**
+ * 渲染"我的身份"与社区权重（0%-100% 数轴，随等级提高而增加，权重越高颜色越深）
+ */
+function renderIdentityWeight(minerLevel, style) {
+    const identityEl = document.getElementById('identity_level');
+    const weightBar = document.getElementById('weight_bar');
+    const weightValue = document.getElementById('weight_value');
+    if (!identityEl || !weightBar || !weightValue) return;
+
+    // 等级 → 社区权重映射（从低到高递增）
+    const levelWeightMap = {
+        '未激活': 0,
+        '白银矿工': 10,
+        '白银节点': 20,
+        '黄金矿工': 35,
+        '黄金节点': 50,
+        '钻石矿工': 65,
+        '钻石节点': 80,
+        '钻石大师': 100,
+        '系统维护': 0,
+        '账户锁定': 0,
+        '账户异常': 0
+    };
+
+    if (minerLevel && style) {
+        const translatedLevel = getMinerLevelTranslation(minerLevel);
+        identityEl.innerText = translatedLevel;
+        // 身份徽章使用与等级相同的渐变色
+        identityEl.className = `text-[10px] font-black px-3 py-1 rounded-full bg-gradient-to-r ${style.color} ${style.textColor} shadow-sm`;
+
+        const weight = levelWeightMap[minerLevel] ?? 0;
+        weightValue.innerText = weight + '%';
+        // 权重越高颜色越深：基于紫色主色调，透明度随权重加深
+        const opacity = 0.15 + (weight / 100) * 0.85;
+        weightBar.style.width = weight + '%';
+        weightBar.style.background = `rgba(124, 58, 237, ${opacity})`;
+    } else {
+        identityEl.innerText = '--';
+        identityEl.className = 'text-[10px] font-black px-3 py-1 rounded-full bg-slate-100 text-slate-400';
+        weightValue.innerText = '0%';
+        weightBar.style.width = '0%';
+        weightBar.style.background = '#e2e8f0';
     }
 }
 

@@ -93,12 +93,15 @@ window.i18nData['ar'] = {
     neo_burned: "NEO المحترق",
 
     // --- 3. Assets & Team (User Page) ---
-    assets_list: "قائمة الرموز",
+    assets_list: "قائمة الأصول",
     recharge: "إيداع",
     withdraw: "سحب",
     exchange: "تبديل",
     transfer: "تحويل",
     team_title: "فريقي",
+    my_identity: "هويتي",
+    community_weight: "وزن المجتمع",
+    my_inviter: "المرجع الخاص بي",
     invite_code: "معرفي",
     inviter: "المُحيل",
     direct_num: "عدد الإحالات المباشرة",

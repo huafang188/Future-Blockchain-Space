@@ -93,7 +93,7 @@ window.i18nData['es'] = {
     neo_burned: "NEO Quemado",
 
     // --- 3. Activos y Equipo (Página de Usuario) ---
-    assets_list: "Lista de Tokens",
+    assets_list: "Lista de Activos",
     recharge: "Depósito",
     withdraw: "Retiro",
     exchange: "Canje (Swap)",
@@ -125,6 +125,9 @@ window.i18nData['es'] = {
     
     transfer: "Transferencia",
     team_title: "Mi Equipo",
+    my_identity: "Mi Identidad",
+    community_weight: "Peso Comunitario",
+    my_inviter: "Mi Referente",
     invite_code: "Mi ID",
     inviter: "Invitado por",
     direct_num: "Referidos Directos",

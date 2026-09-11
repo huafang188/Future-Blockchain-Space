@@ -92,12 +92,15 @@ window.i18nData['zh-HK'] = {
     neo_burned: "NEO銷毀數量",
 
     // --- 3. 資產與團隊 (User Page) ---
-    assets_list: "代幣列表",
+    assets_list: "資產列表",
     recharge: "充值",
     withdraw: "提幣",
     exchange: "兌換",
     transfer: "轉賬",
     team_title: "我的團隊",
+    my_identity: "我的身份",
+    community_weight: "社區權重",
+    my_inviter: "我的推薦人",
     invite_code: "我的ID",
     inviter: "推薦人",
     direct_num: "直推人數",

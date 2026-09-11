@@ -93,12 +93,15 @@ window.i18nData['en'] = {
     neo_burned: "NEO Burned",
 
     // --- 3. Assets & Team ---
-    assets_list: "Token List",
+    assets_list: "Asset List",
     recharge: "Deposit",
     withdraw: "Withdraw",
     exchange: "Swap",
     transfer: "Transfer",
     team_title: "My Team",
+    my_identity: "My Identity",
+    community_weight: "Community Weight",
+    my_inviter: "My Referrer",
     invite_code: "My ID",
     inviter: "Inviter",
     direct_num: "Direct Referrals",

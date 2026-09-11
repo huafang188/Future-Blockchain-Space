@@ -92,12 +92,15 @@ window.i18nData['hi'] = {
     neo_burned: "NEO जलाया गया",
 
     // --- 3. संपत्ति और टीम (User Page) ---
-    assets_list: "टोकन सूची",
+    assets_list: "संपत्ति सूची",
     recharge: "रिचार्ज",
     withdraw: "निकासी",
     exchange: "एक्सचेंज",
     transfer: "ट्रांसफर",
     team_title: "मेरी टीम",
+    my_identity: "मेरी पहचान",
+    community_weight: "समुदाय भार",
+    my_inviter: "मेरा रेफरर",
     invite_code: "मेरा ID",
     inviter: "रेफरर",
     direct_num: "प्रत्यक्ष रेफरल संख्या",

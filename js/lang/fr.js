@@ -93,12 +93,15 @@ window.i18nData['fr'] = {
     neo_burned: "NEO Brûlé",
 
     // --- 3. Actifs et Équipe (User Page) ---
-    assets_list: "Liste des Tokens",
+    assets_list: "Liste des Actifs",
     recharge: "Dépôt",
     withdraw: "Retrait",
     exchange: "Échange (Swap)",
     transfer: "Transfert",
     team_title: "Mon Équipe",
+    my_identity: "Mon Identité",
+    community_weight: "Poids Communautaire",
+    my_inviter: "Mon Parrain",
     invite_code: "Mon ID",
     inviter: "Parrainé par",
     direct_num: "Filleuls directs",

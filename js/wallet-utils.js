@@ -594,6 +594,20 @@ export function logout(showConfirm) {
         const el = document.getElementById(id);
         if (el) el.innerText = '0';
     });
+
+    // 重置"我的身份"与社区权重
+    const identityEl = document.getElementById('identity_level');
+    if (identityEl) {
+        identityEl.innerText = '--';
+        identityEl.className = 'text-[10px] font-black px-3 py-1 rounded-full bg-slate-100 text-slate-400';
+    }
+    const weightBar = document.getElementById('weight_bar');
+    if (weightBar) {
+        weightBar.style.width = '0%';
+        weightBar.style.background = '#e2e8f0';
+    }
+    const weightValue = document.getElementById('weight_value');
+    if (weightValue) weightValue.innerText = '0%';
     
     // 移除所有钱包事件监听器，防止退出后自动连接
     const provider = getEVMProvider();

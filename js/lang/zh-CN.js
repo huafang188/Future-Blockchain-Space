@@ -93,12 +93,15 @@ window.i18nData['zh-CN'] = {
     neo_burned: "NEO销毁数量",
 
     // --- 3. 资产与团队 ---
-    assets_list: "代币列表",
+    assets_list: "资产列表",
     recharge: "充值",
     withdraw: "提现",
     exchange: "兑换",
     transfer: "转账",
     team_title: "我的团队",
+    my_identity: "我的身份",
+    community_weight: "社区权重",
+    my_inviter: "我的推荐人",
     invite_code: "我的ID",
     inviter: "推荐人",
     direct_num: "直推人数",

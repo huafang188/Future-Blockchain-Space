@@ -93,12 +93,15 @@ window.i18nData['ko'] = {
     neo_burned: "NEO 소각 수량",
 
     // --- 3. 자산 및 팀 (User Page) ---
-    assets_list: "토큰 목록",
+    assets_list: "자산 목록",
     recharge: "충전",
     withdraw: "출금",
     exchange: "스왑",
     transfer: "전송",
     team_title: "내 팀",
+    my_identity: "내 신분",
+    community_weight: "커뮤니티 가중치",
+    my_inviter: "내 추천인",
     invite_code: "내 ID",
     inviter: "추천인",
     direct_num: "직속 추천 인원",

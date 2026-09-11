@@ -92,12 +92,15 @@ window.i18nData['el'] = {
     neo_burned: "Καμένο NEO",
 
     // --- 3. Περιουσία & Ομάδα (User Page) ---
-    assets_list: "Λίστα Token",
+    assets_list: "Λίστα Περιουσιακών",
     recharge: "Κατάθεση",
     withdraw: "Ανάληψη",
     exchange: "Ανταλλαγή",
     transfer: "Μεταφορά",
     team_title: "Η Ομάδα Μου",
+    my_identity: "Η Ταυτότητά Μου",
+    community_weight: "Βάρος Κοινότητας",
+    my_inviter: "Ο Προσκεκλητής Μου",
     invite_code: "Το ID μου",
     inviter: "Πρόσωπο που πρότεινε",
     direct_num: "Αριθμός Άμεσων Προτάσεων",

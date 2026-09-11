@@ -92,12 +92,15 @@ window.i18nData['mn'] = {
     neo_burned: "NEO устгасан",
 
     // --- 3. Хөрөнгө ба Баг (Хэрэглэгчийн хуудас) ---
-    assets_list: "Токен жагсаалт",
+    assets_list: "Хөрөнгийн жагсаалт",
     recharge: "Оруулах",
     withdraw: "Гаргах",
     exchange: "Солих",
     transfer: "Шилжүүлэх",
     team_title: "Миний баг",
+    my_identity: "Миний эрхэм",
+    community_weight: "Олон нийтийн жин",
+    my_inviter: "Миний урьсан хүн",
     invite_code: "Миний ID",
     inviter: "Ивээн тэтгэгч",
     direct_num: "Шууд танилуудын тоо",

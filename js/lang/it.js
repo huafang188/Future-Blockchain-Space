@@ -93,12 +93,15 @@ window.i18nData['it'] = {
     neo_burned: "NEO Bruciato",
 
     // --- 3. Asset e Team (Pagina Profilo) ---
-    assets_list: "Elenco Token",
+    assets_list: "Elenco Asset",
     recharge: "Deposito",
     withdraw: "Prelievo",
     exchange: "Scambio (Swap)",
     transfer: "Trasferimento",
     team_title: "Il Mio Team",
+    my_identity: "La Mia Identità",
+    community_weight: "Peso Comunitario",
+    my_inviter: "Il Mio Referente",
     invite_code: "Il Mio ID",
     inviter: "Invitato da",
     direct_num: "Referral Diretti",

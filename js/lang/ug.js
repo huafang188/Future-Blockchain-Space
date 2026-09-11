@@ -93,12 +93,15 @@ window.i18nData['ug'] = {
     neo_burned: "NEO كۆيدۈرۈلگەن سانى",
 
     // --- 3. مۈلۈك ۋە كوماندا ---
-    assets_list: "توكېن تىزىملىكى",
+    assets_list: "مۈلۈك تىزىملىكى",
     recharge: "قاچىلاش",
     withdraw: "پۇل چىقىرىش",
     exchange: "ئالماشتۇرۇش",
     transfer: "يۆتكەش",
     team_title: "مېنىڭ كوماندام",
+    my_identity: "مېنىڭ كىملىكىم",
+    community_weight: "جامائەت ئېغىرلىقى",
+    my_inviter: "مېنىڭ تەۋسىيەچىم",
     invite_code: "مېنىڭ ID م",
     inviter: "تەۋسىيە قىلغۇچى",
     direct_num: "بىۋاسىتە تەۋسىيە سانى",
