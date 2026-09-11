@@ -318,6 +318,7 @@ export async function fetchUserData(address, options = {}) {
             
             // 新用户也尝试渲染矿工等级（可能已有预填写数据）
             renderMinerLevel(data);
+            renderIdentityWeight(data);
             
             return;
         }
@@ -433,6 +434,8 @@ export async function fetchUserData(address, options = {}) {
 
             // F. 渲染矿工等级
             renderMinerLevel(data);
+            // F. 渲染"我的身份"与社区权重（与矿工等级使用相同的数据源）
+            renderIdentityWeight(data);
 
             // F. 执行各 UI 模块的渲染函数
             if (window.renderHistory) window.renderHistory(data.history || []);
@@ -546,6 +549,34 @@ function getMinerLevelTranslation(level) {
 }
 
 /**
+ * 矿工等级对应的样式配置（8个等级 + 3个特殊状态，从低到高）
+ */
+const LEVEL_STYLES = {
+    '未激活': { color: 'from-gray-400 to-gray-500', textColor: 'text-white', borderColor: 'border-gray-300' },
+    '白银矿工': { color: 'from-slate-300 to-slate-400', textColor: 'text-white', borderColor: 'border-slate-300' },
+    '白银节点': { color: 'from-slate-400 to-blue-300', textColor: 'text-white', borderColor: 'border-blue-200' },
+    '黄金矿工': { color: 'from-amber-400 to-yellow-500', textColor: 'text-white', borderColor: 'border-amber-300' },
+    '黄金节点': { color: 'from-amber-500 to-orange-500', textColor: 'text-white', borderColor: 'border-orange-300' },
+    '钻石矿工': { color: 'from-cyan-400 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
+    '钻石节点': { color: 'from-blue-500 to-purple-500', textColor: 'text-white', borderColor: 'border-purple-300' },
+    '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-pink-300' },
+    '系统维护': { color: 'from-red-500 to-red-600', textColor: 'text-white', borderColor: 'border-red-300' },
+    '账户锁定': { color: 'from-red-600 to-red-700', textColor: 'text-white', borderColor: 'border-red-400' },
+    '账户异常': { color: 'from-red-700 to-red-800', textColor: 'text-white', borderColor: 'border-red-500' }
+};
+
+/**
+ * 从后端数据中提取矿工等级（支持多个可能的字段名，去除首尾空格）
+ * @param {Object} data - 后端返回的数据
+ * @returns {string} 矿工等级（中文），未找到时返回空字符串
+ */
+function extractMinerLevel(data) {
+    if (!data) return '';
+    return String(data.info?.["矿工等级"] || data.info?.["等级"] ||
+                  data.team?.["矿工等级"] || data.team?.["等级"] || '').trim();
+}
+
+/**
  * 渲染矿工等级（直接从飞书多维表格读取预填写的数据）
  * 矿工等级分为8级（从低到高）：
  * 0. 未激活 - 灰色
@@ -562,10 +593,6 @@ function getMinerLevelTranslation(level) {
  */
 function renderMinerLevel(data) {
     const levelEl = document.getElementById('minerLevel');
-    if (!levelEl) {
-        console.log("[MinerLevel] 未找到 minerLevel 元素");
-        return;
-    }
 
     // 如果传入了数据且是有效对象（不是语言代码字符串），保存到全局变量用于语言切换时重新渲染
     if (data && typeof data === 'object' && (data.info || data.team)) {
@@ -573,10 +600,18 @@ function renderMinerLevel(data) {
     }
     // 如果没有传入数据或传入的是语言代码字符串，尝试使用全局缓存的数据
     data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
+
+    // 提取矿工等级
+    const minerLevel = extractMinerLevel(data);
+
+    if (!levelEl) {
+        console.log("[MinerLevel] 未找到 minerLevel 元素");
+        return;
+    }
+
     if (!data) {
         console.log("[MinerLevel] 没有可用的数据");
         levelEl.className = 'miner-level-badge opacity-0';
-        renderIdentityWeight('', null);
         return;
     }
 
@@ -585,55 +620,44 @@ function renderMinerLevel(data) {
         info: data.info ? Object.keys(data.info) : null,
         team: data.team ? Object.keys(data.team) : null
     });
-
-    // 从后端数据中直接读取矿工等级（支持多个可能的字段名，去除首尾空格）
-    const minerLevel = String(data.info?.["矿工等级"] || data.info?.["等级"] || 
-                       data.team?.["矿工等级"] || data.team?.["等级"] || '').trim();
-
     console.log("[MinerLevel] 读取到的矿工等级:", minerLevel);
 
-    // 定义矿工等级对应的样式配置（8个等级，从低到高）
-    const levelStyles = {
-        '未激活': { color: 'from-gray-400 to-gray-500', textColor: 'text-white', borderColor: 'border-gray-300' },
-        '白银矿工': { color: 'from-slate-300 to-slate-400', textColor: 'text-white', borderColor: 'border-slate-300' },
-        '白银节点': { color: 'from-slate-400 to-blue-300', textColor: 'text-white', borderColor: 'border-blue-200' },
-        '黄金矿工': { color: 'from-amber-400 to-yellow-500', textColor: 'text-white', borderColor: 'border-amber-300' },
-        '黄金节点': { color: 'from-amber-500 to-orange-500', textColor: 'text-white', borderColor: 'border-orange-300' },
-        '钻石矿工': { color: 'from-cyan-400 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
-        '钻石节点': { color: 'from-blue-500 to-purple-500', textColor: 'text-white', borderColor: 'border-purple-300' },
-        '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-pink-300' },
-        '系统维护': { color: 'from-red-500 to-red-600', textColor: 'text-white', borderColor: 'border-red-300' },
-        '账户锁定': { color: 'from-red-600 to-red-700', textColor: 'text-white', borderColor: 'border-red-400' },
-        '账户异常': { color: 'from-red-700 to-red-800', textColor: 'text-white', borderColor: 'border-red-500' }
-    };
-
     // 如果有矿工等级数据且在配置中存在，则显示
-    if (minerLevel && levelStyles[minerLevel]) {
-        const style = levelStyles[minerLevel];
+    if (minerLevel && LEVEL_STYLES[minerLevel]) {
+        const style = LEVEL_STYLES[minerLevel];
         // 使用多语言翻译
         const translatedLevel = getMinerLevelTranslation(minerLevel);
         levelEl.innerText = translatedLevel;
         levelEl.className = `miner-level-badge bg-gradient-to-r ${style.color} ${style.textColor} px-3 py-1 rounded-full text-[9px] font-bold border ${style.borderColor} mb-2 inline-block opacity-100 shadow-md`;
         console.log("[MinerLevel] 成功显示矿工等级:", minerLevel, "(翻译后:", translatedLevel, ")");
-        // 同步渲染"我的身份"与社区权重
-        renderIdentityWeight(minerLevel, style);
     } else {
         // 没有数据或等级不匹配，隐藏徽章
         levelEl.className = 'miner-level-badge opacity-0';
         console.log("[MinerLevel] 矿工等级数据为空或不匹配，隐藏徽章");
-        renderIdentityWeight('', null);
     }
 }
 
 /**
  * 渲染"我的身份"与社区权重（0%-100% 数轴，随等级提高而增加，权重越高颜色越深）
+ * 我的身份 = 后台获取的矿工等级（与首页矿工等级徽章一致）
+ * @param {Object} data - 后端返回的数据（可选，不传则使用缓存数据）
  */
-function renderIdentityWeight(minerLevel, style) {
+function renderIdentityWeight(data) {
     const identityEl = document.getElementById('identity_level');
     const weightBar = document.getElementById('weight_bar');
     const weightValue = document.getElementById('weight_value');
-    console.log("[IdentityWeight] 渲染身份与权重, 等级:", minerLevel, "元素存在:", !!identityEl, !!weightBar, !!weightValue);
     if (!identityEl || !weightBar || !weightValue) return;
+
+    // 如果传入了数据且是有效对象，保存到全局变量用于语言切换时重新渲染
+    if (data && typeof data === 'object' && (data.info || data.team)) {
+        window.currentMinerLevelData = data;
+    }
+    // 如果没有传入数据或传入的是语言代码字符串，尝试使用全局缓存的数据
+    data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
+
+    // 提取矿工等级（与首页矿工等级徽章使用相同的数据源）
+    const minerLevel = extractMinerLevel(data);
+    console.log("[IdentityWeight] 渲染身份与权重, 等级:", minerLevel, "元素存在:", !!identityEl, !!weightBar, !!weightValue);
 
     // 等级 → 社区权重映射
     const levelWeightMap = {
@@ -650,7 +674,8 @@ function renderIdentityWeight(minerLevel, style) {
         '账户异常': 0
     };
 
-    if (minerLevel && style) {
+    if (minerLevel && LEVEL_STYLES[minerLevel]) {
+        const style = LEVEL_STYLES[minerLevel];
         const translatedLevel = getMinerLevelTranslation(minerLevel);
         identityEl.innerText = translatedLevel;
         // 身份徽章使用与等级相同的渐变色
@@ -677,6 +702,7 @@ window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
 window.renderMinerLevel = renderMinerLevel;
+window.renderIdentityWeight = renderIdentityWeight;
 
 /**
  * 刷新余额 - 重新从后台获取用户数据
