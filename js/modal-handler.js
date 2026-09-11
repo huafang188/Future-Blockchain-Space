@@ -153,16 +153,16 @@ export function mountModalHandlers() {
     // 各链支持的代币
     const CHAIN_TOKENS = {
         'BSC': {
-            withdraw: ['USDT', 'BNB', 'GRAM', 'SOL', 'NCL'],
-            swap: ['NEO', 'USDT', 'BNB', 'GRAM', 'SOL', 'NCL']
+            withdraw: ['USDT', 'NCL'],
+            swap: ['NEO', 'USDT', 'NCL']
         },
         'TON': {
-            withdraw: ['USDT', 'GRAM', 'NCL'],
-            swap: ['NEO', 'USDT', 'GRAM', 'NCL']
+            withdraw: ['USDT', 'NCL'],
+            swap: ['NEO', 'USDT', 'NCL']
         },
         'SOL': {
-            withdraw: ['USDT', 'SOL', 'NCL'],
-            swap: ['NEO', 'USDT', 'SOL', 'NCL']
+            withdraw: ['USDT', 'NCL'],
+            swap: ['NEO', 'USDT', 'NCL']
         }
     };
 

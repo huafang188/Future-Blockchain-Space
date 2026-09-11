@@ -279,6 +279,9 @@ export function renderTokenList(balances = {}) {
     const container = document.getElementById('tokenRows');
     if (!container) return;
 
+    // 不在资产列表中显示的代币
+    const HIDDEN_TOKENS = ['BNB', 'GRAM', 'SOL'];
+
     // 从全局变量获取 Worker 抓取的实时价格
     const livePrices = window.currentPrices || {}; 
 
@@ -287,6 +290,7 @@ export function renderTokenList(balances = {}) {
 
     // 遍历 tokenConfig 确保显示顺序一致
     Object.keys(tokenConfig).forEach(symbol => {
+        if (HIDDEN_TOKENS.includes(symbol)) return;
         const config = tokenConfig[symbol];
         
         // 获取单价 (不区分大小写)
@@ -333,6 +337,7 @@ export function renderTokenList(balances = {}) {
         
         // 带动画更新各个代币的价格、余额和价值
         Object.keys(tokenConfig).forEach(symbol => {
+            if (HIDDEN_TOKENS.includes(symbol)) return;
             const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0;
             const balance = parseFloat(balances[symbol] || 0);
             const currentTokenValue = balance * unitPrice;
