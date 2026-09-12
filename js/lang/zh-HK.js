@@ -128,6 +128,15 @@ window.i18nData['zh-HK'] = {
     swap_from: "兌出資產",
     withdraw_fee: "手續費：0.5USDT",
     withdraw_warning: "提現到賬時間為兩小時以內，請勿重複提交，避免鏈上擁堵延遲到賬",
+    stake: "質押",
+    stake_token: "質押代幣",
+    stake_amount: "質押數量",
+    stake_amount_ph: "請輸入質押數量",
+    stake_period: "質押週期",
+    stake_days: "天",
+    stake_rate: "質押利率",
+    stake_note: "質押是為了平台更好的流動性，AI 公司會直接購買用戶質押的 NEO 來租賃算力，這部分 NEO 不會進行銷毀，除非到期後用戶自行提取，隨後交易則會銷毀。",
+    stake_confirm: "確認質押簽名",
     transfer_fee: "手續費：0.00USDT",
     
     // --- 5. 重要公告 ---

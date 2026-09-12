@@ -129,6 +129,15 @@ window.i18nData['it'] = {
     swap_from: "Scambia Da",
     withdraw_fee: "Commissione: 0.5USDT",
     withdraw_warning: "I prelievi arrivano entro 2 ore. Non inviare richieste ripetute per evitare ritardi dovuti alla congestione della rete.",
+    stake: "Staking",
+    stake_token: "Token di staking",
+    stake_amount: "Importo dello staking",
+    stake_amount_ph: "Inserisci l'importo dello staking",
+    stake_period: "Periodo di staking",
+    stake_days: "giorni",
+    stake_rate: "Tasso di staking",
+    stake_note: "Lo staking garantisce una migliore liquidità alla piattaforma. Le aziende di IA acquisteranno direttamente i NEO in staking dagli utenti per noleggiare potenza di calcolo. Questi NEO non verranno bruciati; alla scadenza l'utente potrà ritirarli, dopodiché verranno bruciati nelle transazioni.",
+    stake_confirm: "Conferma firma di staking",
     transfer_fee: "Commissione: 0.00USDT",
     
     // --- 5. Annuncio Importante ---

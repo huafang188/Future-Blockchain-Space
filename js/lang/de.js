@@ -129,6 +129,15 @@ window.i18nData['de'] = {
     swap_from: "Tausch von",
     withdraw_fee: "Gebühr: 0.5USDT",
     withdraw_warning: "Auszahlungen treffen innerhalb von 2 Stunden ein. Bitte nicht mehrfach senden, um Verzögerungen durch Netzwerküberlastung zu vermeiden.",
+    stake: "Staking",
+    stake_token: "Staking-Token",
+    stake_amount: "Staking-Betrag",
+    stake_amount_ph: "Staking-Betrag eingeben",
+    stake_period: "Staking-Zeitraum",
+    stake_days: "Tage",
+    stake_rate: "Staking-Zinssatz",
+    stake_note: "Staking sorgt für bessere Liquidität der Plattform. KI-Unternehmen kaufen die von Nutzern gestakten NEO direkt, um Rechenleistung zu mieten. Diese NEO werden nicht verbrannt; nach Ablauf kann der Nutzer sie abheben, danach werden sie beim Handel verbrannt.",
+    stake_confirm: "Staking-Signatur bestätigen",
     transfer_fee: "Gebühr: 0.00USDT",
     
     // --- 5. Wichtige Ankündigung ---

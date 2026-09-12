@@ -291,6 +291,72 @@ window.openExchangeModal = function() {
             </div>`);
     };
 
+    // 质押弹窗
+    window.openStakeModal = function() {
+        // 质押周期 → 利率映射
+        window.stakeRates = { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+        window.showModal("stake", `
+            <div class="space-y-4 text-left">
+                <!-- 第一项：质押代币 -->
+                <div>
+                    <p class="text-[11px] font-black text-slate-500 uppercase mb-2 px-1" data-i18n="stake_token">质押代币</p>
+                    <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                        <img id="stakeLogo" src="${tokenConfig['NEO'].logo}" class="w-8 h-8 object-contain">
+                        <select id="stakeToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
+                                onchange="if(tokenConfig[this.value]){document.getElementById('stakeLogo').src = tokenConfig[this.value].logo;}">
+                            <option value="NEO" selected>NEO</option>
+                            <option value="NCL">NCL</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+                    </div>
+                </div>
+
+                <!-- 质押数量 -->
+                <div>
+                    <p class="text-[11px] font-black text-slate-500 uppercase mb-2 px-1" data-i18n="stake_amount">质押数量</p>
+                    <input type="number" id="stakeAmount" data-i18n="stake_amount_ph" placeholder="请输入质押数量"
+                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                </div>
+
+                <!-- 第二项：质押周期 -->
+                <div>
+                    <p class="text-[11px] font-black text-slate-500 uppercase mb-2 px-1" data-i18n="stake_period">质押周期</p>
+                    <div id="stakeDayGroup" class="grid grid-cols-5 gap-2">
+                        ${[60, 120, 180, 240, 360].map((d, i) => `
+                            <button type="button" data-days="${d}" onclick="window.selectStakeDays(${d})"
+                                    class="stake-day-btn py-3 rounded-xl text-xs font-black border transition-all ${i === 0 ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}">
+                                ${d}<span class="block text-[8px] font-bold" data-i18n="stake_days">天</span>
+                            </button>`).join('')}
+                    </div>
+                </div>
+
+                <!-- 第三项：利率显示 -->
+                <div class="flex items-center justify-between p-4 bg-purple-50 rounded-2xl border border-purple-100">
+                    <span class="text-[11px] font-black text-purple-700 uppercase" data-i18n="stake_rate">质押利率</span>
+                    <span id="stakeRateValue" class="text-2xl font-black text-purple-600 tracking-tighter">30%</span>
+                </div>
+
+                <!-- 说明 -->
+                <div class="flex items-start gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                    <i class="fa-solid fa-circle-info text-slate-400 text-xs mt-0.5"></i>
+                    <span class="text-[10px] font-bold text-slate-500 leading-relaxed" data-i18n="stake_note">质押是为了平台更好的流动性，AI 公司会直接购买用户质押的 NEO 来租赁算力，这部分 NEO 不会进行销毁，除非到期后用户自行提取，随后交易则会销毁。</span>
+                </div>
+
+                <button type="button" onclick="window.doStakeSignature()" class="action-btn w-full mt-2"><span data-i18n="stake_confirm">确认质押签名</span></button>
+            </div>`);
+    };
+
+    window.selectStakeDays = function(days) {
+        document.querySelectorAll('#stakeDayGroup .stake-day-btn').forEach(btn => {
+            const active = Number(btn.dataset.days) === Number(days);
+            btn.className = `stake-day-btn py-3 rounded-xl text-xs font-black border transition-all ${active ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}`;
+        });
+        const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+        const rateEl = document.getElementById('stakeRateValue');
+        if (rateEl) rateEl.innerText = (rates[days] ?? 0) + '%';
+        window.selectedStakeDays = days;
+    };
+
     window.swapTokens = function() {
         const fromEl = document.getElementById('sFromToken');
         const toEl = document.getElementById('sToToken');

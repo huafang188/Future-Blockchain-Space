@@ -129,6 +129,15 @@ window.i18nData['ja'] = {
     swap_from: ".swap From",
     withdraw_fee: "手数料：0.5USDT",
     withdraw_warning: "出金は2時間以内に到着します。チェーン上の混雑による遅延を避けるため、重複送信しないでください。",
+    stake: "ステーキング",
+    stake_token: "ステーキングトークン",
+    stake_amount: "ステーキング数量",
+    stake_amount_ph: "ステーキング数量を入力してください",
+    stake_period: "ステーキング期間",
+    stake_days: "日",
+    stake_rate: "ステーキング利率",
+    stake_note: "ステーキングはプラットフォームの流動性向上のためです。AI企業はユーザーがステーキングしたNEOを直接購入して計算力をレンタルします。このNEOは焼却されず、満期後にユーザーが引き出せます。その後取引されると焼却されます。",
+    stake_confirm: "ステーキング署名を確認",
     transfer_fee: "手数料：0.00USDT",
     
     // --- 5. 重要なお知らせ ---

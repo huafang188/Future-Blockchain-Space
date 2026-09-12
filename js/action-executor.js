@@ -658,6 +658,19 @@ window.doExchangeSignature = async function() {
     await executeSignatureAction("兑换", fromAmt, `${fromT}->${toT}`, "record_transaction");
 };
 
+// 4.5 质押
+window.doStakeSignature = async function() {
+    const symbol = document.getElementById('stakeToken')?.value || 'NEO';
+    const amount = document.getElementById('stakeAmount')?.value;
+    if (!amount || parseFloat(amount) <= 0) return alert("请输入质押数量");
+    const days = Number(window.selectedStakeDays || 60);
+    const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+    const rate = rates[days] ?? 0;
+    await executeSignatureAction("质押", amount, symbol, "record_transaction", {
+        remark: `质押周期：${days}天 （利率${rate}%）`
+    });
+};
+
 // 5. 绑定推荐人
 window.doSubmitBindInviter = async function(event) {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();

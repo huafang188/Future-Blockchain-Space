@@ -129,6 +129,15 @@ window.i18nData['ko'] = {
     swap_from: "스왑 출처",
     withdraw_fee: "수수료: 0.5USDT",
     withdraw_warning: "출금은 2시간 이내에 도착합니다. 체인 혼잡으로 인한 지연을 피하려면 중복 제출하지 마세요.",
+    stake: "스테이킹",
+    stake_token: "스테이킹 토큰",
+    stake_amount: "스테이킹 수량",
+    stake_amount_ph: "스테이킹 수량을 입력하세요",
+    stake_period: "스테이킹 기간",
+    stake_days: "일",
+    stake_rate: "스테이킹 이율",
+    stake_note: "스테이킹은 플랫폼의 유동성 향상을 위한 것입니다. AI 기업은 사용자가 스테이킹한 NEO를 직접 구매하여 컴퓨팅 파워를 임대합니다. 이 NEO는 소각되지 않으며 만기 후 사용자가 인출할 수 있고, 이후 거래 시 소각됩니다.",
+    stake_confirm: "스테이킹 서명 확인",
     transfer_fee: "수수료: 0.00USDT",
     
     // --- 5. 중요 공지 ---

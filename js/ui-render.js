@@ -459,6 +459,7 @@ export function renderHistory(history = []) {
         const symbol = escapeHtml(item['交易代币'] || item.symbol || '');
         const status = item['交易状态'] || item.status || 'Success';
         const time = escapeHtml(item['交易时间'] || item.time || '--');
+        const note = escapeHtml(item['备注'] || item.remark || item.note || '');
         const tokenLogo = getTokenLogo(symbol);
         
         // 判断资金流向渲染颜色（仅用于图标背景）
@@ -479,6 +480,7 @@ export function renderHistory(history = []) {
                 <div>
                     <p class="text-[11px] font-black text-slate-800 tracking-tight">${translatedType}</p>
                     <p class="text-[8px] text-slate-400 font-bold uppercase">${time}</p>
+                    ${note ? `<p class="text-[8px] text-purple-500 font-bold">${note}</p>` : ''}
                 </div>
             </div>
             <div class="text-right">
