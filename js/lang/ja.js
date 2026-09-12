@@ -136,6 +136,7 @@ window.i18nData['ja'] = {
     stake_period: "ステーキング期間",
     stake_days: "日",
     stake_rate: "ステーキング利率",
+    stake_preview: "予想収益",
     stake_note: "ステーキングはプラットフォームの流動性向上のためです。AI企業はユーザーがステーキングしたNEOを直接購入して計算力をレンタルします。このNEOは焼却されず、満期後にユーザーが引き出せます。その後取引されると焼却されます。",
     stake_confirm: "ステーキング署名を確認",
     transfer_fee: "手数料：0.00USDT",

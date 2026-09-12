@@ -136,6 +136,7 @@ window.i18nData['fr'] = {
     stake_period: "Période de staking",
     stake_days: "jours",
     stake_rate: "Taux de staking",
+    stake_preview: "Gains estimés",
     stake_note: "Le staking assure une meilleure liquidité à la plateforme. Les entreprises d'IA achèteront directement les NEO mis en staking par les utilisateurs pour louer de la puissance de calcul. Ces NEO ne seront pas brûlés ; après l'échéance, l'utilisateur pourra les retirer, puis ils seront brûlés lors des transactions.",
     stake_confirm: "Confirmer la signature de staking",
     transfer_fee: "Frais: 0.00USDT",

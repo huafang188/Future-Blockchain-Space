@@ -175,6 +175,7 @@ window.i18nData['en'] = {
     stake_period: "Stake Period",
     stake_days: "Days",
     stake_rate: "Stake Rate",
+    stake_preview: "Estimated Earnings",
     stake_note: "Staking provides better liquidity for the platform. AI companies will directly purchase user-staked NEO to lease computing power. This NEO will not be burned; users may withdraw it after maturity, after which it will be burned upon trading.",
     stake_confirm: "Confirm Stake Signature",
     transfer_fee: "Fee: 0.00USDT",

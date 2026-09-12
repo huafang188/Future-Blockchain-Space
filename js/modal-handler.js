@@ -296,65 +296,101 @@ window.openExchangeModal = function() {
         // 质押周期 → 利率映射
         window.stakeRates = { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
         window.showModal("stake", `
-            <div class="space-y-4 text-left">
+            <div class="space-y-3 text-left">
                 <!-- 第一项：质押代币 -->
                 <div>
-                    <p class="text-[11px] font-black text-slate-500 uppercase mb-2 px-1" data-i18n="stake_token">质押代币</p>
-                    <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                        <img id="stakeLogo" src="${tokenConfig['NEO'].logo}" class="w-8 h-8 object-contain">
-                        <select id="stakeToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                                onchange="if(tokenConfig[this.value]){document.getElementById('stakeLogo').src = tokenConfig[this.value].logo;}">
-                            <option value="NEO" selected>NEO</option>
-                            <option value="NCL">NCL</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="stake_token">质押代币</p>
+                    <div class="flex items-center gap-2">
+                        ${['NEO', 'NCL'].map((s, i) => `
+                            <button type="button" data-token="${s}" onclick="window.selectStakeToken('${s}')"
+                                    class="stake-token-btn flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all ${i === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200'}">
+                                <img src="${tokenConfig[s].logo}" class="w-5 h-5 object-contain">
+                                <span class="text-xs font-black">${s}</span>
+                            </button>`).join('')}
                     </div>
+                    <input type="hidden" id="stakeToken" value="NEO">
                 </div>
 
                 <!-- 质押数量 -->
                 <div>
-                    <p class="text-[11px] font-black text-slate-500 uppercase mb-2 px-1" data-i18n="stake_amount">质押数量</p>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="stake_amount">质押数量</p>
                     <input type="number" id="stakeAmount" data-i18n="stake_amount_ph" placeholder="请输入质押数量"
-                           class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                           oninput="window.calcStakePreview()"
+                           class="w-full px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
                 </div>
 
                 <!-- 第二项：质押周期 -->
                 <div>
-                    <p class="text-[11px] font-black text-slate-500 uppercase mb-2 px-1" data-i18n="stake_period">质押周期</p>
-                    <div id="stakeDayGroup" class="grid grid-cols-5 gap-2">
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="stake_period">质押周期</p>
+                    <div id="stakeDayGroup" class="grid grid-cols-5 gap-1.5">
                         ${[60, 120, 180, 240, 360].map((d, i) => `
                             <button type="button" data-days="${d}" onclick="window.selectStakeDays(${d})"
-                                    class="stake-day-btn py-3 rounded-xl text-xs font-black border transition-all ${i === 0 ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}">
+                                    class="stake-day-btn py-2 rounded-lg text-[11px] font-black border transition-all ${i === 0 ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}">
                                 ${d}<span class="block text-[8px] font-bold" data-i18n="stake_days">天</span>
                             </button>`).join('')}
                     </div>
                 </div>
 
+                <!-- 预估收益 -->
+                <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50 rounded-lg">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="stake_preview">预估收益</span>
+                    <span id="stakePreview" class="text-sm font-black text-purple-600 tracking-tight">--</span>
+                </div>
+
                 <!-- 第三项：利率显示 -->
-                <div class="flex items-center justify-between p-4 bg-purple-50 rounded-2xl border border-purple-100">
-                    <span class="text-[11px] font-black text-purple-700 uppercase" data-i18n="stake_rate">质押利率</span>
-                    <span id="stakeRateValue" class="text-2xl font-black text-purple-600 tracking-tighter">30%</span>
+                <div class="flex items-center justify-between px-3 py-1.5 bg-purple-50 rounded-lg border border-purple-100">
+                    <span class="text-[10px] font-black text-purple-700 uppercase" data-i18n="stake_rate">质押利率</span>
+                    <span id="stakeRateValue" class="text-base font-black text-purple-600 tracking-tight">30%</span>
                 </div>
 
                 <!-- 说明 -->
-                <div class="flex items-start gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                    <i class="fa-solid fa-circle-info text-slate-400 text-xs mt-0.5"></i>
-                    <span class="text-[10px] font-bold text-slate-500 leading-relaxed" data-i18n="stake_note">质押是为了平台更好的流动性，AI 公司会直接购买用户质押的 NEO 来租赁算力，这部分 NEO 不会进行销毁，除非到期后用户自行提取，随后交易则会销毁。</span>
+                <div class="flex items-start gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                    <i class="fa-solid fa-circle-info text-slate-400 text-[10px] mt-0.5"></i>
+                    <span class="text-[9px] font-bold text-slate-500 leading-relaxed" data-i18n="stake_note">质押是为了平台更好的流动性，AI 公司会直接购买用户质押的 NEO 来租赁算力，这部分 NEO 不会进行销毁，除非到期后用户自行提取，随后交易则会销毁。</span>
                 </div>
 
-                <button type="button" onclick="window.doStakeSignature()" class="action-btn w-full mt-2"><span data-i18n="stake_confirm">确认质押签名</span></button>
+                <button type="button" onclick="window.doStakeSignature()" class="action-btn w-full mt-1"><span data-i18n="stake_confirm">确认质押签名</span></button>
             </div>`);
+    };
+
+    // 计算并显示质押预估收益（本金 + 利息，按当前周期利率）
+    window.calcStakePreview = function() {
+        const previewEl = document.getElementById('stakePreview');
+        if (!previewEl) return;
+        const symbol = document.getElementById('stakeToken')?.value || 'NEO';
+        const amount = parseFloat(document.getElementById('stakeAmount')?.value) || 0;
+        if (amount <= 0) {
+            previewEl.textContent = '--';
+            return;
+        }
+        const days = Number(window.selectedStakeDays || 60);
+        const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+        const rate = rates[days] ?? 0;
+        const total = amount * (1 + rate / 100);
+        previewEl.textContent = total.toFixed(6) + ' ' + symbol;
     };
 
     window.selectStakeDays = function(days) {
         document.querySelectorAll('#stakeDayGroup .stake-day-btn').forEach(btn => {
             const active = Number(btn.dataset.days) === Number(days);
-            btn.className = `stake-day-btn py-3 rounded-xl text-xs font-black border transition-all ${active ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}`;
+            btn.className = `stake-day-btn py-2 rounded-lg text-[11px] font-black border transition-all ${active ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}`;
         });
         const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
         const rateEl = document.getElementById('stakeRateValue');
         if (rateEl) rateEl.innerText = (rates[days] ?? 0) + '%';
         window.selectedStakeDays = days;
+        window.calcStakePreview();
+    };
+
+    // 切换质押代币（图标按钮组）
+    window.selectStakeToken = function(symbol) {
+        const hidden = document.getElementById('stakeToken');
+        if (hidden) hidden.value = symbol;
+        document.querySelectorAll('.stake-token-btn').forEach(btn => {
+            const active = btn.dataset.token === symbol;
+            btn.className = `stake-token-btn flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all ${active ? 'bg-purple-600 text-white border-purple-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200'}`;
+        });
+        window.calcStakePreview();
     };
 
     window.swapTokens = function() {

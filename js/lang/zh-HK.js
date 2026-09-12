@@ -135,6 +135,7 @@ window.i18nData['zh-HK'] = {
     stake_period: "質押週期",
     stake_days: "天",
     stake_rate: "質押利率",
+    stake_preview: "預估收益",
     stake_note: "質押是為了平台更好的流動性，AI 公司會直接購買用戶質押的 NEO 來租賃算力，這部分 NEO 不會進行銷毀，除非到期後用戶自行提取，隨後交易則會銷毀。",
     stake_confirm: "確認質押簽名",
     transfer_fee: "手續費：0.00USDT",

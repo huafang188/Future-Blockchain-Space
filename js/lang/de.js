@@ -136,6 +136,7 @@ window.i18nData['de'] = {
     stake_period: "Staking-Zeitraum",
     stake_days: "Tage",
     stake_rate: "Staking-Zinssatz",
+    stake_preview: "Geschätzte Erträge",
     stake_note: "Staking sorgt für bessere Liquidität der Plattform. KI-Unternehmen kaufen die von Nutzern gestakten NEO direkt, um Rechenleistung zu mieten. Diese NEO werden nicht verbrannt; nach Ablauf kann der Nutzer sie abheben, danach werden sie beim Handel verbrannt.",
     stake_confirm: "Staking-Signatur bestätigen",
     transfer_fee: "Gebühr: 0.00USDT",
