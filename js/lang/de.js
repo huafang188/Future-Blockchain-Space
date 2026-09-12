@@ -66,7 +66,7 @@ window.i18nData['de'] = {
 
     // --- 2.3 NCL Cross-Chain Münzmaschine ---
     ncl_machine_status: "Maschinenstatus",
-    ncl_status_active: "Demnächst",
+    ncl_status_active: "Läuft",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "Nur für Gold-Knoten und höhere Nutzer",
     ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
@@ -100,6 +100,9 @@ window.i18nData['de'] = {
     transfer: "Transfer",
     team_title: "Mein Team",
     my_identity: "Meine Identität",
+    my_holding: "Meine Bestände",
+    dividend_ratio: "Dividendenquote",
+    dividend_amount: "Dividendenbetrag",
     community_weight: "Community-Gewicht",
     my_inviter: "Mein Werber",
     invite_code: "Meine ID",
@@ -139,6 +142,14 @@ window.i18nData['de'] = {
     stake_preview: "Geschätzte Erträge",
     stake_note: "Staking sorgt für bessere Liquidität der Plattform. KI-Unternehmen kaufen die von Nutzern gestakten NEO direkt, um Rechenleistung zu mieten. Diese NEO werden nicht verbrannt; nach Ablauf kann der Nutzer sie abheben, danach werden sie beim Handel verbrannt.",
     stake_confirm: "Staking-Signatur bestätigen",
+    bank_title: "NEO On-Chain-Bank",
+    bank_status: "Demnächst",
+    bank_desc: "Legen Sie Vermögenswerte in die On-Chain-Bank ein — KI-Unternehmen mieten direkt Ihre Rechenleistung, Erträge werden täglich abgerechnet, Ein- und Auszahlungen jederzeit möglich.",
+    bank_rate_current: "Flexibler Zinssatz",
+    bank_rate_fixed: "Fester Zinssatz",
+    bank_tvl: "Gesamtwert gesperrt",
+    bank_users: "Nutzer",
+    bank_btn: "Demnächst",
     transfer_fee: "Gebühr: 0.00USDT",
     
     // --- 5. Wichtige Ankündigung ---

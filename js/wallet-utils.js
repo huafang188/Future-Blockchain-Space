@@ -608,6 +608,8 @@ export function logout(showConfirm) {
     }
     const weightValue = document.getElementById('weight_value');
     if (weightValue) weightValue.innerText = '0%';
+    const holdingValue = document.getElementById('holding_value');
+    if (holdingValue) holdingValue.innerText = '0 NEO';
     
     // 移除所有钱包事件监听器，防止退出后自动连接
     const provider = getEVMProvider();

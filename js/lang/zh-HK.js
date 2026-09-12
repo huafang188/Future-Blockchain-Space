@@ -65,7 +65,7 @@ window.i18nData['zh-HK'] = {
 
     // --- 2.3 NCL 跨鏈產幣機 ---
     ncl_machine_status: "產幣機狀態",
-    ncl_status_active: "即將上線",
+    ncl_status_active: "運行中",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "限黃金節點以上用戶購買",
     ncl_spec_chain: "跨鏈協議：BNB / SOL / TON",
@@ -99,6 +99,9 @@ window.i18nData['zh-HK'] = {
     transfer: "轉賬",
     team_title: "我的團隊",
     my_identity: "我的身份",
+    my_holding: "我的持有",
+    dividend_ratio: "分紅比例",
+    dividend_amount: "分紅金額",
     community_weight: "社區權重",
     my_inviter: "我的推薦人",
     invite_code: "我的ID",
@@ -138,6 +141,14 @@ window.i18nData['zh-HK'] = {
     stake_preview: "預估收益",
     stake_note: "質押是為了平台更好的流動性，AI 公司會直接購買用戶質押的 NEO 來租賃算力，這部分 NEO 不會進行銷毀，除非到期後用戶自行提取，隨後交易則會銷毀。",
     stake_confirm: "確認質押簽名",
+    bank_title: "NEO 鏈上銀行",
+    bank_status: "即將上線",
+    bank_desc: "將資產存入鏈上銀行，AI 公司直接租賃您的算力，收益每日結算，資產隨存隨取。",
+    bank_rate_current: "活期年化",
+    bank_rate_fixed: "定期年化",
+    bank_tvl: "總鎖倉價值",
+    bank_users: "存取用戶",
+    bank_btn: "敬請期待",
     transfer_fee: "手續費：0.00USDT",
     
     // --- 5. 重要公告 ---

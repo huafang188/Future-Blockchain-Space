@@ -534,7 +534,47 @@ export function updateText(id, value) {
     } else {
         // 纯文本展示
         el.innerText = value;
+        // 挖矿期限等长文本：超出单行时折叠为省略号，点击弹窗查看完整内容
+        if (id === 'miner_deadline') {
+            applyClampBehavior(el, String(value));
+        }
     }
+}
+
+/**
+ * 长文本优雅折叠
+ * 内容溢出单行时显示省略号 + 提示角标，点击弹出弹窗展示完整数据
+ * @param {HTMLElement} el - 目标元素
+ * @param {string} rawValue - 完整文本
+ */
+function applyClampBehavior(el, rawValue) {
+    // 重置状态
+    el.classList.remove('fbs-clamp');
+    el.onclick = null;
+
+    const text = String(rawValue ?? '');
+    // 先应用折叠样式，下一帧测量是否真正溢出
+    el.classList.add('fbs-clamp');
+
+    requestAnimationFrame(() => {
+        // 可见时精确测量溢出；隐藏时（用户不在该页）用文本长度兜底判断
+        const visible = el.offsetWidth > 0 || el.offsetHeight > 0;
+        const overflow = visible ? (el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight) : false;
+        // 兜底：文本超过 14 个字符视为需要折叠（窄格子内必然折行）
+        const needClamp = overflow || text.length > 14;
+        if (!needClamp) {
+            // 内容单行放得下，取消折叠
+            el.classList.remove('fbs-clamp');
+            return;
+        }
+        el.title = text; // 桌面端悬停提示
+        el.onclick = function (e) {
+            e.stopPropagation();
+            if (!window.showModal) return;
+            const safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            window.showModal("m_term", `<div class="p-2 text-left break-words whitespace-pre-wrap text-sm font-bold text-slate-700 leading-relaxed">${safe}</div>`);
+        };
+    });
 }
 
 /**
@@ -659,6 +699,9 @@ function renderIdentityWeight(data) {
     const minerLevel = extractMinerLevel(data);
     console.log("[IdentityWeight] 渲染身份与权重, 等级:", minerLevel, "元素存在:", !!identityEl, !!weightBar, !!weightValue);
 
+    // 更新"我的持有"（NEO 余额）
+    updateHoldingValue(data);
+
     // 等级 → 社区权重映射
     const levelWeightMap = {
         '未激活': 0,
@@ -694,6 +737,17 @@ function renderIdentityWeight(data) {
         weightBar.style.width = '0%';
         weightBar.style.background = '#e2e8f0';
     }
+}
+
+/**
+ * 更新"我的持有"（NEO 余额展示）
+ * @param {Object} data - 后端返回的数据（含 balances）
+ */
+function updateHoldingValue(data) {
+    const holdingEl = document.getElementById('holding_value');
+    if (!holdingEl) return;
+    const neoBal = parseFloat(data?.balances?.['NEO'] ?? 0) || 0;
+    holdingEl.textContent = neoBal.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' NEO';
 }
 
 // 暴露到全局，确保 HTML 按钮、导航和其它模块能调用

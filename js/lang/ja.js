@@ -66,7 +66,7 @@ window.i18nData['ja'] = {
 
     // --- 2.3 NCL クロスチェーンコインマシン ---
     ncl_machine_status: "マシン状態",
-    ncl_status_active: "近日公開",
+    ncl_status_active: "稼働中",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "ゴールドノード以上のユーザー限定購入",
     ncl_spec_chain: "クロスチェーン：BNB / SOL / TON",
@@ -100,6 +100,9 @@ window.i18nData['ja'] = {
     transfer: "送金",
     team_title: "マイチーム",
     my_identity: "私の身分",
+    my_holding: "保有資産",
+    dividend_ratio: "配当比率",
+    dividend_amount: "配当金額",
     community_weight: "コミュニティ権重",
     my_inviter: "私の紹介者",
     invite_code: "マイID",
@@ -139,6 +142,14 @@ window.i18nData['ja'] = {
     stake_preview: "予想収益",
     stake_note: "ステーキングはプラットフォームの流動性向上のためです。AI企業はユーザーがステーキングしたNEOを直接購入して計算力をレンタルします。このNEOは焼却されず、満期後にユーザーが引き出せます。その後取引されると焼却されます。",
     stake_confirm: "ステーキング署名を確認",
+    bank_title: "NEO オンチェーンバンク",
+    bank_status: "近日公開",
+    bank_desc: "資産をオンチェーンバンクに預け入れると、AI企業があなたの計算力を直接レンタルし、収益は毎日決済され、資産はいつでも出し入れできます。",
+    bank_rate_current: "普通年利",
+    bank_rate_fixed: "定期年利",
+    bank_tvl: "総ロック額",
+    bank_users: "利用ユーザー",
+    bank_btn: "近日公開",
     transfer_fee: "手数料：0.00USDT",
     
     // --- 5. 重要なお知らせ ---

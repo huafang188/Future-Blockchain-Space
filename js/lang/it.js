@@ -66,7 +66,7 @@ window.i18nData['it'] = {
 
     // --- 2.3 Macchina per Monete Cross-Chain NCL ---
     ncl_machine_status: "Stato della Macchina",
-    ncl_status_active: "Prossimamente",
+    ncl_status_active: "In funzione",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "Limitato agli utenti Gold Node e superiori",
     ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
@@ -100,6 +100,9 @@ window.i18nData['it'] = {
     transfer: "Trasferimento",
     team_title: "Il Mio Team",
     my_identity: "La Mia Identità",
+    my_holding: "I miei possedimenti",
+    dividend_ratio: "Tasso di dividendo",
+    dividend_amount: "Importo del dividendo",
     community_weight: "Peso Comunitario",
     my_inviter: "Il Mio Referente",
     invite_code: "Il Mio ID",
@@ -139,6 +142,14 @@ window.i18nData['it'] = {
     stake_preview: "Guadagni stimati",
     stake_note: "Lo staking garantisce una migliore liquidità alla piattaforma. Le aziende di IA acquisteranno direttamente i NEO in staking dagli utenti per noleggiare potenza di calcolo. Questi NEO non verranno bruciati; alla scadenza l'utente potrà ritirarli, dopodiché verranno bruciati nelle transazioni.",
     stake_confirm: "Conferma firma di staking",
+    bank_title: "Banca on-chain NEO",
+    bank_status: "In arrivo",
+    bank_desc: "Deposita i tuoi asset nella banca on-chain: le aziende di IA noleggiano direttamente la tua potenza di calcolo, i guadagni vengono liquidati ogni giorno e gli asset restano sempre disponibili.",
+    bank_rate_current: "Tasso flessibile",
+    bank_rate_fixed: "Tasso fisso",
+    bank_tvl: "Valore totale bloccato",
+    bank_users: "Utenti",
+    bank_btn: "In arrivo",
     transfer_fee: "Commissione: 0.00USDT",
     
     // --- 5. Annuncio Importante ---

@@ -65,7 +65,7 @@ window.i18nData['hi'] = {
 
     // --- 2.3 NCL क्रॉस-चेन सिक्का मशीन ---
     ncl_machine_status: "मशीन स्थिति",
-    ncl_status_active: "जल्द आ रहा है",
+    ncl_status_active: "चालू",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "गोल्ड नोड और उच्च उपयोगकर्ताओं के लिए सीमित",
     ncl_spec_chain: "क्रॉस-चेन: BNB / SOL / TON",
@@ -99,6 +99,9 @@ window.i18nData['hi'] = {
     transfer: "ट्रांसफर",
     team_title: "मेरी टीम",
     my_identity: "मेरी पहचान",
+    my_holding: "मेरी होल्डिंग्स",
+    dividend_ratio: "लाभांश दर",
+    dividend_amount: "लाभांश राशि",
     community_weight: "समुदाय भार",
     my_inviter: "मेरा रेफरर",
     invite_code: "मेरा ID",
@@ -140,6 +143,14 @@ window.i18nData['hi'] = {
     stake_preview: "अनुमानित आय",
     stake_note: "स्टेकिंग से प्लेटफ़ॉर्म को बेहतर तरलता मिलती है। AI कंपनियाँ कंप्यूटिंग पावर किराए पर लेने के लिए उपयोगकर्ताओं द्वारा स्टेक किए गए NEO को सीधे खरीदेंगी। ये NEO जलाए नहीं जाएँगे; परिपक्वता के बाद उपयोगकर्ता इन्हें निकाल सकते हैं, उसके बाद लेनदेन पर ये जलाए जाएँगे।",
     stake_confirm: "स्टेकिंग हस्ताक्षर की पुष्टि करें",
+    bank_title: "NEO ऑन-चेन बैंक",
+    bank_status: "जल्द आ रहा है",
+    bank_desc: "अपनी संपत्ति ऑन-चेन बैंक में जमा करें — AI कंपनियाँ आपकी कंप्यूटिंग पावर सीधे किराए पर लेंगी, आय का निपटान प्रतिदिन होगा और संपत्ति कभी भी निकाली जा सकेगी।",
+    bank_rate_current: "लचीली दर",
+    bank_rate_fixed: "निश्चित दर",
+    bank_tvl: "कुल लॉक मूल्य",
+    bank_users: "उपयोगकर्ता",
+    bank_btn: "जल्द आ रहा है",
     transfer_fee: "शुल्क: 0.00USDT",
     
     // --- 5. महत्वपूर्ण घोषणा ---

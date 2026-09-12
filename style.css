@@ -225,6 +225,31 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .stat-label { font-size: 9px; color: rgba(148, 163, 184, 0.8); font-weight: 600; text-transform: uppercase; }
 .stat-value { font-size: 14px; font-weight: 700; color: rgba(30, 41, 59, 0.9); }
 
+/* 长文本单行折叠（挖矿期限等）：溢出显示省略号+角标，点击弹窗查看完整内容 */
+.stat-value.fbs-clamp {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    cursor: pointer;
+    position: relative;
+    padding-right: 16px;
+}
+.stat-value.fbs-clamp::after {
+    content: '···';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9333ea;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+.stat-value.fbs-clamp:active { opacity: 0.6; }
+
 /* 统计网格右下角"查看详情"按钮 */
 .stat-item-detail { justify-content: flex-end; align-items: flex-end; }
 .miner-detail-btn {

@@ -66,7 +66,7 @@ window.i18nData['ar'] = {
 
     // --- 2.3 آلة عملات عبر السلاسل NCL ---
     ncl_machine_status: "حالة الآلة",
-    ncl_status_active: "قريباً",
+    ncl_status_active: "يعمل",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "مقتصر على مستخدمي عقدة الذهب فأعلى",
     ncl_spec_chain: "عبر السلاسل: BNB / SOL / TON",
@@ -100,6 +100,9 @@ window.i18nData['ar'] = {
     transfer: "تحويل",
     team_title: "فريقي",
     my_identity: "هويتي",
+    my_holding: "ممتلكاتي",
+    dividend_ratio: "نسبة الأرباح",
+    dividend_amount: "مبلغ الأرباح",
     community_weight: "وزن المجتمع",
     my_inviter: "المرجع الخاص بي",
     invite_code: "معرفي",
@@ -141,6 +144,14 @@ window.i18nData['ar'] = {
     stake_preview: "الأرباح المتوقعة",
     stake_note: "يوفر الرهان سيولة أفضل للمنصة. ستشتري شركات الذكاء الاصطناعي رموز NEO المرهونة من المستخدمين مباشرة لاستئجار القوة الحاسوبية. لن يتم حرق هذه الرموز؛ يمكن للمستخدم سحبها بعد الاستحقاق، وبعد ذلك سيتم حرقها عند التداول.",
     stake_confirm: "تأكيد توقيع الرهان",
+    bank_title: "بنك NEO على السلسلة",
+    bank_status: "قريباً",
+    bank_desc: "أودع أصولك في البنك على السلسلة، حيث تستأجر شركات الذكاء الاصطناعي قوتك الحاسوبية مباشرة، وتُسوَّى الأرباح يومياً، وتظل الأصول متاحة في أي وقت.",
+    bank_rate_current: "عائد مرن",
+    bank_rate_fixed: "عائد ثابت",
+    bank_tvl: "القيمة الإجمالية المقفلة",
+    bank_users: "المستخدمون",
+    bank_btn: "قريباً",
     transfer_fee: "الرسوم: 0.00USDT",
     
     // --- 5. إعلان هام ---

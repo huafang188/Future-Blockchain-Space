@@ -66,7 +66,7 @@ window.i18nData['ko'] = {
 
     // --- 2.3 NCL 크로스체인 코인 머신 ---
     ncl_machine_status: "머신 상태",
-    ncl_status_active: "출시 예정",
+    ncl_status_active: "가동 중",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "골드 노드 이상 사용자 한정 구매",
     ncl_spec_chain: "크로스체인: BNB / SOL / TON",
@@ -100,6 +100,9 @@ window.i18nData['ko'] = {
     transfer: "전송",
     team_title: "내 팀",
     my_identity: "내 신분",
+    my_holding: "보유 자산",
+    dividend_ratio: "배당 비율",
+    dividend_amount: "배당 금액",
     community_weight: "커뮤니티 가중치",
     my_inviter: "내 추천인",
     invite_code: "내 ID",
@@ -139,6 +142,14 @@ window.i18nData['ko'] = {
     stake_preview: "예상 수익",
     stake_note: "스테이킹은 플랫폼의 유동성 향상을 위한 것입니다. AI 기업은 사용자가 스테이킹한 NEO를 직접 구매하여 컴퓨팅 파워를 임대합니다. 이 NEO는 소각되지 않으며 만기 후 사용자가 인출할 수 있고, 이후 거래 시 소각됩니다.",
     stake_confirm: "스테이킹 서명 확인",
+    bank_title: "NEO 온체인 뱅크",
+    bank_status: "곧 출시",
+    bank_desc: "자산을 온체인 뱅크에 예치하면 AI 기업이 귀하의 컴퓨팅 파워를 직접 임대하고, 수익은 매일 정산되며, 자산은 언제든 입출금할 수 있습니다.",
+    bank_rate_current: "보통 연이율",
+    bank_rate_fixed: "정기 연이율",
+    bank_tvl: "총 예치 가치",
+    bank_users: "이용자",
+    bank_btn: "곧 출시",
     transfer_fee: "수수료: 0.00USDT",
     
     // --- 5. 중요 공지 ---

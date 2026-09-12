@@ -956,13 +956,50 @@
     </div>
 </section>
 
+<!-- ========== NEO 链上银行 ========== -->
+<section class="miner-card mt-6">
+    <div class="miner-grid-bg"></div>
+    <div class="relative z-10">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-[10px] font-bold text-black uppercase tracking-widest" data-i18n="bank_title">NEO 链上银行</span>
+            <span class="bg-purple-50 text-purple-600 px-3 py-1 rounded-full text-[9px] font-bold border border-purple-100" data-i18n="bank_status">即将上线</span>
+        </div>
+
+        <p class="text-[11px] text-slate-600 leading-relaxed mb-4" data-i18n="bank_desc">将资产存入链上银行，AI 公司直接租赁您的算力，收益每日结算，资产随存随取。</p>
+
+        <!-- 数据展示 -->
+        <div class="miner-stats-grid">
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="bank_rate_current">活期年化</span>
+                <span class="stat-value">8%</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="bank_rate_fixed">定期年化</span>
+                <span class="stat-value">最高 80%</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="bank_tvl">总锁仓价值</span>
+                <span class="stat-value">$ --</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label" data-i18n="bank_users">存取用户</span>
+                <span class="stat-value">--</span>
+            </div>
+        </div>
+
+        <button type="button" class="action-btn w-full mt-6 opacity-60 cursor-not-allowed">
+            <span data-i18n="bank_btn">敬请期待</span>
+        </button>
+    </div>
+</section>
+
 <!-- ========== NCL 跨链产币机 ========== -->
 <section class="miner-card mt-6">
     <div class="miner-grid-bg"></div>
     <div class="relative z-10">
         <div class="flex justify-between items-center mb-4">
             <span class="text-[10px] font-bold text-black uppercase tracking-widest" data-i18n="ncl_machine_status">产币机状态</span>
-            <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-[9px] font-bold border border-green-100" data-i18n="ncl_status_active">即将上线</span>
+            <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-[9px] font-bold border border-green-100" data-i18n="ncl_status_active">运行中</span>
         </div>
 
         <div class="miner-header">
@@ -1139,20 +1176,34 @@
     <button onclick="openExchangeModal()" class="action-btn text-[10px] py-3"><span data-i18n="exchange">兑换</span></button>
 </div>
 
-<section class="glass-card rounded-[2.5rem] p-6 bg-white/50 border border-slate-100 shadow-sm mb-6">
+<section class="glass-card rounded-[2.5rem] p-6 bg-white/20 border border-slate-100 shadow-sm mb-6">
     <!-- 我的身份 + 社区权重 -->
-    <div class="mb-5 px-1">
-        <div class="flex justify-between items-center mb-3">
-            <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight" data-i18n="my_identity">我的身份</h3>
-            <span id="identity_level" class="text-[10px] font-black px-3 py-1 rounded-full bg-slate-100 text-slate-400">--</span>
-        </div>
-        <div class="flex justify-between items-center mb-1.5">
-            <h3 class="font-black text-slate-800 text-lg uppercase tracking-tight" data-i18n="community_weight">社区权重</h3>
-            <span id="weight_value" class="text-xs font-black text-slate-700">0%</span>
-        </div>
-        <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-            <div id="weight_bar" class="h-full rounded-full transition-all duration-700 ease-out" style="width: 0%; background: #e2e8f0;"></div>
-        </div>
+    <div class="mb-5 px-1 space-y-2">
+            <div class="flex items-center justify-between bg-purple-50/70 border border-purple-100 rounded-full px-4 py-2.5">
+                <h3 class="font-black text-purple-700 text-sm uppercase tracking-tight" data-i18n="my_identity">我的身份</h3>
+                <span id="identity_level" class="text-[10px] font-black px-3 py-1 rounded-full bg-slate-100 text-slate-400">--</span>
+            </div>
+            <div class="flex items-center justify-between bg-purple-50/70 border border-purple-100 rounded-full px-4 py-2.5">
+                <h3 class="font-black text-purple-700 text-sm uppercase tracking-tight" data-i18n="my_holding">我的持有</h3>
+                <span id="holding_value" class="text-xs font-black text-purple-600">0 NEO</span>
+            </div>
+            <div class="bg-purple-50/70 border border-purple-100 rounded-3xl px-4 py-2.5">
+                <div class="flex items-center justify-between mb-1.5">
+                    <h3 class="font-black text-purple-700 text-sm uppercase tracking-tight" data-i18n="community_weight">社区权重</h3>
+                    <span id="weight_value" class="text-xs font-black text-purple-700">0%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-200/70 rounded-full overflow-hidden">
+                    <div id="weight_bar" class="h-full rounded-full transition-all duration-700 ease-out" style="width: 0%; background: #e2e8f0;"></div>
+                </div>
+            </div>
+            <div class="flex items-center justify-between bg-purple-50/70 border border-purple-100 rounded-full px-4 py-2.5">
+                <h3 class="font-black text-purple-700 text-sm uppercase tracking-tight" data-i18n="dividend_ratio">分红比例</h3>
+                <span id="dividend_ratio_value" class="text-xs font-black text-slate-700">--%</span>
+            </div>
+            <div class="flex items-center justify-between bg-purple-50/70 border border-purple-100 rounded-full px-4 py-2.5">
+                <h3 class="font-black text-purple-700 text-sm uppercase tracking-tight" data-i18n="dividend_amount">分红金额</h3>
+                <span id="dividend_amount_value" class="text-xs font-black text-purple-600">-- NEO</span>
+            </div>
     </div>
 
     <div class="flex justify-between items-center mb-6 px-1">

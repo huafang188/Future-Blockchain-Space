@@ -66,7 +66,7 @@ window.i18nData['es'] = {
 
     // --- 2.3 Máquina de Monedas Cross-Chain NCL ---
     ncl_machine_status: "Estado de la Máquina",
-    ncl_status_active: "Próximamente",
+    ncl_status_active: "En funcionamiento",
     ncl_machine_name: "NCL Монетоприемник",
     ncl_purchase_restriction: "Limitado a usuarios de Gold Node y superiores",
     ncl_spec_chain: "Cross-Chain: BNB / SOL / TON",
@@ -111,6 +111,14 @@ window.i18nData['es'] = {
     stake_preview: "Ganancias estimadas",
     stake_note: "El staking proporciona mejor liquidez a la plataforma. Las empresas de IA comprarán directamente los NEO en staking de los usuarios para alquilar potencia de cálculo. Estos NEO no se quemarán; al vencimiento el usuario podrá retirarlos, tras lo cual se quemarán en las transacciones.",
     stake_confirm: "Confirmar firma de staking",
+    bank_title: "Banco on-chain de NEO",
+    bank_status: "Próximamente",
+    bank_desc: "Deposite sus activos en el banco on-chain: las empresas de IA alquilan directamente su potencia de cálculo, las ganancias se liquidan a diario y los activos están disponibles en todo momento.",
+    bank_rate_current: "Tasa flexible",
+    bank_rate_fixed: "Tasa fija",
+    bank_tvl: "Valor total bloqueado",
+    bank_users: "Usuarios",
+    bank_btn: "Próximamente",
     transfer_fee: "Comisión: 0.00USDT",
     
     // --- 5. Aviso importante ---
@@ -136,6 +144,9 @@ window.i18nData['es'] = {
     transfer: "Transferencia",
     team_title: "Mi Equipo",
     my_identity: "Mi Identidad",
+    my_holding: "Mis tenencias",
+    dividend_ratio: "Tasa de dividendos",
+    dividend_amount: "Monto de dividendos",
     community_weight: "Peso Comunitario",
     my_inviter: "Mi Referente",
     invite_code: "Mi ID",
