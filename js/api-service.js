@@ -747,7 +747,11 @@ function updateHoldingValue(data) {
     const holdingEl = document.getElementById('holding_value');
     if (!holdingEl) return;
     const neoBal = parseFloat(data?.balances?.['NEO'] ?? 0) || 0;
-    holdingEl.textContent = neoBal.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' NEO';
+    // 与资产列表 bal_NEO 保持一致的 6 位小数展示
+    holdingEl.textContent = neoBal.toLocaleString(undefined, {
+        minimumFractionDigits: 6,
+        maximumFractionDigits: 6
+    }) + ' NEO';
 }
 
 // 暴露到全局，确保 HTML 按钮、导航和其它模块能调用
