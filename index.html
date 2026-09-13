@@ -53,7 +53,7 @@
     <!-- Orbitron 字体 - 使用国内可访问的CDN -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260913">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -360,43 +360,58 @@
         <span class="font-black text-slate-800 text-sm" data-i18n="news_section_title">公告与新闻</span>
     </div>
 
-    <!-- 🤖 区块链机器人动态动画（纯 CSS，未来感紫色主调） -->
-    <div class="fbs-bot-wrap" aria-hidden="true">
-        <div class="fbs-bot-scene">
-            <div class="fbs-bot-grid"></div>
-            <div class="fbs-bot-orb fbs-bot-orb--1"></div>
-            <div class="fbs-bot-orb fbs-bot-orb--2"></div>
-            <div class="fbs-bot-orb fbs-bot-orb--3"></div>
-            <div class="fbs-bot">
-                <div class="fbs-bot-antenna"><span class="fbs-bot-antenna-tip"></span></div>
-                <div class="fbs-bot-head">
-                    <div class="fbs-bot-eye fbs-bot-eye--l"></div>
-                    <div class="fbs-bot-eye fbs-bot-eye--r"></div>
-                    <div class="fbs-bot-ear fbs-bot-ear--l"></div>
-                    <div class="fbs-bot-ear fbs-bot-ear--r"></div>
-                </div>
-                <div class="fbs-bot-neck"></div>
-                <div class="fbs-bot-body">
-                    <div class="fbs-bot-core"></div>
-                    <div class="fbs-bot-chest-line"></div>
-                    <div class="fbs-bot-arm fbs-bot-arm--l"></div>
-                    <div class="fbs-bot-arm fbs-bot-arm--r"></div>
-                </div>
-                <div class="fbs-bot-shadow"></div>
-            </div>
-            <div class="fbs-bot-bit fbs-bot-bit--1"></div>
-            <div class="fbs-bot-bit fbs-bot-bit--2"></div>
-            <div class="fbs-bot-bit fbs-bot-bit--3"></div>
-            <div class="fbs-bot-bit fbs-bot-bit--4"></div>
-            <div class="fbs-bot-bit fbs-bot-bit--5"></div>
+    <!-- 🎁 金秋九月 限时活动 -->
+    <div class="fbs-activity mx-4 mb-5">
+        <div class="fbs-activity-head">
+            <span class="fbs-activity-badge"><i class="fbs-activity-dot"></i><span data-i18n="act_badge">限时活动 · 火爆进行中</span></span>
+            <h4 class="fbs-activity-title" data-i18n="act_title">金秋九月 · 好礼相送</h4>
+            <div class="fbs-activity-countdown"><span data-i18n="act_countdown_label">距活动结束</span>&nbsp;<b id="activityDays">--</b>&nbsp;<span data-i18n="act_day_unit">天</span>&nbsp;<b id="activityTime">--:--:--</b></div>
+        </div>
 
-            <!-- 💬 AI 会话气泡（逐字出现） -->
-            <div class="fbs-bot-bubble">
-                <div class="fbs-bot-bubble-tail"></div>
-                <div class="fbs-bot-bubble-text">
-                    <span class="fbs-char" style="--i:0">N</span><span class="fbs-char" style="--i:1">E</span><span class="fbs-char" style="--i:2">O</span><span class="fbs-char" style="--i:3">'</span><span class="fbs-char" style="--i:4">s</span><span class="fbs-char" style="--i:5">&nbsp;</span><span class="fbs-char" style="--i:6">A</span><span class="fbs-char" style="--i:7">I</span><span class="fbs-char" style="--i:8">&nbsp;</span><span class="fbs-char" style="--i:9">w</span><span class="fbs-char" style="--i:10">i</span><span class="fbs-char" style="--i:11">l</span><span class="fbs-char" style="--i:12">l</span><span class="fbs-char" style="--i:13">&nbsp;</span><span class="fbs-char" style="--i:14">c</span><span class="fbs-char" style="--i:15">o</span><span class="fbs-char" style="--i:16">m</span><span class="fbs-char" style="--i:17">i</span><span class="fbs-char" style="--i:18">n</span><span class="fbs-char" style="--i:19">g</span><span class="fbs-char" style="--i:20">!</span><span class="fbs-bot-bubble-cursor">|</span>
-                </div>
+        <div class="fbs-activity-item">
+            <div class="fbs-activity-item-head">
+                <span class="fbs-activity-item-num">1</span>
+                <span class="fbs-activity-item-title" data-i18n="act_e_title">电费礼赠</span>
+                <span class="fbs-activity-item-tag" data-i18n="act_e_tag">九月缴费 · 额外赠送</span>
             </div>
+            <ul class="fbs-activity-list">
+                <li data-i18n="act_e_l1">缴纳 <b>90</b> 日电费，额外赠送 <b>10</b> 日</li>
+                <li data-i18n="act_e_l2">缴纳 <b>180</b> 日电费，额外赠送 <b>25</b> 日</li>
+                <li data-i18n="act_e_l3">缴纳 <b>360</b> 日电费，额外赠送 <b>60</b> 日</li>
+            </ul>
+        </div>
+
+        <div class="fbs-activity-item">
+            <div class="fbs-activity-item-head">
+                <span class="fbs-activity-item-num">2</span>
+                <span class="fbs-activity-item-title" data-i18n="act_p_title">推广有奖</span>
+                <span class="fbs-activity-item-tag" data-i18n="act_p_tag">当月推荐 · 额外奖励</span>
+            </div>
+            <ul class="fbs-activity-list">
+                <li data-i18n="act_p_l1">当月推荐满 <b>100</b> 台矿机，额外奖励推荐人 <b>200 NEA</b></li>
+                <li data-i18n="act_p_l2">当月推荐满 <b>1000</b> 台矿机，额外奖励推荐人 <b>2000 NEA + 800 NEO</b></li>
+                <li data-i18n="act_p_l3">当月推荐满 <b>2000</b> 台矿机，额外奖励推荐人 <b>4000 NEA + 2000 NEO</b></li>
+            </ul>
+        </div>
+
+        <div class="fbs-activity-item">
+            <div class="fbs-activity-item-head">
+                <span class="fbs-activity-item-num">3</span>
+                <span class="fbs-activity-item-title" data-i18n="act_b_title">购买享赠</span>
+                <span class="fbs-activity-item-tag" data-i18n="act_b_tag">当月购机 · 额外赠送</span>
+            </div>
+            <ul class="fbs-activity-list">
+                <li data-i18n="act_b_l1">当月购满 <b>20</b> 台矿机，额外赠送 <b>1</b> 台（最多分布两个账号，需做登记）</li>
+                <li data-i18n="act_b_l2">当月购满 <b>50</b> 台矿机，额外赠送 <b>3</b> 台（最多分布三个账号，需做登记）</li>
+                <li data-i18n="act_b_l3">当月购满 <b>100</b> 台矿机，额外赠送 <b>7</b> 台（最多可分布四个账号，需做登记）</li>
+            </ul>
+        </div>
+
+        <div class="fbs-activity-notes">
+            <p data-i18n="act_note_1"><i>*</i>此活动不与其他推广制度冲突，可同时享受</p>
+            <p data-i18n="act_note_2"><i>*</i>活动 2 仅限于 2 代以内推荐，2 代以上推荐不计数</p>
+            <p data-i18n="act_note_3"><i>*</i>活动 3 需和推荐人登记核实，可多个账号分布，但不可多人累计</p>
+            <p data-i18n="act_note_4"><i>*</i>活动期限截止 <b>2026/09/30 23:59:59</b>（莫斯科标准时间）</p>
         </div>
     </div>
 
