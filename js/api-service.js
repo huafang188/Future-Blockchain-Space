@@ -551,8 +551,13 @@ function applyClampBehavior(el, rawValue) {
     // 重置状态
     el.classList.remove('fbs-clamp');
     el.onclick = null;
+    el.title = '';
 
-    const text = String(rawValue ?? '');
+    const raw = String(rawValue ?? '');
+    // 多行数据折叠为一行：换行替换为空格（否则 innerText 会把 \n 渲染成 <br>，nowrap 也拦不住硬换行）
+    const singleLine = raw.replace(/\s*\n\s*/g, ' ').trim();
+    el.innerText = singleLine;
+
     // 先应用折叠样式，下一帧测量是否真正溢出
     el.classList.add('fbs-clamp');
 
@@ -561,17 +566,18 @@ function applyClampBehavior(el, rawValue) {
         const visible = el.offsetWidth > 0 || el.offsetHeight > 0;
         const overflow = visible ? (el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight) : false;
         // 兜底：文本超过 14 个字符视为需要折叠（窄格子内必然折行）
-        const needClamp = overflow || text.length > 14;
+        const needClamp = overflow || singleLine.length > 14;
         if (!needClamp) {
             // 内容单行放得下，取消折叠
             el.classList.remove('fbs-clamp');
             return;
         }
-        el.title = text; // 桌面端悬停提示
+        el.title = singleLine; // 桌面端悬停提示
         el.onclick = function (e) {
             e.stopPropagation();
             if (!window.showModal) return;
-            const safe = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // 弹窗展示完整原始文本（含换行）
+            const safe = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             window.showModal("m_term", `<div class="p-2 text-left break-words whitespace-pre-wrap text-sm font-bold text-slate-700 leading-relaxed">${safe}</div>`);
         };
     });
