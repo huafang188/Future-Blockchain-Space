@@ -554,9 +554,10 @@ function applyClampBehavior(el, rawValue) {
     el.title = '';
 
     const raw = String(rawValue ?? '');
-    // 多行数据折叠为一行：换行替换为空格（否则 innerText 会把 \n 渲染成 <br>，nowrap 也拦不住硬换行）
-    const singleLine = raw.replace(/\s*\n\s*/g, ' ').trim();
-    el.innerText = singleLine;
+    // 多行数据折叠：只显示第一行，其余行隐藏，点击"···"弹窗查看全部
+    const firstLine = (raw.split('\n')[0] || '').trim();
+    const hasMore = raw.includes('\n');
+    el.innerText = firstLine;
 
     // 先应用折叠样式，下一帧测量是否真正溢出
     el.classList.add('fbs-clamp');
@@ -565,14 +566,14 @@ function applyClampBehavior(el, rawValue) {
         // 可见时精确测量溢出；隐藏时（用户不在该页）用文本长度兜底判断
         const visible = el.offsetWidth > 0 || el.offsetHeight > 0;
         const overflow = visible ? (el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight) : false;
-        // 兜底：文本超过 14 个字符视为需要折叠（窄格子内必然折行）
-        const needClamp = overflow || singleLine.length > 14;
+        // 兜底：文本超过 14 个字符视为需要折叠（窄格子内必然折行）；多行数据必定折叠
+        const needClamp = hasMore || overflow || firstLine.length > 14;
         if (!needClamp) {
             // 内容单行放得下，取消折叠
             el.classList.remove('fbs-clamp');
             return;
         }
-        el.title = singleLine; // 桌面端悬停提示
+        el.title = hasMore ? raw : firstLine; // 桌面端悬停提示
         el.onclick = function (e) {
             e.stopPropagation();
             if (!window.showModal) return;
