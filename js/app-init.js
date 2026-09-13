@@ -35,38 +35,6 @@ window.CHAIN_CONFIG = CHAIN_CONFIG;
 window.TOKEN_DECIMALS = TOKEN_DECIMALS;
 
 /**
- * 🎁 金秋九月活动倒计时
- * 以莫斯科标准时间 (UTC+3) 为截止基准，每秒刷新
- */
-function mountActivityCountdown() {
-    const dayEl = document.getElementById('activityDays');
-    const timeEl = document.getElementById('activityTime');
-    if (!dayEl || !timeEl) return;
-
-    // 活动期限截止 2026/09/30 23:59:59（莫斯科标准时间）
-    const deadline = new Date('2026-09-30T23:59:59+03:00').getTime();
-
-    const tick = () => {
-        const diff = deadline - Date.now();
-        if (diff <= 0) {
-            dayEl.textContent = '0';
-            timeEl.textContent = '00:00:00';
-            return;
-        }
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        const pad = (n) => String(n).padStart(2, '0');
-        dayEl.textContent = d;
-        timeEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    };
-
-    tick();
-    setInterval(tick, 1000);
-}
-
-/**
  * 1. 全局挂载器
  * 核心：将所有分散在模块中的函数强制导出给 window 变量
  * 解决 HTML 中 onclick="..." 找不到函数的问题
@@ -92,7 +60,6 @@ function mountAllGlobals() {
     mountModalHandlers();             // 挂载弹窗与复制逻辑 (modal-handler)
     mountCalculationHandlers();       // 挂载计算器逻辑 (calculations)
     mountActionExecutors();           // 挂载业务交互逻辑 (action-executor)
-    mountActivityCountdown();          // 金秋九月活动倒计时
 
     // 导出 syncWalletUI 到全局
     window.syncWalletUI = syncWalletUI;
