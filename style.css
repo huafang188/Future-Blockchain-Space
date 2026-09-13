@@ -1282,6 +1282,222 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 .fbs-activity-head { text-align: center; position: relative; z-index: 2; }
+
+/* 🎁 活动头部：跳跃小机器人 */
+.fbs-activity-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+.fbs-activity-title-row .fbs-activity-title { margin-top: 0; }
+.fbs-mini-bot {
+    position: relative;
+    flex-shrink: 0;
+    width: 30px;
+    height: 38px;
+    transform-origin: bottom center;
+    animation: fbsMiniBotJump 1.8s ease-in-out infinite;
+}
+.fbs-mini-bot-antenna {
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 7px;
+    border-radius: 2px;
+    background: #c4b5fd;
+}
+.fbs-mini-bot-antenna::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f0abfc;
+    box-shadow: 0 0 8px 1px rgba(232, 121, 249, 0.8);
+    animation: fbsMiniBotGlow 1.8s ease-in-out infinite;
+}
+.fbs-mini-bot-head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 19px;
+    border-radius: 9px 9px 5px 5px;
+    background: linear-gradient(140deg, #b18cff 0%, #7c3aed 65%, #6d28d9 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 5px 12px rgba(124, 58, 237, 0.45);
+}
+.fbs-mini-bot-eye {
+    position: absolute;
+    top: 7px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.9);
+    animation: fbsMiniBotBlink 3.6s infinite;
+}
+.fbs-mini-bot-eye--l { left: 5px; }
+.fbs-mini-bot-eye--r { right: 5px; }
+.fbs-mini-bot-body {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 15px;
+    border-radius: 5px 5px 8px 8px;
+    background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+}
+.fbs-mini-bot-body::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 6px 1px rgba(34, 211, 238, 0.9);
+}
+/* 地面阴影：与机器人跳跃节奏同步缩放 */
+.fbs-mini-bot-shadow {
+    width: 22px;
+    height: 5px;
+    margin: 2px auto 6px;
+    border-radius: 50%;
+    background: rgba(109, 40, 217, 0.28);
+    filter: blur(1.5px);
+    animation: fbsMiniBotShadow 1.8s ease-in-out infinite;
+}
+@keyframes fbsMiniBotJump {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    25%      { transform: translateY(-16px) scale(0.98, 1.03); }
+    45%      { transform: translateY(0) scale(1.06, 0.92); }
+    60%      { transform: translateY(-6px) scale(1, 1); }
+    72%      { transform: translateY(0) scale(1.02, 0.97); }
+}
+@keyframes fbsMiniBotShadow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    25%      { transform: scale(0.55); opacity: 0.5; }
+    45%      { transform: scale(1.1); opacity: 0.9; }
+    60%      { transform: scale(0.8); opacity: 0.7; }
+    72%      { transform: scale(1.05); opacity: 0.95; }
+}
+@keyframes fbsMiniBotBlink {
+    0%, 91%, 100% { transform: scaleY(1); }
+    93%           { transform: scaleY(0.15); }
+    95%           { transform: scaleY(1); }
+}
+@keyframes fbsMiniBotGlow {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.45; }
+}
+
+/* ⛏️ 活动头部左侧：矿机挖矿小动画 */
+.fbs-mini-miner {
+    position: relative;
+    flex-shrink: 0;
+    width: 32px;
+    height: 40px;
+    animation: fbsMiniMinerVibrate 0.9s ease-in-out infinite;
+}
+.fbs-mini-miner-fan {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.55);
+    background: conic-gradient(#c4b5fd 0 25%, rgba(255, 255, 255, 0.15) 25% 50%, #c4b5fd 50% 75%, rgba(255, 255, 255, 0.15) 75% 100%);
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.45);
+    animation: fbsMiniMinerSpin 0.7s linear infinite;
+}
+.fbs-mini-miner-fan::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #fff;
+}
+.fbs-mini-miner-body {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 20px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #3b2a66 0%, #251a45 55%, #1a1230 100%);
+    border: 1.5px solid rgba(196, 181, 253, 0.5);
+    box-shadow: 0 6px 14px rgba(58, 30, 120, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.fbs-mini-miner-body::before {
+    content: '✦';
+    position: absolute;
+    top: -1px;
+    right: 2px;
+    font-size: 7px;
+    color: #fbbf24;
+    text-shadow: 0 0 6px rgba(251, 191, 36, 0.9);
+    animation: fbsMiniMinerSpark 1.4s ease-in infinite;
+}
+.fbs-mini-miner-light {
+    position: absolute;
+    bottom: 5px;
+    width: 3.5px;
+    height: 3.5px;
+    border-radius: 50%;
+    animation: fbsMiniMinerLight 1.2s ease-in-out infinite;
+}
+.fbs-mini-miner-light--1 { left: 5px; background: #4ade80; box-shadow: 0 0 5px #4ade80; }
+.fbs-mini-miner-light--2 { left: 50%; transform: translateX(-50%); background: #22d3ee; box-shadow: 0 0 5px #22d3ee; animation-delay: 0.2s; }
+.fbs-mini-miner-light--3 { right: 5px; background: #facc15; box-shadow: 0 0 5px #facc15; animation-delay: 0.4s; }
+.fbs-mini-miner-stand {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 26px;
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #4c3390, #2d1c5c);
+    border: 1px solid rgba(196, 181, 253, 0.35);
+}
+@keyframes fbsMiniMinerSpin {
+    to { transform: translateX(-50%) rotate(360deg); }
+}
+@keyframes fbsMiniMinerVibrate {
+    0%, 100% { transform: translateY(0); }
+    25%      { transform: translateY(-1.5px) rotate(-1deg); }
+    50%      { transform: translateY(0); }
+    75%      { transform: translateY(-1px) rotate(1deg); }
+}
+@keyframes fbsMiniMinerLight {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.25; }
+}
+@keyframes fbsMiniMinerSpark {
+    0%   { opacity: 0; transform: translateY(0) scale(0.6); }
+    30%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(10px) scale(1); }
+}
 .fbs-activity-badge {
     display: inline-flex;
     align-items: center;
