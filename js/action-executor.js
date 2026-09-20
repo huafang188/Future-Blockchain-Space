@@ -682,6 +682,14 @@ window.doNeoBuyMinerSubmit = async function() {
 
     // 实时计算需消耗的 NEO（145 美元/台）
     const need = (145 * parseFloat(count)) / neoPrice;
+
+    // 余额不足校验：需消耗 NEO 大于可用余额时拦截提交
+    const neoBal = parseFloat(window.userBalances?.NEO ?? 0) || 0;
+    if (need > neoBal) {
+        alert(`NEO 余额不足\n\n需消耗：${need.toFixed(6)} NEO\n可用余额：${neoBal.toFixed(6)} NEO\n\n请先充值或减少矿机数量`);
+        return;
+    }
+
     await executeSignatureAction("购买矿机", need.toFixed(6), "NEO", "record_transaction", {
         remark: `矿机数量：${count}台（145美元/台，NEO现价 $${neoPrice.toFixed(4)}）`
     });
@@ -698,6 +706,14 @@ window.doNeoPayFeeSubmit = async function() {
 
     // 实时计算需消耗的 NEO（28.5 美元/台/月）
     const need = (28.5 * parseFloat(count)) / neoPrice;
+
+    // 余额不足校验：需消耗 NEO 大于可用余额时拦截提交
+    const neoBal = parseFloat(window.userBalances?.NEO ?? 0) || 0;
+    if (need > neoBal) {
+        alert(`NEO 余额不足\n\n需消耗：${need.toFixed(6)} NEO\n可用余额：${neoBal.toFixed(6)} NEO\n\n请先充值或减少矿机数量`);
+        return;
+    }
+
     await executeSignatureAction("缴纳电费", need.toFixed(6), "NEO", "record_transaction", {
         remark: `矿机数量：${count}台/月（28.5美元/台，NEO现价 $${neoPrice.toFixed(4)}）`
     });
