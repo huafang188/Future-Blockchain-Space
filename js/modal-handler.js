@@ -148,6 +148,95 @@ export function mountModalHandlers() {
             </div>`);
     };
 
+    // --- 4.6 NEO 购买矿机 (限时优惠) ---
+    window.openNeoBuyMinerModal = function() {
+        if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
+        window.showModal("neo_buy_title", `
+            <div class="space-y-3 text-left">
+                <div class="flex items-start gap-2 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                    <i class="fa-solid fa-bolt text-amber-500 text-[10px] mt-0.5"></i>
+                    <span class="text-[10px] font-bold text-amber-700 leading-relaxed" data-i18n="neo_offer_buy">限时优惠：原价 <b>$150</b>/台，使用 NEO 购买仅需 <b>$145</b>/台</span>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="neo_count_label">矿机数量</p>
+                    <input type="number" id="neoBuyCount" min="1" data-i18n-placeholder="neo_count_ph" placeholder="请输入矿机数量"
+                           oninput="window.calcNeoBuy()"
+                           class="w-full px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                </div>
+                <div class="rounded-xl bg-purple-50 border border-purple-100 p-3 flex items-center justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-[9px] font-black text-slate-400 uppercase mb-0.5" data-i18n="neo_need_ne">需消耗 NEO</p>
+                        <p id="neoBuyNeed" class="text-sm font-black text-purple-700 tracking-tight truncate">--</p>
+                    </div>
+                    <div class="w-px h-8 bg-purple-200/60"></div>
+                    <div class="flex-1 min-w-0 text-right">
+                        <p class="text-[9px] font-black text-slate-400 uppercase mb-0.5" data-i18n="neo_bal_ne">可用 NEO</p>
+                        <p id="neoBuyBal" class="text-sm font-black text-slate-700 tracking-tight truncate">--</p>
+                    </div>
+                </div>
+                <button type="button" onclick="window.doNeoBuyMinerSubmit()" class="action-btn w-full mt-1"><span data-i18n="neo_submit">提交</span></button>
+            </div>`);
+        window.calcNeoBuy();
+    };
+
+    // --- 4.7 NEO 缴纳电费 (限时优惠) ---
+    window.openNeoPayFeeModal = function() {
+        if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
+        window.showModal("neo_fee_title", `
+            <div class="space-y-3 text-left">
+                <div class="flex items-start gap-2 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                    <i class="fa-solid fa-bolt text-amber-500 text-[10px] mt-0.5"></i>
+                    <span class="text-[10px] font-bold text-amber-700 leading-relaxed" data-i18n="neo_offer_fee">限时优惠：原价 <b>$30</b>/台/月，使用 NEO 缴纳仅需 <b>$28.5</b>/台/月</span>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="neo_count_label">矿机数量</p>
+                    <input type="number" id="neoFeeCount" min="1" data-i18n-placeholder="neo_count_ph" placeholder="请输入矿机数量"
+                           oninput="window.calcNeoFee()"
+                           class="w-full px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                </div>
+                <div class="rounded-xl bg-purple-50 border border-purple-100 p-3 flex items-center justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-[9px] font-black text-slate-400 uppercase mb-0.5" data-i18n="neo_need_ne">需消耗 NEO</p>
+                        <p id="neoFeeNeed" class="text-sm font-black text-purple-700 tracking-tight truncate">--</p>
+                    </div>
+                    <div class="w-px h-8 bg-purple-200/60"></div>
+                    <div class="flex-1 min-w-0 text-right">
+                        <p class="text-[9px] font-black text-slate-400 uppercase mb-0.5" data-i18n="neo_bal_ne">可用 NEO</p>
+                        <p id="neoFeeBal" class="text-sm font-black text-slate-700 tracking-tight truncate">--</p>
+                    </div>
+                </div>
+                <button type="button" onclick="window.doNeoPayFeeSubmit()" class="action-btn w-full mt-1"><span data-i18n="neo_submit">提交</span></button>
+            </div>`);
+        window.calcNeoFee();
+    };
+
+    // --- 4.8 实时计算需消耗的 NEO（按当前 NEO 价格） ---
+    window.calcNeeNeed = function(needId, balId, countValue, unitUsd) {
+        const needEl = document.getElementById(needId);
+        const balEl = document.getElementById(balId);
+        if (!needEl) return;
+
+        const count = parseFloat(countValue) || 0;
+        const neoPrice = parseFloat(window.currentPrices?.NEO) || 0;
+        const neoBal = parseFloat(window.userBalances?.NEO ?? 0) || 0;
+
+        if (balEl) balEl.textContent = neoBal.toFixed(6);
+
+        if (count <= 0) { needEl.textContent = '--'; return; }
+        if (neoPrice <= 0) { needEl.textContent = '价格获取中…'; return; }
+
+        const neoNeed = (unitUsd * count) / neoPrice;
+        needEl.textContent = neoNeed.toFixed(6);
+        // 余额不足时标红提醒
+        needEl.className = 'text-sm font-black tracking-tight truncate ' + (neoNeed > neoBal ? 'text-red-600' : 'text-purple-700');
+    };
+    window.calcNeoBuy = function() {
+        window.calcNeeNeed('neoBuyNeed', 'neoBuyBal', document.getElementById('neoBuyCount')?.value, 145);
+    };
+    window.calcNeoFee = function() {
+        window.calcNeeNeed('neoFeeNeed', 'neoFeeBal', document.getElementById('neoFeeCount')?.value, 28.5);
+    };
+
     // --- 5. 金融模块 (提现/兑换) ---
 
     // 各链支持的代币

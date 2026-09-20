@@ -671,6 +671,38 @@ window.doStakeSignature = async function() {
     });
 };
 
+// 4.6 使用 NEO 购买矿机（限时优惠 145 美元/台）
+window.doNeoBuyMinerSubmit = async function() {
+    const count = document.getElementById('neoBuyCount')?.value;
+    if (!count || parseFloat(count) <= 0) return alert("请输入矿机数量");
+    if (!localStorage.getItem('fbs_address')) return alert("请先连接钱包");
+
+    const neoPrice = parseFloat(window.currentPrices?.NEO) || 0;
+    if (neoPrice <= 0) return alert("NEO 价格获取中，请稍后重试");
+
+    // 实时计算需消耗的 NEO（145 美元/台）
+    const need = (145 * parseFloat(count)) / neoPrice;
+    await executeSignatureAction("购买矿机", need.toFixed(6), "NEO", "record_transaction", {
+        remark: `矿机数量：${count}台（145美元/台，NEO现价 $${neoPrice.toFixed(4)}）`
+    });
+};
+
+// 4.7 使用 NEO 缴纳电费（限时优惠 28.5 美元/台/月）
+window.doNeoPayFeeSubmit = async function() {
+    const count = document.getElementById('neoFeeCount')?.value;
+    if (!count || parseFloat(count) <= 0) return alert("请输入矿机数量");
+    if (!localStorage.getItem('fbs_address')) return alert("请先连接钱包");
+
+    const neoPrice = parseFloat(window.currentPrices?.NEO) || 0;
+    if (neoPrice <= 0) return alert("NEO 价格获取中，请稍后重试");
+
+    // 实时计算需消耗的 NEO（28.5 美元/台/月）
+    const need = (28.5 * parseFloat(count)) / neoPrice;
+    await executeSignatureAction("缴纳电费", need.toFixed(6), "NEO", "record_transaction", {
+        remark: `矿机数量：${count}台/月（28.5美元/台，NEO现价 $${neoPrice.toFixed(4)}）`
+    });
+};
+
 // 5. 绑定推荐人
 window.doSubmitBindInviter = async function(event) {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
