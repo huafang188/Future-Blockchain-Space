@@ -111,6 +111,7 @@ window.i18nData['de'] = {
     neo_offer_fee: "Aktion: statt <b>$30</b>/Stück/Monat, mit NEO nur <b>$28.5</b>/Stück/Monat",
     neo_count_label: "Miner-Anzahl",
     neo_count_ph: "Anzahl der Miner eingeben",
+    neo_fee_period: "Zahlungszeitraum",
     neo_need_ne: "Benötigt NEO",
     neo_bal_ne: "Verfügbar NEO",
     neo_submit: "Senden",

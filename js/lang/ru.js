@@ -111,6 +111,7 @@ window.i18nData['ru'] = {
     neo_offer_fee: "Акция: было <b>$30</b>/шт/мес, за NEO всего <b>$28.5</b>/шт/мес",
     neo_count_label: "Количество майнеров",
     neo_count_ph: "Введите количество майнеров",
+    neo_fee_period: "Период оплаты",
     neo_need_ne: "Потребуется NEO",
     neo_bal_ne: "Доступно NEO",
     neo_submit: "Отправить",

@@ -110,6 +110,7 @@ window.i18nData['el'] = {
     neo_offer_fee: "Προσφορά: αρχικά <b>$30</b>/μονάδα/μήνα, με NEO μόνο <b>$28.5</b>/μονάδα/μήνα",
     neo_count_label: "Αριθμός miners",
     neo_count_ph: "Εισάγετε αριθμό miners",
+    neo_fee_period: "Περίοδος πληρωμής",
     neo_need_ne: "Απαιτούμενο NEO",
     neo_bal_ne: "Διαθέσιμο NEO",
     neo_submit: "Υποβολή",

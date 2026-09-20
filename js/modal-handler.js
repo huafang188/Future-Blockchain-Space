@@ -194,6 +194,17 @@ export function mountModalHandlers() {
                            oninput="window.calcNeoFee()"
                            class="w-full px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
                 </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="neo_fee_period">缴纳周期</p>
+                    <div id="neoFeeDayGroup" class="grid grid-cols-4 gap-1.5">
+                        ${[30, 90, 180, 360].map((d, i) => `
+                            <button type="button" data-days="${d}" onclick="window.selectNeoFeeDays(${d})"
+                                    class="neo-fee-day-btn py-2 rounded-lg text-[11px] font-black border transition-all ${i === 0 ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}">
+                                ${d}<span class="block text-[8px] font-bold" data-i18n="stake_days">天</span>
+                            </button>`).join('')}
+                    </div>
+                    <input type="hidden" id="neoFeeDays" value="30">
+                </div>
                 <div class="rounded-xl bg-purple-50 border border-purple-100 p-3 flex items-center justify-between gap-2">
                     <div class="flex-1 min-w-0">
                         <p class="text-[9px] font-black text-slate-400 uppercase mb-0.5" data-i18n="neo_need_ne">需消耗 NEO</p>
@@ -234,7 +245,20 @@ export function mountModalHandlers() {
         window.calcNeeNeed('neoBuyNeed', 'neoBuyBal', document.getElementById('neoBuyCount')?.value, 145);
     };
     window.calcNeoFee = function() {
-        window.calcNeeNeed('neoFeeNeed', 'neoFeeBal', document.getElementById('neoFeeCount')?.value, 28.5);
+        const days = Number(document.getElementById('neoFeeDays')?.value || 30);
+        // 电费按 28.5 美元/台/月计费，缴纳天数换算为月份倍数
+        window.calcNeeNeed('neoFeeNeed', 'neoFeeBal', document.getElementById('neoFeeCount')?.value, 28.5 * (days / 30));
+    };
+
+    // 切换缴纳天数（30/90/180/360 天）
+    window.selectNeoFeeDays = function(days) {
+        const hidden = document.getElementById('neoFeeDays');
+        if (hidden) hidden.value = days;
+        document.querySelectorAll('.neo-fee-day-btn').forEach(btn => {
+            const active = Number(btn.dataset.days) === Number(days);
+            btn.className = `neo-fee-day-btn py-2 rounded-lg text-[11px] font-black border transition-all ${active ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}`;
+        });
+        window.calcNeoFee();
     };
 
     // --- 5. 金融模块 (提现/兑换) ---

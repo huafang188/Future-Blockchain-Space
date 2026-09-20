@@ -111,6 +111,7 @@ window.i18nData['ug'] = {
     neo_offer_fee: "چەكلىك ئېتىبار: ئەسلى <b>$30</b>/دانە/ئاي، NEO بىلەن پەقەت <b>$28.5</b>/دانە/ئاي",
     neo_count_label: "كان سانى",
     neo_count_ph: "كان سانىنى كىرگۈزۈڭ",
+    neo_fee_period: "تۆلەش مۇددىتى",
     neo_need_ne: "كېرەكلىك NEO",
     neo_bal_ne: "قالغان NEO",
     neo_submit: "تاپشۇرۇش",

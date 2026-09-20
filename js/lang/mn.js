@@ -110,6 +110,7 @@ window.i18nData['mn'] = {
     neo_offer_fee: "Хямдрал: анх <b>$30</b>/ш/сар, NEO-ээр зөвхөн <b>$28.5</b>/ш/сар",
     neo_count_label: "Майнерын тоо",
     neo_count_ph: "Майнерын тоог оруулна уу",
+    neo_fee_period: "Төлбөрийн хугацаа",
     neo_need_ne: "Шаардлагатай NEO",
     neo_bal_ne: "Боломжтой NEO",
     neo_submit: "Илгээх",

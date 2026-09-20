@@ -111,6 +111,7 @@ window.i18nData['ko'] = {
     neo_offer_fee: "한정 혜택: 기존 <b>$30</b>/대/월, NEO 납부 시 <b>$28.5</b>/대/월",
     neo_count_label: "채굴기 수량",
     neo_count_ph: "채굴기 수량을 입력하세요",
+    neo_fee_period: "납부 기간",
     neo_need_ne: "소요 NEO",
     neo_bal_ne: "사용 가능 NEO",
     neo_submit: "제출",

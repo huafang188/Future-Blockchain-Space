@@ -111,6 +111,7 @@ window.i18nData['ar'] = {
     neo_offer_fee: "عرض محدود: كان <b>30$</b>/جهاز/شهر، مع NEO فقط <b>28.5$</b>/جهاز/شهر",
     neo_count_label: "عدد أجهزة التعدين",
     neo_count_ph: "أدخل عدد أجهزة التعدين",
+    neo_fee_period: "فترة السداد",
     neo_need_ne: "NEO المطلوب",
     neo_bal_ne: "NEO المتاح",
     neo_submit: "إرسال",

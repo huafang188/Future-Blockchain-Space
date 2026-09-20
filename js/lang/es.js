@@ -155,6 +155,7 @@ window.i18nData['es'] = {
     neo_offer_fee: "Oferta limitada: antes <b>$30</b>/unidad/mes, con NEO solo <b>$28.5</b>/unidad/mes",
     neo_count_label: "Cantidad de mineros",
     neo_count_ph: "Ingresa la cantidad de mineros",
+    neo_fee_period: "Período de pago",
     neo_need_ne: "NEO requerido",
     neo_bal_ne: "NEO disponible",
     neo_submit: "Enviar",

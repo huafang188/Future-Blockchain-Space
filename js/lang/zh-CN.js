@@ -111,6 +111,7 @@ window.i18nData['zh-CN'] = {
     neo_offer_fee: "限时优惠：原价 <b>$30</b>/台/月，使用 NEO 缴纳仅需 <b>$28.5</b>/台/月",
     neo_count_label: "矿机数量",
     neo_count_ph: "请输入矿机数量",
+    neo_fee_period: "缴纳周期",
     neo_need_ne: "需消耗 NEO",
     neo_bal_ne: "可用 NEO",
     neo_submit: "提交",

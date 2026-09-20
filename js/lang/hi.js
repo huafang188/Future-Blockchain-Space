@@ -110,6 +110,7 @@ window.i18nData['hi'] = {
     neo_offer_fee: "सीमित ऑफर: पहले <b>$30</b>/यूनिट/माह, NEO से केवल <b>$28.5</b>/यूनिट/माह",
     neo_count_label: "माइनर संख्या",
     neo_count_ph: "माइनर की संख्या दर्ज करें",
+    neo_fee_period: "भुगतान अवधि",
     neo_need_ne: "आवश्यक NEO",
     neo_bal_ne: "उपलब्ध NEO",
     neo_submit: "जमा करें",

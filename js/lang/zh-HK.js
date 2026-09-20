@@ -110,6 +110,7 @@ window.i18nData['zh-HK'] = {
     neo_offer_fee: "限時優惠：原價 <b>$30</b>/台/月，使用 NEO 繳納僅需 <b>$28.5</b>/台/月",
     neo_count_label: "礦機數量",
     neo_count_ph: "請輸入礦機數量",
+    neo_fee_period: "繳納週期",
     neo_need_ne: "需消耗 NEO",
     neo_bal_ne: "可用 NEO",
     neo_submit: "提交",

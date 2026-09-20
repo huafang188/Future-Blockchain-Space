@@ -111,6 +111,7 @@ window.i18nData['ja'] = {
     neo_offer_fee: "期間限定：通常 <b>$30</b>/台/月のところ、NEO払いなら <b>$28.5</b>/台/月",
     neo_count_label: "マイナー台数",
     neo_count_ph: "マイナーの台数を入力",
+    neo_fee_period: "支払期間",
     neo_need_ne: "消費NEO",
     neo_bal_ne: "利用可能NEO",
     neo_submit: "送信",
