@@ -306,7 +306,7 @@ export function mountModalHandlers() {
                     <span class="text-[11px] font-bold text-amber-600" data-i18n="withdraw_fee">手续费：0.5USDT</span>
                 </div>
                 <div class="px-1">
-                    <span id="witBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.00 USDT</span>
+                    <span id="witBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.000000 USDT</span>
                 </div>
                 <input type="number" id="witAmount" placeholder="提现数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doWithdrawSignature()" class="action-btn w-full mt-2 !from-red-500">确认提现签名</button>
@@ -318,7 +318,7 @@ export function mountModalHandlers() {
     window.updateWitBalanceHint = function() {
         const symbol = document.getElementById('witToken')?.value || 'USDT';
         const balances = window.userBalances || {};
-        const balance = parseFloat(balances[symbol] || 0).toFixed(4);
+        const balance = parseFloat(balances[symbol] || 0).toFixed(6);
         const hintEl = document.getElementById('witBalanceHint');
         if (hintEl) {
             hintEl.textContent = `可用余额：${balance} ${symbol}`;
