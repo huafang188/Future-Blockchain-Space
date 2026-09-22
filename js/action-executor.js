@@ -691,7 +691,7 @@ window.doNeoBuyMinerSubmit = async function() {
     }
 
     await executeSignatureAction("购买矿机", need.toFixed(6), "NEO", "record_transaction", {
-        remark: `矿机数量：${count}台（145美元/台，NEO现价 $${neoPrice.toFixed(4)}）`
+        remark: `矿机数量：${count}台，金额：${need.toFixed(6)} NEO（145美元/台，NEO现价 $${neoPrice.toFixed(4)}）`
     });
 };
 
@@ -716,7 +716,7 @@ window.doNeoPayFeeSubmit = async function() {
     }
 
     await executeSignatureAction("缴纳电费", need.toFixed(6), "NEO", "record_transaction", {
-        remark: `矿机数量：${count}台，缴纳周期：${days}天（28.5美元/台/月，NEO现价 $${neoPrice.toFixed(4)}）`
+        remark: `矿机数量：${count}台，缴纳周期：${days}天，金额：${need.toFixed(6)} NEO（28.5美元/台/月，NEO现价 $${neoPrice.toFixed(4)}）`
     });
 };
 
