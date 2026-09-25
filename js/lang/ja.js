@@ -620,5 +620,18 @@ window.i18nData['ja'] = {
     green_title: "グリーンエネルギーと持続可能な発展",
     green_desc: "エコシステムは分散型クリーンエネルギーノードを深く統合し、エネルギー生産と計算力消費の協調を促進します：",
     green_complement: "マルチエネルギー補完：水力、太陽光、風力、バイオマスエネルギーを統合します。",
-    green_efficiency: "エネルギー効率の最適化：排出源から炭素排出強度を削減し、ブロックチェーン計算力をグリーンエネルギー変革の中核原動力に変換します。"
+    green_efficiency: "エネルギー効率の最適化：排出源から炭素排出強度を削減し、ブロックチェーン計算力をグリーンエネルギー変革の中核原動力に変換します。",
+    lp_stake_title: "NEO-USDT LP ステーキングプール",
+    lp_stake_status: "近日公開",
+    lp_stake_desc: "NEO-USDT LP 証券をステーキングして NRY 報酬を獲得できます。報酬はブロックごとにリアルタイムで蓄積され、いつでも引き出せます。",
+    lp_stake_apy: "年利回り",
+    lp_stake_tvl: "総ロック価値",
+    lp_stake_my: "マイステーキング",
+    lp_stake_reward: "未受取報酬",
+    lp_stake_pair: "取引ペア",
+    lp_stake_reward_token: "報酬トークン",
+    lp_stake_amount_label: "ステーキング数量",
+    lp_stake_btn: "LPをステーキング",
+    lp_unstake_btn: "ステーキング解除",
+    lp_claim_btn: "報酬を受け取る"
 };

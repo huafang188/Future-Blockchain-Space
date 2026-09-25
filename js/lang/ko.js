@@ -486,5 +486,18 @@ window.i18nData['ko'] = {
     green_title: "그린 에너지와 지속 가능한 발전",
     green_desc: "생태계는 분산형 청정 에너지 노드를 깊이 통합하여 에너지 생산과 연산력 소비의 협력을 촉진합니다:",
     green_complement: "다중 에너지 보완: 수력, 태양광, 풍력 및 바이오매스 에너지를 통합합니다.",
-    green_efficiency: "에너지 효율 최적화: 원천에서 탄소 배출 강도를 줄이고 블록체인 연산력을 그린 에너지 전환의 핵심 동력으로 전환합니다."
+    green_efficiency: "에너지 효율 최적화: 원천에서 탄소 배출 강도를 줄이고 블록체인 연산력을 그린 에너지 전환의 핵심 동력으로 전환합니다.",
+    lp_stake_title: "NEO-USDT LP 스테이킹 풀",
+    lp_stake_status: "곧 출시",
+    lp_stake_desc: "NEO-USDT LP 증서를 스테이킹하여 NRY 보상을 받으세요. 보상은 블록별로 실시간 적립되며 언제든지 인출할 수 있습니다.",
+    lp_stake_apy: "연이율",
+    lp_stake_tvl: "총 락업 가치",
+    lp_stake_my: "내 스테이킹",
+    lp_stake_reward: "대기 보상",
+    lp_stake_pair: "거래 쌍",
+    lp_stake_reward_token: "보상 토큰",
+    lp_stake_amount_label: "스테이킹 수량",
+    lp_stake_btn: "LP 스테이킹",
+    lp_unstake_btn: "스테이킹 해제",
+    lp_claim_btn: "보상 수령"
 };

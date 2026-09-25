@@ -610,5 +610,18 @@ window.i18nData['zh-HK'] = {
     green_title: "綠色能源與可持續發展",
     green_desc: "生態系統深度整合分布式清潔能源節點，推動能源生產與算力消耗的協同：",
     green_complement: "多能互補：整合水電、光伏、風電及生物質能。",
-    green_efficiency: "能效優化：從源頭降低碳排放強度，將區塊鏈算力轉化為推動綠色能源轉型的核心動力。"
+    green_efficiency: "能效優化：從源頭降低碳排放強度，將區塊鏈算力轉化為推動綠色能源轉型的核心動力。",
+    lp_stake_title: "NEO-USDT LP 質押池",
+    lp_stake_status: "即將上線",
+    lp_stake_desc: "質押 NEO-USDT LP 憑證，賺取 NRY 獎勵，獎勵按區塊實時累計，可隨時提取。",
+    lp_stake_apy: "年化收益率",
+    lp_stake_tvl: "總鎖倉價值",
+    lp_stake_my: "我的質押",
+    lp_stake_reward: "待提取獎勵",
+    lp_stake_pair: "交易對",
+    lp_stake_reward_token: "獎勵幣種",
+    lp_stake_amount_label: "質押數量",
+    lp_stake_btn: "質押 LP",
+    lp_unstake_btn: "提取質押",
+    lp_claim_btn: "提取獎勵"
 };

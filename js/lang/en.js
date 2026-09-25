@@ -711,5 +711,18 @@ window.i18nData['en'] = {
     wp_ch13_s4_title: "13.4 Smart Contract Addresses",
     wp_ch13_s4_p1: "Mainnet contract addresses, multi-signature addresses, treasury addresses, burn addresses (announced after official launch).",
     wp_ch13_s5_title: "13.5 Version Update Record",
-    wp_ch13_s5_p1: "V1.0: Initial complete whitepaper version; subsequent upgrades subject to community voting announcement."
+    wp_ch13_s5_p1: "V1.0: Initial complete whitepaper version; subsequent upgrades subject to community voting announcement.",
+    lp_stake_title: "NEO-USDT LP Staking Pool",
+    lp_stake_status: "Coming Soon",
+    lp_stake_desc: "Stake NEO-USDT LP vouchers to earn NRY rewards. Rewards accrue in real time per block and can be withdrawn anytime.",
+    lp_stake_apy: "APY",
+    lp_stake_tvl: "Total Value Locked",
+    lp_stake_my: "My Stake",
+    lp_stake_reward: "Pending Rewards",
+    lp_stake_pair: "Trading Pair",
+    lp_stake_reward_token: "Reward Token",
+    lp_stake_amount_label: "Stake Amount",
+    lp_stake_btn: "Stake LP",
+    lp_unstake_btn: "Unstake",
+    lp_claim_btn: "Claim Rewards"
 };

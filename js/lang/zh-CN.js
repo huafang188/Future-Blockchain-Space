@@ -628,5 +628,18 @@ window.i18nData['zh-CN'] = {
     wp_ch13_s4_title: "13.4 智能合约地址",
     wp_ch13_s4_p1: "主网合约地址、多签地址、国库地址、燃烧地址（正式上线后公布）。",
     wp_ch13_s5_title: "13.5 版本更新记录",
-    wp_ch13_s5_p1: "V1.0：初始完整版白皮书，后续升级以社区投票公示为准。"
+    wp_ch13_s5_p1: "V1.0：初始完整版白皮书，后续升级以社区投票公示为准。",
+    lp_stake_title: "NEO-USDT LP 质押池",
+    lp_stake_status: "即将上线",
+    lp_stake_desc: "质押 NEO-USDT LP 凭证，赚取 NRY 奖励，奖励按区块实时累计，可随时提取。",
+    lp_stake_apy: "年化收益率",
+    lp_stake_tvl: "总锁仓价值",
+    lp_stake_my: "我的质押",
+    lp_stake_reward: "待提取奖励",
+    lp_stake_pair: "交易对",
+    lp_stake_reward_token: "奖励币种",
+    lp_stake_amount_label: "质押数量",
+    lp_stake_btn: "质押 LP",
+    lp_unstake_btn: "提取质押",
+    lp_claim_btn: "提取奖励"
 };

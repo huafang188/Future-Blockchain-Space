@@ -551,4 +551,17 @@ window.i18nData['de'] = {
     wp_ch13_s3_title: "13.3 Mining-Berechnungsformel-Zusammenfassung",
     wp_ch13_s4_title: "13.4 Smart-Contract-Adressen",
     wp_ch13_s5_title: "13.5 Versionsaktualisierungsprotokoll",
+    lp_stake_title: "NEO-USDT LP Staking-Pool",
+    lp_stake_status: "Bald verfügbar",
+    lp_stake_desc: "Staken Sie NEO-USDT LP-Gutscheine und verdienen Sie NRY-Belohnungen. Belohnungen werden blockweise in Echtzeit gutgeschrieben und können jederzeit abgehoben werden.",
+    lp_stake_apy: "Jahresrendite (APY)",
+    lp_stake_tvl: "Gesamtwert gesperrt (TVL)",
+    lp_stake_my: "Mein Staking",
+    lp_stake_reward: "Ausstehende Belohnungen",
+    lp_stake_pair: "Handelspaar",
+    lp_stake_reward_token: "Belohnungs-Token",
+    lp_stake_amount_label: "Staking-Betrag",
+    lp_stake_btn: "LP staken",
+    lp_unstake_btn: "Staking abheben",
+    lp_claim_btn: "Belohnungen abrufen"
 };

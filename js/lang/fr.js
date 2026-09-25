@@ -550,4 +550,17 @@ window.i18nData['fr'] = {
     wp_ch13_s3_title: "13.3 Résumé des Formules de Calcul de Minage",
     wp_ch13_s4_title: "13.4 Adresses de Smart Contracts",
     wp_ch13_s5_title: "13.5 Journal des Mises à Jour de Version",
+    lp_stake_title: "Pool de staking LP NEO-USDT",
+    lp_stake_status: "Bientôt disponible",
+    lp_stake_desc: "Stakez vos bons LP NEO-USDT pour gagner des récompenses NRY. Les récompenses s'accumulent en temps réel à chaque bloc et peuvent être retirées à tout moment.",
+    lp_stake_apy: "Rendement annuel (APY)",
+    lp_stake_tvl: "Valeur totale verrouillée (TVL)",
+    lp_stake_my: "Mon staking",
+    lp_stake_reward: "Récompenses en attente",
+    lp_stake_pair: "Paire de trading",
+    lp_stake_reward_token: "Token de récompense",
+    lp_stake_amount_label: "Montant de staking",
+    lp_stake_btn: "Staker LP",
+    lp_unstake_btn: "Retirer le staking",
+    lp_claim_btn: "Retirer les récompenses"
 };
