@@ -553,6 +553,8 @@ window.i18nData['it'] = {
     lp_stake_title: "Pool di staking LP NEO-USDT",
     lp_stake_status: "In arrivo",
     lp_stake_desc: "Fai staking dei voucher LP NEO-USDT per guadagnare ricompense NRY. Le ricompense si accumulano in tempo reale per blocco e possono essere ritirate in qualsiasi momento.",
+    lp_stake_total_liquidity: "Liquidità totale",
+    lp_stake_my_breakdown: "Dettaglio stake",
     lp_stake_apy: "Rendimento annuale (APY)",
     lp_stake_tvl: "Valore totale bloccato (TVL)",
     lp_stake_my: "Il mio staking",

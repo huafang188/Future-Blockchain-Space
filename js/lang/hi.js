@@ -480,6 +480,8 @@ window.i18nData['hi'] = {
     lp_stake_title: "NEO-USDT LP स्टेकिंग पूल",
     lp_stake_status: "जल्द आ रहा है",
     lp_stake_desc: "NRY पुरस्कार अर्जित करने के लिए NEO-USDT LP वाउचर को स्टेक करें। पुरस्कार प्रत्येक ब्लॉक पर वास्तविक समय में जमा होते हैं और कभी भी निकाले जा सकते हैं।",
+    lp_stake_total_liquidity: "कुल तरलता",
+    lp_stake_my_breakdown: "स्टेक विवरण",
     lp_stake_apy: "वार्षिक प्रतिफल (APY)",
     lp_stake_tvl: "कुल लॉक मूल्य (TVL)",
     lp_stake_my: "मेरा स्टेकिंग",

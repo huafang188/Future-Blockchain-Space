@@ -624,6 +624,8 @@ window.i18nData['ja'] = {
     lp_stake_title: "NEO-USDT LP ステーキングプール",
     lp_stake_status: "近日公開",
     lp_stake_desc: "NEO-USDT LP 証券をステーキングして NRY 報酬を獲得できます。報酬はブロックごとにリアルタイムで蓄積され、いつでも引き出せます。",
+    lp_stake_total_liquidity: "総流動性",
+    lp_stake_my_breakdown: "質押内訳",
     lp_stake_apy: "年利回り",
     lp_stake_tvl: "総ロック価値",
     lp_stake_my: "マイステーキング",

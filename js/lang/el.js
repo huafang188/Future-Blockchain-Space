@@ -480,6 +480,8 @@ window.i18nData['el'] = {
     lp_stake_title: "Δεξαμενή Staking LP NEO-USDT",
     lp_stake_status: "Σύντομα διαθέσιμο",
     lp_stake_desc: "Στακάρετε κουπόνια LP NEO-USDT για να κερδίσετε ανταμοιβές NRY. Οι ανταμοιβές συσσωρεύονται σε πραγματικό χρόνο ανά μπλοκ και μπορούν να αποσυρθούν ανά πάσα στιγμή.",
+    lp_stake_total_liquidity: "Συνολική ρευστότητα",
+    lp_stake_my_breakdown: "Ανάλυση staking",
     lp_stake_apy: "Ετήσια απόδοση (APY)",
     lp_stake_tvl: "Συνολική κλειδωμένη αξία (TVL)",
     lp_stake_my: "Το staking μου",

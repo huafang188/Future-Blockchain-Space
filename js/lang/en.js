@@ -715,6 +715,8 @@ window.i18nData['en'] = {
     lp_stake_title: "NEO-USDT LP Staking Pool",
     lp_stake_status: "Coming Soon",
     lp_stake_desc: "Stake NEO-USDT LP vouchers to earn NRY rewards. Rewards accrue in real time per block and can be withdrawn anytime.",
+    lp_stake_total_liquidity: "Total Liquidity",
+    lp_stake_my_breakdown: "Stake Breakdown",
     lp_stake_apy: "APY",
     lp_stake_tvl: "Total Value Locked",
     lp_stake_my: "My Stake",

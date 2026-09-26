@@ -1009,7 +1009,15 @@
             <span class="bg-purple-50 text-purple-600 px-3 py-1 rounded-full text-[9px] font-bold border border-purple-100" data-i18n="lp_stake_status">即将上线</span>
         </div>
 
-        <p class="text-[11px] text-slate-600 leading-relaxed mb-4" data-i18n="lp_stake_desc">质押 NEO-USDT LP 凭证，赚取 NRY 奖励，奖励按区块实时累计，可随时提取。</p>
+        <p class="text-[11px] text-slate-600 leading-relaxed mb-3" data-i18n="lp_stake_desc">质押 NEO-USDT LP 凭证，赚取 NRY 奖励，奖励按区块实时累计，可随时提取。</p>
+
+        <!-- 总流动性（池子级 NEO / USDT 分别显示） -->
+        <div class="flex items-center flex-wrap gap-1.5 mb-4 text-[10px]">
+            <span class="text-slate-500 font-bold uppercase tracking-wider" data-i18n="lp_stake_total_liquidity">总流动性</span>
+            <span class="font-bold text-slate-700"><span id="lp_stake_tvl_neo">--</span> NEO</span>
+            <span class="text-slate-300 font-bold">+</span>
+            <span class="font-bold text-slate-700"><span id="lp_stake_tvl_usdt">--</span> USDT</span>
+        </div>
 
         <!-- 数据展示 -->
         <div class="miner-stats-grid">
@@ -1044,16 +1052,14 @@
             </div>
         </div>
 
-        <!-- 质押数量输入 -->
-        <div class="mt-4">
-            <div class="flex items-center justify-between mb-1">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="lp_stake_amount_label">质押数量</label>
-            </div>
-            <div class="flex items-center gap-2 bg-white/60 backdrop-blur rounded-2xl border border-white/40 px-4 py-3">
-                <input id="lp_stake_amount" type="number" min="0" step="any" placeholder="0.00" class="flex-1 bg-transparent outline-none text-sm font-bold text-slate-700 placeholder:text-slate-300">
-                <span class="text-[11px] font-bold text-slate-500">LP</span>
-            </div>
+        <!-- 我的质押折算 NEO / USDT -->
+        <div class="mt-2 flex items-center flex-wrap gap-1.5 text-[10px] text-slate-500">
+            <span class="font-bold uppercase tracking-wider" data-i18n="lp_stake_my_breakdown">质押折算</span>
+            <span class="font-bold text-slate-600"><span id="lp_stake_my_neo">--</span> NEO</span>
+            <span class="text-slate-300 font-bold">+</span>
+            <span class="font-bold text-slate-600"><span id="lp_stake_my_usdt">--</span> USDT</span>
         </div>
+
 
         <!-- 操作按钮 -->
         <div class="grid grid-cols-2 gap-4 mt-4">
@@ -1428,11 +1434,11 @@
     </div>
     
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
-<script src="js/lang/zh-CN.js?v=20260922b"></script>
-<script src="js/i18n-core.js?v=20260922b"></script>
-<script src="js/navigation.js?v=20260922b"></script>
-<script src="js/chat-agent.js?v=20260922b"></script>
-<script src="js/lp-stake.js?v=20260922b"></script>
+<script src="js/lang/zh-CN.js?v=20260926"></script>
+<script src="js/i18n-core.js?v=20260926"></script>
+<script src="js/navigation.js?v=20260926"></script>
+<script src="js/chat-agent.js?v=20260926"></script>
+<script src="js/lp-stake.js?v=20260926"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -1455,7 +1461,7 @@
     };
     
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20260922b';
+    window.APP_JS_VERSION = '20260926';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {

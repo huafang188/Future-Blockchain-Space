@@ -676,6 +676,8 @@ window.i18nData['ug'] = {
     lp_stake_title: "NEO-USDT LP ستاكىڭلىق كۆلچىكى",
     lp_stake_status: "يېقىندا ئېلىنار",
     lp_stake_desc: "NRY مۇكاپاتىغا ئېرىشىش ئۈچۈن NEO-USDT LP گۇۋاھنامىسىنى ستاكىڭ قىلىڭ. مۇكاپات ھەر بىر بىلوكتا رېئال ۋاقىتتا جۇغلۇنىدۇ ۋە ھەر ۋاقىت چېكىنىۋالغىلى بولىدۇ.",
+    lp_stake_total_liquidity: "ئومۇمىي ئېقىمچانلىق",
+    lp_stake_my_breakdown: "ستاكىڭ تەپسىلاتى",
     lp_stake_apy: "يىللىق پايدا (APY)",
     lp_stake_tvl: "ئومۇمىي قۇلۇپلانغان قىممەت (TVL)",
     lp_stake_my: "مېنىڭ ستاكىڭ قىلىشىم",

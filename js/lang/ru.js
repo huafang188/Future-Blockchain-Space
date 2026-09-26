@@ -571,6 +571,8 @@ window.i18nData['ru'] = {
     lp_stake_title: "NEO-USDT LP Пул стейкинга",
     lp_stake_status: "Скоро",
     lp_stake_desc: "Стейкайте ваучеры NEO-USDT LP и получайте вознаграждение в NRY. Вознаграждение начисляется в реальном времени за каждый блок и может быть выведено в любой момент.",
+    lp_stake_total_liquidity: "Общая ликвидность",
+    lp_stake_my_breakdown: "Разбивка стейка",
     lp_stake_apy: "Годовая доходность (APY)",
     lp_stake_tvl: "Общая заблокированная стоимость (TVL)",
     lp_stake_my: "Мой стейкинг",

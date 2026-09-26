@@ -486,6 +486,8 @@ window.i18nData['es'] = {
     lp_stake_title: "Pool de staking LP NEO-USDT",
     lp_stake_status: "Próximamente",
     lp_stake_desc: "Haz staking de certificados LP NEO-USDT para ganar recompensas NRY. Las recompensas se acumulan en tiempo real por bloque y pueden retirarse en cualquier momento.",
+    lp_stake_total_liquidity: "Liquidez total",
+    lp_stake_my_breakdown: "Desglose del stake",
     lp_stake_apy: "Rendimiento anual (APY)",
     lp_stake_tvl: "Valor total bloqueado (TVL)",
     lp_stake_my: "Mi staking",

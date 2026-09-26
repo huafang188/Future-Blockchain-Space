@@ -42,13 +42,26 @@
         return s + unit;
     }
 
+    // 数值格式化：千分位 + 最多 2 位小数
+    function fmtNum(val) {
+        var n = parseFloat(String(val || "0").replace(/,/g, ""));
+        if (isNaN(n)) return "--";
+        return n.toLocaleString("en-US", { maximumFractionDigits: 2 });
+    }
+
     // 渲染质押池数据到 UI（元素 id 与 index.html 一一对应）
     window.renderLPStake = function (data) {
         var set = function (id, v) {
             var el = document.getElementById(id);
             if (el) el.textContent = v;
         };
-        if (!data) return;
+        if (!data) {
+            set('lp_stake_tvl_neo', '--');
+            set('lp_stake_tvl_usdt', '--');
+            set('lp_stake_my_neo', '--');
+            set('lp_stake_my_usdt', '--');
+            return;
+        }
         var pool = data.pool || {};
         var user = data.user || {};
         set('lp_stake_apy', fmt(pool.apy, '%', { empty: '--%' }));
@@ -57,6 +70,10 @@
         set('lp_stake_reward', fmt(user.reward, ' NRY', { empty: '0.00 NRY' }));
         set('lp_stake_pair', pool.pair || 'NEO / USDT');
         set('lp_stake_reward_token', pool.rewardToken || 'NRY');
+        set('lp_stake_tvl_neo', fmtNum(pool.tvlNeo));
+        set('lp_stake_tvl_usdt', fmtNum(pool.tvlUsdt));
+        set('lp_stake_my_neo', fmtNum(user.myNeo));
+        set('lp_stake_my_usdt', fmtNum(user.myUsdt));
     };
 
     // 从 localStorage 读取地址并刷新 LP 数据
@@ -82,33 +99,18 @@
         setTimeout(function () { window.refreshLPStake(); }, 800);
     });
 
-    // 读取输入框中的质押数量
-    function readAmount() {
-        var input = document.getElementById('lp_stake_amount');
-        if (!input) return NaN;
-        return parseFloat(String(input.value).replace(/,/g, ''));
-    }
-
     // ===== 以下写入动作仍为接口预留，暂未接通后端 =====
 
-    // 【接口预留】质押 LP
+    // 【接口预留】质押 LP（后续通过弹窗输入数量）
     window.stakeLP = async function () {
-        var amount = readAmount();
-        if (isNaN(amount) || amount <= 0) {
-            if (window.showToast) window.showToast('请输入有效的质押数量', 'warning', 2500);
-            var input = document.getElementById('lp_stake_amount');
-            if (input) { input.focus(); }
-            return;
-        }
         var address = localStorage.getItem('fbs_address') || '';
         var chain = localStorage.getItem('fbs_chain') || 'BSC';
-        console.info('[LP质押] 质押接口预留：POST ' + LP_STAKE_API + ' { action: stake_lp, amount: ' + amount + ', chain: ' + chain + ' }');
+        console.info('[LP质押] 质押接口预留：POST ' + LP_STAKE_API + ' { action: stake_lp, chain: ' + chain + ' }');
         if (window.showToast) window.showToast('LP 质押接口预留中，敬请期待', 'warning', 2500);
     };
 
     // 【接口预留】提取质押
     window.unstakeLP = async function () {
-        var amount = readAmount();
         var address = localStorage.getItem('fbs_address') || '';
         var chain = localStorage.getItem('fbs_chain') || 'BSC';
         console.info('[LP质押] 提取接口预留：POST ' + LP_STAKE_API + ' { action: unstake_lp, chain: ' + chain + ' }');

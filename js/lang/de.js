@@ -554,6 +554,8 @@ window.i18nData['de'] = {
     lp_stake_title: "NEO-USDT LP Staking-Pool",
     lp_stake_status: "Bald verfügbar",
     lp_stake_desc: "Staken Sie NEO-USDT LP-Gutscheine und verdienen Sie NRY-Belohnungen. Belohnungen werden blockweise in Echtzeit gutgeschrieben und können jederzeit abgehoben werden.",
+    lp_stake_total_liquidity: "Gesamtliquidität",
+    lp_stake_my_breakdown: "Staking-Aufschlüsselung",
     lp_stake_apy: "Jahresrendite (APY)",
     lp_stake_tvl: "Gesamtwert gesperrt (TVL)",
     lp_stake_my: "Mein Staking",

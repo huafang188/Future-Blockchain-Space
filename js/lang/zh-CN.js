@@ -632,6 +632,8 @@ window.i18nData['zh-CN'] = {
     lp_stake_title: "NEO-USDT LP 质押池",
     lp_stake_status: "即将上线",
     lp_stake_desc: "质押 NEO-USDT LP 凭证，赚取 NRY 奖励，奖励按区块实时累计，可随时提取。",
+    lp_stake_total_liquidity: "总流动性",
+    lp_stake_my_breakdown: "质押折算",
     lp_stake_apy: "年化收益率",
     lp_stake_tvl: "总锁仓价值",
     lp_stake_my: "我的质押",

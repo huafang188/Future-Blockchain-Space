@@ -484,6 +484,8 @@ window.i18nData['ar'] = {
     lp_stake_title: "مجمع رهان NEO-USDT LP",
     lp_stake_status: "قريبًا",
     lp_stake_desc: "اربط شهادات NEO-USDT LP لكسب مكافآت NRY. تتراكم المكافآت في الوقت الفعلي لكل كتلة ويمكن سحبها في أي وقت.",
+    lp_stake_total_liquidity: "السيولة الإجمالية",
+    lp_stake_my_breakdown: "تفصيل الرهن",
     lp_stake_apy: "العائد السنوي (APY)",
     lp_stake_tvl: "القيمة الإجمالية المقفلة (TVL)",
     lp_stake_my: "رهاني",

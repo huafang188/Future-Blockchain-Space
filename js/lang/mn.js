@@ -481,6 +481,8 @@ window.i18nData['mn'] = {
     lp_stake_title: "NEO-USDT LP Стейкинг сан",
     lp_stake_status: "Удахгүй нээгдэнэ",
     lp_stake_desc: "NRY шагнал авахын тулд NEO-USDT LP гэрчилгээг стейкинг хийнэ үү. Шагнал блок бүрээр бодит цагт хуримтлагдаж, хүссэн үедээ татаж болно.",
+    lp_stake_total_liquidity: "Нийт урсгал",
+    lp_stake_my_breakdown: "Стейкинг задаргаа",
     lp_stake_apy: "Жилийн өгөөж (APY)",
     lp_stake_tvl: "Нийт түгжигдсэн үнэ (TVL)",
     lp_stake_my: "Миний стейкинг",

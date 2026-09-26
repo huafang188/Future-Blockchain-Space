@@ -384,6 +384,21 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     filter: brightness(0.9);
 }
 
+.action-btn.secondary {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1.5px solid rgba(99, 102, 241, 0.28) !important;
+    color: #6366f1 !important;
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.action-btn.secondary:active {
+    background: rgba(99, 102, 241, 0.1) !important;
+    transform: scale(0.94);
+    filter: none;
+}
+
 /* --- 6. 其它 UI 细节 --- */
 /* 玻璃卡片容器 */
 .glass-card {

@@ -490,6 +490,8 @@ window.i18nData['ko'] = {
     lp_stake_title: "NEO-USDT LP 스테이킹 풀",
     lp_stake_status: "곧 출시",
     lp_stake_desc: "NEO-USDT LP 증서를 스테이킹하여 NRY 보상을 받으세요. 보상은 블록별로 실시간 적립되며 언제든지 인출할 수 있습니다.",
+    lp_stake_total_liquidity: "총 유동성",
+    lp_stake_my_breakdown: "스테이킹 내역",
     lp_stake_apy: "연이율",
     lp_stake_tvl: "총 락업 가치",
     lp_stake_my: "내 스테이킹",
