@@ -1062,17 +1062,17 @@
 
 
         <!-- 操作按钮 -->
-        <div class="grid grid-cols-2 gap-4 mt-4">
+        <div class="grid grid-cols-1 gap-3 mt-4">
             <button type="button" onclick="stakeLP()" class="action-btn">
                 <span data-i18n="lp_stake_btn">质押 LP</span>
             </button>
-            <button type="button" onclick="unstakeLP()" class="action-btn secondary">
-                <span data-i18n="lp_unstake_btn">提取质押</span>
-            </button>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 mt-3">
-            <button type="button" onclick="claimLP()" class="action-btn secondary">
+        <div class="grid grid-cols-2 gap-3 mt-3">
+            <button type="button" onclick="unstakeLP()" class="action-btn lp-btn-secondary">
+                <span data-i18n="lp_unstake_btn">提取质押</span>
+            </button>
+            <button type="button" onclick="claimLP()" class="action-btn lp-btn-secondary">
                 <i class="fas fa-gift mr-1"></i>
                 <span data-i18n="lp_claim_btn">提取奖励</span>
             </button>
