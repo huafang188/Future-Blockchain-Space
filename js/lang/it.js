@@ -179,7 +179,7 @@ window.i18nData['it'] = {
     stake_note: "Lo staking garantisce una migliore liquidità alla piattaforma. Le aziende di IA acquisteranno direttamente i NEO in staking dagli utenti per noleggiare potenza di calcolo. Questi NEO non verranno bruciati; alla scadenza l'utente potrà ritirarli, dopodiché verranno bruciati nelle transazioni.",
     stake_confirm: "Conferma firma di staking",
     bank_title: "Banca on-chain NEO",
-    bank_status: "In arrivo",
+    bank_status: "In Funzione",
     bank_desc: "Deposita i tuoi asset nella banca on-chain: le aziende di IA noleggiano direttamente la tua potenza di calcolo, i guadagni vengono liquidati ogni giorno e gli asset restano sempre disponibili.",
     bank_rate_current: "Tasso flessibile",
     bank_rate_fixed: "Tasso fisso",

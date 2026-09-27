@@ -407,7 +407,7 @@ window.openExchangeModal = function() {
     // 质押弹窗
     window.openStakeModal = function() {
         // 质押周期 → 利率映射
-        window.stakeRates = { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+        window.stakeRates = { 60: 10, 120: 20, 180: 25, 240: 32, 360: 53 };
         window.showModal("stake", `
             <div class="space-y-3 text-left">
                 <!-- 第一项：质押代币 -->
@@ -453,7 +453,7 @@ window.openExchangeModal = function() {
                 <!-- 第三项：利率显示 -->
                 <div class="flex items-center justify-between px-3 py-1.5 bg-purple-50 rounded-lg border border-purple-100">
                     <span class="text-[10px] font-black text-purple-700 uppercase" data-i18n="stake_rate">质押利率</span>
-                    <span id="stakeRateValue" class="text-base font-black text-purple-600 tracking-tight">30%</span>
+                    <span id="stakeRateValue" class="text-base font-black text-purple-600 tracking-tight">10%</span>
                 </div>
 
                 <!-- 说明 -->
@@ -477,7 +477,7 @@ window.openExchangeModal = function() {
             return;
         }
         const days = Number(window.selectedStakeDays || 60);
-        const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+        const rates = window.stakeRates || { 60: 10, 120: 20, 180: 25, 240: 32, 360: 53 };
         const rate = rates[days] ?? 0;
         const total = amount * (1 + rate / 100);
         previewEl.textContent = total.toFixed(6) + ' ' + symbol;
@@ -488,7 +488,7 @@ window.openExchangeModal = function() {
             const active = Number(btn.dataset.days) === Number(days);
             btn.className = `stake-day-btn py-2 rounded-lg text-[11px] font-black border transition-all ${active ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-slate-600 border-slate-200'}`;
         });
-        const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+        const rates = window.stakeRates || { 60: 10, 120: 20, 180: 25, 240: 32, 360: 53 };
         const rateEl = document.getElementById('stakeRateValue');
         if (rateEl) rateEl.innerText = (rates[days] ?? 0) + '%';
         window.selectedStakeDays = days;

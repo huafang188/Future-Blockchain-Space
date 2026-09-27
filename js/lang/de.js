@@ -179,7 +179,7 @@ window.i18nData['de'] = {
     stake_note: "Staking sorgt für bessere Liquidität der Plattform. KI-Unternehmen kaufen die von Nutzern gestakten NEO direkt, um Rechenleistung zu mieten. Diese NEO werden nicht verbrannt; nach Ablauf kann der Nutzer sie abheben, danach werden sie beim Handel verbrannt.",
     stake_confirm: "Staking-Signatur bestätigen",
     bank_title: "NEO On-Chain-Bank",
-    bank_status: "Demnächst",
+    bank_status: "Laufend",
     bank_desc: "Legen Sie Vermögenswerte in die On-Chain-Bank ein — KI-Unternehmen mieten direkt Ihre Rechenleistung, Erträge werden täglich abgerechnet, Ein- und Auszahlungen jederzeit möglich.",
     bank_rate_current: "Flexibler Zinssatz",
     bank_rate_fixed: "Fester Zinssatz",

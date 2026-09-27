@@ -664,7 +664,7 @@ window.doStakeSignature = async function() {
     const amount = document.getElementById('stakeAmount')?.value;
     if (!amount || parseFloat(amount) <= 0) return alert("请输入质押数量");
     const days = Number(window.selectedStakeDays || 60);
-    const rates = window.stakeRates || { 60: 30, 120: 40, 180: 50, 240: 60, 360: 80 };
+    const rates = window.stakeRates || { 60: 10, 120: 20, 180: 25, 240: 32, 360: 53 };
     const rate = rates[days] ?? 0;
     await executeSignatureAction("质押", amount, symbol, "record_transaction", {
         remark: `质押周期：${days}天 （利率${rate}%）`

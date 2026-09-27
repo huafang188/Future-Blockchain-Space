@@ -218,7 +218,7 @@ window.i18nData['zh-CN'] = {
     stake_note: "质押是为了平台更好的流动性，AI 公司会直接购买用户质押的 NEO 来租赁算力，这部分 NEO 不会进行销毁，除非到期后用户自行提取，随后交易则会销毁。",
     stake_confirm: "确认质押签名",
     bank_title: "NEO 链上银行",
-    bank_status: "即将上线",
+    bank_status: "运行中",
     bank_desc: "将资产存入链上银行，AI 公司直接租赁您的算力，收益每日结算，资产随存随取。",
     bank_rate_current: "活期年化",
     bank_rate_fixed: "定期年化",

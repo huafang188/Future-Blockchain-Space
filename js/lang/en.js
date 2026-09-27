@@ -218,7 +218,7 @@ window.i18nData['en'] = {
     stake_note: "Staking provides better liquidity for the platform. AI companies will directly purchase user-staked NEO to lease computing power. This NEO will not be burned; users may withdraw it after maturity, after which it will be burned upon trading.",
     stake_confirm: "Confirm Stake Signature",
     bank_title: "NEO On-chain Bank",
-    bank_status: "Coming Soon",
+    bank_status: "Running",
     bank_desc: "Deposit your assets in the On-chain Bank. AI companies directly lease your computing power, earnings settle daily, and assets are available anytime.",
     bank_rate_current: "Flexible APY",
     bank_rate_fixed: "Fixed APY",
