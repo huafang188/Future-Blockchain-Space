@@ -1986,3 +1986,195 @@ body.agent-active .bottom-nav-pill {
     border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
+/* ============ NEO 链上银行上线广告横幅 ============ */
+.neo-bank-banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 24px 20px 22px;
+    margin: 4px 0 20px;
+    isolation: isolate;
+    background:
+        radial-gradient(130% 120% at 100% -10%, rgba(192, 132, 252, 0.5) 0%, rgba(216, 180, 254, 0.18) 42%, transparent 66%),
+        radial-gradient(140% 130% at -10% 110%, rgba(129, 140, 248, 0.42) 0%, rgba(199, 210, 254, 0.14) 44%, transparent 64%),
+        linear-gradient(135deg, #f5f3ff 0%, #f3e8ff 48%, #ede9fe 100%);
+    border: 1px solid rgba(168, 120, 255, 0.28);
+    box-shadow: 0 14px 40px rgba(152, 98, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    animation: nbbBreath 4.5s ease-in-out infinite;
+}
+
+/* 科技网格底纹 */
+.neo-bank-banner .nbb-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(147, 105, 247, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(147, 105, 247, 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 28%, transparent 76%);
+    mask-image: radial-gradient(120% 120% at 50% 50%, #000 28%, transparent 76%);
+    z-index: -1;
+}
+
+/* 流光扫过 */
+.neo-bank-banner .nbb-shine {
+    position: absolute;
+    top: -80%; bottom: -80%;
+    left: -75%;
+    width: 45%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+    transform: skewX(-18deg);
+    animation: nbbShine 3.4s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 呼吸光晕 */
+.neo-bank-banner .nbb-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(30px);
+    z-index: -1;
+    opacity: 0.65;
+    pointer-events: none;
+}
+.neo-bank-banner .nbb-orb-a {
+    width: 130px; height: 130px; top: -34px; right: -22px;
+    background: rgba(196, 140, 255, 0.55);
+    animation: nbbOrbA 5.5s ease-in-out infinite alternate;
+}
+.neo-bank-banner .nbb-orb-b {
+    width: 112px; height: 112px; bottom: -32px; left: -26px;
+    background: rgba(129, 140, 248, 0.5);
+    animation: nbbOrbB 6.5s ease-in-out infinite alternate;
+}
+
+/* 浮动粒子 */
+.neo-bank-banner .nbb-float {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #ffffff, rgba(196, 132, 252, 0.95));
+    box-shadow: 0 0 10px 2px rgba(196, 132, 252, 0.55);
+    z-index: 0;
+    pointer-events: none;
+}
+.neo-bank-banner .nbb-float-1 { width: 7px; height: 7px; top: 20%; right: 16%; animation: nbbFloat 3.4s ease-in-out infinite; }
+.neo-bank-banner .nbb-float-2 { width: 5px; height: 5px; top: 62%; right: 9%; animation: nbbFloat 4.2s ease-in-out 0.5s infinite; }
+.neo-bank-banner .nbb-float-3 { width: 6px; height: 6px; top: 34%; left: 10%; animation: nbbFloat 3.8s ease-in-out 1s infinite; }
+.neo-bank-banner .nbb-float-4 { width: 4px; height: 4px; bottom: 24%; left: 18%; animation: nbbFloat 4.6s ease-in-out 1.6s infinite; }
+
+/* 内容主体 */
+.neo-bank-banner .nbb-body { position: relative; z-index: 2; text-align: center; }
+
+.neo-bank-banner .nbb-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(129, 140, 248, 0.92));
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+    animation: nbbBadgePulse 2.4s ease-in-out infinite;
+}
+.neo-bank-banner .nbb-badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #fff;
+    animation: nbbDotRing 1.8s ease-out infinite;
+}
+
+.neo-bank-banner .nbb-title {
+    margin-top: 12px;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background: linear-gradient(120deg, #6d28d9 0%, #a855f7 45%, #6366f1 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.neo-bank-banner .nbb-sub {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #7c3aed;
+    letter-spacing: 0.5px;
+}
+
+.neo-bank-banner .nbb-cta {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    animation: nbbCtaGlow 2.6s ease-in-out infinite;
+}
+.neo-bank-banner .nbb-arrow {
+    font-size: 13px;
+    animation: nbbArrowSlide 1.4s ease-in-out infinite;
+}
+
+/* 动画关键帧 */
+@keyframes nbbBreath {
+    0%, 100% { box-shadow: 0 14px 40px rgba(152, 98, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+    50% { box-shadow: 0 18px 52px rgba(152, 98, 248, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+}
+@keyframes nbbShine {
+    0% { left: -75%; }
+    55% { left: 135%; }
+    100% { left: 135%; }
+}
+@keyframes nbbOrbA {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-18px, 14px) scale(1.2); }
+}
+@keyframes nbbOrbB {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(20px, -12px) scale(1.18); }
+}
+@keyframes nbbFloat {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50% { transform: translateY(-14px); opacity: 1; }
+}
+@keyframes nbbBadgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+@keyframes nbbDotRing {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8); }
+    70% { box-shadow: 0 0 0 7px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+@keyframes nbbCtaGlow {
+    0%, 100% { box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+    50% { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+}
+@keyframes nbbArrowSlide {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+/* 尊重减少动效偏好 */
+@media (prefers-reduced-motion: reduce) {
+    .neo-bank-banner,
+    .neo-bank-banner .nbb-shine,
+    .neo-bank-banner .nbb-orb,
+    .neo-bank-banner .nbb-float,
+    .neo-bank-banner .nbb-badge,
+    .neo-bank-banner .nbb-cta,
+    .neo-bank-banner .nbb-arrow {
+        animation: none;
+    }
+}
+
