@@ -60,6 +60,7 @@
             set('lp_stake_tvl_usdt', '--');
             set('lp_stake_my_neo', '--');
             set('lp_stake_my_usdt', '--');
+            set('lp_stake_locked', '--');
             return;
         }
         var pool = data.pool || {};
@@ -74,6 +75,7 @@
         set('lp_stake_tvl_usdt', fmtNum(pool.tvlUsdt));
         set('lp_stake_my_neo', fmtNum(user.myNeo));
         set('lp_stake_my_usdt', fmtNum(user.myUsdt));
+        set('lp_stake_locked', fmt(user.lockedLP, ' LP', { empty: '0.00 LP' }));
     };
 
     // 从 localStorage 读取地址并刷新 LP 数据
