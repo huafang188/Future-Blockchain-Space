@@ -134,7 +134,7 @@
             </div>`);
     };
 
-    // 提取本金弹窗（可提取本金 + 到期时间）
+    // 提取本金弹窗（可提取本金 + 到期时间 + 输入框）
     window.withdrawBankPrincipal = function () {
         var principal = fmtAmount(getBankUser('myStake'), 'NEO');
         var due = fmt(getBankUser('period'), '', { empty: '--' });
@@ -147,6 +147,16 @@
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="bank_principal_due">到期时间</span>
                     <span class="text-sm font-black text-purple-600">${due}</span>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="bank_income_label">提取数量</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="bankPrincipalAmount" placeholder="0.0" step="any" min="0"
+                               class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">
+                            <span class="text-xs font-black">NEO</span>
+                        </div>
+                    </div>
                 </div>
                 <button type="button" onclick="window.doWithdrawBankPrincipal()" class="action-btn w-full mt-1">
                     <span data-i18n="bank_principal_confirm">确认提取本金</span>
@@ -163,13 +173,15 @@
         setTimeout(function () { window.refreshBank && window.refreshBank(); }, 2000);
     };
 
-    // 确认提取本金（全额提取）
+    // 确认提取本金（按输入数量提取）
     window.doWithdrawBankPrincipal = async function () {
-        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        var amount = parseFloat(document.getElementById('bankPrincipalAmount') && document.getElementById('bankPrincipalAmount').value) || 0;
+        if (amount <= 0) { alert('请输入提取数量'); return; }
         var principal = getBankUser('myStake');
-        var num = principal.replace(/[^0-9.]/g, '');
-        var amount = num || '0';
-        await window.executeSignatureAction('提取本金', amount, 'NEO', 'withdraw_bank_principal', { due: getBankUser('period') });
+        var maxNum = parseFloat(principal.replace(/[^0-9.]/g, '')) || 0;
+        if (amount > maxNum) { alert('提取数量超过可提取本金'); return; }
+        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeSignatureAction('提取本金', amount.toString(), 'NEO', 'withdraw_bank_principal', { due: getBankUser('period') });
         setTimeout(function () { window.refreshBank && window.refreshBank(); }, 2000);
     };
 })();
