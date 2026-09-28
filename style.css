@@ -1,6 +1,6 @@
 /* 1. 基础重置与现代 Apple 字体栈 */
 body {
-    background-color: #f2f2f7; /* 苹果系统背景色 */
+
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Inter", sans-serif !important;
     -webkit-font-smoothing: antialiased;
     letter-spacing: -0.015em;
@@ -14,26 +14,60 @@ body {
     -moz-text-size-adjust: none;
     -ms-text-size-adjust: none;
     text-size-adjust: none;
-    /* 全局背景图片 */
-    background-image: url('assets/网页背景.webp');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
+    /* CSS 动态科技背景（替代图片） */
+    background-color: #f5f3ff;
+    background-image:
+        radial-gradient(ellipse 90% 70% at 12% 8%, rgba(168, 85, 247, 0.22) 0%, transparent 55%),
+        radial-gradient(ellipse 85% 65% at 88% 92%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 50% 50%, rgba(196, 132, 252, 0.10) 0%, transparent 60%),
+        linear-gradient(160deg, #f5f3ff 0%, #ede9fe 28%, #f3e8ff 58%, #e0e7ff 100%);
     background-attachment: fixed;
     position: relative;
 }
 
-/* 背景图片遮罩层 - 控制透明度 */
+/* 科技网格层（区块链网格） */
 body::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(242, 242, 247, 0.55); /* 55%遮罩 = 45%图片可见度 */
+    top: -50px; left: -50px; right: -50px; bottom: -50px;
+    background-image:
+        linear-gradient(rgba(147, 51, 234, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(147, 51, 234, 0.06) 1px, transparent 1px);
+    background-size: 46px 46px;
     pointer-events: none;
     z-index: 0;
+    animation: bcGridDrift 30s linear infinite;
+}
+
+/* 区块链节点光点 */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        radial-gradient(circle 2.5px at 15% 22%, rgba(168, 85, 247, 0.55), transparent 45%),
+        radial-gradient(circle 1.5px at 75% 14%, rgba(139, 92, 246, 0.45), transparent 45%),
+        radial-gradient(circle 2px at 45% 78%, rgba(168, 85, 247, 0.5), transparent 45%),
+        radial-gradient(circle 1px at 90% 56%, rgba(139, 92, 246, 0.4), transparent 45%),
+        radial-gradient(circle 1.5px at 8% 84%, rgba(168, 85, 247, 0.45), transparent 45%),
+        radial-gradient(circle 2px at 62% 36%, rgba(139, 92, 246, 0.5), transparent 45%),
+        radial-gradient(circle 1px at 32% 58%, rgba(168, 85, 247, 0.35), transparent 45%),
+        radial-gradient(circle 1.5px at 85% 82%, rgba(139, 92, 246, 0.4), transparent 45%),
+        radial-gradient(circle 2px at 50% 12%, rgba(168, 85, 247, 0.4), transparent 45%),
+        radial-gradient(circle 1px at 22% 48%, rgba(139, 92, 246, 0.35), transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+    animation: bcNodePulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes bcGridDrift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(46px, 46px); }
+}
+
+@keyframes bcNodePulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
 }
 
 /* --- 1.5 标题渐变动画 --- */
