@@ -8,6 +8,16 @@ window.switchPage = function(page) {
     document.body.classList.toggle('agent-active', page === 'agent');
 };
 
+// 跳转到 LP 质押池（跨页面：先切到 mine 页再滚动）
+window.goToLPStake = function() {
+    var target = document.getElementById('lp-stake-section');
+    if (!target) return;
+    window.switchPage('mine');
+    requestAnimationFrame(function() {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+};
+
 // 顶部导航（白皮书等）
 window.handleNav = function(key) {
     if (key === 'whitepaper') {
