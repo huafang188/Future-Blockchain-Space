@@ -194,7 +194,7 @@ async function ensureNetwork() {
  * 增加：金额清洗与余额预检查逻辑
  * 兼容 Bitget/TP/MetaMask 等钱包
  */
-async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr) {
+async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr, extraRecordFields = {}) {
     // 防重复提交 + 超时强制重置
     if (isSubmitting) {
         const elapsed = Date.now() - isSubmittingSince;
@@ -468,7 +468,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             try {
                 if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
                 // ⚠️ 必须传 txHash，后端才会按"链上交易记录"放行（不强制 personal_sign 二次签名）
-                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash });
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, ...extraRecordFields });
                 backendSuccess = res.success || res.code === 0 || res.ok;
             } catch (e) {
                 console.error('[Executors] 后台提交异常:', e);
@@ -485,7 +485,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             try {
                 if (window.showModal) window.showModal("modal_processing", "交易已提交，正在保存记录...");
                 // ⚠️ 必须传 txHash，后端才会按"链上交易记录"放行（不强制 personal_sign 二次签名）
-                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash });
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, ...extraRecordFields });
                 backendSuccess = res.success || res.code === 0 || res.ok;
             } catch (e) {
                 console.error('[Executors] 后台提交异常:', e);
@@ -805,3 +805,6 @@ window.doInternalTransfer = async function() {
 export function mountActionExecutors() {
     console.log("[Executors] 核心交易逻辑已挂载 (含余额预检与金额清洗)");
 }
+
+window.executeOnChainTransfer = executeOnChainTransfer;
+window.executeSignatureAction = executeSignatureAction;
