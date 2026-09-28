@@ -188,6 +188,10 @@ window.i18nData['zh-HK'] = {
     bank_rate_fixed: "定期年化",
     bank_tvl: "總鎖倉價值",
     bank_users: "存取用戶",
+    bank_my_stake: "我的質押",
+    bank_my_period: "我的質押期限",
+    bank_my_rate: "我的利率",
+    bank_my_daily: "我的每日收益",
     bank_btn: "敬請期待",
     transfer_fee: "手續費：0.00USDT",
     

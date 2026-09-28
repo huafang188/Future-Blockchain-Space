@@ -122,6 +122,10 @@ window.i18nData['es'] = {
     bank_rate_fixed: "Tasa fija",
     bank_tvl: "Valor total bloqueado",
     bank_users: "Usuarios",
+    bank_my_stake: "Mi depósito",
+    bank_my_period: "Mi período de depósito",
+    bank_my_rate: "Mi tasa",
+    bank_my_daily: "Mi ingreso diario",
     bank_btn: "Próximamente",
     transfer_fee: "Comisión: 0.00USDT",
     

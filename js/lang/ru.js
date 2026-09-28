@@ -189,6 +189,10 @@ window.i18nData['ru'] = {
     bank_rate_fixed: "Срочная ставка",
     bank_tvl: "Общая заблокированная стоимость",
     bank_users: "Пользователи",
+    bank_my_stake: "Мой стейк",
+    bank_my_period: "Период моего стейка",
+    bank_my_rate: "Моя ставка",
+    bank_my_daily: "Мой ежедневный доход",
     bank_btn: "Скоро",
     transfer_fee: "Комиссия: 0.00USDT",
     

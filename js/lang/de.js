@@ -189,6 +189,10 @@ window.i18nData['de'] = {
     bank_rate_fixed: "Fester Zinssatz",
     bank_tvl: "Gesamtwert gesperrt",
     bank_users: "Nutzer",
+    bank_my_stake: "Meine Einlage",
+    bank_my_period: "Meine Laufzeit",
+    bank_my_rate: "Mein Zinssatz",
+    bank_my_daily: "Mein Tagesertrag",
     bank_btn: "Demnächst",
     transfer_fee: "Gebühr: 0.00USDT",
     

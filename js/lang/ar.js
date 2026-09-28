@@ -191,6 +191,10 @@ window.i18nData['ar'] = {
     bank_rate_fixed: "عائد ثابت",
     bank_tvl: "القيمة الإجمالية المقفلة",
     bank_users: "المستخدمون",
+    bank_my_stake: "رهاني",
+    bank_my_period: "مدة رهاني",
+    bank_my_rate: "سعر الفائدة الخاص بي",
+    bank_my_daily: "دخلي اليومي",
     bank_btn: "قريباً",
     transfer_fee: "الرسوم: 0.00USDT",
     

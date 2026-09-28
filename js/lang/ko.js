@@ -189,6 +189,10 @@ window.i18nData['ko'] = {
     bank_rate_fixed: "정기 연이율",
     bank_tvl: "총 예치 가치",
     bank_users: "이용자",
+    bank_my_stake: "내 스테이킹",
+    bank_my_period: "내 스테이킹 기간",
+    bank_my_rate: "내 이율",
+    bank_my_daily: "내 일일 수익",
     bank_btn: "곧 출시",
     transfer_fee: "수수료: 0.00USDT",
     

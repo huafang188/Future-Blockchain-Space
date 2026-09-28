@@ -189,6 +189,10 @@ window.i18nData['it'] = {
     bank_rate_fixed: "Tasso fisso",
     bank_tvl: "Valore totale bloccato",
     bank_users: "Utenti",
+    bank_my_stake: "Il mio deposito",
+    bank_my_period: "La mia durata",
+    bank_my_rate: "Il mio tasso",
+    bank_my_daily: "Il mio reddito giornaliero",
     bank_btn: "In arrivo",
     transfer_fee: "Commissione: 0.00USDT",
     

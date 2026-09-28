@@ -189,6 +189,10 @@ window.i18nData['ja'] = {
     bank_rate_fixed: "定期年利",
     bank_tvl: "総ロック額",
     bank_users: "利用ユーザー",
+    bank_my_stake: "マイステーク",
+    bank_my_period: "マイステーク期間",
+    bank_my_rate: "私の利率",
+    bank_my_daily: "私の毎日の収益",
     bank_btn: "近日公開",
     transfer_fee: "手数料：0.00USDT",
     

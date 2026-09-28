@@ -189,6 +189,10 @@ window.i18nData['fr'] = {
     bank_rate_fixed: "Taux fixe",
     bank_tvl: "Valeur totale verrouillée",
     bank_users: "Utilisateurs",
+    bank_my_stake: "Mon dépôt",
+    bank_my_period: "Ma durée de dépôt",
+    bank_my_rate: "Mon taux",
+    bank_my_daily: "Mon revenu quotidien",
     bank_btn: "Bientôt",
     transfer_fee: "Frais: 0.00USDT",
     

@@ -190,6 +190,10 @@ window.i18nData['el'] = {
     bank_rate_fixed: "Σταθερό επιτόκιο",
     bank_tvl: "Συνολική κλειδωμένη αξία",
     bank_users: "Χρήστες",
+    bank_my_stake: "Η κατάθεσή μου",
+    bank_my_period: "Η διάρκειά μου",
+    bank_my_rate: "Το επιτόκιό μου",
+    bank_my_daily: "Το ημερήσιο εισόδημά μου",
     bank_btn: "Σύντομα",
     transfer_fee: "Προμήθεια: 0.00USDT",
     

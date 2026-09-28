@@ -190,6 +190,10 @@ window.i18nData['hi'] = {
     bank_rate_fixed: "निश्चित दर",
     bank_tvl: "कुल लॉक मूल्य",
     bank_users: "उपयोगकर्ता",
+    bank_my_stake: "मेरी हिस्सेदारी",
+    bank_my_period: "मेरी हिस्सेदारी अवधि",
+    bank_my_rate: "मेरी दर",
+    bank_my_daily: "मेरी दैनिक आय",
     bank_btn: "जल्द आ रहा है",
     transfer_fee: "शुल्क: 0.00USDT",
     

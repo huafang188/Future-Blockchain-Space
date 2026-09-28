@@ -190,6 +190,10 @@ window.i18nData['mn'] = {
     bank_rate_fixed: "Тогтмол хүү",
     bank_tvl: "Нийт түгжигдсэн үнэ цэнэ",
     bank_users: "Хэрэглэгчид",
+    bank_my_stake: "Миний байршуулалт",
+    bank_my_period: "Байршуулах хугацаа",
+    bank_my_rate: "Миний хүү",
+    bank_my_daily: "Миний өдрийн орлого",
     bank_btn: "Удахгүй",
     transfer_fee: "Хураамж: 0.00USDT",
     
