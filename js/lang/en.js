@@ -731,5 +731,6 @@ window.i18nData['en'] = {
     lp_stake_amount_label: "Stake Amount",
     lp_stake_btn: "Add Liquidity",
     lp_unstake_btn: "Remove Liquidity",
+    lp_lock_btn: "Lock Liquidity",
     lp_claim_btn: "Claim Rewards"
 };

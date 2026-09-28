@@ -570,5 +570,6 @@ window.i18nData['de'] = {
     lp_stake_amount_label: "Staking-Betrag",
     lp_stake_btn: "Liquidität hinzufügen",
     lp_unstake_btn: "Liquidität entfernen",
+    lp_lock_btn: "Liquidität sperren",
     lp_claim_btn: "Belohnungen abrufen"
 };

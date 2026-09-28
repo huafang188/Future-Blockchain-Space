@@ -640,5 +640,6 @@ window.i18nData['ja'] = {
     lp_stake_amount_label: "ステーキング数量",
     lp_stake_btn: "流動性を追加",
     lp_unstake_btn: "流動性を引き出す",
+    lp_lock_btn: "流動性をロック",
     lp_claim_btn: "報酬を受け取る"
 };

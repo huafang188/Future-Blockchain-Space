@@ -648,5 +648,6 @@ window.i18nData['zh-CN'] = {
     lp_stake_amount_label: "质押数量",
     lp_stake_btn: "增加流动性",
     lp_unstake_btn: "提取流动性",
+    lp_lock_btn: "锁定流动性",
     lp_claim_btn: "提取奖励"
 };

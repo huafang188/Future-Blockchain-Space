@@ -506,5 +506,6 @@ window.i18nData['ko'] = {
     lp_stake_amount_label: "스테이킹 수량",
     lp_stake_btn: "유동성 추가",
     lp_unstake_btn: "유동성 제거",
+    lp_lock_btn: "유동성 잠금",
     lp_claim_btn: "보상 수령"
 };

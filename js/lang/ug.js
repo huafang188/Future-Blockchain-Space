@@ -692,5 +692,6 @@ window.i18nData['ug'] = {
     lp_stake_amount_label: "ستاكىڭ مىقدارى",
     lp_stake_btn: "ئېقىمچانلىق قوشۇش",
     lp_unstake_btn: "ئېقىمچانلىقنى چېكىنىش",
+    lp_lock_btn: "ئېقىمچانلىقنى قۇلۇپلاش",
     lp_claim_btn: "مۇكاپاتنى ئېلىش"
 };

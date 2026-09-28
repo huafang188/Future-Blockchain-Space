@@ -496,5 +496,6 @@ window.i18nData['hi'] = {
     lp_stake_amount_label: "स्टेकिंग राशि",
     lp_stake_btn: "लिक्विडिटी जोड़ें",
     lp_unstake_btn: "लिक्विडिटी हटाएं",
+    lp_lock_btn: "लिक्विडिटी लॉक करें",
     lp_claim_btn: "पुरस्कार निकालें"
 };

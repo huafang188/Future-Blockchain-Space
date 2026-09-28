@@ -111,6 +111,14 @@
         if (window.showToast) window.showToast('LP 质押接口预留中，敬请期待', 'warning', 2500);
     };
 
+    // 【接口预留】锁定流动性
+    window.lockLP = async function () {
+        var address = localStorage.getItem('fbs_address') || '';
+        var chain = localStorage.getItem('fbs_chain') || 'BSC';
+        console.info('[LP质押] 锁定接口预留：POST ' + LP_STAKE_API + ' { action: lock_lp, chain: ' + chain + ' }');
+        if (window.showToast) window.showToast('LP 锁定接口预留中，敬请期待', 'warning', 2500);
+    };
+
     // 【接口预留】提取质押
     window.unstakeLP = async function () {
         var address = localStorage.getItem('fbs_address') || '';

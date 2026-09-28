@@ -500,5 +500,6 @@ window.i18nData['ar'] = {
     lp_stake_amount_label: "مبلغ الرهان",
     lp_stake_btn: "إضافة سيولة",
     lp_unstake_btn: "سحب السيولة",
+    lp_lock_btn: "قفل السيولة",
     lp_claim_btn: "سحب المكافآت"
 };

@@ -502,5 +502,6 @@ window.i18nData['es'] = {
     lp_stake_amount_label: "Cantidad de staking",
     lp_stake_btn: "Añadir liquidez",
     lp_unstake_btn: "Retirar liquidez",
+    lp_lock_btn: "Bloquear liquidez",
     lp_claim_btn: "Retirar recompensas"
 };

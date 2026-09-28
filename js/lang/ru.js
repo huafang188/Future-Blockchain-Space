@@ -587,5 +587,6 @@ window.i18nData['ru'] = {
     lp_stake_amount_label: "Сумма стейкинга",
     lp_stake_btn: "Добавить ликвидность",
     lp_unstake_btn: "Убрать ликвидность",
+    lp_lock_btn: "Заблокировать ликвидность",
     lp_claim_btn: "Забрать награду"
 };

@@ -497,5 +497,6 @@ window.i18nData['mn'] = {
     lp_stake_amount_label: "Стейкинг дүн",
     lp_stake_btn: "Хөрвөх чадвар нэмэх",
     lp_unstake_btn: "Хөрвөх чадвар хасах",
+    lp_lock_btn: "Хөрвөх чадвар түгжих",
     lp_claim_btn: "Шагнал татах"
 };

@@ -569,5 +569,6 @@ window.i18nData['it'] = {
     lp_stake_amount_label: "Importo staking",
     lp_stake_btn: "Aggiungi liquidità",
     lp_unstake_btn: "Rimuovi liquidità",
+    lp_lock_btn: "Blocca liquidità",
     lp_claim_btn: "Ritira ricompense"
 };

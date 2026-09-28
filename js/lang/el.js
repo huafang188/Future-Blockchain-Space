@@ -496,5 +496,6 @@ window.i18nData['el'] = {
     lp_stake_amount_label: "Ποσό staking",
     lp_stake_btn: "Προσθήκη ρευστότητας",
     lp_unstake_btn: "Αφαίρεση ρευστότητας",
+    lp_lock_btn: "Κλείδωμα ρευστότητας",
     lp_claim_btn: "Ανάληψη ανταμοιβών"
 };
