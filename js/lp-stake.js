@@ -121,10 +121,10 @@
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="add_liq_pair">交易对</span>
                     <div class="flex items-center gap-1.5">
-                        <img src="${neoLogo}" class="w-5 h-5 object-contain">
+                        <img src="${neoLogo}" class="w-5 h-5 object-contain rounded-full">
                         <span class="text-xs font-black">NEO</span>
                         <span class="text-slate-400 text-xs">/</span>
-                        <img src="${usdtLogo}" class="w-5 h-5 object-contain">
+                        <img src="${usdtLogo}" class="w-5 h-5 object-contain rounded-full">
                         <span class="text-xs font-black">USDT</span>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                                oninput="window.calcAddLiquidityUsdt()"
                                class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
                         <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">
-                            <img src="${neoLogo}" class="w-5 h-5 object-contain">
+                            <img src="${neoLogo}" class="w-5 h-5 object-contain rounded-full">
                             <span class="text-xs font-black">NEO</span>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                     <div class="flex items-center gap-2">
                         <div id="addLiqUsdtAmount" class="flex-1 px-3 py-2 bg-purple-50 rounded-xl font-black text-sm text-purple-600 border border-purple-100">0.00</div>
                         <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">
-                            <img src="${usdtLogo}" class="w-5 h-5 object-contain">
+                            <img src="${usdtLogo}" class="w-5 h-5 object-contain rounded-full">
                             <span class="text-xs font-black">USDT</span>
                         </div>
                     </div>
@@ -242,11 +242,23 @@
     window.unstakeLP = async function () {
         var myNeo = getLpUser('myNeo');
         var myUsdt = getLpUser('myUsdt');
+        var staked = getLpUser('staked');
+        var lockedLP = getLpUser('lockedLP');
         window.showModal('unstake_liq_title', `
             <div class="space-y-3 text-left">
                 <div class="flex items-start gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
                     <i class="fa-solid fa-circle-info text-slate-400 text-[10px] mt-0.5"></i>
                     <span class="text-[9px] font-bold text-slate-500 leading-relaxed" data-i18n="unstake_liq_desc">提取后 NEO 与 USDT 将返还至您的账户</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="lp_stake_my">我的流动性</span>
+                        <span class="text-sm font-black text-purple-600">${staked.toFixed(2)} LP</span>
+                    </div>
+                    <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="lp_stake_locked">我的锁定LP</span>
+                        <span class="text-sm font-black text-purple-600">${lockedLP.toFixed(2)} LP</span>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
@@ -283,7 +295,7 @@
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="claim_reward_balance">待提取奖励</span>
                     <div class="flex items-center gap-1.5">
-                        <img src="${nryLogo}" class="w-5 h-5 object-contain">
+                        <img src="${nryLogo}" class="w-5 h-5 object-contain rounded-full">
                         <span class="text-sm font-black text-purple-600">${reward.toFixed(4)} NRY</span>
                     </div>
                 </div>
@@ -293,7 +305,7 @@
                         <input type="number" id="claimRewardAmount" placeholder="0.0" step="any" min="0"
                                class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
                         <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">
-                            <img src="${nryLogo}" class="w-5 h-5 object-contain">
+                            <img src="${nryLogo}" class="w-5 h-5 object-contain rounded-full">
                             <span class="text-xs font-black">NRY</span>
                         </div>
                     </div>

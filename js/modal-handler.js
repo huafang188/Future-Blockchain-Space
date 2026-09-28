@@ -293,7 +293,7 @@ export function mountModalHandlers() {
                     <span class="text-[11px] font-bold text-amber-700 leading-relaxed" data-i18n="withdraw_warning">提现到账时间为两小时以内，请勿重复提交，避免链上拥堵延迟到账</span>
                 </div>
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <img id="witLogo" src="${tokenConfig[tokens[0]].logo}" class="w-8 h-8 object-contain">
+                    <img id="witLogo" src="${tokenConfig[tokens[0]].logo}" class="w-8 h-8 object-contain rounded-full">
                     <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
                             onchange="if(tokenConfig[this.value]){document.getElementById('witLogo').src = tokenConfig[this.value].logo;} window.updateWitBalanceHint();">
                         ${tokens.map(symbol => 
@@ -338,7 +338,7 @@ window.openExchangeModal = function() {
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
                         <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
-                            <img id="swapFromLogo" src="${tokenConfig[tokens[0]].logo}" class="w-6 h-6 object-contain">
+                            <img id="swapFromLogo" src="${tokenConfig[tokens[0]].logo}" class="w-6 h-6 object-contain rounded-full">
                             <select id="sFromToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
                                     onchange="if(tokenConfig[this.value]){document.getElementById('swapFromLogo').src = tokenConfig[this.value].logo;} window.calcSwap();">
                                 ${tokens.map(symbol => 
@@ -384,7 +384,7 @@ window.openExchangeModal = function() {
                     <div class="flex items-center justify-between gap-2">
                         <!-- 左侧：Logo 和下拉框 -->
                         <div class="flex items-center gap-2 bg-white py-2 px-3 rounded-2xl border border-slate-100 shadow-sm shrink-0">
-                            <img id="swapToLogo" src="${tokenConfig[tokens.length > 1 ? tokens[1] : tokens[0]].logo}" class="w-6 h-6 object-contain">
+                            <img id="swapToLogo" src="${tokenConfig[tokens.length > 1 ? tokens[1] : tokens[0]].logo}" class="w-6 h-6 object-contain rounded-full">
                             <select id="sToToken" class="font-bold text-sm bg-transparent outline-none cursor-pointer"
                                     onchange="if(tokenConfig[this.value]){document.getElementById('swapToLogo').src = tokenConfig[this.value].logo;} window.calcSwap();">
                                 ${tokens.map(symbol => 
@@ -417,7 +417,7 @@ window.openExchangeModal = function() {
                         ${['NEO', 'NCL'].map((s, i) => `
                             <button type="button" data-token="${s}" onclick="window.selectStakeToken('${s}')"
                                     class="stake-token-btn flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all ${i === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200'}">
-                                <img src="${tokenConfig[s].logo}" class="w-5 h-5 object-contain">
+                                <img src="${tokenConfig[s].logo}" class="w-5 h-5 object-contain rounded-full">
                                 <span class="text-xs font-black">${s}</span>
                             </button>`).join('')}
                     </div>
@@ -653,7 +653,7 @@ window.openExchangeModal = function() {
         }
         return `
             <div class="flex items-center gap-2 bg-white p-3 rounded-2xl border border-slate-100 shadow-sm">
-                <img id="${imgId}" src="${tokenConfig[selectedSymbol].logo}" class="w-8 h-8 object-contain shrink-0">
+                <img id="${imgId}" src="${tokenConfig[selectedSymbol].logo}" class="w-8 h-8 object-contain shrink-0 rounded-full">
                 <select id="${selectId}" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer" 
                         onchange="if(tokenConfig[this.value]){document.getElementById('${imgId}').src = tokenConfig[this.value].logo;} if(this.id.startsWith('s') && window.calcSwap) window.calcSwap();">
                     ${Object.keys(tokenConfig).map(symbol => 

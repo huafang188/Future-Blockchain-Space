@@ -224,7 +224,7 @@ export function renderStatsPage(lang) {
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border p-1">
-                        <img src="${configLogo}" alt="${token.symbol}" class="w-full h-full object-contain" onerror="this.src='assets/head_logo.webp'">
+                        <img src="${configLogo}" alt="${token.symbol}" class="w-full h-full object-contain rounded-full" onerror="this.src='assets/head_logo.webp'">
                     </div>
                     <div>
                         <h3 class="font-black text-slate-800 text-base tracking-tighter leading-none">${token.symbol}</h3>
@@ -309,7 +309,7 @@ export function renderTokenList(balances = {}) {
         <div class="flex justify-between items-center p-4 hover:bg-slate-50/50 transition-colors border-b border-slate-50 last:border-none">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100 p-1">
-                    <img src="${config.logo}" alt="${symbol}" class="w-full h-full object-contain" onerror="this.src='assets/head_logo.webp'">
+                    <img src="${config.logo}" alt="${symbol}" class="w-full h-full object-contain rounded-full" onerror="this.src='assets/head_logo.webp'">
                 </div>
                 <div>
                     <div class="font-bold text-sm text-slate-800">${symbol}</div>
@@ -374,11 +374,11 @@ export function renderTokenList(balances = {}) {
  */
 function getTokenLogo(symbol) {
     const logoMap = {
-        'NEO': '<img src="assets/NEO.webp" alt="NEO" class="w-full h-full object-contain">',
-        'NEX': '<img src="assets/NEX.webp" alt="NEX" class="w-full h-full object-contain">',
-        'NEA': '<img src="assets/NEA.webp" alt="NEA" class="w-full h-full object-contain">',
-        'NRY': '<img src="assets/NRY.webp" alt="NRY" class="w-full h-full object-contain">',
-        'NCL': '<img src="assets/NCL.webp" alt="NCL" class="w-full h-full object-contain">',
+        'NEO': '<img src="assets/NEO.webp" alt="NEO" class="w-full h-full object-contain rounded-full">',
+        'NEX': '<img src="assets/NEX.webp" alt="NEX" class="w-full h-full object-contain rounded-full">',
+        'NEA': '<img src="assets/NEA.webp" alt="NEA" class="w-full h-full object-contain rounded-full">',
+        'NRY': '<img src="assets/NRY.webp" alt="NRY" class="w-full h-full object-contain rounded-full">',
+        'NCL': '<img src="assets/NCL.webp" alt="NCL" class="w-full h-full object-contain rounded-full">',
         'GAS': '⛽',
         'ETH': '🟣',
         'BTC': '₿',
