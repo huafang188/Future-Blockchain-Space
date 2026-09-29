@@ -208,6 +208,8 @@ window.i18nData['ko'] = {
     important_announcement: "중요 공지",
     news_title_short: "뉴스",
     news_section_title: "공지 및 뉴스",
+    notice_maintenance_title: "시스템 공지",
+    notice_maintenance_msg: "새 생태계 구축 중이며 NEO 온체인 배포 중입니다. 이 기간 동안 교환 및 출금 거래가 일시 중지됩니다. 불편을 드려 죄송하며, 최대한 빨리 서비스를 재개하겠습니다.",
     click_to_expand: "클릭하여 펼치기",
     click_to_collapse: "클릭하여 접기",
     bitget_wallet_title: "Bitget Wallet 추천",

@@ -252,6 +252,8 @@ window.i18nData['ug'] = {
     important_announcement: "ئېلان",
     news_title_short: "خەۋەر",
     news_section_title: "ئۇقتۇرۇش ۋە خەۋەرلەر",
+    notice_maintenance_title: "سىستېما ئۇقتۇرۇشى",
+    notice_maintenance_msg: "يېڭى ئېكولوگىيە قۇرۇلۇۋاتىدا، NEO زەنجىرگە ئورۇنلاشتۇرۇلۇۋاتىدا. مۇشۇ مەزگىلدە ئالماشتۇرۇش ۋە چىقىرىش سودىسى ۋاقىتلىق توختىتىلدى. سىزگە قولايلىقسىزلىق ئېلىپ كەلگەنلىكىمىز ئۈچۈن كەچۈرۈم سورايمىز، ئەڭ تېز ۋاقىتتا ئەسلىگە كەلتۈرىمىز.",
     click_to_expand: "چېكىپ ئېچىڭ",
     click_to_collapse: "چېكىپ يىغىڭ",
     bitget_wallet_title: "Bitget Wallet نى تەۋسىيە قىلىمىز",

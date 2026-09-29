@@ -208,6 +208,8 @@ window.i18nData['ru'] = {
     important_announcement: "Важное уведомление",
     news_title_short: "Новости",
     news_section_title: "Уведомления и новости",
+    notice_maintenance_title: "Системное уведомление",
+    notice_maintenance_msg: "Новая экосистема находится в разработке, NEO развёртывается в сети. В этот период приостановлены обмен и вывод средств. Приносим извинения за неудобства, сервис будет восстановлен в кратчайшие сроки.",
     click_to_expand: "Нажмите, чтобы развернуть",
     click_to_collapse: "Нажмите, чтобы свернуть",
     bitget_wallet_title: "Рекомендуем: Bitget Wallet",

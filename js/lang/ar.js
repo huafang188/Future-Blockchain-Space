@@ -210,6 +210,8 @@ window.i18nData['ar'] = {
     important_announcement: "إعلان هام",
     news_title_short: "أخبار",
     news_section_title: "الإعلانات والأخبار",
+    notice_maintenance_title: "إشعار النظام",
+    notice_maintenance_msg: "النظام البيئي الجديد قيد الإنشاء و NEO قيد النشر على السلسلة. خلال هذه الفترة، يتم تعليق عمليات الصرف والسحب. نعتذر عن الإزعاج وسنستعيد الخدمة في أقرب وقت ممكن.",
     click_to_expand: "انقر للتوسيع",
     click_to_collapse: "انقر للطي",
     bitget_wallet_title: "نوصي بـ Bitget Wallet",

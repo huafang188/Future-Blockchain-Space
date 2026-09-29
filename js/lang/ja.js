@@ -208,6 +208,8 @@ window.i18nData['ja'] = {
     important_announcement: "重要なお知らせ",
     news_title_short: "ニュース",
     news_section_title: "お知らせとニュース",
+    notice_maintenance_title: "システムお知らせ",
+    notice_maintenance_msg: "新エコシステム構築中、NEOオンチェーン展開中です。この期間中、交換および引き出し取引を一時停止します。ご不便をおかけして申し訳ありません。できるだけ早く再開します。",
     click_to_expand: "クリックして展開",
     click_to_collapse: "クリックして折りたたむ",
     bitget_wallet_title: "Bitget Wallet をおすすめします",

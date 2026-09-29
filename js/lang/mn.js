@@ -209,6 +209,8 @@ window.i18nData['mn'] = {
     important_announcement: "Үндсэн мэдэгдэл",
     news_title_short: "Мэдээ",
     news_section_title: "Зарлал болон мэдээ",
+    notice_maintenance_title: "Системийн мэдэгдэл",
+    notice_maintenance_msg: "Шинэ экосистем бүтээгдэж байна, NEO сүлжээнд байршуулагдаж байна. Энэ хугацаанд солилцоо болон таталтын гүйлгээ түдгэлзүүлэгдэнэ. Бид таны бэрхшээлд хүлцэн зөвшөөрч, хамгийн хурдан хугацаанд үйлчилгээг сэргээх болно.",
     click_to_expand: "Дарж нээх",
     click_to_collapse: "Дарж хураах",
     bitget_wallet_title: "Bitget Wallet-ийг санал болгож байна",

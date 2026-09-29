@@ -209,6 +209,8 @@ window.i18nData['hi'] = {
     important_announcement: "महत्वपूर्ण घोषणा",
     news_title_short: "समाचार",
     news_section_title: "घोषणाएं और समाचार",
+    notice_maintenance_title: "सिस्टम सूचना",
+    notice_maintenance_msg: "नया पारिस्थितिकी तंत्र निर्माणाधीन है और NEO ऑन-चेन परिनियोजित हो रहा है। इस अवधि के दौरान विनिमय और निकासी लेन-देन निलंबित हैं। असुविधा के लिए हमें खेद है, हम जल्द से जल्द सेवा बहाल करेंगे।",
     click_to_expand: "विस्तार के लिए क्लिक करें",
     click_to_collapse: "संक्षिप्त करने के लिए क्लिक करें",
     bitget_wallet_title: "हम Bitget Wallet की सलाह देते हैं",

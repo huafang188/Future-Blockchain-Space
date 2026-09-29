@@ -53,7 +53,7 @@
     <!-- Orbitron 字体 - 使用国内可访问的CDN -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20260928i">
+    <link rel="stylesheet" href="style.css?v=20260928j">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -379,6 +379,18 @@
     <div class="flex items-center gap-2 p-5">
         <i class="fas fa-bullhorn text-purple-500"></i>
         <span class="font-black text-slate-800 text-sm" data-i18n="news_section_title">公告与新闻</span>
+    </div>
+
+    <!-- ⚠️ 系统维护公告 -->
+    <div class="mx-5 mb-4 p-4 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border border-amber-200 flex items-start gap-3" style="box-shadow:0 4px 16px rgba(245,158,11,0.15)">
+        <div class="relative shrink-0">
+            <i class="fas fa-exclamation-triangle text-amber-500 text-xl mt-0.5"></i>
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+        </div>
+        <div class="flex-1">
+            <span class="text-[10px] font-black text-amber-600 uppercase tracking-wider" data-i18n="notice_maintenance_title">系统公告</span>
+            <p class="text-xs font-bold text-amber-800 leading-relaxed mt-1" data-i18n="notice_maintenance_msg">新生态建设中，NEO 链上部署中。在此期间暂停兑换与提现交易，给您带来的不便敬请谅解，我们会尽快恢复。</p>
+        </div>
     </div>
 
     <!-- 🎁 金秋九月 限时活动 -->
@@ -1412,12 +1424,12 @@
     </div>
     
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
-<script src="js/lang/zh-CN.js?v=20260928i"></script>
-<script src="js/i18n-core.js?v=20260928i"></script>
-<script src="js/navigation.js?v=20260928i"></script>
-<script src="js/chat-agent.js?v=20260928i"></script>
-<script src="js/lp-stake.js?v=20260928i"></script>
-<script src="js/bank.js?v=20260928i"></script>
+<script src="js/lang/zh-CN.js?v=20260928j"></script>
+<script src="js/i18n-core.js?v=20260928j"></script>
+<script src="js/navigation.js?v=20260928j"></script>
+<script src="js/chat-agent.js?v=20260928j"></script>
+<script src="js/lp-stake.js?v=20260928j"></script>
+<script src="js/bank.js?v=20260928j"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -1440,7 +1452,7 @@
     };
     
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20260928i';
+    window.APP_JS_VERSION = '20260928j';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
@@ -1474,14 +1486,14 @@
     };
 </script>
 
-<script type="module" src="js/config.js?v=20260928i"></script>
-<script type="module" src="js/calculations.js?v=20260928i"></script>
-<script type="module" src="js/api-service.js?v=20260928i"></script>
-<script type="module" src="js/wallet-utils.js?v=20260928i"></script>
-<script type="module" src="js/ui-render.js?v=20260928i"></script>
-<script type="module" src="js/modal-handler.js?v=20260928i"></script>
-<script type="module" src="js/action-executor.js?v=20260928i"></script>
-<script type="module" src="js/app-init.js?v=20260928i"></script>
+<script type="module" src="js/config.js?v=20260928j"></script>
+<script type="module" src="js/calculations.js?v=20260928j"></script>
+<script type="module" src="js/api-service.js?v=20260928j"></script>
+<script type="module" src="js/wallet-utils.js?v=20260928j"></script>
+<script type="module" src="js/ui-render.js?v=20260928j"></script>
+<script type="module" src="js/modal-handler.js?v=20260928j"></script>
+<script type="module" src="js/action-executor.js?v=20260928j"></script>
+<script type="module" src="js/app-init.js?v=20260928j"></script>
 
 <!-- 确保加载遮罩层一定会被隐藏 -->
 <script>

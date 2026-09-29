@@ -252,6 +252,8 @@ window.i18nData['zh-CN'] = {
     important_announcement: "公告",
     news_title_short: "新闻",
     news_section_title: "公告与新闻",
+    notice_maintenance_title: "系统公告",
+    notice_maintenance_msg: "新生态建设中，NEO 链上部署中。在此期间暂停兑换与提现交易，给您带来的不便敬请谅解，我们会尽快恢复。",
     click_to_expand: "点击展开",
     click_to_collapse: "点击收起",
     bitget_wallet_title: "推荐您使用 Bitget Wallet",

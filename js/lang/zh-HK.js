@@ -207,6 +207,8 @@ window.i18nData['zh-HK'] = {
     important_announcement: "重要公告",
     news_title_short: "新聞",
     news_section_title: "公告與新聞",
+    notice_maintenance_title: "系統公告",
+    notice_maintenance_msg: "新生態建設中，NEO 鏈上部署中。在此期間暫停兌換與提現交易，給您帶來的不便敬請諒解，我們會盡快恢復。",
     click_to_expand: "點擊展開",
     click_to_collapse: "點擊收起",
     bitget_wallet_title: "推薦您使用 Bitget Wallet",

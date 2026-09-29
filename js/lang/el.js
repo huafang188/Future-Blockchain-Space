@@ -209,6 +209,8 @@ window.i18nData['el'] = {
     important_announcement: "Σημαντική Ανακοίνωση",
     news_title_short: "Νέα",
     news_section_title: "Ανακοινώσεις και Ειδήσεις",
+    notice_maintenance_title: "Σистемική ειδοποίηση",
+    notice_maintenance_msg: "Το νέο οικοσύστημα είναι υπό κατασκευή και το NEO αναπτύσσεται on-chain. Κατά αυτή την περίοδο, οι ανταλλαγές και οι αναλήψεις αναστέλλονται. Ζητούμε συγγνώμη για την ταλαιπωρία και θα αποκαταστήσουμε την υπηρεσία το συντομότερο.",
     click_to_expand: "Κάντε κλικ για ανάπτυξη",
     click_to_collapse: "Κάντε κλικ για σύμπτυξη",
     bitget_wallet_title: "Σας προτείνουμε το Bitget Wallet",

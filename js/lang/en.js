@@ -252,6 +252,8 @@ window.i18nData['en'] = {
     important_announcement: "Important Announcement",
     news_title_short: "News",
     news_section_title: "Announcements & News",
+    notice_maintenance_title: "System Notice",
+    notice_maintenance_msg: "The new ecosystem is under construction and NEO is being deployed on-chain. During this period, exchange and withdrawal transactions are suspended. We apologize for the inconvenience and will restore service as soon as possible.",
     click_to_expand: "Click to expand",
     click_to_collapse: "Click to collapse",
     bitget_wallet_title: "Recommended: Bitget Wallet",
