@@ -36,7 +36,7 @@ body::before {
     background-size: 46px 46px;
     pointer-events: none;
     z-index: 0;
-    animation: bcGridDrift 30s linear infinite;
+    animation: none;
 }
 
 /* 区块链节点光点 */
@@ -57,7 +57,7 @@ body::after {
         radial-gradient(circle 1px at 22% 48%, rgba(139, 92, 246, 0.35), transparent 45%);
     pointer-events: none;
     z-index: 0;
-    animation: bcNodePulse 5s ease-in-out infinite alternate;
+    animation: none;
 }
 
 @keyframes bcGridDrift {
@@ -1323,7 +1323,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 55%;
     background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.55), transparent);
     transform: skewX(-18deg);
-    animation: fbsActivityShine 3.2s ease-in-out infinite;
+    animation: none;
     pointer-events: none;
     z-index: 1;
 }
@@ -1350,7 +1350,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 30px;
     height: 38px;
     transform-origin: bottom center;
-    animation: fbsMiniBotJump 1.8s ease-in-out infinite;
+    animation: none;
 }
 .fbs-mini-bot-antenna {
     position: absolute;
@@ -1373,7 +1373,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     border-radius: 50%;
     background: #f0abfc;
     box-shadow: 0 0 8px 1px rgba(232, 121, 249, 0.8);
-    animation: fbsMiniBotGlow 1.8s ease-in-out infinite;
+    animation: none;
 }
 .fbs-mini-bot-head {
     position: absolute;
@@ -1395,7 +1395,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     border-radius: 50%;
     background: #fff;
     box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.9);
-    animation: fbsMiniBotBlink 3.6s infinite;
+    animation: none;
 }
 .fbs-mini-bot-eye--l { left: 5px; }
 .fbs-mini-bot-eye--r { right: 5px; }
@@ -1430,7 +1430,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     border-radius: 50%;
     background: rgba(109, 40, 217, 0.28);
     filter: blur(1.5px);
-    animation: fbsMiniBotShadow 1.8s ease-in-out infinite;
+    animation: none;
 }
 @keyframes fbsMiniBotJump {
     0%, 100% { transform: translateY(0) scale(1, 1); }
@@ -1462,7 +1462,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     flex-shrink: 0;
     width: 32px;
     height: 40px;
-    animation: fbsMiniMinerVibrate 0.9s ease-in-out infinite;
+    animation: none;
 }
 .fbs-mini-miner-fan {
     position: absolute;
@@ -1475,7 +1475,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     border: 2px solid rgba(255, 255, 255, 0.55);
     background: conic-gradient(#c4b5fd 0 25%, rgba(255, 255, 255, 0.15) 25% 50%, #c4b5fd 50% 75%, rgba(255, 255, 255, 0.15) 75% 100%);
     box-shadow: 0 0 8px rgba(139, 92, 246, 0.45);
-    animation: fbsMiniMinerSpin 0.7s linear infinite;
+    animation: none;
 }
 .fbs-mini-miner-fan::after {
     content: '';
@@ -1508,7 +1508,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     font-size: 7px;
     color: #fbbf24;
     text-shadow: 0 0 6px rgba(251, 191, 36, 0.9);
-    animation: fbsMiniMinerSpark 1.4s ease-in infinite;
+    animation: none;
 }
 .fbs-mini-miner-light {
     position: absolute;
@@ -1516,7 +1516,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 3.5px;
     height: 3.5px;
     border-radius: 50%;
-    animation: fbsMiniMinerLight 1.2s ease-in-out infinite;
+    animation: none;
 }
 .fbs-mini-miner-light--1 { left: 5px; background: #4ade80; box-shadow: 0 0 5px #4ade80; }
 .fbs-mini-miner-light--2 { left: 50%; transform: translateX(-50%); background: #22d3ee; box-shadow: 0 0 5px #22d3ee; animation-delay: 0.2s; }
@@ -1568,7 +1568,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: #fff;
-    animation: fbsActivityPulse 1.1s ease-in-out infinite;
+    animation: none;
 }
 @keyframes fbsActivityPulse {
     0%, 100% { opacity: 1; transform: scale(1); }
@@ -1584,7 +1584,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: fbsActivityTitleShift 4s linear infinite;
+    animation: none;
 }
 @keyframes fbsActivityTitleShift {
     0%   { background-position: 0% 50%; }
@@ -2034,7 +2034,7 @@ body.agent-active .bottom-nav-pill {
         linear-gradient(135deg, #f5f3ff 0%, #f3e8ff 48%, #ede9fe 100%);
     border: 1px solid rgba(168, 120, 255, 0.28);
     box-shadow: 0 14px 40px rgba(152, 98, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    animation: nbbBreath 4.5s ease-in-out infinite;
+    animation: none;
 }
 
 /* 科技网格底纹 */
@@ -2058,7 +2058,7 @@ body.agent-active .bottom-nav-pill {
     width: 45%;
     background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.65), transparent);
     transform: skewX(-18deg);
-    animation: nbbShine 3.4s ease-in-out infinite;
+    animation: none;
     z-index: 0;
     pointer-events: none;
 }
@@ -2075,12 +2075,12 @@ body.agent-active .bottom-nav-pill {
 .neo-bank-banner .nbb-orb-a {
     width: 130px; height: 130px; top: -34px; right: -22px;
     background: rgba(196, 140, 255, 0.55);
-    animation: nbbOrbA 5.5s ease-in-out infinite alternate;
+    animation: none;
 }
 .neo-bank-banner .nbb-orb-b {
     width: 112px; height: 112px; bottom: -32px; left: -26px;
     background: rgba(129, 140, 248, 0.5);
-    animation: nbbOrbB 6.5s ease-in-out infinite alternate;
+    animation: none;
 }
 
 /* 浮动粒子 */
@@ -2092,10 +2092,10 @@ body.agent-active .bottom-nav-pill {
     z-index: 0;
     pointer-events: none;
 }
-.neo-bank-banner .nbb-float-1 { width: 7px; height: 7px; top: 20%; right: 16%; animation: nbbFloat 3.4s ease-in-out infinite; }
-.neo-bank-banner .nbb-float-2 { width: 5px; height: 5px; top: 62%; right: 9%; animation: nbbFloat 4.2s ease-in-out 0.5s infinite; }
-.neo-bank-banner .nbb-float-3 { width: 6px; height: 6px; top: 34%; left: 10%; animation: nbbFloat 3.8s ease-in-out 1s infinite; }
-.neo-bank-banner .nbb-float-4 { width: 4px; height: 4px; bottom: 24%; left: 18%; animation: nbbFloat 4.6s ease-in-out 1.6s infinite; }
+.neo-bank-banner .nbb-float-1 { width: 7px; height: 7px; top: 20%; right: 16%; animation: none; }
+.neo-bank-banner .nbb-float-2 { width: 5px; height: 5px; top: 62%; right: 9%; animation: none; }
+.neo-bank-banner .nbb-float-3 { width: 6px; height: 6px; top: 34%; left: 10%; animation: none; }
+.neo-bank-banner .nbb-float-4 { width: 4px; height: 4px; bottom: 24%; left: 18%; animation: none; }
 
 /* 内容主体 */
 .neo-bank-banner .nbb-body { position: relative; z-index: 2; text-align: center; }
@@ -2112,12 +2112,12 @@ body.agent-active .bottom-nav-pill {
     font-weight: 800;
     letter-spacing: 1px;
     box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
-    animation: nbbBadgePulse 2.4s ease-in-out infinite;
+    animation: none;
 }
 .neo-bank-banner .nbb-badge-dot {
     width: 7px; height: 7px; border-radius: 50%;
     background: #fff;
-    animation: nbbDotRing 1.8s ease-out infinite;
+    animation: none;
 }
 
 .neo-bank-banner .nbb-title {
@@ -2152,11 +2152,11 @@ body.agent-active .bottom-nav-pill {
     font-weight: 900;
     letter-spacing: 1px;
     box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    animation: nbbCtaGlow 2.6s ease-in-out infinite;
+    animation: none;
 }
 .neo-bank-banner .nbb-arrow {
     font-size: 13px;
-    animation: nbbArrowSlide 1.4s ease-in-out infinite;
+    animation: none;
 }
 
 /* 动画关键帧 */
