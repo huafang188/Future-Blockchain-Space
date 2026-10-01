@@ -73,7 +73,7 @@ window.i18nData['zh-CN'] = {
     nry_buy_desc: "使用 USDT 兑换 NRY（BSC 链）",
     nry_buy_label: "支付数量 (USDT)",
     nry_buy_confirm: "确认兑换",
-    nry_private_pool_btn: "限时私募底池",
+    nry_private_pool_btn: "限时添加流动性",
     nry_private_pool_title: "限时私募底池",
     nry_private_pool_desc: "选择添加金额，向私募底池转入 USDT（BSC 链）",
     nry_private_pool_selected: "已选择",

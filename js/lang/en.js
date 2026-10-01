@@ -73,7 +73,7 @@ window.i18nData['en'] = {
     nry_buy_desc: "Swap USDT for NRY (BSC)",
     nry_buy_label: "Pay Amount (USDT)",
     nry_buy_confirm: "Confirm Swap",
-    nry_private_pool_btn: "Private Pool",
+    nry_private_pool_btn: "Add Liquidity",
     nry_private_pool_title: "Private Pool",
     nry_private_pool_desc: "Select amount to add USDT to private pool (BSC)",
     nry_private_pool_selected: "Selected",

@@ -73,7 +73,7 @@ window.i18nData['ja'] = {
     nry_buy_desc: "USDTでNRYに交換（BSC）",
     nry_buy_label: "支払い数量 (USDT)",
     nry_buy_confirm: "交換を確認",
-    nry_private_pool_btn: "プライベートプール",
+    nry_private_pool_btn: "流動性追加",
     nry_private_pool_title: "プライベートプール",
     nry_private_pool_desc: "金額を選択してUSDTをプライベートプールに転送（BSC）",
     nry_private_pool_selected: "選択済み",

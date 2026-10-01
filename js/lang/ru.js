@@ -73,7 +73,7 @@ window.i18nData['ru'] = {
     nry_buy_desc: "Обмен USDT на NRY (BSC)",
     nry_buy_label: "Сумма оплаты (USDT)",
     nry_buy_confirm: "Подтвердить обмен",
-    nry_private_pool_btn: "Приватный пул",
+    nry_private_pool_btn: "Добавить ликвидность",
     nry_private_pool_title: "Приватный пул",
     nry_private_pool_desc: "Выберите сумму для перевода USDT в приватный пул (BSC)",
     nry_private_pool_selected: "Выбрано",

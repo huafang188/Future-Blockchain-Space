@@ -72,7 +72,7 @@ window.i18nData['el'] = {
     nry_buy_desc: "Ανταλλαγή USDT σε NRY (BSC)",
     nry_buy_label: "Ποσό πληρωμής (USDT)",
     nry_buy_confirm: "Επιβεβαίωση ανταλλαγής",
-    nry_private_pool_btn: "Ιδιωτικό Pool",
+    nry_private_pool_btn: "Προσθήκη ρευστότητας",
     nry_private_pool_title: "Ιδιωτικό Pool",
     nry_private_pool_desc: "Επιλέξτε ποσό για προσθήκη USDT στο ιδιωτικό pool (BSC)",
     nry_private_pool_selected: "Επιλεγμένο",

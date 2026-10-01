@@ -73,7 +73,7 @@ window.i18nData['ko'] = {
     nry_buy_desc: "USDT로 NRY 교환 (BSC)",
     nry_buy_label: "지불 수량 (USDT)",
     nry_buy_confirm: "교환 확인",
-    nry_private_pool_btn: "프라이빗 풀",
+    nry_private_pool_btn: "유동성 추가",
     nry_private_pool_title: "프라이빗 풀",
     nry_private_pool_desc: "금액을 선택하여 USDT를 프라이빗 풀로 전송 (BSC)",
     nry_private_pool_selected: "선택됨",

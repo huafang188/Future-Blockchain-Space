@@ -73,7 +73,7 @@ window.i18nData['ar'] = {
     nry_buy_desc: "استبدال USDT بـ NRY (BSC)",
     nry_buy_label: "المبلغ المدفوع (USDT)",
     nry_buy_confirm: "تأكيد الاستبدال",
-    nry_private_pool_btn: "تجمع خاص",
+    nry_private_pool_btn: "إضافة سيولة",
     nry_private_pool_title: "تجمع خاص",
     nry_private_pool_desc: "اختر المبلغ لإضافة USDT إلى التجمع الخاص (BSC)",
     nry_private_pool_selected: "محدد",

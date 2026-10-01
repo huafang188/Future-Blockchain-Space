@@ -73,7 +73,7 @@ window.i18nData['ug'] = {
     nry_buy_desc: "USDTنى NRYغا ئالماشتۇرۇش (BSC)",
     nry_buy_label: "تۆلەش مىقدارى (USDT)",
     nry_buy_confirm: "ئالماشتۇرۇشنى جەزملەش",
-    nry_private_pool_btn: "خۇسۇسىي كۆلچەك",
+    nry_private_pool_btn: "سۇيۇقلۇق قوشۇش",
     nry_private_pool_title: "خۇسۇسىي كۆلچەك",
     nry_private_pool_desc: "سوم تاللاپ USDT نى خۇسۇسىي كۆلچەككە يۆتكەش (BSC)",
     nry_private_pool_selected: "تاللانغان",

@@ -72,7 +72,7 @@ window.i18nData['mn'] = {
     nry_buy_desc: "USDT-г NRY-д солих (BSC)",
     nry_buy_label: "Төлөх дүн (USDT)",
     nry_buy_confirm: "Солилцоог баталгаажуулах",
-    nry_private_pool_btn: "Хувийн Pool",
+    nry_private_pool_btn: "Уян хатан нэмэх",
     nry_private_pool_title: "Хувийн Pool",
     nry_private_pool_desc: "USDT-г хувийн pool-д нэмэх дүнг сонгох (BSC)",
     nry_private_pool_selected: "Сонгогдсон",

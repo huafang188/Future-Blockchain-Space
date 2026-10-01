@@ -72,7 +72,7 @@ window.i18nData['hi'] = {
     nry_buy_desc: "USDT को NRY में बदलें (BSC)",
     nry_buy_label: "भुगतान राशि (USDT)",
     nry_buy_confirm: "विनिमय की पुष्टि करें",
-    nry_private_pool_btn: "निजी पूल",
+    nry_private_pool_btn: "तरलता जोड़ें",
     nry_private_pool_title: "निजी पूल",
     nry_private_pool_desc: "USDT को निजी पूल में जोड़ने के लिए राशि चुनें (BSC)",
     nry_private_pool_selected: "चयनित",
