@@ -120,9 +120,9 @@
         window.nryMiningData = data || null;
         if (!data || !data.user) {
             set('nry_identity', '--');
-            set('nry_stake', '--');
-            set('nry_hashrate', '--');
-            set('nry_income', '--');
+            set('nry_stake', '$--');
+            set('nry_hashrate', '$--');
+            set('nry_income', '$--');
             set('nry_pending', '--');
             set('nry_direct_volume', '$--');
             set('nry_indirect_volume', '$--');
@@ -140,9 +140,9 @@
             if (vMatch) idEl.classList.add('v' + vMatch[1].toLowerCase());
             else idEl.classList.add('v0');
         }
-        set('nry_stake', fmtNry(u.stake));
-        set('nry_hashrate', fmtNry(u.hashrate));
-        set('nry_income', fmtNry(u.income));
+        set('nry_stake', fmtUSD(u.stake));
+        set('nry_hashrate', fmtUSD(u.hashrate));
+        set('nry_income', fmtUSD(u.income));
         set('nry_pending', fmtNry(u.pending));
         set('nry_direct_volume', fmtUSD(u.directVolume));
         set('nry_indirect_volume', fmtUSD(u.indirectVolume));
@@ -156,10 +156,10 @@
     function renderDistribution(dist) {
         var colors = ['#f97316', '#fb923c', '#94a3b8', '#22c55e'];
         var defaultData = [
-            { name: '矿池', ratio: '50%', poolLevel: 'V1', poolAmount: '' },
-            { name: '底池', ratio: '20%', poolLevel: 'V2', poolAmount: '' },
-            { name: '黑洞', ratio: '0%', poolLevel: 'V3', poolAmount: '' },
-            { name: '流通', ratio: '20%', poolLevel: 'V4', poolAmount: '' }
+            { name: '矿池', ratio: '50%', poolLevel: 'N1', poolAmount: '' },
+            { name: '底池', ratio: '20%', poolLevel: 'N2', poolAmount: '' },
+            { name: '黑洞', ratio: '0%', poolLevel: 'N3', poolAmount: '' },
+            { name: '流通', ratio: '20%', poolLevel: 'N4', poolAmount: '' }
         ];
         var list = (dist && dist.length) ? dist : defaultData;
 
