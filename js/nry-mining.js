@@ -154,12 +154,12 @@
 
     // 渲染代币分配与扇形图
     function renderDistribution(dist) {
-        var colors = ['#a855f7', '#6366f1', '#94a3b8', '#22c55e'];
+        var colors = ['#f97316', '#fb923c', '#94a3b8', '#22c55e'];
         var defaultData = [
-            { name: '矿池', ratio: '50%', poolAmount: '100000' },
-            { name: '底池', ratio: '20%', poolAmount: '300000' },
-            { name: '黑洞', ratio: '0%', poolAmount: '580000' },
-            { name: '流通', ratio: '20%', poolAmount: '960000' }
+            { name: '矿池', ratio: '50%', poolLevel: 'V1', poolAmount: '' },
+            { name: '底池', ratio: '20%', poolLevel: 'V2', poolAmount: '' },
+            { name: '黑洞', ratio: '0%', poolLevel: 'V3', poolAmount: '' },
+            { name: '流通', ratio: '20%', poolLevel: 'V4', poolAmount: '' }
         ];
         var list = (dist && dist.length) ? dist : defaultData;
 
@@ -183,15 +183,16 @@
             var item = list[j] || {};
             var ratioEl = document.getElementById('nry_dist_ratio_' + j);
             var poolEl = document.getElementById('nry_dist_pool_' + j);
+            var amtEl = document.getElementById('nry_dist_amount_' + j);
             if (ratioEl) ratioEl.textContent = item.ratio || '--';
             if (poolEl) {
+                var level = item.poolLevel || '';
+                poolEl.textContent = level ? level + '分红池' : '分红池';
+            }
+            if (amtEl) {
                 var raw = String(item.poolAmount || '').trim();
-                var amt = parseFloat(raw.replace(/[^0-9.]/g, ''));
-                if (raw && !isNaN(amt) && /[0-9]/.test(raw)) {
-                    poolEl.textContent = amt.toLocaleString('en-US');
-                } else {
-                    poolEl.textContent = raw || '--';
-                }
+                var amt = parseFloat(raw.replace(/[^0-9.]/g, '')) || 0;
+                amtEl.textContent = amt.toLocaleString('en-US') + ' NRY';
             }
         }
     }
@@ -234,23 +235,27 @@
                     <i class="fa-solid fa-circle-info text-amber-500 text-[10px] mt-0.5"></i>
                     <span class="text-[9px] font-bold text-amber-600 leading-relaxed" data-i18n="nry_private_pool_desc">选择添加金额，向私募底池转入 USDT（BSC 链）</span>
                 </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <button type="button" onclick="selectPrivateAmount(100)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center hover:bg-purple-50 transition-colors">
-                        <div class="text-sm font-black text-purple-600">100</div>
+                <div class="grid grid-cols-4 gap-2">
+                    <button type="button" onclick="selectPrivateAmount(500)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">500</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
                     </button>
-                    <button type="button" onclick="selectPrivateAmount(1000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center hover:bg-purple-50 transition-colors">
-                        <div class="text-sm font-black text-purple-600">1,000</div>
+                    <button type="button" onclick="selectPrivateAmount(1000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">1,000</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
                     </button>
-                    <button type="button" onclick="selectPrivateAmount(10000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center hover:bg-purple-50 transition-colors">
-                        <div class="text-sm font-black text-purple-600">10,000</div>
+                    <button type="button" onclick="selectPrivateAmount(5000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">5,000</div>
+                        <div class="text-[8px] font-bold text-slate-400">USDT</div>
+                    </button>
+                    <button type="button" onclick="selectPrivateAmount(10000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">10,000</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
                     </button>
                 </div>
-                <div id="privateSelectedDisplay" class="hidden px-3 py-2 bg-purple-50 rounded-xl flex items-center justify-between">
+                <div id="privateSelectedDisplay" class="hidden px-3 py-2 bg-orange-50 rounded-xl flex items-center justify-between">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_private_pool_selected">已选择</span>
-                    <span id="privateSelectedAmount" class="text-sm font-black text-purple-600">-- USDT</span>
+                    <span id="privateSelectedAmount" class="text-sm font-black text-orange-400">-- USDT</span>
                 </div>
                 <button type="button" onclick="window.doPrivatePool()" id="privateConfirmBtn" class="action-btn w-full mt-1 opacity-50 pointer-events-none">
                     <span data-i18n="nry_private_pool_confirm">确认添加</span>
@@ -268,8 +273,8 @@
         window._privateAmount = amount;
         // 高亮选中
         var btns = document.querySelectorAll('.private-amount-btn');
-        btns.forEach(function (b) { b.classList.remove('bg-purple-100', 'ring-2', 'ring-purple-300'); });
-        event.currentTarget.classList.add('bg-purple-100', 'ring-2', 'ring-purple-300');
+        btns.forEach(function (b) { b.classList.remove('bg-orange-100', 'ring-2', 'ring-orange-300'); });
+        event.currentTarget.classList.add('bg-orange-100', 'ring-2', 'ring-orange-300');
     };
 
     window.doPrivatePool = async function () {
