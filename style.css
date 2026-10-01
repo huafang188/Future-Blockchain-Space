@@ -2080,6 +2080,22 @@ body.agent-active .bottom-nav-pill {
     animation: none;
 }
 
+.neo-bank-banner .nbb-slogan {
+    margin-top: 2px;
+    font-size: 19px;
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1.45;
+    letter-spacing: 1.5px;
+    background: linear-gradient(120deg, #ea580c 0%, #f97316 30%, #fbbf24 55%, #f97316 80%, #ea580c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transform: skew(-4deg);
+    filter: drop-shadow(0 2px 10px rgba(249, 115, 22, 0.35));
+    padding: 0 4px;
+}
+
 .neo-bank-banner .nbb-title {
     margin-top: 12px;
     font-size: 26px;
