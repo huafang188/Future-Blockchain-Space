@@ -291,7 +291,8 @@ export function getReceiveAddress(type, chain) {
  */
 export const CHAIN_CONTRACT_ADDRS = {
     'BSC': {
-        'USDT': "0x55d398326f99059ff775485246999027b3197955"
+        'USDT': "0x55d398326f99059ff775485246999027b3197955",
+        'NRY': "0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42"
     },
     'TON': {
         'USDT': "UQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_p0p"

@@ -15,12 +15,12 @@ body {
     -ms-text-size-adjust: none;
     text-size-adjust: none;
     /* CSS 动态科技背景（替代图片） */
-    background-color: #f5f3ff;
+    background-color: #fffbeb;
     background-image:
-        radial-gradient(ellipse 90% 70% at 12% 8%, rgba(168, 85, 247, 0.22) 0%, transparent 55%),
-        radial-gradient(ellipse 85% 65% at 88% 92%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
-        radial-gradient(ellipse 55% 45% at 50% 50%, rgba(196, 132, 252, 0.10) 0%, transparent 60%),
-        linear-gradient(160deg, #f5f3ff 0%, #ede9fe 28%, #f3e8ff 58%, #e0e7ff 100%);
+        radial-gradient(ellipse 90% 70% at 12% 8%, rgba(249, 115, 22, 0.22) 0%, transparent 55%),
+        radial-gradient(ellipse 85% 65% at 88% 92%, rgba(251, 146, 60, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 50% 50%, rgba(253, 186, 116, 0.10) 0%, transparent 60%),
+        linear-gradient(160deg, #fffbeb 0%, #fff7ed 28%, #fff7ed 58%, #fff7ed 100%);
     background-attachment: fixed;
     position: relative;
 }
@@ -31,8 +31,8 @@ body::before {
     position: fixed;
     top: -50px; left: -50px; right: -50px; bottom: -50px;
     background-image:
-        linear-gradient(rgba(147, 51, 234, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(147, 51, 234, 0.06) 1px, transparent 1px);
+        linear-gradient(rgba(234, 88, 12, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(234, 88, 12, 0.06) 1px, transparent 1px);
     background-size: 46px 46px;
     pointer-events: none;
     z-index: 0;
@@ -45,16 +45,16 @@ body::after {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background-image:
-        radial-gradient(circle 2.5px at 15% 22%, rgba(168, 85, 247, 0.55), transparent 45%),
-        radial-gradient(circle 1.5px at 75% 14%, rgba(139, 92, 246, 0.45), transparent 45%),
-        radial-gradient(circle 2px at 45% 78%, rgba(168, 85, 247, 0.5), transparent 45%),
-        radial-gradient(circle 1px at 90% 56%, rgba(139, 92, 246, 0.4), transparent 45%),
-        radial-gradient(circle 1.5px at 8% 84%, rgba(168, 85, 247, 0.45), transparent 45%),
-        radial-gradient(circle 2px at 62% 36%, rgba(139, 92, 246, 0.5), transparent 45%),
-        radial-gradient(circle 1px at 32% 58%, rgba(168, 85, 247, 0.35), transparent 45%),
-        radial-gradient(circle 1.5px at 85% 82%, rgba(139, 92, 246, 0.4), transparent 45%),
-        radial-gradient(circle 2px at 50% 12%, rgba(168, 85, 247, 0.4), transparent 45%),
-        radial-gradient(circle 1px at 22% 48%, rgba(139, 92, 246, 0.35), transparent 45%);
+        radial-gradient(circle 2.5px at 15% 22%, rgba(249, 115, 22, 0.55), transparent 45%),
+        radial-gradient(circle 1.5px at 75% 14%, rgba(251, 146, 60, 0.45), transparent 45%),
+        radial-gradient(circle 2px at 45% 78%, rgba(249, 115, 22, 0.5), transparent 45%),
+        radial-gradient(circle 1px at 90% 56%, rgba(251, 146, 60, 0.4), transparent 45%),
+        radial-gradient(circle 1.5px at 8% 84%, rgba(249, 115, 22, 0.45), transparent 45%),
+        radial-gradient(circle 2px at 62% 36%, rgba(251, 146, 60, 0.5), transparent 45%),
+        radial-gradient(circle 1px at 32% 58%, rgba(249, 115, 22, 0.35), transparent 45%),
+        radial-gradient(circle 1.5px at 85% 82%, rgba(251, 146, 60, 0.4), transparent 45%),
+        radial-gradient(circle 2px at 50% 12%, rgba(249, 115, 22, 0.4), transparent 45%),
+        radial-gradient(circle 1px at 22% 48%, rgba(251, 146, 60, 0.35), transparent 45%);
     pointer-events: none;
     z-index: 0;
     animation: none;
@@ -72,7 +72,7 @@ body::after {
 
 /* --- 1.5 标题渐变动画 --- */
 .title-gradient {
-    background: linear-gradient(90deg, #7c3aed, #a855f7, #9333ea, #c084fc, #7c3aed);
+    background: linear-gradient(90deg, #f97316, #f97316, #ea580c, #fdba74, #f97316);
     background-size: 300% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -144,7 +144,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 /* 选中的按钮放大并向上偏移 */
 .nav-item.active {
-    color: #9333ea !important;
+    color: #ea580c !important;
     transform: translateY(-6px) scale(1.15); 
 }
 
@@ -153,11 +153,10 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 /* --- 3. 矿机卡片 (左上角布局 + 2x2 网格) --- */
 .miner-card {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 28px;
+    background: transparent;
     padding: 20px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.03), 0 4px 8px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: none;
+    box-shadow: none;
     transform: translateY(0);
     transition: all 0.3s ease;
     position: relative;
@@ -166,27 +165,11 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 /* 矿机卡片动态元素 */
 .miner-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.25) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%);
-    animation: minerFloatGlow 8s ease-in-out infinite;
-    pointer-events: none;
+    display: none;
 }
 
 .miner-card::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -10%;
-    width: 80%;
-    height: 80%;
-    background: radial-gradient(ellipse at center, rgba(147, 51, 234, 0.15) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%);
-    animation: minerFloatGlow 6s ease-in-out infinite reverse;
-    pointer-events: none;
+    display: none;
 }
 
 @keyframes minerFloatGlow {
@@ -202,22 +185,49 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 /* 矿机卡片网格背景 */
 .miner-card .miner-grid-bg {
+    display: none;
+}
+
+/* NRY 算力挖矿卡片顶部装饰图：上半圆角矩形、下半虚化 */
+.nry-mining-bg {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        linear-gradient(rgba(168, 85, 247, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(168, 85, 247, 0.02) 1px, transparent 1px);
-    background-size: 15px 15px;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    opacity: 0.5;
+    z-index: 2;
     pointer-events: none;
-    z-index: 1;
+    border-radius: 28px 28px 0 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+}
+
+/* NRY 算力挖矿数据网格：减弱毛玻璃、下移露出顶部图片 */
+.miner-stats-grid.nry-stats-grid {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(3px) saturate(130%);
+    -webkit-backdrop-filter: blur(3px) saturate(130%);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 火焰形状按钮 */
+.flame-btn {
+    clip-path: polygon(50% 0%, 68% 12%, 100% 30%, 92% 70%, 80% 100%, 20% 100%, 8% 70%, 0% 30%, 32% 12%);
+    border-radius: 0;
+    border: none;
+    animation: flameFlicker 2s ease-in-out infinite alternate;
+}
+@keyframes flameFlicker {
+    0% { filter: brightness(1) drop-shadow(0 0 4px rgba(255, 140, 0, 0.4)); }
+    100% { filter: brightness(1.12) drop-shadow(0 0 8px rgba(255, 100, 0, 0.6)); }
 }
 
 .miner-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.08), 0 6px 12px rgba(0,0,0,0.06);
+    box-shadow: none;
+    transform: none;
 }
 
 .miner-header {
@@ -259,6 +269,27 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .stat-label { font-size: 9px; color: rgba(148, 163, 184, 0.8); font-weight: 600; text-transform: uppercase; }
 .stat-value { font-size: 14px; font-weight: 700; color: rgba(30, 41, 59, 0.9); }
 
+.nry-referral-capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(249, 115, 22, 0.06);
+    border: 1px solid rgba(249, 115, 22, 0.12);
+    grid-column: span 2;
+    justify-self: start;
+}
+.nry-referral-capsule .stat-value { font-size: 12px; }
+.nry-capsule-sep { color: rgba(148, 163, 184, 0.5); font-size: 10px; }
+
+.nry-identity-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; }
+.nry-identity-badge.v0 { background: rgba(148, 163, 184, 0.15); color: #64748b; }
+.nry-identity-badge.v1 { background: rgba(34, 197, 94, 0.12); color: #16a34a; }
+.nry-identity-badge.v2 { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
+.nry-identity-badge.v3 { background: rgba(249, 115, 22, 0.12); color: #ea580c; }
+.nry-identity-badge.v4 { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+
 /* 长文本单行折叠（挖矿期限等）：溢出显示省略号+角标，点击弹窗查看完整内容 */
 .stat-value.fbs-clamp {
     display: inline-block;
@@ -277,7 +308,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    color: #9333ea;
+    color: #ea580c;
     font-size: 10px;
     font-weight: 900;
     letter-spacing: -1px;
@@ -292,22 +323,22 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     gap: 4px;
     padding: 5px 10px;
     border-radius: 999px;
-    border: 1px solid rgba(147, 51, 234, 0.25);
-    background: rgba(147, 51, 234, 0.08);
-    color: #7c3aed;
+    border: 1px solid rgba(234, 88, 12, 0.25);
+    background: rgba(234, 88, 12, 0.08);
+    color: #f97316;
     font-size: 10px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 .miner-detail-btn i { font-size: 9px; }
-.miner-detail-btn:active { transform: scale(0.95); background: rgba(147, 51, 234, 0.16); }
+.miner-detail-btn:active { transform: scale(0.95); background: rgba(234, 88, 12, 0.16); }
 
 /* 矿机详情弹窗列表 */
 .miner-detail-list { display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto; }
 .miner-detail-item {
     background: rgba(248, 250, 252, 0.9);
-    border: 1px solid rgba(147, 51, 234, 0.1);
+    border: 1px solid rgba(234, 88, 12, 0.1);
     border-radius: 16px;
     padding: 12px 14px;
     text-align: left;
@@ -316,7 +347,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .miner-detail-status { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
 .miner-detail-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 11px; color: #64748b; margin-top: 4px; }
 .miner-detail-row b { color: #334155; font-weight: 600; text-align: right; }
-.miner-detail-link { color: #7c3aed; font-weight: 600; font-size: 10px; word-break: break-all; text-align: right; }
+.miner-detail-link { color: #f97316; font-weight: 600; font-size: 10px; word-break: break-all; text-align: right; }
 .miner-detail-note { font-size: 10px; color: #94a3b8; text-align: center; margin-top: 4px; }
 
 /* --- 4. 苹果风磨砂玻璃弹窗 (彻底修复样式) --- */
@@ -393,19 +424,19 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 #modalContent input:focus {
     background: rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.2);
 }
 
 /* --- 5. 按钮统一胶囊化 --- */
 .action-btn {
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
     border-radius: 999px !important;
     padding: 12px 24px;
     border: none !important;
     color: white !important;
     font-weight: 600 !important;
     font-size: 13px !important;
-    box-shadow: 0 8px 15px -3px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 15px -3px rgba(251, 146, 60, 0.3);
     transition: all 0.2s;
     cursor: pointer;
     display: inline-block;
@@ -421,8 +452,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 /* LP 质押池次级按钮（仅限 LP 区域，不影响其他 secondary 按钮） */
 .lp-btn-secondary {
     background: rgba(255, 255, 255, 0.65) !important;
-    border: 1.5px solid rgba(99, 102, 241, 0.28) !important;
-    color: #6366f1 !important;
+    border: 1.5px solid rgba(251, 146, 60, 0.28) !important;
+    color: #fb923c !important;
     box-shadow: none;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -431,7 +462,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 .lp-btn-secondary:active {
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(251, 146, 60, 0.1) !important;
     transform: scale(0.94);
     filter: none;
 }
@@ -439,19 +470,16 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 /* --- 6. 其它 UI 细节 --- */
 /* 玻璃卡片容器 */
 .glass-card {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.02), 0 6px 16px rgba(0,0,0,0.01), inset 0 1px 0 rgba(255,255,255,0.2);
+    background: transparent;
+    border: none;
+    box-shadow: none;
     transform: translateY(0);
     transition: all 0.3s ease;
 }
 
 .glass-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: none;
+    transform: none;
 }
 
 /* 区块链主题卡片 - 仅应用于资产卡片模块 */
@@ -467,7 +495,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 /* ============================================================
-   🌀 紫色立体动态背景：3D 立体旋转的 NEO 大写字母
+   🌀 橙色立体动态背景：3D 立体旋转的 NRY 大写字母
    ============================================================ */
 .fbs-neo-bg {
     position: absolute;
@@ -486,13 +514,13 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     font-family: 'Orbitron', 'Courier New', monospace;
     font-weight: 900;
     color: transparent;
-    background: linear-gradient(135deg, rgba(216, 180, 254, 0.6), rgba(139, 92, 246, 0.35) 45%, rgba(91, 33, 182, 0.25) 80%);
+    background: linear-gradient(135deg, rgba(253, 186, 116, 0.6), rgba(251, 146, 60, 0.35) 45%, rgba(234, 88, 12, 0.25) 80%);
     -webkit-background-clip: text;
             background-clip: text;
     text-shadow:
-        0 0 30px rgba(139, 92, 246, 0.4),
-        0 0 60px rgba(124, 58, 237, 0.22);
-    filter: blur(0.3px) drop-shadow(0 8px 16px rgba(91, 33, 182, 0.35));
+        0 0 30px rgba(251, 146, 60, 0.4),
+        0 0 60px rgba(249, 115, 22, 0.22);
+    filter: blur(0.3px) drop-shadow(0 8px 16px rgba(234, 88, 12, 0.35));
     user-select: none;
     transform-style: preserve-3d;
     transform-origin: center center -40px;
@@ -577,12 +605,12 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     left: 6px;
     width: 40px;
     height: 26px;
-    background: linear-gradient(180deg, #c4b5fd 0%, #7c3aed 60%, #5b21b6 100%);
+    background: linear-gradient(180deg, #fdba74 0%, #f97316 60%, #c2410c 100%);
     border-radius: 6px 6px 4px 4px;
     box-shadow:
-        inset 0 -4px 6px rgba(46, 16, 101, 0.4),
-        inset 0 2px 4px rgba(216, 180, 254, 0.3),
-        0 4px 12px rgba(91, 33, 182, 0.45);
+        inset 0 -4px 6px rgba(124, 45, 18, 0.4),
+        inset 0 2px 4px rgba(253, 186, 116, 0.3),
+        0 4px 12px rgba(234, 88, 12, 0.45);
 }
 .fbs-mm-body::before {
     content: "";
@@ -604,7 +632,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     left: 4px;
     right: 4px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #d8b4fe, transparent);
+    background: linear-gradient(90deg, transparent, #fed7aa, transparent);
     border-radius: 2px;
     opacity: 0.7;
 }
@@ -616,8 +644,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #ede9fe, #7c3aed 60%, #4c1d95 100%);
-    box-shadow: inset 0 -2px 4px rgba(46, 16, 101, 0.5);
+    background: radial-gradient(circle at 30% 30%, #fff7ed, #f97316 60%, #7c2d12 100%);
+    box-shadow: inset 0 -2px 4px rgba(124, 45, 18, 0.5);
     animation: fbsMmSpin 1.2s linear infinite;
 }
 .fbs-mm-wheel::before {
@@ -625,7 +653,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     position: absolute;
     inset: 3px;
     border-radius: 50%;
-    border: 1.5px dashed rgba(216, 180, 254, 0.7);
+    border: 1.5px dashed rgba(253, 186, 116, 0.7);
 }
 
 .fbs-mm-light {
@@ -645,8 +673,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: radial-gradient(circle, #f5d0fe, #c084fc);
-    box-shadow: 0 0 4px rgba(192, 132, 252, 0.9);
+    background: radial-gradient(circle, #fed7aa, #fdba74);
+    box-shadow: 0 0 4px rgba(253, 186, 116, 0.9);
     opacity: 0;
     animation: fbsMmSpark 1.8s ease-in infinite;
 }
@@ -685,8 +713,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 /* 紫色发光字体 */
 .purple-glow-text {
-    color: #a855f7;
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.8), 0 0 20px rgba(168, 85, 247, 0.6), 0 0 30px rgba(168, 85, 247, 0.4);
+    color: #f97316;
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.8), 0 0 20px rgba(249, 115, 22, 0.6), 0 0 30px rgba(249, 115, 22, 0.4);
 }
 
 /* 绿色发光字体 */
@@ -696,27 +724,11 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 .blockchain-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.3) 0%, rgba(139, 92, 246, 0.15) 40%, transparent 70%);
-    animation: floatGlow 8s ease-in-out infinite;
-    pointer-events: none;
+    display: none;
 }
 
 .blockchain-card::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -10%;
-    width: 80%;
-    height: 80%;
-    background: radial-gradient(ellipse at center, rgba(147, 51, 234, 0.2) 0%, rgba(99, 102, 241, 0.1) 50%, transparent 80%);
-    animation: floatGlow 6s ease-in-out infinite reverse;
-    pointer-events: none;
+    display: none;
 }
 
 @keyframes floatGlow {
@@ -738,8 +750,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     right: 0;
     bottom: 0;
     background-image: 
-        linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(249, 115, 22, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249, 115, 22, 0.03) 1px, transparent 1px);
     background-size: 20px 20px;
     animation: gridMove 20s linear infinite;
     pointer-events: none;
@@ -770,7 +782,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     position: absolute;
     width: 4px;
     height: 4px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.8) 0%, rgba(139, 92, 246, 0.4) 100%);
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.8) 0%, rgba(251, 146, 60, 0.4) 100%);
     border-radius: 50%;
     animation: particleFloat 10s ease-in-out infinite;
 }
@@ -816,12 +828,12 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     margin: -5px 0 0 -5px;
     width: 10px;
     height: 10px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(168, 85, 247, 0.9) 50%, rgba(139, 92, 246, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 115, 22, 0.9) 50%, rgba(251, 146, 60, 0.8) 100%);
     border-radius: 50%;
     box-shadow: 
         0 0 8px rgba(255, 255, 255, 0.9),
-        0 0 16px rgba(168, 85, 247, 0.7),
-        0 0 24px rgba(139, 92, 246, 0.5);
+        0 0 16px rgba(249, 115, 22, 0.7),
+        0 0 24px rgba(251, 146, 60, 0.5);
     animation: satellitePulse 1.5s ease-in-out infinite, satelliteSpin 3s linear infinite;
 }
 
@@ -833,7 +845,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     top: 50%;
     width: 16px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), rgba(255, 255, 255, 0.9), rgba(168, 85, 247, 0.8), transparent);
+    background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.8), rgba(255, 255, 255, 0.9), rgba(249, 115, 22, 0.8), transparent);
     transform: translateY(-50%);
 }
 
@@ -860,14 +872,14 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     0%, 100% {
         box-shadow: 
             0 0 8px rgba(255, 255, 255, 0.9),
-            0 0 16px rgba(168, 85, 247, 0.7),
-            0 0 24px rgba(139, 92, 246, 0.5);
+            0 0 16px rgba(249, 115, 22, 0.7),
+            0 0 24px rgba(251, 146, 60, 0.5);
     }
     50% {
         box-shadow: 
             0 0 12px rgba(255, 255, 255, 1),
-            0 0 24px rgba(168, 85, 247, 0.9),
-            0 0 36px rgba(139, 92, 246, 0.7);
+            0 0 24px rgba(249, 115, 22, 0.9),
+            0 0 36px rgba(251, 146, 60, 0.7);
     }
 }
 
@@ -882,10 +894,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 .blockchain-card:hover {
-    box-shadow: 
-        0 16px 40px rgba(0,0,0,0.1), 
-        0 8px 20px rgba(0,0,0,0.08),
-        0 0 40px rgba(168, 85, 247, 0.15);
+    box-shadow: none;
 }
 
 .blockchain-card:hover::before {
@@ -912,7 +921,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     justify-content: center;
     margin: 0 auto 6px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    color: #6366f1;
+    color: #fb923c;
 }
 
 /* 文字粗细降权 */
@@ -938,7 +947,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     height: 200%;
     background: radial-gradient(
         circle at 30% 30%,
-        rgba(139, 92, 246, 0.04) 0%,
+        rgba(251, 146, 60, 0.04) 0%,
         transparent 50%
     );
     animation: time-glow 8s ease-in-out infinite;
@@ -964,7 +973,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     height: 90%;
     transform: translate(-50%, -50%);
     border: 2px solid transparent;
-    border-top-color: rgba(139, 92, 246, 0.15);
+    border-top-color: rgba(251, 146, 60, 0.15);
     border-radius: 50%;
     animation: clock-second 60s linear infinite;
     pointer-events: none;
@@ -993,7 +1002,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .moscow-time-card .clock-ticks::after {
     content: '';
     position: absolute;
-    background: rgba(139, 92, 246, 0.1);
+    background: rgba(251, 146, 60, 0.1);
 }
 
 .moscow-time-card .clock-ticks::before {
@@ -1016,17 +1025,13 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     position: relative;
     z-index: 1;
     text-shadow: 
-        0 2px 4px rgba(139, 92, 246, 0.15),
-        0 0 20px rgba(139, 92, 246, 0.08);
+        0 2px 4px rgba(251, 146, 60, 0.15),
+        0 0 20px rgba(251, 146, 60, 0.08);
 }
 
 .moscow-time-card:hover {
-    box-shadow: 
-        0 8px 30px rgba(0, 0, 0, 0.05),
-        0 0 40px rgba(139, 92, 246, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    transform: translateY(-2px);
-    transition: all 0.3s ease;
+    box-shadow: none;
+    transform: none;
 }
 
 /* 滚动条：移动端隐藏，桌面端显示细滚动条 */
@@ -1180,11 +1185,11 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .wp-chapter { border-bottom: 1px solid #f1f5f9; padding: 4px 0; }
 .wp-chapter:last-child { border-bottom: none; }
 .wp-chapter summary::-webkit-details-marker { display: none; }
-.wp-sub { border-left: 2px solid #ede9fe; margin-left: 4px; padding-left: 8px; }
+.wp-sub { border-left: 2px solid #fff7ed; margin-left: 4px; padding-left: 8px; }
 .wp-sub summary::-webkit-details-marker { display: none; }
 #wpContent { overflow-y: visible; padding-right: 4px; }
 #wpContent::-webkit-scrollbar { width: 3px; }
-#wpContent::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 3px; }
+#wpContent::-webkit-scrollbar-thumb { background: #fed7aa; border-radius: 3px; }
 
 /* 合作伙伴滚动容器 */
 .partner-scroll-container {
@@ -1258,29 +1263,15 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     position: relative;
     overflow: hidden;
     background: transparent;
-    border: 1px solid rgba(0, 240, 255, 0.15);
+    border: none;
 }
 
 .bitget-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0, 31, 41, 0.03), rgba(0, 240, 255, 0.06), rgba(0, 31, 41, 0.03));
-    background-size: 200% 200%;
-    animation: bitgetGlow 6s ease-in-out infinite;
-    z-index: 0;
+    display: none;
 }
 
 .bitget-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.08), transparent);
-    animation: bitgetShimmer 5s ease-in-out infinite;
-    z-index: 0;
+    display: none;
 }
 
 .bitget-section > div {
@@ -1297,11 +1288,11 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     border-radius: 20px;
     padding: 14px;
     background:
-        radial-gradient(120% 90% at 85% 0%, rgba(168, 85, 247, 0.14) 0%, transparent 55%),
-        radial-gradient(120% 90% at 10% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 55%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(243, 232, 255, 0.45) 55%, rgba(237, 233, 254, 0.55) 100%);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    box-shadow: 0 8px 28px rgba(139, 92, 246, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        radial-gradient(120% 90% at 85% 0%, rgba(249, 115, 22, 0.14) 0%, transparent 55%),
+        radial-gradient(120% 90% at 10% 100%, rgba(251, 146, 60, 0.1) 0%, transparent 55%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 247, 237, 0.45) 55%, rgba(255, 247, 237, 0.55) 100%);
+    border: 1px solid rgba(251, 146, 60, 0.2);
+    box-shadow: 0 8px 28px rgba(251, 146, 60, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 /* 科技网格底纹 */
 .fbs-activity::after {
@@ -1309,8 +1300,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(251, 146, 60, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 146, 60, 0.05) 1px, transparent 1px);
     background-size: 22px 22px;
     pointer-events: none;
 }
@@ -1360,7 +1351,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 2px;
     height: 7px;
     border-radius: 2px;
-    background: #c4b5fd;
+    background: #fdba74;
 }
 .fbs-mini-bot-antenna::after {
     content: '';
@@ -1371,8 +1362,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #f0abfc;
-    box-shadow: 0 0 8px 1px rgba(232, 121, 249, 0.8);
+    background: #fdba74;
+    box-shadow: 0 0 8px 1px rgba(251, 146, 60, 0.8);
     animation: none;
 }
 .fbs-mini-bot-head {
@@ -1383,9 +1374,9 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 24px;
     height: 19px;
     border-radius: 9px 9px 5px 5px;
-    background: linear-gradient(140deg, #b18cff 0%, #7c3aed 65%, #6d28d9 100%);
+    background: linear-gradient(140deg, #fdba74 0%, #f97316 65%, #ea580c 100%);
     border: 1.5px solid rgba(255, 255, 255, 0.65);
-    box-shadow: 0 5px 12px rgba(124, 58, 237, 0.45);
+    box-shadow: 0 5px 12px rgba(249, 115, 22, 0.45);
 }
 .fbs-mini-bot-eye {
     position: absolute;
@@ -1407,7 +1398,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 18px;
     height: 15px;
     border-radius: 5px 5px 8px 8px;
-    background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+    background: linear-gradient(180deg, #fb923c, #ea580c);
     border: 1.5px solid rgba(255, 255, 255, 0.5);
 }
 .fbs-mini-bot-body::after {
@@ -1428,7 +1419,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     height: 5px;
     margin: 2px auto 6px;
     border-radius: 50%;
-    background: rgba(109, 40, 217, 0.28);
+    background: rgba(234, 88, 12, 0.28);
     filter: blur(1.5px);
     animation: none;
 }
@@ -1473,8 +1464,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     height: 16px;
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.55);
-    background: conic-gradient(#c4b5fd 0 25%, rgba(255, 255, 255, 0.15) 25% 50%, #c4b5fd 50% 75%, rgba(255, 255, 255, 0.15) 75% 100%);
-    box-shadow: 0 0 8px rgba(139, 92, 246, 0.45);
+    background: conic-gradient(#fdba74 0 25%, rgba(255, 255, 255, 0.15) 25% 50%, #fdba74 50% 75%, rgba(255, 255, 255, 0.15) 75% 100%);
+    box-shadow: 0 0 8px rgba(251, 146, 60, 0.45);
     animation: none;
 }
 .fbs-mini-miner-fan::after {
@@ -1496,9 +1487,9 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 30px;
     height: 20px;
     border-radius: 6px;
-    background: linear-gradient(180deg, #3b2a66 0%, #251a45 55%, #1a1230 100%);
-    border: 1.5px solid rgba(196, 181, 253, 0.5);
-    box-shadow: 0 6px 14px rgba(58, 30, 120, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    background: linear-gradient(180deg, #7c2d12 0%, #251a45 55%, #1a1230 100%);
+    border: 1.5px solid rgba(253, 186, 116, 0.5);
+    box-shadow: 0 6px 14px rgba(124, 45, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .fbs-mini-miner-body::before {
     content: '✦';
@@ -1529,8 +1520,8 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     width: 26px;
     height: 5px;
     border-radius: 3px;
-    background: linear-gradient(180deg, #4c3390, #2d1c5c);
-    border: 1px solid rgba(196, 181, 253, 0.35);
+    background: linear-gradient(180deg, #7c2d12, #7c2d12);
+    border: 1px solid rgba(253, 186, 116, 0.35);
 }
 @keyframes fbsMiniMinerSpin {
     to { transform: translateX(-50%) rotate(360deg); }
@@ -1556,13 +1547,13 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     gap: 5px;
     padding: 3px 12px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #7c3aed, #a855f7);
+    background: linear-gradient(90deg, #f97316, #f97316);
     border: 1px solid rgba(255, 255, 255, 0.5);
     color: #fff;
     font-size: 10.5px;
     font-weight: 900;
     letter-spacing: 1px;
-    box-shadow: 0 2px 12px rgba(139, 92, 246, 0.45);
+    box-shadow: 0 2px 12px rgba(251, 146, 60, 0.45);
 }
 .fbs-activity-dot {
     width: 6px; height: 6px;
@@ -1579,7 +1570,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     font-size: 18px;
     font-weight: 900;
     letter-spacing: 1px;
-    background: linear-gradient(90deg, #7c3aed, #c026d3, #6366f1, #7c3aed);
+    background: linear-gradient(90deg, #f97316, #f97316, #fb923c, #f97316);
     background-size: 300% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -1598,15 +1589,15 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     padding: 5px 14px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(139, 92, 246, 0.25);
+    border: 1px solid rgba(251, 146, 60, 0.25);
     backdrop-filter: blur(6px);
-    color: #7c3aed;
+    color: #f97316;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
 .fbs-activity-countdown b {
-    color: #6d28d9;
+    color: #ea580c;
     font-size: 15px;
     font-weight: 900;
 }
@@ -1618,7 +1609,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     padding: 10px 12px;
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(139, 92, 246, 0.18);
+    border: 1px solid rgba(251, 146, 60, 0.18);
     backdrop-filter: blur(6px);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
@@ -1634,27 +1625,27 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     justify-content: center;
     width: 20px; height: 20px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #8b5cf6, #d946ef);
+    background: linear-gradient(135deg, #fb923c, #fb923c);
     border: 1px solid rgba(255, 255, 255, 0.6);
     color: #fff;
     font-size: 11px;
     font-weight: 900;
     flex: none;
-    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 2px 8px rgba(251, 146, 60, 0.4);
 }
 .fbs-activity-item-title {
     font-size: 13.5px;
     font-weight: 900;
-    color: #6d28d9;
+    color: #ea580c;
     letter-spacing: 0.5px;
 }
 .fbs-activity-item-tag {
     margin-left: auto;
     padding: 2px 8px;
     border-radius: 999px;
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.25);
-    color: #7c3aed;
+    background: rgba(251, 146, 60, 0.1);
+    border: 1px solid rgba(251, 146, 60, 0.25);
+    color: #f97316;
     font-size: 9px;
     font-weight: 800;
 }
@@ -1674,10 +1665,10 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     top: 10px;
     width: 5px; height: 5px;
     border-radius: 50%;
-    background: #a855f7;
+    background: #f97316;
 }
 .fbs-activity-list b {
-    color: #d946ef;
+    color: #fb923c;
     font-weight: 900;
     font-size: 13px;
 }
@@ -1686,11 +1677,11 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 .fbs-activity-notes p {
     font-size: 10.5px;
     font-weight: 600;
-    color: #8b5cf6;
+    color: #fb923c;
     line-height: 1.6;
 }
-.fbs-activity-notes i { font-style: normal; color: #c026d3; font-weight: 900; margin-right: 3px; }
-.fbs-activity-notes b { color: #6b21a8; font-weight: 900; }
+.fbs-activity-notes i { font-style: normal; color: #f97316; font-weight: 900; margin-right: 3px; }
+.fbs-activity-notes b { color: #c2410c; font-weight: 900; }
 
 /* 动态减弱偏好：活动流光与标题渐变动画关闭 */
 @media (prefers-reduced-motion: reduce) {
@@ -1724,7 +1715,7 @@ body.agent-active .bottom-nav-pill {
     backdrop-filter: blur(14px) saturate(200%);
     -webkit-backdrop-filter: blur(14px) saturate(200%);
     border: none;
-    border-top: 1px solid rgba(139, 92, 246, 0.1);
+    border-top: 1px solid rgba(251, 146, 60, 0.1);
     box-shadow: none;
 }
 
@@ -1743,8 +1734,8 @@ body.agent-active .bottom-nav-pill {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-radius: 20px;
-    border: 1px solid rgba(139, 92, 246, 0.15);
-    box-shadow: 0 8px 32px rgba(91, 33, 182, 0.1);
+    border: 1px solid rgba(251, 146, 60, 0.15);
+    box-shadow: 0 8px 32px rgba(234, 88, 12, 0.1);
     overflow: hidden;
     z-index: 40; /* 低于页头 z-50，页头始终可见 */
 }
@@ -1755,21 +1746,21 @@ body.agent-active .bottom-nav-pill {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(192, 132, 252, 0.04));
-    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.08), rgba(253, 186, 116, 0.04));
+    border-bottom: 1px solid rgba(251, 146, 60, 0.1);
 }
 .fbs-agent-avatar {
     position: relative;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed, #c084fc);
+    background: linear-gradient(135deg, #f97316, #fdba74);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 18px;
-    box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 12px rgba(251, 146, 60, 0.5);
 }
 .fbs-agent-status {
     position: absolute;
@@ -1789,27 +1780,27 @@ body.agent-active .bottom-nav-pill {
 .fbs-agent-title {
     font-size: 15px;
     font-weight: 900;
-    color: #4c1d95;
+    color: #7c2d12;
     font-family: 'Orbitron', monospace;
     letter-spacing: 0.5px;
 }
 .fbs-agent-subtitle {
     font-size: 10px;
-    color: #7c3aed;
+    color: #f97316;
     opacity: 0.7;
 }
 .fbs-agent-clear {
     background: transparent;
     border: none;
-    color: #a78bfa;
+    color: #fdba74;
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
 }
 .fbs-agent-clear:hover {
-    background: rgba(139, 92, 246, 0.1);
-    color: #7c3aed;
+    background: rgba(251, 146, 60, 0.1);
+    color: #f97316;
 }
 
 /* 消息流 */
@@ -1824,7 +1815,7 @@ body.agent-active .bottom-nav-pill {
 }
 .fbs-agent-messages::-webkit-scrollbar { width: 4px; }
 .fbs-agent-messages::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
+    background: rgba(251, 146, 60, 0.3);
     border-radius: 2px;
 }
 
@@ -1855,7 +1846,7 @@ body.agent-active .bottom-nav-pill {
     color: white;
 }
 .fbs-msg--ai .fbs-msg-avatar {
-    background: linear-gradient(135deg, #7c3aed, #c084fc);
+    background: linear-gradient(135deg, #f97316, #fdba74);
 }
 .fbs-msg--user .fbs-msg-avatar {
     background: linear-gradient(135deg, #64748b, #94a3b8);
@@ -1869,16 +1860,16 @@ body.agent-active .bottom-nav-pill {
     white-space: pre-wrap;
 }
 .fbs-msg--ai .fbs-msg-bubble {
-    background: linear-gradient(135deg, rgba(237, 233, 254, 0.95), rgba(221, 214, 254, 0.85));
+    background: linear-gradient(135deg, rgba(255, 247, 237, 0.95), rgba(254, 215, 170, 0.85));
     color: #1e1b4b;
     border-top-left-radius: 4px;
-    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
 }
 .fbs-msg--user .fbs-msg-bubble {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    background: linear-gradient(135deg, #f97316, #ea580c);
     color: white;
     border-top-right-radius: 4px;
-    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
 }
 
 /* AI 思考中三点动画 */
@@ -1891,7 +1882,7 @@ body.agent-active .bottom-nav-pill {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #7c3aed;
+    background: #f97316;
     opacity: 0.4;
     animation: fbsTyping 1.4s infinite;
 }
@@ -1907,7 +1898,7 @@ body.agent-active .bottom-nav-pill {
 .fbs-msg-bubble .fbs-md-h {
     font-weight: 800;
     margin: 8px 0 4px;
-    color: #4c1d95;
+    color: #7c2d12;
 }
 .fbs-msg-bubble .fbs-md-li {
     padding-left: 4px;
@@ -1915,12 +1906,12 @@ body.agent-active .bottom-nav-pill {
 }
 .fbs-msg-bubble .fbs-md-hr {
     height: 1px;
-    background: rgba(139, 92, 246, 0.25);
+    background: rgba(251, 146, 60, 0.25);
     margin: 8px 0;
 }
 .fbs-msg-bubble strong {
     font-weight: 800;
-    color: #5b21b6;
+    color: #c2410c;
 }
 .fbs-msg-bubble > div {
     min-height: 1em;
@@ -1931,16 +1922,16 @@ body.agent-active .bottom-nav-pill {
     gap: 6px;
     padding: 8px 12px;
     overflow-x: auto;
-    border-top: 1px solid rgba(139, 92, 246, 0.08);
+    border-top: 1px solid rgba(251, 146, 60, 0.08);
     background: rgba(255, 255, 255, 0.4);
 }
 .fbs-agent-quick::-webkit-scrollbar { display: none; }
 .fbs-agent-quick button {
     flex-shrink: 0;
     padding: 6px 12px;
-    background: rgba(139, 92, 246, 0.08);
-    color: #6d28d9;
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: rgba(251, 146, 60, 0.08);
+    color: #ea580c;
+    border: 1px solid rgba(251, 146, 60, 0.2);
     border-radius: 14px;
     font-size: 11px;
     font-weight: 600;
@@ -1949,9 +1940,7 @@ body.agent-active .bottom-nav-pill {
     white-space: nowrap;
 }
 .fbs-agent-quick button:hover {
-    background: rgba(139, 92, 246, 0.15);
-    border-color: rgba(139, 92, 246, 0.4);
-    transform: translateY(-1px);
+    transform: none;
 }
 
 /* 输入栏 */
@@ -1960,13 +1949,13 @@ body.agent-active .bottom-nav-pill {
     align-items: flex-end;
     gap: 8px;
     padding: 10px 12px;
-    border-top: 1px solid rgba(139, 92, 246, 0.1);
+    border-top: 1px solid rgba(251, 146, 60, 0.1);
     background: rgba(255, 255, 255, 0.7);
 }
 #agentInput {
     flex: 1;
     resize: none;
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(251, 146, 60, 0.2);
     border-radius: 16px;
     padding: 8px 14px;
     font-size: 13px;
@@ -1979,15 +1968,15 @@ body.agent-active .bottom-nav-pill {
     font-family: inherit;
 }
 #agentInput:focus {
-    border-color: rgba(139, 92, 246, 0.6);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    border-color: rgba(251, 146, 60, 0.6);
+    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.1);
 }
-#agentInput::placeholder { color: #a78bfa; }
+#agentInput::placeholder { color: #fdba74; }
 .fbs-agent-send {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    background: linear-gradient(135deg, #f97316, #ea580c);
     color: white;
     border: none;
     display: flex;
@@ -1996,12 +1985,14 @@ body.agent-active .bottom-nav-pill {
     cursor: pointer;
     transition: all 0.2s;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
 }
-.fbs-agent-send:hover { transform: scale(1.05); }
+.fbs-agent-send:hover {
+    transform: none;
+}
 .fbs-agent-send:active { transform: scale(0.95); }
 .fbs-agent-send:disabled {
-    background: #c4b5fd;
+    background: #fdba74;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -2016,24 +2007,20 @@ body.agent-active .bottom-nav-pill {
 
 /* 欢迎消息 */
 .fbs-msg--welcome .fbs-msg-bubble {
-    background: linear-gradient(135deg, rgba(237, 233, 254, 0.95), rgba(196, 181, 253, 0.85));
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: linear-gradient(135deg, rgba(255, 247, 237, 0.95), rgba(253, 186, 116, 0.85));
+    border: 1px solid rgba(251, 146, 60, 0.2);
 }
 
 /* ============ NEO 链上银行上线广告横幅 ============ */
 .neo-bank-banner {
     position: relative;
     overflow: hidden;
-    border-radius: 22px;
     padding: 24px 20px 22px;
     margin: 4px 0 20px;
     isolation: isolate;
-    background:
-        radial-gradient(130% 120% at 100% -10%, rgba(192, 132, 252, 0.5) 0%, rgba(216, 180, 254, 0.18) 42%, transparent 66%),
-        radial-gradient(140% 130% at -10% 110%, rgba(129, 140, 248, 0.42) 0%, rgba(199, 210, 254, 0.14) 44%, transparent 64%),
-        linear-gradient(135deg, #f5f3ff 0%, #f3e8ff 48%, #ede9fe 100%);
-    border: 1px solid rgba(168, 120, 255, 0.28);
-    box-shadow: 0 14px 40px rgba(152, 98, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    background: transparent;
+    border: none;
+    box-shadow: none;
     animation: none;
 }
 
@@ -2041,61 +2028,34 @@ body.agent-active .bottom-nav-pill {
 .neo-bank-banner .nbb-grid {
     position: absolute;
     inset: 0;
-    background-image:
-        linear-gradient(rgba(147, 105, 247, 0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(147, 105, 247, 0.07) 1px, transparent 1px);
-    background-size: 24px 24px;
-    -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 28%, transparent 76%);
-    mask-image: radial-gradient(120% 120% at 50% 50%, #000 28%, transparent 76%);
+    background: transparent;
     z-index: -1;
 }
 
 /* 流光扫过 */
 .neo-bank-banner .nbb-shine {
-    position: absolute;
-    top: -80%; bottom: -80%;
-    left: -75%;
-    width: 45%;
-    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.65), transparent);
-    transform: skewX(-18deg);
-    animation: none;
-    z-index: 0;
-    pointer-events: none;
+    display: none;
 }
 
 /* 呼吸光晕 */
 .neo-bank-banner .nbb-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(30px);
-    z-index: -1;
-    opacity: 0.65;
-    pointer-events: none;
+    display: none;
 }
 .neo-bank-banner .nbb-orb-a {
-    width: 130px; height: 130px; top: -34px; right: -22px;
-    background: rgba(196, 140, 255, 0.55);
-    animation: none;
+    display: none;
 }
 .neo-bank-banner .nbb-orb-b {
-    width: 112px; height: 112px; bottom: -32px; left: -26px;
-    background: rgba(129, 140, 248, 0.5);
-    animation: none;
+    display: none;
 }
 
 /* 浮动粒子 */
 .neo-bank-banner .nbb-float {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle at 32% 30%, #ffffff, rgba(196, 132, 252, 0.95));
-    box-shadow: 0 0 10px 2px rgba(196, 132, 252, 0.55);
-    z-index: 0;
-    pointer-events: none;
+    display: none;
 }
-.neo-bank-banner .nbb-float-1 { width: 7px; height: 7px; top: 20%; right: 16%; animation: none; }
-.neo-bank-banner .nbb-float-2 { width: 5px; height: 5px; top: 62%; right: 9%; animation: none; }
-.neo-bank-banner .nbb-float-3 { width: 6px; height: 6px; top: 34%; left: 10%; animation: none; }
-.neo-bank-banner .nbb-float-4 { width: 4px; height: 4px; bottom: 24%; left: 18%; animation: none; }
+.neo-bank-banner .nbb-float-1 { display: none; }
+.neo-bank-banner .nbb-float-2 { display: none; }
+.neo-bank-banner .nbb-float-3 { display: none; }
+.neo-bank-banner .nbb-float-4 { display: none; }
 
 /* 内容主体 */
 .neo-bank-banner .nbb-body { position: relative; z-index: 2; text-align: center; }
@@ -2106,12 +2066,12 @@ body.agent-active .bottom-nav-pill {
     gap: 6px;
     padding: 4px 12px;
     border-radius: 999px;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(129, 140, 248, 0.92));
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.92), rgba(253, 186, 116, 0.92));
     color: #fff;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 1px;
-    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
     animation: none;
 }
 .neo-bank-banner .nbb-badge-dot {
@@ -2125,7 +2085,7 @@ body.agent-active .bottom-nav-pill {
     font-size: 26px;
     font-weight: 900;
     letter-spacing: 1px;
-    background: linear-gradient(120deg, #6d28d9 0%, #a855f7 45%, #6366f1 90%);
+    background: linear-gradient(120deg, #ea580c 0%, #f97316 45%, #fb923c 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -2135,7 +2095,7 @@ body.agent-active .bottom-nav-pill {
     margin-top: 8px;
     font-size: 12px;
     font-weight: 700;
-    color: #7c3aed;
+    color: #f97316;
     letter-spacing: 0.5px;
 }
 
@@ -2146,12 +2106,12 @@ body.agent-active .bottom-nav-pill {
     gap: 7px;
     padding: 9px 22px;
     border-radius: 999px;
-    background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #f97316 0%, #f97316 100%);
     color: #fff;
     font-size: 13px;
     font-weight: 900;
     letter-spacing: 1px;
-    box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 22px rgba(251, 146, 60, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     animation: none;
 }
 .neo-bank-banner .nbb-arrow {
@@ -2161,8 +2121,8 @@ body.agent-active .bottom-nav-pill {
 
 /* 动画关键帧 */
 @keyframes nbbBreath {
-    0%, 100% { box-shadow: 0 14px 40px rgba(152, 98, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
-    50% { box-shadow: 0 18px 52px rgba(152, 98, 248, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+    0%, 100% { box-shadow: 0 14px 40px rgba(253, 186, 116, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+    50% { box-shadow: 0 18px 52px rgba(253, 186, 116, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
 }
 @keyframes nbbShine {
     0% { left: -75%; }
@@ -2191,8 +2151,8 @@ body.agent-active .bottom-nav-pill {
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 @keyframes nbbCtaGlow {
-    0%, 100% { box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
-    50% { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+    0%, 100% { box-shadow: 0 8px 22px rgba(251, 146, 60, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+    50% { box-shadow: 0 10px 30px rgba(251, 146, 60, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
 }
 @keyframes nbbArrowSlide {
     0%, 100% { transform: translateX(0); }

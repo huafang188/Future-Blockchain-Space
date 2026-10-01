@@ -18,6 +18,16 @@ window.goToLPStake = function() {
     });
 };
 
+// 跳转到 NRY 算力挖矿区域
+window.goToNryMining = function() {
+    var target = document.getElementById('nry-mining-section');
+    if (!target) return;
+    window.switchPage('mine');
+    requestAnimationFrame(function() {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+};
+
 // 顶部导航（白皮书等）
 window.handleNav = function(key) {
     if (key === 'whitepaper') {
