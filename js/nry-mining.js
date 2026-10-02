@@ -235,7 +235,7 @@
                     <i class="fa-solid fa-circle-info text-amber-500 text-[10px] mt-0.5"></i>
                     <span class="text-[9px] font-bold text-amber-600 leading-relaxed" data-i18n="nry_private_pool_desc">选择添加金额，向私募底池转入 USDT（BSC 链）</span>
                 </div>
-                <div class="grid grid-cols-4 gap-2">
+                <div class="grid grid-cols-3 gap-2">
                     <button type="button" onclick="selectPrivateAmount(500)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
                         <div class="text-sm font-black text-orange-400">500</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
@@ -244,12 +244,32 @@
                         <div class="text-sm font-black text-orange-400">1,000</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
                     </button>
+                    <button type="button" onclick="selectPrivateAmount(3000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">3,000</div>
+                        <div class="text-[8px] font-bold text-slate-400">USDT</div>
+                    </button>
                     <button type="button" onclick="selectPrivateAmount(5000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
                         <div class="text-sm font-black text-orange-400">5,000</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
                     </button>
+                    <button type="button" onclick="selectPrivateAmount(8000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">8,000</div>
+                        <div class="text-[8px] font-bold text-slate-400">USDT</div>
+                    </button>
                     <button type="button" onclick="selectPrivateAmount(10000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
                         <div class="text-sm font-black text-orange-400">10,000</div>
+                        <div class="text-[8px] font-bold text-slate-400">USDT</div>
+                    </button>
+                    <button type="button" onclick="selectPrivateAmount(20000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">20,000</div>
+                        <div class="text-[8px] font-bold text-slate-400">USDT</div>
+                    </button>
+                    <button type="button" onclick="selectPrivateAmount(50000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">50,000</div>
+                        <div class="text-[8px] font-bold text-slate-400">USDT</div>
+                    </button>
+                    <button type="button" onclick="selectPrivateAmount(100000)" class="private-amount-btn py-3 bg-slate-50 rounded-xl text-center transition-colors">
+                        <div class="text-sm font-black text-orange-400">100,000</div>
                         <div class="text-[8px] font-bold text-slate-400">USDT</div>
                     </button>
                 </div>

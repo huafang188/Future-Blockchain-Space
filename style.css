@@ -204,13 +204,9 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
 }
 
-/* NRY 算力挖矿数据网格：减弱毛玻璃、下移露出顶部图片 */
+/* NRY 算力挖矿数据网格：下移露出顶部图片 */
 .miner-stats-grid.nry-stats-grid {
     margin-top: 20px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(3px) saturate(130%);
-    -webkit-backdrop-filter: blur(3px) saturate(130%);
-    border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* 火焰形状按钮 */
@@ -257,12 +253,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3列布局 */
     gap: 12px;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(15px) saturate(180%);
-    -webkit-backdrop-filter: blur(15px) saturate(180%);
     padding: 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .stat-item { display: flex; flex-direction: column; }
@@ -1191,54 +1182,26 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 #wpContent::-webkit-scrollbar { width: 3px; }
 #wpContent::-webkit-scrollbar-thumb { background: #fed7aa; border-radius: 3px; }
 
-/* 合作伙伴滚动容器 */
+/* 合作伙伴容器 */
 .partner-scroll-container {
-    overflow: hidden;
     position: relative;
     width: 100%;
     padding: 8px 0;
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-    /* 允许垂直滚动，水平交给拖动 */
-    touch-action: pan-y;
 }
 
-.partner-scroll-container.dragging {
-    cursor: grabbing;
-}
-
-/* 合作伙伴滚动轨道 */
+/* 合作伙伴轨道：flex-wrap 平铺 */
 .partner-scroll-track {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 24px;
-    animation: scrollLeft 15s linear infinite;
-    will-change: transform;
 }
 
-/* 鼠标悬停暂停动画（拖动时不暂停） */
-.partner-scroll-container:hover:not(.dragging) .partner-scroll-track {
-    animation-play-state: paused;
-}
-
-/* 拖动时禁用链接默认行为与图片拖拽 */
-.partner-scroll-container.dragging a {
-    pointer-events: none;
-}
 .partner-scroll-container img {
     -webkit-user-drag: none;
     user-drag: none;
 }
 
-/* 从右至左滚动动画 */
-@keyframes scrollLeft {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
 
 /* Bitget Wallet 推荐区块动效 */
 @keyframes bitgetGlow {
