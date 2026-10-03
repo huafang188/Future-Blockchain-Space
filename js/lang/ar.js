@@ -63,6 +63,7 @@ window.i18nData['ar'] = {
     nry_btn_add: "إضافة NRY",
     nry_btn_buy: "شراء NRY",
     nry_btn_stake: "رهن NRY",
+    nry_stake_3x_badge: "محدود 3x",
     nry_btn_withdraw: "سحب NRY",
     nry_stake_label: "قيمة التخزين (USDT)",
     nry_stake_nry_amount: "كمية NRY",

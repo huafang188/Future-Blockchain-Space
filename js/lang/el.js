@@ -62,6 +62,7 @@ window.i18nData['el'] = {
     nry_btn_add: "Προσθήκη NRY",
     nry_btn_buy: "Αγορά NRY",
     nry_btn_stake: "Staking NRY",
+    nry_stake_3x_badge: "Περιορισμένο 3x",
     nry_btn_withdraw: "Ανάληψη NRY",
     nry_stake_label: "Αξία staking (USDT)",
     nry_stake_nry_amount: "Ποσότητα N0NRY",

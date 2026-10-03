@@ -63,6 +63,7 @@ window.i18nData['zh-CN'] = {
     nry_btn_add: "添加NRY",
     nry_btn_buy: "购买NRY",
     nry_btn_stake: "质押NRY",
+    nry_stake_3x_badge: "限时3倍",
     nry_btn_withdraw: "提取NRY",
     nry_stake_label: "质押价值 (USDT)",
     nry_stake_nry_amount: "对应 NRY 数量",

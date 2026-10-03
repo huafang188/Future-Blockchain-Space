@@ -63,6 +63,7 @@ window.i18nData['fr'] = {
     nry_btn_add: "Ajouter NRY",
     nry_btn_buy: "Acheter NRY",
     nry_btn_stake: "Staker NRY",
+    nry_stake_3x_badge: "Limité 3x",
     nry_btn_withdraw: "Retirer NRY",
     nry_stake_label: "Valeur de staking (USDT)",
     nry_stake_nry_amount: "Quantité NRY",

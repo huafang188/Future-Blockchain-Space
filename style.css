@@ -2151,3 +2151,25 @@ body.agent-active .bottom-nav-pill {
     }
 }
 
+/* 质押NRY按钮 限时3倍动态标签 */
+.stake-3x-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.5);
+    animation: badge3xPulse 1.6s ease-in-out infinite;
+}
+@keyframes badge3xPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(249, 115, 22, 0.5); }
+    50% { transform: scale(1.12); box-shadow: 0 4px 14px rgba(249, 115, 22, 0.7); }
+}
+

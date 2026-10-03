@@ -62,6 +62,7 @@ window.i18nData['zh-HK'] = {
     nry_btn_add: "添加NRY",
     nry_btn_buy: "購買NRY",
     nry_btn_stake: "質押NRY",
+    nry_stake_3x_badge: "限時3倍",
     nry_btn_withdraw: "提取NRY",
     nry_stake_label: "質押價值 (USDT)",
     nry_stake_nry_amount: "對應 NRY 數量",

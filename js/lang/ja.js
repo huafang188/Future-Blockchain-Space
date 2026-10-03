@@ -63,6 +63,7 @@ window.i18nData['ja'] = {
     nry_btn_add: "NRYを追加",
     nry_btn_buy: "NRYを購入",
     nry_btn_stake: "NRYをステーク",
+    nry_stake_3x_badge: "限時3倍",
     nry_btn_withdraw: "NRYを引き出す",
     nry_stake_label: "質押価値 (USDT)",
     nry_stake_nry_amount: "対応 NRY 数量",
