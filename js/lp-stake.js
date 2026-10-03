@@ -119,16 +119,6 @@
         window.showModal('add_liq_title', `
             <div class="space-y-3 text-left">
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
-                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="add_liq_pair">交易对</span>
-                    <div class="flex items-center gap-1.5">
-                        <img src="${neoLogo}" class="w-5 h-5 object-contain rounded-full">
-                        <span class="text-xs font-black">NEO</span>
-                        <span class="text-slate-400 text-xs">/</span>
-                        <img src="${usdtLogo}" class="w-5 h-5 object-contain rounded-full">
-                        <span class="text-xs font-black">USDT</span>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="add_liq_my_neo">我的 NEO 余额</span>
                     <span id="addLiqNeoBal" class="text-sm font-black text-purple-600">${neoBalStr}</span>
                 </div>
@@ -136,21 +126,10 @@
                     <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="add_liq_input_label">输入 NEO 数量</p>
                     <div class="flex items-center gap-2">
                         <input type="number" id="addLiqNeoAmount" placeholder="0.0" step="any" min="0"
-                               oninput="window.calcAddLiquidityUsdt()"
                                class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
                         <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">
                             <img src="${neoLogo}" class="w-5 h-5 object-contain rounded-full">
                             <span class="text-xs font-black">NEO</span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="add_liq_usdt_label">需要 USDT 数量</p>
-                    <div class="flex items-center gap-2">
-                        <div id="addLiqUsdtAmount" class="flex-1 px-3 py-2 bg-purple-50 rounded-xl font-black text-sm text-purple-600 border border-purple-100">0.00</div>
-                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">
-                            <img src="${usdtLogo}" class="w-5 h-5 object-contain rounded-full">
-                            <span class="text-xs font-black">USDT</span>
                         </div>
                     </div>
                 </div>
@@ -160,42 +139,20 @@
             </div>`);
     };
 
-    // 实时计算 USDT 数量 = NEO 数量 × NEO 价格
-    window.calcAddLiquidityUsdt = function () {
-        var neoAmount = parseFloat(document.getElementById('addLiqNeoAmount') && document.getElementById('addLiqNeoAmount').value) || 0;
-        var neoPrice = parseFloat(window.currentPrices && window.currentPrices.NEO) || 0;
-        var usdtAmount = neoAmount * neoPrice;
-        var usdtEl = document.getElementById('addLiqUsdtAmount');
-        if (usdtEl) {
-            usdtEl.textContent = usdtAmount > 0 ? usdtAmount.toFixed(4) : '0.00';
-        }
-    };
-
-    // 确认增加流动性：链上转 USDT 到 LP 池地址，后台根据 neoAmount 扣除 NEO 余额
+    // 确认增加流动性：签名提交 NEO 数量到后台
     window.doAddLiquidity = async function () {
         var neoAmount = parseFloat(document.getElementById('addLiqNeoAmount') && document.getElementById('addLiqNeoAmount').value) || 0;
         if (neoAmount <= 0) {
             alert('请输入 NEO 数量');
             return;
         }
-        var neoPrice = parseFloat(window.currentPrices && window.currentPrices.NEO) || 0;
-        if (neoPrice <= 0) {
-            alert('NEO 价格获取失败，请稍后重试');
-            return;
-        }
-        var usdtAmount = neoAmount * neoPrice;
-        var LP_RECEIVE_ADDR = '0xAD50eaD9d7233B40cB6d53524fB6F5aB562A2BC5';
 
-        if (!window.executeOnChainTransfer) {
-            alert('转账模块未加载，请刷新页面重试');
+        if (!window.executeSignatureAction) {
+            alert('提交模块未加载，请刷新页面重试');
             return;
         }
 
-        await window.executeOnChainTransfer('增加流动性', 'USDT', usdtAmount.toFixed(6), LP_RECEIVE_ADDR, {
-            neoAmount: neoAmount.toString(),
-            neoPrice: neoPrice.toString(),
-            action_type: 'add_liquidity'
-        });
+        await window.executeSignatureAction('增加流动性', neoAmount.toString(), 'NEO', 'add_liquidity', {});
 
         setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
     };
