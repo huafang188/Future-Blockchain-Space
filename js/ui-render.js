@@ -756,9 +756,11 @@ let _nryKlineTimer = null;
 async function refreshNryDexPrice() {
     try {
         const resp = await fetch('/api/dex-test').then(r => r.json()).catch(() => null);
-        if (resp && resp.success && resp.dexPrice > 0) {
+        const dexPrice = resp && (resp.dexPrice || resp['价格']);
+        const success = resp && (resp.success || resp['成功']);
+        if (success && dexPrice > 0) {
             if (!window.currentPrices) window.currentPrices = {};
-            window.currentPrices['NRY'] = resp.dexPrice;
+            window.currentPrices['NRY'] = dexPrice;
             if (window.renderPriceCharts) window.renderPriceCharts();
         }
     } catch (e) { /* 静默失败，保留现有价格 */ }
