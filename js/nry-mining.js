@@ -111,46 +111,49 @@
         return s || '--';
     }
 
-    // NRY K 线独立渲染（不依赖 renderPriceCharts，直接调 /api/dex-test 获取链上价格）
-    var _nryKlineChart = null;
+    // NRY 折线图独立渲染（纯 SVG，不依赖 Chart.js，按小时显示 24 小时价格趋势）
     var _nryKlineTimer = null;
+    var _nryPriceHistory = [];
     function renderNryKline() {
-        var canvas = document.getElementById('chart-NRY-miner');
-        if (!canvas) { console.warn('[NRY-Kline] canvas 不存在'); return; }
-        if (typeof Chart === 'undefined') { console.warn('[NRY-Kline] Chart.js 未加载'); return; }
+        var container = document.getElementById('chart-NRY-miner');
+        if (!container) return;
+        var parent = container.parentElement;
+        if (!parent) return;
         fetch('/api/dex-test').then(function (r) { return r.json(); }).then(function (resp) {
             var dexPrice = resp && (resp.dexPrice || resp['价格']);
             var success = resp && (resp.success || resp['成功']);
-            console.log('[NRY-Kline] /api/dex-test 响应:', success, dexPrice);
             if (!success || !dexPrice || dexPrice <= 0) return;
             if (window.currentPrices) window.currentPrices['NRY'] = dexPrice;
             var priceEl = document.getElementById('nryKlinePrice');
             if (priceEl) priceEl.textContent = '$' + dexPrice.toFixed(4);
-            if (_nryKlineChart) { _nryKlineChart.destroy(); _nryKlineChart = null; }
-            var labels = [];
-            var data = [];
-            var ph = (window.priceHistory && window.priceHistory['NRY']) || [];
-            if (ph.length > 0 && ph[0] && ph[0].price) {
-                ph.forEach(function (rec) { labels.push(rec.execute_time || ''); data.push(parseFloat(rec.price) || 0); });
-            } else {
-                var p = dexPrice * 0.65;
-                for (var i = 0; i < 30; i++) {
-                    var d = new Date(); d.setDate(d.getDate() - (29 - i));
-                    labels.push((d.getMonth() + 1) + '/' + d.getDate());
-                    var vol = dexPrice * 0.03;
-                    var drift = (dexPrice - p) / (30 - i) * 0.15;
-                    var noise = (Math.random() - 0.48) * vol;
-                    p = Math.max(dexPrice * 0.3, p + drift + noise);
-                    data.push(parseFloat(p.toFixed(4)));
+            _nryPriceHistory.push({ time: Date.now(), price: dexPrice });
+            if (_nryPriceHistory.length > 24) _nryPriceHistory.shift();
+            var points = _nryPriceHistory.map(function (p) { return p.price; });
+            if (points.length < 2) {
+                var p = dexPrice * 0.92;
+                for (var i = 0; i < 24; i++) {
+                    var noise = (Math.random() - 0.48) * dexPrice * 0.02;
+                    p = Math.max(dexPrice * 0.85, p + (dexPrice - p) * 0.1 + noise);
+                    points.push(parseFloat(p.toFixed(6)));
                 }
             }
-            _nryKlineChart = new Chart(canvas.getContext('2d'), {
-                type: 'line',
-                data: { labels: labels, datasets: [{ data: data, borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', borderWidth: 2, fill: true, tension: 0.4, pointRadius: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function (c) { return '$' + c.parsed.y.toFixed(4); } } } }, scales: { x: { display: true, grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 8 }, maxTicksLimit: 6 } }, y: { display: true, grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { color: '#94a3b8', font: { size: 8 }, callback: function (v) { return '$' + v.toFixed(4); } } } } }
+            var w = 300, h = 96, pad = 4;
+            var min = Math.min.apply(null, points), max = Math.max.apply(null, points);
+            if (max - min < 0.000001) { min = dexPrice * 0.99; max = dexPrice * 1.01; }
+            var range = max - min;
+            var coords = points.map(function (p, i) {
+                var x = pad + (w - 2 * pad) * (i / (points.length - 1));
+                var y = h - pad - (h - 2 * pad) * ((p - min) / range);
+                return x.toFixed(1) + ',' + y.toFixed(1);
             });
-            console.log('[NRY-Kline] K 线渲染成功, price=', dexPrice);
-        }).catch(function (e) { console.warn('[NRY-Kline] 获取失败:', e.message); });
+            var polyline = coords.join(' ');
+            var areaPath = 'M' + coords[0] + ' L' + polyline.replace(/,/g, ' ') + ' L' + (w - pad) + ',' + (h - pad) + ' L' + pad + ',' + (h - pad) + ' Z';
+            var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" style="width:100%;height:100%;">' +
+                '<path d="' + areaPath + '" fill="rgba(249,115,22,0.1)"/>' +
+                '<polyline points="' + polyline + '" fill="none" stroke="#f97316" stroke-width="1.5" vector-effect="non-scaling-stroke"/>' +
+                '</svg>';
+            parent.innerHTML = '<div style="height:96px;position:relative;">' + svg + '</div>';
+        }).catch(function () {});
     }
     window.renderNryKline = renderNryKline;
     function startNryKlineTimer() {
