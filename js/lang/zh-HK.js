@@ -85,7 +85,6 @@ window.i18nData['zh-HK'] = {
     nry_addr_stake: "質押",
     nry_addr_private: "流動性",
     nry_distribution_title: "代幣分配與分紅池",
-    nry_kline_title: "NRY 實時價格",
     nry_dist_mining: "礦池",
     nry_dist_bottom: "底池",
     nry_dist_blackhole: "黑洞",

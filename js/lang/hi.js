@@ -85,7 +85,6 @@ window.i18nData['hi'] = {
     nry_addr_stake: "स्टेक",
     nry_addr_private: "तरलता",
     nry_distribution_title: "टोकन वितरण और लाभांश पूल",
-    nry_kline_title: "NRY रियल-टाइम मूल्य",
     nry_dist_mining: "माइनिंग पूल",
     nry_dist_bottom: "लिक्विडिटी पूल",
     nry_dist_blackhole: "ब्लैक होल",

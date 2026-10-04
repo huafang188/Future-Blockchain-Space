@@ -86,7 +86,6 @@ window.i18nData['ar'] = {
     nry_addr_stake: "الرهن",
     nry_addr_private: "سيولة",
     nry_distribution_title: "توزيع الرموز وبركة الأرباح",
-    nry_kline_title: "NRY السعر اللحظي",
     nry_dist_mining: "تجمع التعدين",
     nry_dist_bottom: "تجمع السيولة",
     nry_dist_blackhole: "ثقب أسود",

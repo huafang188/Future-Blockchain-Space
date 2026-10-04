@@ -444,7 +444,7 @@ export async function fetchUserData(address, options = {}) {
             // 🚀 优化：K线图延迟渲染，避免阻塞主线程
             setTimeout(() => {
                 if (window.renderPriceCharts) window.renderPriceCharts();
-                if (window.startNryKlineRefresh) window.startNryKlineRefresh();
+
             }, 100);
         };
 

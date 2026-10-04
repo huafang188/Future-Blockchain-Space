@@ -111,55 +111,6 @@
         return s || '--';
     }
 
-    // NRY 折线图独立渲染（纯 SVG，不依赖 Chart.js，按小时显示 24 小时价格趋势）
-    var _nryKlineTimer = null;
-    var _nryPriceHistory = [];
-    function renderNryKline() {
-        var container = document.getElementById('nryKlineContainer');
-        if (!container) return;
-        fetch('/api/dex-test').then(function (r) { return r.json(); }).then(function (resp) {
-            var dexPrice = resp && (resp.dexPrice || resp['价格']);
-            var success = resp && (resp.success || resp['成功']);
-            if (!success || !dexPrice || dexPrice <= 0) return;
-            if (window.currentPrices) window.currentPrices['NRY'] = dexPrice;
-            var priceEl = document.getElementById('nryKlinePrice');
-            if (priceEl) priceEl.textContent = '$' + dexPrice.toFixed(4);
-            _nryPriceHistory.push({ time: Date.now(), price: dexPrice });
-            if (_nryPriceHistory.length > 24) _nryPriceHistory.shift();
-            var points = _nryPriceHistory.map(function (p) { return p.price; });
-            if (points.length < 2) {
-                var p = dexPrice * 0.92;
-                for (var i = 0; i < 24; i++) {
-                    var noise = (Math.random() - 0.48) * dexPrice * 0.02;
-                    p = Math.max(dexPrice * 0.85, p + (dexPrice - p) * 0.1 + noise);
-                    points.push(parseFloat(p.toFixed(6)));
-                }
-            }
-            var w = 300, h = 96, pad = 4;
-            var min = Math.min.apply(null, points), max = Math.max.apply(null, points);
-            if (max - min < 0.000001) { min = dexPrice * 0.99; max = dexPrice * 1.01; }
-            var range = max - min;
-            var coords = points.map(function (p, i) {
-                var x = pad + (w - 2 * pad) * (i / (points.length - 1));
-                var y = h - pad - (h - 2 * pad) * ((p - min) / range);
-                return x.toFixed(1) + ',' + y.toFixed(1);
-            });
-            var polyline = coords.join(' ');
-            var areaPath = 'M' + coords[0] + ' L' + polyline.replace(/,/g, ' ') + ' L' + (w - pad) + ',' + (h - pad) + ' L' + pad + ',' + (h - pad) + ' Z';
-            container.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" style="width:100%;height:100%;">' +
-                '<path d="' + areaPath + '" fill="rgba(249,115,22,0.1)"/>' +
-                '<polyline points="' + polyline + '" fill="none" stroke="#f97316" stroke-width="1.5" vector-effect="non-scaling-stroke"/>' +
-                '</svg>';
-        }).catch(function () {});
-    }
-    window.renderNryKline = renderNryKline;
-    function startNryKlineTimer() {
-        if (_nryKlineTimer) clearInterval(_nryKlineTimer);
-        renderNryKline();
-        _nryKlineTimer = setInterval(renderNryKline, 30000);
-    }
-    window.startNryKlineTimer = startNryKlineTimer;
-
     // 渲染 NRY 算力挖矿数据到 UI
     window.renderNryMining = function (data) {
         var set = function (id, v) {
@@ -167,7 +118,6 @@
             if (el) el.textContent = v;
         };
         window.nryMiningData = data || null;
-        if (!window._nryKlineStarted) { window._nryKlineStarted = true; startNryKlineTimer(); }
         if (!data || !data.user) {
             set('nry_identity', '--');
             set('nry_stake', '$--');
@@ -186,7 +136,7 @@
             var idVal = fmtText(u.identity);
             idEl.textContent = idVal;
             idEl.className = 'stat-value nry-identity-badge';
-            var vMatch = idVal.match(/V([0-4])/i);
+            var vMatch = idVal.match(/N([0-4])/i);
             if (vMatch) idEl.classList.add('v' + vMatch[1].toLowerCase());
             else idEl.classList.add('v0');
         }

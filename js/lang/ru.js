@@ -86,7 +86,6 @@ window.i18nData['ru'] = {
     nry_addr_stake: "Стейк",
     nry_addr_private: "Ликвидность",
     nry_distribution_title: "Распределение токенов и пул дивидендов",
-    nry_kline_title: "NRY Цена в реальном времени",
     nry_dist_mining: "Майнинг-пул",
     nry_dist_bottom: "Пул ликвидности",
     nry_dist_blackhole: "Чёрная дыра",

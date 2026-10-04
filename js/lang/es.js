@@ -86,7 +86,6 @@ window.i18nData['es'] = {
     nry_addr_stake: "Stake",
     nry_addr_private: "Liquidez",
     nry_distribution_title: "Distribución de tokens y pool de dividendos",
-    nry_kline_title: "NRY Precio en tiempo real",
     nry_dist_mining: "Pool de minería",
     nry_dist_bottom: "Pool de liquidez",
     nry_dist_blackhole: "Agujero negro",
