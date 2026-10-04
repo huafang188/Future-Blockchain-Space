@@ -699,6 +699,7 @@ function renderChart(canvas, labels, data, colors, animated = false) {
 }
 
 function renderPriceCharts() {
+    console.log('[Chart] renderPriceCharts 调用, Chart loaded:', typeof Chart !== 'undefined');
     if (typeof Chart === 'undefined') return;
 
     const prices = window.currentPrices || {};
@@ -741,6 +742,7 @@ function renderPriceCharts() {
 
     // 渲染 NRY 算力挖矿区的实时 K 线图（橙色线条，透明背景）
     const nryMinerCanvas = document.getElementById('chart-NRY-miner');
+    console.log('[Chart] NRY canvas 存在:', !!nryMinerCanvas, 'NRY price:', prices['NRY']);
     if (nryMinerCanvas) {
         const nryPrice = parseFloat(prices['NRY']) || 0;
         const displayPrice = nryPrice > 0 ? nryPrice : 0.007;
@@ -755,7 +757,9 @@ function renderPriceCharts() {
 let _nryKlineTimer = null;
 async function refreshNryDexPrice() {
     try {
+        console.log('[DEX] 开始从 /api/dex-test 拉取 NRY 价格');
         const resp = await fetch('/api/dex-test').then(r => r.json()).catch(() => null);
+        console.log('[DEX] 响应:', resp ? { success: resp.success || resp['成功'], dexPrice: resp.dexPrice || resp['价格'] } : null);
         const dexPrice = resp && (resp.dexPrice || resp['价格']);
         const success = resp && (resp.success || resp['成功']);
         if (success && dexPrice > 0) {
@@ -763,7 +767,7 @@ async function refreshNryDexPrice() {
             window.currentPrices['NRY'] = dexPrice;
             if (window.renderPriceCharts) window.renderPriceCharts();
         }
-    } catch (e) { /* 静默失败，保留现有价格 */ }
+    } catch (e) { console.warn('[DEX] 刷新失败:', e.message); }
 }
 function startNryKlineRefresh() {
     if (_nryKlineTimer) clearInterval(_nryKlineTimer);
