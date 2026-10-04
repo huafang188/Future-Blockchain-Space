@@ -115,10 +115,8 @@
     var _nryKlineTimer = null;
     var _nryPriceHistory = [];
     function renderNryKline() {
-        var container = document.getElementById('chart-NRY-miner');
+        var container = document.getElementById('nryKlineContainer');
         if (!container) return;
-        var parent = container.parentElement;
-        if (!parent) return;
         fetch('/api/dex-test').then(function (r) { return r.json(); }).then(function (resp) {
             var dexPrice = resp && (resp.dexPrice || resp['价格']);
             var success = resp && (resp.success || resp['成功']);
@@ -148,11 +146,10 @@
             });
             var polyline = coords.join(' ');
             var areaPath = 'M' + coords[0] + ' L' + polyline.replace(/,/g, ' ') + ' L' + (w - pad) + ',' + (h - pad) + ' L' + pad + ',' + (h - pad) + ' Z';
-            var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" style="width:100%;height:100%;">' +
+            container.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" style="width:100%;height:100%;">' +
                 '<path d="' + areaPath + '" fill="rgba(249,115,22,0.1)"/>' +
                 '<polyline points="' + polyline + '" fill="none" stroke="#f97316" stroke-width="1.5" vector-effect="non-scaling-stroke"/>' +
                 '</svg>';
-            parent.innerHTML = '<div style="height:96px;position:relative;">' + svg + '</div>';
         }).catch(function () {});
     }
     window.renderNryKline = renderNryKline;
