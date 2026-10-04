@@ -67,6 +67,7 @@ window.i18nData['ko'] = {
     nry_btn_withdraw: "NRY 출금",
     nry_stake_label: "질탁 가치 (USDT)",
     nry_stake_nry_amount: "해당 NRY 수량",
+    nry_fee_dividend_label: "수수료 (배당)",
     nry_stake_confirm: "스테이킹 확인",
     nry_withdraw_balance: "출금 가능 보상",
     nry_withdraw_label: "출금 수량 (NRY)",

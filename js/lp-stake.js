@@ -256,6 +256,10 @@
                         <span class="text-sm font-black text-purple-600">${reward.toFixed(4)} NRY</span>
                     </div>
                 </div>
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_fee_dividend_label">费率（分红）</span>
+                    <span class="text-sm font-black text-orange-400">5%</span>
+                </div>
                 <div>
                     <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="claim_reward_input_label">提取数量</p>
                     <div class="flex items-center gap-2">

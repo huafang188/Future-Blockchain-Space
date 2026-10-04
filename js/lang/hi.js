@@ -66,6 +66,7 @@ window.i18nData['hi'] = {
     nry_btn_withdraw: "NRY निकालें",
     nry_stake_label: "स्टेकिंग मूल्य (USDT)",
     nry_stake_nry_amount: "NRY मात्रा",
+    nry_fee_dividend_label: "शुल्क (लाभांश)",
     nry_stake_confirm: "स्टेकिंग की पुष्टि करें",
     nry_withdraw_balance: "उपलब्ध इनाम",
     nry_withdraw_label: "निकासी राशि (NRY)",

@@ -66,6 +66,7 @@ window.i18nData['zh-HK'] = {
     nry_btn_withdraw: "提取NRY",
     nry_stake_label: "質押價值 (USDT)",
     nry_stake_nry_amount: "對應 NRY 數量",
+    nry_fee_dividend_label: "費率（分紅）",
     nry_stake_confirm: "確認質押",
     nry_withdraw_balance: "可提取收益",
     nry_withdraw_label: "提取數量 (NRY)",

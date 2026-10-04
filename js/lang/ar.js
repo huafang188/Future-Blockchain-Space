@@ -67,6 +67,7 @@ window.i18nData['ar'] = {
     nry_btn_withdraw: "سحب NRY",
     nry_stake_label: "قيمة التخزين (USDT)",
     nry_stake_nry_amount: "كمية NRY",
+    nry_fee_dividend_label: "الرسوم (توزيع الأرباح)",
     nry_stake_confirm: "تأكيد الرهن",
     nry_withdraw_balance: "المكافأة المتاحة",
     nry_withdraw_label: "كمية السحب (NRY)",

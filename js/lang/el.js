@@ -66,6 +66,7 @@ window.i18nData['el'] = {
     nry_btn_withdraw: "Ανάληψη NRY",
     nry_stake_label: "Αξία staking (USDT)",
     nry_stake_nry_amount: "Ποσότητα N0NRY",
+    nry_fee_dividend_label: "Προμήθεια (Μερίσμα)",
     nry_stake_confirm: "Επιβεβαίωση staking",
     nry_withdraw_balance: "Διαθέσιμη ανταμοιβή",
     nry_withdraw_label: "Ποσό ανάληψης (NRY)",

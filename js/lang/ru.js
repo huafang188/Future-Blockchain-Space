@@ -67,6 +67,7 @@ window.i18nData['ru'] = {
     nry_btn_withdraw: "Вывести NRY",
     nry_stake_label: "Сумма стейкинга (USDT)",
     nry_stake_nry_amount: "Количество NRY",
+    nry_fee_dividend_label: "Ставка (Дивиденды)",
     nry_stake_confirm: "Подтвердить стейкинг",
     nry_withdraw_balance: "Доступная награда",
     nry_withdraw_label: "Сумма вывода (NRY)",

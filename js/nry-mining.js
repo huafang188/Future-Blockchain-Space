@@ -121,8 +121,8 @@
         if (!data || !data.user) {
             set('nry_identity', '--');
             set('nry_stake', '$--');
-            set('nry_hashrate', '$--');
-            set('nry_income', '$--');
+            set('nry_hashrate', '--');
+            set('nry_income', '--');
             set('nry_pending', '--');
             set('nry_direct_volume', '$--');
             set('nry_indirect_volume', '$--');
@@ -141,8 +141,8 @@
             else idEl.classList.add('v0');
         }
         set('nry_stake', fmtUSD(u.stake));
-        set('nry_hashrate', fmtUSD(u.hashrate));
-        set('nry_income', fmtUSD(u.income));
+        set('nry_hashrate', fmtNry(u.hashrate));
+        set('nry_income', fmtNry(u.income));
         set('nry_pending', fmtNry(u.pending));
         set('nry_direct_volume', fmtUSD(u.directVolume));
         set('nry_indirect_volume', fmtUSD(u.indirectVolume));
@@ -351,6 +351,10 @@
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_stake_nry_amount">对应 NRY 数量</span>
                     <div class="flex items-center gap-1.5">${nryLogo('w-4 h-4 object-contain rounded-full')}<span id="nryStakeNryValue" class="text-sm font-black text-orange-400">--</span></div>
                 </div>
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_fee_dividend_label">费率（分红）</span>
+                    <span class="text-sm font-black text-orange-400">5%</span>
+                </div>
                 <div class="grid grid-cols-5 gap-1.5">
                     <button type="button" onclick="setNryStakeAmount('100')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">100</span>
@@ -417,6 +421,10 @@
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_withdraw_balance">可提取收益</span>
                     <div class="flex items-center gap-1.5">${nryLogo()}<span class="text-sm font-black text-purple-600">${display} NRY</span></div>
+                </div>
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_fee_dividend_label">费率（分红）</span>
+                    <span class="text-sm font-black text-orange-400">5%</span>
                 </div>
                 <div>
                     <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_withdraw_label">提取数量 (NRY)</p>

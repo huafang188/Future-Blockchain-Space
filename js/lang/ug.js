@@ -67,6 +67,7 @@ window.i18nData['ug'] = {
     nry_btn_withdraw: "NRY ئېلىش",
     nry_stake_label: "قەرەس قىممىتى (USDT)",
     nry_stake_nry_amount: "NRY مىقدارى",
+    nry_fee_dividend_label: "ھەق (پايدا تەقسىم)",
     nry_stake_confirm: "گۆرۈكنى جەزملەش",
     nry_withdraw_balance: "ئېلىشقا بولىدىغان مۇكاپات",
     nry_withdraw_label: "ئېلىش مىقدارى (NRY)",

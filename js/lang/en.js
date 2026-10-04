@@ -67,6 +67,7 @@ window.i18nData['en'] = {
     nry_btn_withdraw: "Withdraw NRY",
     nry_stake_label: "Stake Value (USDT)",
     nry_stake_nry_amount: "NRY Amount",
+    nry_fee_dividend_label: "Fee (Dividend)",
     nry_stake_confirm: "Confirm Stake",
     nry_withdraw_balance: "Available Reward",
     nry_withdraw_label: "Withdraw Amount (NRY)",

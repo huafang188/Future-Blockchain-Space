@@ -67,6 +67,7 @@ window.i18nData['ja'] = {
     nry_btn_withdraw: "NRYを引き出す",
     nry_stake_label: "質押価値 (USDT)",
     nry_stake_nry_amount: "対応 NRY 数量",
+    nry_fee_dividend_label: "手数料（配当）",
     nry_stake_confirm: "ステークを確認",
     nry_withdraw_balance: "引き出し可能な報酬",
     nry_withdraw_label: "引き出し数量 (NRY)",

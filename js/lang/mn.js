@@ -66,6 +66,7 @@ window.i18nData['mn'] = {
     nry_btn_withdraw: "NRY татах",
     nry_stake_label: "Төлбөрийн үнэ цэнэ (USDT)",
     nry_stake_nry_amount: "NRY хэмжээ",
+    nry_fee_dividend_label: "Хураамж (Ногдол)",
     nry_stake_confirm: "Стейкинг баталгаажуулах",
     nry_withdraw_balance: "Боломжтой шагнал",
     nry_withdraw_label: "Татах хэмжээ (NRY)",
