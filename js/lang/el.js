@@ -84,6 +84,7 @@ window.i18nData['el'] = {
     nry_addr_dev: "Προγραμματιστής",
     nry_addr_stake: "Stake",
     nry_addr_private: "Ρευστότητα",
+    nry_add_wallet_text: "Κάντε κλικ εδώ για να προσθέσετε το NRY στο πορτοφόλι Bitget σας",
     nry_distribution_title: "Διανομή διακριτικών και δεξαμενή μερισμάτων",
     nry_dist_mining: "Δεξαμενή εξόρυξης",
     nry_dist_bottom: "Δεξαμενή ρευστότητας",

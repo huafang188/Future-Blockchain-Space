@@ -845,36 +845,6 @@
 
         </div>
 
-        <!-- 官方地址 -->
-        <div class="mb-1">
-            <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider" data-i18n="nry_addr_official">官方地址</span>
-        </div>
-        <div class="mb-2">
-            <div onclick="copyAddress('0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42', this)" class="flex items-center gap-2 py-1 cursor-pointer transition-colors group">
-                <i class="fa-solid fa-file-contract text-orange-400 text-[10px]"></i>
-                <span class="text-[9px] font-bold text-slate-500 shrink-0" data-i18n="nry_addr_contract">合约</span>
-                <span class="text-[9px] font-mono text-slate-600 group-hover:text-orange-400 truncate flex-1">0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42</span>
-                <i class="fa-regular fa-copy text-slate-300 text-[9px] group-hover:text-orange-400 transition-colors"></i>
-            </div>
-            <div onclick="copyAddress('0xf1003413eA8e872930d650fCE5DC191967107e55', this)" class="flex items-center gap-2 py-1 cursor-pointer transition-colors group">
-                <i class="fa-solid fa-code text-orange-400 text-[10px]"></i>
-                <span class="text-[9px] font-bold text-slate-500 shrink-0" data-i18n="nry_addr_dev">开发者</span>
-                <span class="text-[9px] font-mono text-slate-600 group-hover:text-orange-400 truncate flex-1">0xf1003413eA8e872930d650fCE5DC191967107e55</span>
-                <i class="fa-regular fa-copy text-slate-300 text-[9px] group-hover:text-orange-400 transition-colors"></i>
-            </div>
-            <div onclick="copyAddress('0x8007c1F954D46f98D108EB6E0dD979406C5Bb444', this)" class="flex items-center gap-2 py-1 cursor-pointer transition-colors group">
-                <i class="fa-solid fa-lock text-orange-400 text-[10px]"></i>
-                <span class="text-[9px] font-bold text-slate-500 shrink-0" data-i18n="nry_addr_stake">质押</span>
-                <span class="text-[9px] font-mono text-slate-600 group-hover:text-orange-400 truncate flex-1">0x8007c1F954D46f98D108EB6E0dD979406C5Bb444</span>
-                <i class="fa-regular fa-copy text-slate-300 text-[9px] group-hover:text-orange-400 transition-colors"></i>
-            </div>
-            <div onclick="copyAddress('0xa59Ee12770664e002E6e0dDcAC447707AD873F33', this)" class="flex items-center gap-2 py-1 cursor-pointer transition-colors group">
-                <i class="fa-solid fa-coins text-orange-400 text-[10px]"></i>
-                <span class="text-[9px] font-bold text-slate-500 shrink-0" data-i18n="nry_addr_private">流动性</span>
-                <span class="text-[9px] font-mono text-slate-600 group-hover:text-orange-400 truncate flex-1">0xa59Ee12770664e002E6e0dDcAC447707AD873F33</span>
-                <i class="fa-regular fa-copy text-slate-300 text-[9px] group-hover:text-orange-400 transition-colors"></i>
-            </div>
-        </div>
 
         <!-- 代币分配与分红池（公共数据） -->
         <div class="mb-3">
@@ -957,17 +927,9 @@
                 <span class="stat-label" data-i18n="nry_team_volume">团队业绩</span>
                 <span id="nry_team_volume" class="stat-value">$--</span>
             </div>
+            <button type="button" onclick="addNry()" class="text-[10px] font-bold text-orange-400 underline hover:text-orange-500 transition-colors mt-2 self-start" data-i18n="nry_add_wallet_text">点击这里将NRY添加至您的Bitget钱包</button>
         </div>
 
-        <!-- 操作按钮 -->
-        <div class="grid grid-cols-2 gap-3 mt-4">
-            <button type="button" onclick="addNry()" class="action-btn">
-                <span data-i18n="nry_btn_add">添加NRY</span>
-            </button>
-            <button type="button" onclick="buyNry()" class="action-btn">
-                <span data-i18n="nry_btn_buy">购买NRY</span>
-            </button>
-        </div>
         <div class="grid grid-cols-2 gap-3 mt-3">
             <button type="button" onclick="stakeNry()" class="action-btn lp-btn-secondary relative">
                 <span data-i18n="nry_btn_stake">质押NRY</span>

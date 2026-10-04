@@ -85,6 +85,7 @@ window.i18nData['ar'] = {
     nry_addr_dev: "المطور",
     nry_addr_stake: "الرهن",
     nry_addr_private: "سيولة",
+    nry_add_wallet_text: "انقر هنا لإضافة NRY إلى محفظة Bitget الخاصة بك",
     nry_distribution_title: "توزيع الرموز وبركة الأرباح",
     nry_dist_mining: "تجمع التعدين",
     nry_dist_bottom: "تجمع السيولة",

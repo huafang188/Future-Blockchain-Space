@@ -84,6 +84,7 @@ window.i18nData['zh-HK'] = {
     nry_addr_dev: "開發者",
     nry_addr_stake: "質押",
     nry_addr_private: "流動性",
+    nry_add_wallet_text: "點擊這裡將NRY添加至您的Bitget錢包",
     nry_distribution_title: "代幣分配與分紅池",
     nry_dist_mining: "礦池",
     nry_dist_bottom: "底池",

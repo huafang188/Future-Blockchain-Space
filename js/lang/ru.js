@@ -85,6 +85,7 @@ window.i18nData['ru'] = {
     nry_addr_dev: "Разработчик",
     nry_addr_stake: "Стейк",
     nry_addr_private: "Ликвидность",
+    nry_add_wallet_text: "Нажмите здесь, чтобы добавить NRY в кошелек Bitget",
     nry_distribution_title: "Распределение токенов и пул дивидендов",
     nry_dist_mining: "Майнинг-пул",
     nry_dist_bottom: "Пул ликвидности",

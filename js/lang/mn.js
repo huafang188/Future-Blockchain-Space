@@ -84,6 +84,7 @@ window.i18nData['mn'] = {
     nry_addr_dev: "Хөгжүүлэгч",
     nry_addr_stake: "Stake",
     nry_addr_private: "Уян хатан",
+    nry_add_wallet_text: "Энд дарж NRY-г Bitget хэтэвч рүү нэмэх",
     nry_distribution_title: "Токенийн тархалт ба ногдолын сан",
     nry_dist_mining: "Уурхайлалтын сан",
     nry_dist_bottom: "Усан сан",

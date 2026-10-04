@@ -85,6 +85,7 @@ window.i18nData['ja'] = {
     nry_addr_dev: "開発者",
     nry_addr_stake: "ステーク",
     nry_addr_private: "流動性",
+    nry_add_wallet_text: "ここをクリックしてNRYをBitgetウォレットに追加",
     nry_distribution_title: "トークン分配と配当プール",
     nry_dist_mining: "マイニングプール",
     nry_dist_bottom: "流動性プール",

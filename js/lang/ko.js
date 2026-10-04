@@ -85,6 +85,7 @@ window.i18nData['ko'] = {
     nry_addr_dev: "개발자",
     nry_addr_stake: "스테이크",
     nry_addr_private: "유동성",
+    nry_add_wallet_text: "여기를 클릭하여 NRY를 Bitget 지갑에 추가",
     nry_distribution_title: "토큰 분배 및 배당 풀",
     nry_dist_mining: "마이닝 풀",
     nry_dist_bottom: "유동성 풀",

@@ -85,6 +85,7 @@ window.i18nData['fr'] = {
     nry_addr_dev: "Développeur",
     nry_addr_stake: "Stake",
     nry_addr_private: "Liquidité",
+    nry_add_wallet_text: "Cliquez ici pour ajouter NRY à votre portefeuille Bitget",
     nry_distribution_title: "Distribution de jetons & pool de dividendes",
     nry_dist_mining: "Pool de minage",
     nry_dist_bottom: "Pool de liquidité",
