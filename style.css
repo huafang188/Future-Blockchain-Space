@@ -194,19 +194,20 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
     top: 0;
     left: 0;
     width: 100%;
-    height: 190px;
+    height: 280px;
     object-fit: cover;
+    object-position: top;
     opacity: 0.5;
     z-index: 2;
     pointer-events: none;
     border-radius: 28px 28px 0 0;
-    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
 }
 
 /* NRY 算力挖矿数据网格：下移露出顶部图片 */
 .miner-stats-grid.nry-stats-grid {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 /* 火焰形状按钮 */
