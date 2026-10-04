@@ -86,6 +86,7 @@ window.i18nData['ja'] = {
     nry_addr_stake: "ステーク",
     nry_addr_private: "流動性",
     nry_distribution_title: "トークン分配と配当プール",
+    nry_kline_title: "NRY リアルタイム価格",
     nry_dist_mining: "マイニングプール",
     nry_dist_bottom: "流動性プール",
     nry_dist_blackhole: "ブラックホール",

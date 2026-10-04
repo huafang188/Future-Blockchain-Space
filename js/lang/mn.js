@@ -85,6 +85,7 @@ window.i18nData['mn'] = {
     nry_addr_stake: "Stake",
     nry_addr_private: "Уян хатан",
     nry_distribution_title: "Токенийн тархалт ба ногдолын сан",
+    nry_kline_title: "NRY Бодит хугааны үнэ",
     nry_dist_mining: "Уурхайлалтын сан",
     nry_dist_bottom: "Усан сан",
     nry_dist_blackhole: "Хар нүх",

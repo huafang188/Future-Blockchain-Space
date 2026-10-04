@@ -922,6 +922,17 @@
             </div>
         </div>
 
+        <!-- NRY 实时 K 线图 -->
+        <div class="mb-4">
+            <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider" data-i18n="nry_kline_title">NRY 实时价格</span>
+                <span id="nryKlinePrice" class="text-[10px] font-black text-orange-400">$--</span>
+            </div>
+            <div class="h-24">
+                <canvas id="chart-NRY-miner" class="w-full h-full"></canvas>
+            </div>
+        </div>
+
         <div class="miner-stats-grid nry-stats-grid">
             <div class="stat-item">
                 <span class="stat-label" data-i18n="nry_identity">我的身份</span>

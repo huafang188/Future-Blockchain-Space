@@ -85,6 +85,7 @@ window.i18nData['el'] = {
     nry_addr_stake: "Stake",
     nry_addr_private: "Ρευστότητα",
     nry_distribution_title: "Διανομή διακριτικών και δεξαμενή μερισμάτων",
+    nry_kline_title: "NRY Τιμή σε πραγματικό χρόνο",
     nry_dist_mining: "Δεξαμενή εξόρυξης",
     nry_dist_bottom: "Δεξαμενή ρευστότητας",
     nry_dist_blackhole: "Μαύρη τρύπα",

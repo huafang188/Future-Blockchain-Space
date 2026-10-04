@@ -738,6 +738,18 @@ function renderPriceCharts() {
         const { labels, data } = buildChartData('NCL', basePrice);
         renderChart(nclMinerCanvas, labels, data, trendColors['NCL']);
     }
+
+    // 渲染 NRY 算力挖矿区的实时 K 线图（橙色线条，透明背景）
+    const nryMinerCanvas = document.getElementById('chart-NRY-miner');
+    if (nryMinerCanvas) {
+        const nryPrice = parseFloat(prices['NRY']) || 0;
+        if (nryPrice > 0) {
+            const { labels, data } = buildChartData('NRY', nryPrice);
+            renderChart(nryMinerCanvas, labels, data, { line: '#f97316', fill: 'rgba(249,115,22,0.1)' });
+            const nryPriceEl = document.getElementById('nryKlinePrice');
+            if (nryPriceEl) nryPriceEl.textContent = '$' + nryPrice.toFixed(4);
+        }
+    }
 }
 
 // 全局挂载，方便外部调用

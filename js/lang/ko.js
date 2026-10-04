@@ -86,6 +86,7 @@ window.i18nData['ko'] = {
     nry_addr_stake: "스테이크",
     nry_addr_private: "유동성",
     nry_distribution_title: "토큰 분배 및 배당 풀",
+    nry_kline_title: "NRY 실시간 가격",
     nry_dist_mining: "마이닝 풀",
     nry_dist_bottom: "유동성 풀",
     nry_dist_blackhole: "블랙홀",

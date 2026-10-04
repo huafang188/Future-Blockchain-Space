@@ -86,6 +86,7 @@ window.i18nData['ug'] = {
     nry_addr_stake: "质押",
     nry_addr_private: "سۇيۇقلۇق",
     nry_distribution_title: "توكن تارقىتىش ۋە پايدا مەھكۇلىسى",
+    nry_kline_title: "NRY ئالدىنقى ۋاقىتتىك باھا",
     nry_dist_mining: "كان قېزىش مەھكۇلىسى",
     nry_dist_bottom: "سۇيۇقلۇق مەھكۇلىسى",
     nry_dist_blackhole: "قارا تۆشۈك",
