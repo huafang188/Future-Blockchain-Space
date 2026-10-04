@@ -408,7 +408,7 @@
         if (price <= 0) { alert('NRY 价格未加载，请稍后重试'); return; }
         var nryAmount = usdtAmount / price;
         if (!window.executeOnChainTransfer) { alert('提交模块未加载，请刷新页面重试'); return; }
-        await window.executeOnChainTransfer('质押NRY', 'NRY', String(nryAmount), NRY_STAKE_ADDR);
+        await window.executeOnChainTransfer('质押NRY', 'NRY', String(nryAmount), NRY_STAKE_ADDR, { remark: usdtAmount + ' USDT' });
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
