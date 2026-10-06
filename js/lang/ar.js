@@ -17,7 +17,6 @@ window.i18nData['ar'] = {
     agent_subtitle: "مساعد NEO الذكي للنظام البيئي",
     agent_welcome: "مرحباً! أنا مساعد NEO AI. اسألني عن NCL والتعدين واستراتيجية الذكاء الاصطناعي وغيرها.",
     agent_q_founder: "مؤسس NEO",
-    agent_q_founder_full: "يرجى تقديم مؤسس نظام NEO Igor Runets، ما هي خلفيته وإنجازاته؟",
     agent_q_price: "سعر المعدن",
     agent_q_price_full: "ما هو سعر معدنة NEO؟ ما هي المواصفات؟",
     agent_q_ai: "استراتيجية NEO AI؟",

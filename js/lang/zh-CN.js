@@ -17,7 +17,6 @@ window.i18nData['zh-CN'] = {
     agent_subtitle: "NEO 生态智能助手",
     agent_welcome: "你好！我是 NEO AI 助手。可以问我关于 NCL、挖矿、AI 战略等问题。",
     agent_q_founder: "NEO 创始人介绍",
-    agent_q_founder_full: "请详细介绍 NEO 生态的创始人 Igor Runets，包括他的教育背景、创立 BitRiver 的经历、布拉茨克矿场、与 Gazprom Neft 的合作、以及在 2026 年推动 AI 数据中心转型的动态。",
     agent_q_price: "矿机价格",
     agent_q_price_full: "NEO 矿机的价格是多少？电费怎么算？矿机有什么规格？日产量多少？",
     agent_q_ai: "NEO AI 战略",
@@ -194,22 +193,6 @@ window.i18nData['zh-CN'] = {
     reg_time: "注册时间",
 
     // --- 4. 创始人简介 ---
-    founder_title: "创始人简介",
-    founder_role: "NEO 项目发起人兼核心团队直接领导人",
-    founder_intro: "全球加密货币挖矿行业的领军人物之一，也是俄罗斯及欧亚地区矿业基础设施的代表性企业家。他以在极端环境下构建超大规模数据中心和利用可再生能源挖矿而闻名。",
-    founder_core_title: "核心身份",
-    founder_bitriver: "<strong>BitRiver 创始人兼 CEO：</strong>于 2017 年创立 BitRiver，该公司目前是全球最大的矿机托管（Colocation）服务商之一。",
-    founder_advocate: "<strong>行业倡导者：</strong>在俄罗斯工业家和企业家联盟（RSPP）中担任重要职务，是推动俄罗斯数字挖矿合法化和规范化的核心人物。",
-    founder_background_title: "创业背景与成就",
-    founder_education: "Igor Runets 拥有斯坦福大学商学院的 MBA 学位，这段经历为他带来了国际化的视野和先进的管理理念。",
-    founder_bratsk: "<strong>布拉茨克矿场（Bratsk）：</strong>他在西伯利亚的布拉茨克建立了 BitRiver 的首个旗舰级数据中心。该选址极具战略眼光：利用布拉茨克水电站的过剩电力，大幅降低了挖矿成本；西伯利亚常年的低温气候极大地降低了矿机的散热成本和故障率。",
-    founder_expansion: "<strong>规模扩张：</strong>在他的领导下，BitRiver 从一个单一矿场扩展为在俄罗斯境内拥有多个大型机房的集团公司，总电力容量已突破数百兆瓦（MW）。",
-    founder_business_title: "商业模式与创新",
-    founder_hosting: "<strong>托管服务：</strong>为全球机构客户提供电力、空间和运维服务，而不承担比特币价格波动的直接风险。",
-    founder_energy: "<strong>能源合作：</strong>他积极与俄罗斯天然气工业股份公司（Gazprom Neft）等能源巨头合作，利用油田火炬气（Associated Petroleum Gas）发电挖矿，实现了废弃能源的再利用，这在绿色能源转型中具有标杆意义。",
-    founder_2026_title: "2026 年的影响力",
-    founder_compliance: "<strong>合规先行者：</strong>他协助制定了俄罗斯针对出口算力和外汇收付的监管框架，使得矿业成为俄罗斯重要的出口创汇产业。",
-    founder_ai: "<strong>AI 数据中心转型：</strong>追随全球趋势，他正带领 BitRiver 将部分高电力规格的数据中心改造为 HPC（高性能计算）中心，为 AI 模型训练提供算力支持。",
 
     // --- 5. NEO Energy Mining 核心特性 ---
     neo_energy_title: "NEO Energy Mining: 绿色能源算力生态系统",

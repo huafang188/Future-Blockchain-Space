@@ -17,7 +17,6 @@ window.i18nData['hi'] = {
     agent_subtitle: "NEO पारिस्थितिकी तंत्र बुद्धिमान सहायक",
     agent_welcome: "नमस्ते! मैं NEO AI सहायक हूँ। NCL, माइनिंग, AI रणनीति आदि के बारे में मुझसे पूछें।",
     agent_q_founder: "NEO संस्थापक",
-    agent_q_founder_full: "NEO पारिस्थितिकी तंत्र के संस्थापक Igor Runets का परिचय दें, उनकी पृष्ठभूमि और उपलब्धियां क्या हैं?",
     agent_q_price: "माइनर मूल्य",
     agent_q_price_full: "NEO माइनर की कीमत क्या है? विशेषताएं क्या हैं?",
     agent_q_ai: "NEO AI रणनीति?",

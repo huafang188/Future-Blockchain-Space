@@ -17,7 +17,6 @@ window.i18nData['es'] = {
     agent_subtitle: "Asistente inteligente del ecosistema NEO",
     agent_welcome: "¡Hola! Soy el asistente NEO AI. Pregúntame sobre NCL, minería, estrategia de IA, etc.",
     agent_q_founder: "Fundador NEO",
-    agent_q_founder_full: "¿Presente al fundador del ecosistema NEO, Igor Runets, su trayectoria y logros?",
     agent_q_price: "Precio del minero",
     agent_q_price_full: "¿Cuál es el precio del minero NEO? ¿Cuáles son las especificaciones?",
     agent_q_ai: "¿Estrategia NEO AI?",

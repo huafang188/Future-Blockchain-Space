@@ -17,7 +17,6 @@ window.i18nData['mn'] = {
     agent_subtitle: "NEO экосистемийн ухаалаг туслах",
     agent_welcome: "Сайн байна уу! Би NEO AI туслах юм. NCL, олборлолт, AI стратег гэх мэт зүйлсээс асуугаарай.",
     agent_q_founder: "NEO үүсгэн байгуулагч",
-    agent_q_founder_full: "NEO экосистемийн үүсгэн байгуулагч Igor Runets-ийг танилцуулна уу, түүний гарал үүсэл болон амжилтууд юу вэ?",
     agent_q_price: "Ордын үнэ",
     agent_q_price_full: "NEO ордын машинд үнэ хичнээн вэ? Ямар үзүүлэлттэй вэ?",
     agent_q_ai: "NEO AI стратег?",
