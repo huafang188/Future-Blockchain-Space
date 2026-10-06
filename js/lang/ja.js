@@ -56,6 +56,7 @@ window.i18nData['ja'] = {
     nry_hashrate: "私のハッシュレート",
     nry_income: "私の収益",
     nry_pending: "未受取収益",
+    nry_withdrawn: "引き出済み収益",
     nry_direct_volume: "直接業績",
     nry_indirect_volume: "間接業績",
     nry_direct_count: "直接人数",

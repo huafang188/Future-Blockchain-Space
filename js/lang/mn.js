@@ -55,6 +55,7 @@ window.i18nData['mn'] = {
     nry_hashrate: "Миний хэшрейт",
     nry_income: "Миний орлого",
     nry_pending: "Хүлээгдэж буй орлого",
+    nry_withdrawn: "Гаргасан орлого",
     nry_direct_volume: "Шууд бөмбөг",
     nry_indirect_volume: "Дам бөмбөг",
     nry_direct_count: "Шууд тоо",

@@ -55,6 +55,7 @@ window.i18nData['hi'] = {
     nry_hashrate: "मेरी हैशरेट",
     nry_income: "मेरी आय",
     nry_pending: "लंबित आय",
+    nry_withdrawn: "निकाला गया आय",
     nry_direct_volume: "प्रत्यक्ष वॉल्यूम",
     nry_indirect_volume: "अप्रत्यक्ष वॉल्यूम",
     nry_direct_count: "प्रत्यक्ष संख्या",

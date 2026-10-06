@@ -56,6 +56,7 @@ window.i18nData['ug'] = {
     nry_hashrate: "مېنىڭ ھاش رېتىم",
     nry_income: "مېنىڭ كىرىمىم",
     nry_pending: "كۈتۈلۈۋاتقان كىرىم",
+    nry_withdrawn: "چىقىرىلغان كىرىم",
     nry_direct_volume: "بىۋاسىتە كۆلەم",
     nry_indirect_volume: "ۋاسىتىلىك كۆلەم",
     nry_direct_count: "بىۋاسىتە سان",

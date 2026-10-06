@@ -56,6 +56,7 @@ window.i18nData['ru'] = {
     nry_hashrate: "Мой хешрейт",
     nry_income: "Мой доход",
     nry_pending: "Доход к получению",
+    nry_withdrawn: "Выведенный доход",
     nry_direct_volume: "Прямой объем",
     nry_indirect_volume: "Косвенный объем",
     nry_direct_count: "Прямые referrals",

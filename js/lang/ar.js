@@ -56,6 +56,7 @@ window.i18nData['ar'] = {
     nry_hashrate: "قوة التعدين الخاصة بي",
     nry_income: "دخلي",
     nry_pending: "الدخل المعلق",
+    nry_withdrawn: "الدخل المسحوب",
     nry_direct_volume: "الحجم المباشر",
     nry_indirect_volume: "الحجم غير المباشر",
     nry_direct_count: "العدد المباشر",

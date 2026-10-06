@@ -56,6 +56,7 @@ window.i18nData['ko'] = {
     nry_hashrate: "내 해시레이트",
     nry_income: "내 수익",
     nry_pending: "미수령 수익",
+    nry_withdrawn: "인출된 수익",
     nry_direct_volume: "직추 실적",
     nry_indirect_volume: "간추 실적",
     nry_direct_count: "직추 인원",

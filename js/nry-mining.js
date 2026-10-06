@@ -123,6 +123,7 @@
             set('nry_stake', '$--');
             set('nry_hashrate', '--');
             set('nry_income', '--');
+            set('nry_withdrawn', '--');
             set('nry_pending', '--');
             set('nry_direct_volume', '$--');
             set('nry_indirect_volume', '$--');
@@ -143,6 +144,7 @@
         set('nry_stake', fmtUSD(u.stake));
         set('nry_hashrate', fmtNry(u.hashrate));
         set('nry_income', fmtNry(u.income));
+        set('nry_withdrawn', fmtNry(u.withdrawn));
         set('nry_pending', fmtNry(u.pending));
         set('nry_direct_volume', fmtUSD(u.directVolume));
         set('nry_indirect_volume', fmtUSD(u.indirectVolume));

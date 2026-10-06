@@ -55,6 +55,7 @@ window.i18nData['el'] = {
     nry_hashrate: "Το hashrate μου",
     nry_income: "Το εισόδημά μου",
     nry_pending: "Εκκρεμές εισόδημα",
+    nry_withdrawn: "Αναληφθέν εισόδημα",
     nry_direct_volume: "Απευθείας όγκος",
     nry_indirect_volume: "Έμμεσος όγκος",
     nry_direct_count: "Απευθείας count",

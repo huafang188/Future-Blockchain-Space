@@ -56,6 +56,7 @@ window.i18nData['it'] = {
     nry_hashrate: "Il mio hashrate",
     nry_income: "Il mio reddito",
     nry_pending: "Reddito in sospeso",
+    nry_withdrawn: "Reddito prelevato",
     nry_direct_volume: "Volume diretto",
     nry_indirect_volume: "Volume indiretto",
     nry_direct_count: "Conteggio diretto",

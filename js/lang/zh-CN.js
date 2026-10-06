@@ -56,6 +56,7 @@ window.i18nData['zh-CN'] = {
     nry_hashrate: "我的算力",
     nry_income: "我的收益",
     nry_pending: "待提取收益",
+    nry_withdrawn: "已提取收益",
     nry_direct_volume: "直推业绩",
     nry_indirect_volume: "间推业绩",
     nry_direct_count: "直推人数",

@@ -56,6 +56,7 @@ window.i18nData['en'] = {
     nry_hashrate: "My Hashrate",
     nry_income: "My Income",
     nry_pending: "Pending Income",
+    nry_withdrawn: "Withdrawn Income",
     nry_direct_volume: "Direct Volume",
     nry_indirect_volume: "Indirect Volume",
     nry_direct_count: "Direct Count",
