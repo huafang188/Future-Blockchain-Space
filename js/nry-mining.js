@@ -111,6 +111,25 @@
         return s || '--';
     }
 
+    // 数字从 0 动态滚动到目标值
+    function animateValue(id, targetStr, formatter, duration) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var num = parseFloat(String(targetStr).replace(/[^0-9.\-]/g, '')) || 0;
+        if (num === 0) { el.textContent = formatter('0'); return; }
+        var start = 0, t0 = null, dur = duration || 800;
+        function step(ts) {
+            if (!t0) t0 = ts;
+            var p = Math.min((ts - t0) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+            var cur = start + (num - start) * eased;
+            el.textContent = formatter(String(cur));
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = formatter(String(num));
+        }
+        requestAnimationFrame(step);
+    }
+
     // 渲染 NRY 算力挖矿数据到 UI
     window.renderNryMining = function (data) {
         var set = function (id, v) {
@@ -141,15 +160,15 @@
             if (vMatch) idEl.classList.add('v' + vMatch[1].toLowerCase());
             else idEl.classList.add('v0');
         }
-        set('nry_stake', fmtUSD(u.stake));
-        set('nry_hashrate', fmtNry(u.hashrate));
-        set('nry_income', fmtNry(u.income));
-        set('nry_withdrawn', fmtNry(u.withdrawn));
-        set('nry_pending', fmtNry(u.pending));
-        set('nry_direct_volume', fmtUSD(u.directVolume));
-        set('nry_indirect_volume', fmtUSD(u.indirectVolume));
-        set('nry_direct_count', fmtInt(u.directCount));
-        set('nry_team_volume', fmtUSD(u.teamVolume));
+        animateValue('nry_stake', u.stake, fmtUSD);
+        animateValue('nry_hashrate', u.hashrate, fmtNry);
+        animateValue('nry_income', u.income, fmtNry);
+        animateValue('nry_withdrawn', u.withdrawn, fmtNry);
+        animateValue('nry_pending', u.pending, fmtNry);
+        animateValue('nry_direct_volume', u.directVolume, fmtUSD);
+        animateValue('nry_indirect_volume', u.indirectVolume, fmtUSD);
+        animateValue('nry_direct_count', u.directCount, fmtInt);
+        animateValue('nry_team_volume', u.teamVolume, fmtUSD);
 
         renderDistribution(data.distribution);
     };
