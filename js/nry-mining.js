@@ -79,7 +79,7 @@
     function fmtNry(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
-        var num = s.replace(/[^0-9.]/g, '');
+        var num = s.replace(/[^0-9.\-]/g, '');
         var n = parseFloat(num);
         if (isNaN(n)) return s;
         return n.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' NRY';
@@ -89,7 +89,7 @@
     function fmtUSD(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '$--';
-        var num = s.replace(/[^0-9.]/g, '');
+        var num = s.replace(/[^0-9.\-]/g, '');
         var n = parseFloat(num);
         if (isNaN(n)) return '$--';
         return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -99,7 +99,7 @@
     function fmtInt(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
-        var num = s.replace(/[^0-9.]/g, '');
+        var num = s.replace(/[^0-9.\-]/g, '');
         var n = parseInt(num, 10);
         if (isNaN(n)) return s;
         return String(n);
