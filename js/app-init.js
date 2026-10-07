@@ -161,133 +161,7 @@ function mountAllGlobals() {
 
     // 检测钱包环境（使用 wallet-utils.js 导出的 detectWalletEnv）
 
-    // 更新链选择器 UI
-    function updateChainUI(chain) {
-        window.currentChain = chain;
-        setCurrentChain(chain);
-        const chainConfig = CHAIN_CONFIG[chain];
-        if (chainConfig) {
-            document.getElementById('selectedChainText').textContent = chain;
-            document.getElementById('selectedChainIcon').src = chainConfig.icon;
-        }
-        localStorage.setItem('selectedChain', chain);
-        
-        // 更新弹窗中的代币选项
-        if (window.updateWithdrawTokens) window.updateWithdrawTokens();
-        if (window.updateSwapTokens) window.updateSwapTokens();
-    }
 
-    // 区块链选择函数
-    window.selectChain = async function(chain) {
-        // 关闭下拉菜单
-        const wrapper = document.querySelector('.custom-select-wrapper');
-        wrapper.classList.remove('open');
-        
-        // 如果链未激活，提示用户
-        if (!ACTIVE_CHAINS.includes(chain)) {
-            alert(`${CHAIN_CONFIG[chain]?.chainName || chain} 链暂未开放，敬请期待！`);
-            return;
-        }
-        
-        // 如果选择的是当前链，直接返回
-        if (chain === window.currentChain) return;
-        
-        // 如果已登录，先登出再切换链
-        const savedAddr = localStorage.getItem('fbs_address');
-        if (savedAddr) {
-            const shouldSwitch = confirm(`切换链将退出当前登录，是否继续？\n\n当前链: ${window.currentChain || 'BSC'}\n目标链: ${chain}`);
-            if (!shouldSwitch) return;
-            
-            // 清除登录状态
-            localStorage.setItem('user_logout_manual', 'true');
-            localStorage.removeItem('fbs_address');
-            localStorage.removeItem('fbs_chain');
-            
-            // 清空全局数据缓存
-            if (window.userBalances) window.userBalances = {};
-            if (window.lastFetchedData) window.lastFetchedData = null;
-            if (window.currentUserInfo) window.currentUserInfo = null;
-            
-            // 重置 UI
-            if (typeof window.resetWalletUI === 'function') window.resetWalletUI();
-            if (typeof window.renderHistory === 'function') window.renderHistory([]);
-            if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
-            if (typeof window.renderTokenList === 'function') window.renderTokenList({});
-        }
-        
-        const walletEnv = detectWalletEnv();
-        
-        if (chain === 'BSC') {
-            // EVM 链：使用标准钱包切换 API
-            if (walletEnv === 'none') {
-                alert('请在 Web3 钱包浏览器中操作');
-                return;
-            }
-            
-            try {
-                const chainConfig = CHAIN_CONFIG['BSC'];
-                const provider = walletEnv === 'bitget' ? window.bitkeep.ethereum : 
-                                 walletEnv === 'tokenpocket' ? window.tokenpocket.ethereum : 
-                                 window.ethereum;
-                
-                await provider.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: chainConfig.chainId }],
-                });
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    try {
-                        const chainConfig = CHAIN_CONFIG['BSC'];
-                        const provider = walletEnv === 'bitget' ? window.bitkeep.ethereum : 
-                                         walletEnv === 'tokenpocket' ? window.tokenpocket.ethereum : 
-                                         window.ethereum;
-                        await provider.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: chainConfig.chainId,
-                                chainName: chainConfig.chainName,
-                                nativeCurrency: chainConfig.nativeCurrency,
-                                rpcUrls: chainConfig.rpcUrls,
-                                blockExplorerUrls: chainConfig.blockExplorerUrls
-                            }]
-                        });
-                    } catch (addError) {
-                        alert('添加 BSC 链失败: ' + (addError.message || '未知错误'));
-                        return;
-                    }
-                } else if (switchError.code === 4001) {
-                    return; // 用户拒绝
-                } else {
-                    alert('切换 BSC 链失败: ' + (switchError.message || '未知错误'));
-                    return;
-                }
-            }
-            
-            updateChainUI('BSC');
-            
-
-        }
-        
-        // 切换完成后，如果之前已登录，提示用户重新连接
-        if (savedAddr) {
-            setTimeout(() => {
-                const shouldConnect = confirm(`已切换至 ${chain} 链，是否立即连接钱包？`);
-                if (shouldConnect && typeof window.connectWallet === 'function') {
-                    window.connectWallet();
-                }
-            }, 300);
-        }
-    };
-    
-    // 切换区块链下拉菜单
-    window.toggleChainDropdown = function(event) {
-        if (event) event.stopPropagation();
-        const wrappers = document.querySelectorAll('.custom-select-wrapper');
-        wrappers.forEach(w => w.classList.remove('open'));
-        const wrapper = document.querySelector('.custom-select-wrapper:not(.lang-select-wrapper)');
-        if (wrapper) wrapper.classList.toggle('open');
-    };
-    
     // 切换语言下拉菜单
     window.toggleLangDropdown = function(event) {
         if (event) event.stopPropagation();
@@ -338,14 +212,9 @@ function initApp() {
             }
         }, 200);
         
-        // --- 2.0.5 恢复上次选择的链 ---
+        // --- 2.0.5 固定 BSC 链 ---
         window.currentChain = 'BSC';
         setCurrentChain('BSC');
-        const chainConfig = CHAIN_CONFIG['BSC'];
-        if (chainConfig) {
-            document.getElementById('selectedChainText').textContent = 'BSC';
-            document.getElementById('selectedChainIcon').src = chainConfig.icon;
-        }
         
         // --- 2.1 基础环境初始化 ---
         const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
