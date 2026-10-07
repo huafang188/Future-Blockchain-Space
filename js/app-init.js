@@ -217,7 +217,7 @@ function initApp() {
         setCurrentChain('BSC');
         
         // --- 2.1 基础环境初始化 ---
-        const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
+        const savedLang = localStorage.getItem('fbs_lang') || 'ru';
         if (window.i18nRender) {
             window.i18nRender(savedLang);
         }
