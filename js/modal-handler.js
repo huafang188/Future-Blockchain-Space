@@ -268,14 +268,7 @@ export function mountModalHandlers() {
         'BSC': {
             withdraw: ['NRY', 'NCL'],
             swap: ['NRY', 'USDT', 'NCL']
-        },
-        'TON': {
-            withdraw: ['NRY', 'NCL'],
-            swap: ['NRY', 'USDT', 'NCL']
-        },
-        'SOL': {
-            withdraw: ['NRY', 'NCL'],
-            swap: ['NRY', 'USDT', 'NCL']
+
         }
     };
 

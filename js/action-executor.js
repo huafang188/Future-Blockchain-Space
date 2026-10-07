@@ -620,25 +620,8 @@ window.doChainPay = async function(bizType) {
     const addrType = (bizType === 'MINER') ? 'MINER' : 'ELECTRIC';
     const target = getReceiveAddress(addrType);
 
-    // 检查当前链是否支持 USDT 合约支付，不支持则临时强制 BSC（不触发 UI 退出）
-    const originalChain = window.currentChain || 'BSC';
-    const hasUSDTContract = !!(CHAIN_CONTRACT_ADDRS[originalChain] && CHAIN_CONTRACT_ADDRS[originalChain]['USDT']);
-
-    if (!hasUSDTContract && originalChain !== 'BSC') {
-        console.log(`[doChainPay] 当前链 ${originalChain} 不支持 USDT 合约支付，临时切换到 BSC`);
-        // 仅切换 config.js 内部链配置，不触发 UI 退出登录
-        setCurrentChain('BSC');
-    }
-
     console.log(`[${bizType}] 收款地址: ${target} (支付链: BSC)`);
-    try {
-        await executeOnChainTransfer(bizType, "USDT", amount, target);
-    } finally {
-        // 支付完成后恢复原链配置
-        if (!hasUSDTContract && originalChain !== 'BSC') {
-            setCurrentChain(originalChain);
-        }
-    }
+    await executeOnChainTransfer(bizType, "USDT", amount, target);
 };
 
 // 3. 提币

@@ -6,7 +6,7 @@ export const API_BASE = "https://api.neoneo.ink/api/user";
 /**
  * 激活的链列表（只有这些链才会触发实际数据请求）
  */
-export const ACTIVE_CHAINS = ['BSC', 'TON', 'SOL'];
+export const ACTIVE_CHAINS = ['BSC'];
 
 /**
  * 多链配置（保留所有链用于显示，但只有 ACTIVE_CHAINS 中的链才激活）
@@ -21,96 +21,7 @@ export const CHAIN_CONFIG = {
         blockExplorerUrls: ['https://bscscan.com/'],
         icon: 'assets/币安智能链.png',
         active: true
-    },
-    'TON': {
-        chainId: '0x357',
-        chainIdDecimal: 855,
-        chainName: 'TON Chain',
-        nativeCurrency: { name: 'TON', symbol: 'TON', decimals: 9 },
-        rpcUrls: ['https://toncenter.com'],
-        blockExplorerUrls: ['https://tonscan.org/'],
-        icon: 'assets/TON.webp',
-        active: true
-    },
-    'SOL': {
-        chainId: '0x82',
-        chainIdDecimal: 130,
-        chainName: 'Solana',
-        nativeCurrency: { name: 'SOL', symbol: 'SOL', decimals: 9 },
-        rpcUrls: ['https://api.mainnet-beta.solana.com'],
-        blockExplorerUrls: ['https://solscan.io/'],
-        icon: 'assets/Solana.webp',
-        active: true
-    },
-    'SUI': {
-        chainId: '0x535549',
-        chainIdDecimal: 54241,
-        chainName: 'Sui',
-        nativeCurrency: { name: 'SUI', symbol: 'SUI', decimals: 9 },
-        rpcUrls: ['https://fullnode.mainnet.sui.io:443'],
-        blockExplorerUrls: ['https://suiexplorer.com/'],
-        icon: 'assets/sui.webp',
-        active: false
-    },
-    'TRON': {
-        chainId: '0x2b6653dc',
-        chainIdDecimal: 728126422,
-        chainName: 'TRON',
-        nativeCurrency: { name: 'TRX', symbol: 'TRX', decimals: 6 },
-        rpcUrls: ['https://api.trongrid.io'],
-        blockExplorerUrls: ['https://tronscan.org/'],
-        icon: 'assets/tron.webp',
-        active: false
-    },
-    'ETH': {
-        chainId: '0x1',
-        chainIdDecimal: 1,
-        chainName: 'Ethereum',
-        nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://eth.llamarpc.com'],
-        blockExplorerUrls: ['https://etherscan.io/'],
-        icon: 'assets/Ethereum.webp',
-        active: false
-    },
-    'SEI': {
-        chainId: '0x705',
-        chainIdDecimal: 1797,
-        chainName: 'Sei EVM',
-        nativeCurrency: { name: 'SEI', symbol: 'SEI', decimals: 18 },
-        rpcUrls: ['https://rpc.sei-apis.com'],
-        blockExplorerUrls: ['https://seiscan.io/'],
-        icon: 'assets/Sei.webp',
-        active: false
-    },
-    'ARB': {
-        chainId: '0xa4b1',
-        chainIdDecimal: 42161,
-        chainName: 'Arbitrum',
-        nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://arbitrum.llamarpc.com'],
-        blockExplorerUrls: ['https://arbiscan.io/'],
-        icon: 'assets/arbitrum.webp',
-        active: false
-    },
-    'SONIC': {
-        chainId: '0x2126',
-        chainIdDecimal: 8486,
-        chainName: 'Sonic',
-        nativeCurrency: { name: 'SONIC', symbol: 'SONIC', decimals: 18 },
-        rpcUrls: ['https://rpc.sonic.game'],
-        blockExplorerUrls: ['https://explorer.sonic.game/'],
-        icon: 'assets/Sonic.webp',
-        active: false
-    },
-    'XLAYER': {
-        chainId: '0x7f',
-        chainIdDecimal: 127,
-        chainName: 'X Layer',
-        nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-        rpcUrls: ['https://rpc.xlayer.tech'],
-        blockExplorerUrls: ['https://scan.xlayer.tech/'],
-        icon: 'assets/OKX.webp',
-        active: false
+
     }
 };
 
@@ -142,42 +53,7 @@ export const CHAIN_RECEIVE_ADDRS = {
     'BSC': {
         ELECTRIC: "0xD2C3Ee0Fc72d1fCBfcecEFBb551D811176E8404F",
         MINER: "0x654a0af182C08bfFAf72bb12E0FB57F625E06628"
-    },
-    'TON': {
-        ELECTRIC: "UQBYus42aiF7FhyecH-WgZnKDydikIVyJusFCKMnUXQcjj2y",
-        MINER: "UQDG6EoKX4wBcYVFcDYhnf6gVJBVwX1vLRxXo8WDZEv_cp5B"
-    },
-    'SOL': {
-        ELECTRIC: "DJtb4QyA61BvKLAQeTnRz2s8p98KBv8yTF48SGf6sQ1s",
-        MINER: "7eUfQwcrkMkKAQ5VKbshC8humahAFaeAeNurUsM2U43u"
-    },
-    'SUI': {
-        ELECTRIC: "0x0",
-        MINER: "0x0"
-    },
-    'TRON': {
-        ELECTRIC: "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb",
-        MINER: "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb"
-    },
-    'ETH': {
-        ELECTRIC: "0x0000000000000000000000000000000000000000",
-        MINER: "0x0000000000000000000000000000000000000000"
-    },
-    'SEI': {
-        ELECTRIC: "0x0000000000000000000000000000000000000000",
-        MINER: "0x0000000000000000000000000000000000000000"
-    },
-    'ARB': {
-        ELECTRIC: "0x0000000000000000000000000000000000000000",
-        MINER: "0x0000000000000000000000000000000000000000"
-    },
-    'SONIC': {
-        ELECTRIC: "0x0000000000000000000000000000000000000000",
-        MINER: "0x0000000000000000000000000000000000000000"
-    },
-    'XLAYER': {
-        ELECTRIC: "0x0000000000000000000000000000000000000000",
-        MINER: "0x0000000000000000000000000000000000000000"
+
     }
 };
 
@@ -293,12 +169,7 @@ export const CHAIN_CONTRACT_ADDRS = {
     'BSC': {
         'USDT': "0x55d398326f99059ff775485246999027b3197955",
         'NRY': "0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42"
-    },
-    'TON': {
-        'USDT': "UQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_p0p"
-    },
-    'SOL': {
-        'USDT': "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
+
     }
 };
 
@@ -317,8 +188,7 @@ export function getContractAddress(tokenSymbol) {
 
 export const TOKEN_DECIMALS = {
     'USDT': 18,
-    'TON': 9,
-    'SOL': 9,
+
     'BNB': 18,
     'NEO': 18,
     'NEX': 18,
@@ -339,7 +209,5 @@ export const tokenConfig = {
     'NRY': { logo: 'assets/NRY.webp', chartUrl: '' },
     'NCL': { logo: 'assets/NCL.webp', chartUrl: '' },
     'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
-    'BNB': { logo: 'assets/BNB.webp', chartUrl: '' },
-    'GRAM': { logo: 'assets/GRAM.svg', chartUrl: '' },
-    'SOL': { logo: 'assets/Solana.webp', chartUrl: '' }
+    'BNB': { logo: 'assets/BNB.webp', chartUrl: '' }
 };

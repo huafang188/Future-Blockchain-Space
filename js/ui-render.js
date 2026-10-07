@@ -108,12 +108,8 @@ export function refreshAssetDisplay(balances = {}) {
     let totalValUSD = 0;
     
     Object.keys(tokenConfig).forEach(symbol => {
-        // GRAM 兼容 TON 价格 key（后端可能还未同步改名）
         const priceKey = symbol.toUpperCase();
         let unitPrice = parseFloat(livePrices[priceKey]) || 0;
-        if (unitPrice === 0 && priceKey === 'GRAM') {
-            unitPrice = parseFloat(livePrices['TON']) || 0;
-        }
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         totalValUSD += currentTokenValue;
@@ -280,7 +276,7 @@ export function renderTokenList(balances = {}) {
     if (!container) return;
 
     // 不在资产列表中显示的代币
-    const HIDDEN_TOKENS = ['BNB', 'GRAM', 'SOL'];
+    const HIDDEN_TOKENS = ['BNB'];
 
     // 从全局变量获取 Worker 抓取的实时价格
     const livePrices = window.currentPrices || {}; 
@@ -293,13 +289,8 @@ export function renderTokenList(balances = {}) {
         if (HIDDEN_TOKENS.includes(symbol)) return;
         const config = tokenConfig[symbol];
         
-        // 获取单价 (不区分大小写)
-        // GRAM 兼容 TON 价格 key（后端可能还未同步改名）
         const priceKey = symbol.toUpperCase();
         let unitPrice = parseFloat(livePrices[priceKey]) || 0;
-        if (unitPrice === 0 && priceKey === 'GRAM') {
-            unitPrice = parseFloat(livePrices['TON']) || 0;
-        }
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         
@@ -384,9 +375,7 @@ function getTokenLogo(symbol) {
         'BTC': '₿',
         'USDT': '💵',
         'USDC': '💳',
-        'TON': '🌐',
         'BNB': '🔷',
-        'SOL': '⚡',
         'ADA': '🔶',
         'DOT': '🔵',
         'MATIC': '🟢'

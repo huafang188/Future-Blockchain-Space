@@ -265,13 +265,7 @@ function mountAllGlobals() {
             
             updateChainUI('BSC');
             
-        } else if (chain === 'TON') {
-            // TON 链：非 EVM，直接切换 UI
-            updateChainUI('TON');
-            
-        } else if (chain === 'SOL') {
-            // Solana 链：非 EVM，直接切换 UI
-            updateChainUI('SOL');
+
         }
         
         // 切换完成后，如果之前已登录，提示用户重新连接
@@ -345,12 +339,11 @@ function initApp() {
         }, 200);
         
         // --- 2.0.5 恢复上次选择的链 ---
-        const savedChain = localStorage.getItem('selectedChain') || 'BSC';
-        window.currentChain = savedChain;
-        setCurrentChain(savedChain);
-        const chainConfig = CHAIN_CONFIG[savedChain];
+        window.currentChain = 'BSC';
+        setCurrentChain('BSC');
+        const chainConfig = CHAIN_CONFIG['BSC'];
         if (chainConfig) {
-            document.getElementById('selectedChainText').textContent = savedChain;
+            document.getElementById('selectedChainText').textContent = 'BSC';
             document.getElementById('selectedChainIcon').src = chainConfig.icon;
         }
         
