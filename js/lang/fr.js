@@ -618,7 +618,7 @@ window.i18nData['fr'] = {
     wp_ch13_s4_title: "13.4 Adresses de Smart Contracts",
     wp_ch13_s5_title: "13.5 Journal des Mises à Jour de Version",
     lp_stake_title: "Pool de staking LP NEO-USDT",
-    lp_stake_status: "En Fonctionnement",
+    lp_stake_status: "Durée limitée",
     lp_stake_desc: "Stakez vos bons LP NEO-USDT pour gagner des récompenses NRY. Les récompenses s'accumulent en temps réel à chaque bloc et peuvent être retirées à tout moment.",
     lp_stake_total_liquidity: "Liquidité totale",
     lp_stake_my_breakdown: "Détails de ma liquidité",

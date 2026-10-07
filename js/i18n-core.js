@@ -2,7 +2,7 @@
  * 🌍 国际化核心模块 - 修复数据归零问题版
  */
 window.i18nRender = function(lang) {
-    lang = lang || localStorage.getItem('fbs_lang') || 'ru';
+    lang = lang || localStorage.getItem('fbs_lang') || 'zh-CN';
     
     // 1. 强制检查 window.i18nData 是否存在
     if (!window.i18nData) {

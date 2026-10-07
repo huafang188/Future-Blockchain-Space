@@ -663,7 +663,7 @@ window.i18nData['zh-HK'] = {
     green_complement: "多能互補：整合水電、光伏、風電及生物質能。",
     green_efficiency: "能效優化：從源頭降低碳排放強度，將區塊鏈算力轉化為推動綠色能源轉型的核心動力。",
     lp_stake_title: "NEO-USDT LP 質押池",
-    lp_stake_status: "運行中",
+    lp_stake_status: "限時開放",
     lp_stake_desc: "質押 NEO-USDT LP 憑證，賺取 NRY 獎勵，獎勵按區塊實時累計，可隨時提取。",
     lp_stake_total_liquidity: "總流動性",
     lp_stake_my_breakdown: "我的流動性詳情",

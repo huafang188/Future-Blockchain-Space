@@ -681,7 +681,7 @@ window.i18nData['zh-CN'] = {
     wp_ch13_s5_title: "13.5 版本更新记录",
     wp_ch13_s5_p1: "V1.0：初始完整版白皮书，后续升级以社区投票公示为准。",
     lp_stake_title: "NEO-USDT LP 质押池",
-    lp_stake_status: "运行中",
+    lp_stake_status: "限时开放",
     lp_stake_desc: "质押 NEO-USDT LP 凭证，赚取 NRY 奖励，奖励按区块实时累计，可随时提取。",
     lp_stake_total_liquidity: "总流动性",
     lp_stake_my_breakdown: "我的流动性详情",

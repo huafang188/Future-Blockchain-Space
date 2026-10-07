@@ -619,7 +619,7 @@ window.i18nData['de'] = {
     wp_ch13_s4_title: "13.4 Smart-Contract-Adressen",
     wp_ch13_s5_title: "13.5 Versionsaktualisierungsprotokoll",
     lp_stake_title: "NEO-USDT LP Staking-Pool",
-    lp_stake_status: "Laufend",
+    lp_stake_status: "Zeitlich begrenzt",
     lp_stake_desc: "Staken Sie NEO-USDT LP-Gutscheine und verdienen Sie NRY-Belohnungen. Belohnungen werden blockweise in Echtzeit gutgeschrieben und können jederzeit abgehoben werden.",
     lp_stake_total_liquidity: "Gesamtliquidität",
     lp_stake_my_breakdown: "Details meiner Liquidität",

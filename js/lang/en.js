@@ -764,7 +764,7 @@ window.i18nData['en'] = {
     wp_ch13_s5_title: "13.5 Version Update Record",
     wp_ch13_s5_p1: "V1.0: Initial complete whitepaper version; subsequent upgrades subject to community voting announcement.",
     lp_stake_title: "NEO-USDT LP Staking Pool",
-    lp_stake_status: "Running",
+    lp_stake_status: "Limited Time",
     lp_stake_desc: "Stake NEO-USDT LP vouchers to earn NRY rewards. Rewards accrue in real time per block and can be withdrawn anytime.",
     lp_stake_total_liquidity: "Total Liquidity",
     lp_stake_my_breakdown: "My Liquidity Details",

@@ -618,7 +618,7 @@ window.i18nData['it'] = {
     wp_ch13_s4_title: "13.4 Indirizzi di Smart Contracts",
     wp_ch13_s5_title: "13.5 Registro Aggiornamenti Versione",
     lp_stake_title: "Pool di staking LP NEO-USDT",
-    lp_stake_status: "In Funzione",
+    lp_stake_status: "Tempo limitato",
     lp_stake_desc: "Fai staking dei voucher LP NEO-USDT per guadagnare ricompense NRY. Le ricompense si accumulano in tempo reale per blocco e possono essere ritirate in qualsiasi momento.",
     lp_stake_total_liquidity: "Liquidità totale",
     lp_stake_my_breakdown: "Dettagli della mia liquidità",

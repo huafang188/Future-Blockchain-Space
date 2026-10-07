@@ -673,7 +673,7 @@ window.i18nData['ja'] = {
     green_complement: "マルチエネルギー補完：水力、太陽光、風力、バイオマスエネルギーを統合します。",
     green_efficiency: "エネルギー効率の最適化：排出源から炭素排出強度を削減し、ブロックチェーン計算力をグリーンエネルギー変革の中核原動力に変換します。",
     lp_stake_title: "NEO-USDT LP ステーキングプール",
-    lp_stake_status: "稼働中",
+    lp_stake_status: "期間限定",
     lp_stake_desc: "NEO-USDT LP 証券をステーキングして NRY 報酬を獲得できます。報酬はブロックごとにリアルタイムで蓄積され、いつでも引き出せます。",
     lp_stake_total_liquidity: "総流動性",
     lp_stake_my_breakdown: "マイ流動性の詳細",

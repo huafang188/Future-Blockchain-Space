@@ -539,7 +539,7 @@ window.i18nData['ko'] = {
     green_complement: "다중 에너지 보완: 수력, 태양광, 풍력 및 바이오매스 에너지를 통합합니다.",
     green_efficiency: "에너지 효율 최적화: 원천에서 탄소 배출 강도를 줄이고 블록체인 연산력을 그린 에너지 전환의 핵심 동력으로 전환합니다.",
     lp_stake_title: "NEO-USDT LP 스테이킹 풀",
-    lp_stake_status: "운영 중",
+    lp_stake_status: "한정 공개",
     lp_stake_desc: "NEO-USDT LP 증서를 스테이킹하여 NRY 보상을 받으세요. 보상은 블록별로 실시간 적립되며 언제든지 인출할 수 있습니다.",
     lp_stake_total_liquidity: "총 유동성",
     lp_stake_my_breakdown: "내 유동성 상세",
