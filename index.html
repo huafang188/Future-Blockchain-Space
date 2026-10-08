@@ -298,10 +298,6 @@
                     <span id="weatherTemp">--°C</span>
                 </span>
             </div>
-
-            <button id="fbsRefreshBtn" type="button" onclick="refreshBalances()" class="fbs-refresh-btn" data-i18n-title="refresh_data" title="刷新数据">
-                <i class="fas fa-arrows-rotate"></i>
-            </button>
         </div>
     </section>
 
@@ -359,9 +355,7 @@
 
     <div id="news-container" class="space-y-4">
         <div id="announcement-panel" class="p-4 space-y-4">
-            <div class="mx-5 mb-4 p-4">
-                <p class="text-xs font-bold text-amber-800 leading-relaxed" data-i18n="notice_maintenance_msg">尊敬的用户您好，我们诚恳地向您致歉，在我们部署NRY与发行NRY期间，暂停了NEO兑换USDT的通道，给大家带来诸多不便。由于工作量巨大，但这不是我们的借口，之前我们打算将NEO的兑现通道迁移至NRY来进行，但NEO大量的资金势必会对NRY的市场带来不预估的压力，因此我们考虑大家目前可以将NEO进行添加流动性（相关工作还在进行中，并且可能还需1-3个工作日），产出NRY（当然NRY可提出交易）。但这并不意味着我们要缩减大家的收入，我们考虑的是NEO的流动性添加到一定的程度，我们将NEO也同样部署在链上，让大家体验与NRY一致的交易，这并不是一项简单的工作，其中涉及到大量的脚本与合约的执行，同时我们还要保证数据的准确性。<span style="text-decoration:underline;color:#dc2626;font-weight:800">我们已经恢复大家在交易期间所进行NEO-USDT与提现USDT的操作，我们将原有的您"消失掉的"NEO已经恢复到了您的账户中。</span>请大家理解我们，并且请大家相信我们，我们的生态依然健康发展。我们想做的是一件前所未有的事，我们也会对我们的追随者给予无与伦比的回报，我们处于当下算力革命的时代，现在我们依然坚信AI算力就是未来几年发展最好的一个赛道。</p>
-            </div>
+
             <p class="text-[13px] font-black text-orange-500 leading-relaxed" data-i18n="neo_update_greeting"></p>
             <div class="space-y-2">
                 <p class="text-[11px] text-slate-700 leading-relaxed" data-i18n="neo_update_s1"></p>
@@ -1182,13 +1176,8 @@
 
         <div id="page-user" class="page-view hidden space-y-6">
             <section class="glass-card rounded-[2.5rem] overflow-hidden">
-                <div class="p-5 font-black text-xl text-slate-900 uppercase tracking-widest flex justify-between items-center">
+                <div class="p-5 font-black text-xl text-slate-900 uppercase tracking-widest">
                     <span data-i18n="assets_list">资产列表</span>
-                    <button onclick="refreshBalances()" class="p-2 rounded-full active:scale-95 transition-all" title="刷新余额">
-                        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                        </svg>
-                    </button>
                 </div>
                 <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
             </section>
