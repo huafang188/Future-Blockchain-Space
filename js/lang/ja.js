@@ -7,6 +7,7 @@ window.i18nData['ja'] = {
     miner_deploy_tip: "マイナーのデプロイ時間は2-12時間です。NEOの日次決済時間は地域によって若干異なり、モスクワ時間の00:00～03:00頃となります",
     connected: "接続済み",
     total_value: "総資産価値",
+    refresh_data: "データ更新",
     loading: "読み込み中...",
     no_data: "データがありません",
     copy_success: "クリップボードにコピーしました",

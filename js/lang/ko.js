@@ -7,6 +7,7 @@ window.i18nData['ko'] = {
     miner_deploy_tip: "마이너 배포 시간은 2-12시간입니다. NEO 일일 정산 시간은 지역에 따라 약간 차이가 있으며, 모스크바 시간 00:00-03:00 정도입니다",
     connected: "연결됨",
     total_value: "총 자산 가치",
+    refresh_data: "데이터 새로고침",
     loading: "로딩 중...",
     no_data: "데이터가 없습니다",
     copy_success: "클립보드에 복사되었습니다",

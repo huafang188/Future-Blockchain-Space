@@ -7,6 +7,7 @@ window.i18nData['es'] = {
     miner_deploy_tip: "El tiempo de despliegue del minero es de 2-12 horas. El tiempo de liquidación diaria de NEO varía ligeramente según la región, aproximadamente de 00:00 a 03:00 hora de Moscú",
     connected: "Conectado",
     total_value: "Valor Total de Activos",
+    refresh_data: "Actualizar datos",
     loading: "Cargando...",
     no_data: "No hay datos disponibles",
     copy_success: "Copiado al portapapeles",

@@ -7,6 +7,7 @@ window.i18nData['zh-HK'] = {
     miner_deploy_tip: "礦機部署時間為 2-12 小時，NEO 每日結算時間根據不同地區有些許差異，大約為莫斯科時間 00:00—03:00",
     connected: "已連接",
     total_value: "總資產價值",
+    refresh_data: "刷新數據",
     loading: "加載中...",
     no_data: "暫無數據",
     copy_success: "已成功複製到剪貼簿",

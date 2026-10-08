@@ -7,6 +7,7 @@ window.i18nData['zh-CN'] = {
     miner_deploy_tip: "矿机部署时间为 2-12 小时，NEO 每日结算时间根据不同地区有些许差异，大约为莫斯科时间 00:00—03:00",
     connected: "已连接",
     total_value: "总资产价值",
+    refresh_data: "刷新数据",
     loading: "加载中...",
     no_data: "暂无数据",
     copy_success: "已成功复制到剪贴板",

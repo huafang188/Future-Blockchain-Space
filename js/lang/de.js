@@ -7,6 +7,7 @@ window.i18nData['de'] = {
     miner_deploy_tip: "Miner-Bereitstellungszeit beträgt 2-12 Stunden. Die tägliche NEO-Abrechnungszeit variiert je nach Region geringfügig, ungefähr von 00:00 bis 03:00 Moskauer Zeit",
     connected: "Verbunden",
     total_value: "Gesamtwert der Assets",
+    refresh_data: "Daten aktualisieren",
     loading: "Laden...",
     no_data: "Keine Daten vorhanden",
     copy_success: "In die Zwischenablage kopiert",

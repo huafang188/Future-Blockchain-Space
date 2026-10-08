@@ -7,6 +7,7 @@ window.i18nData['fr'] = {
     miner_deploy_tip: "Le temps de déploiement du miner est de 2 à 12 heures. L'heure de règlement quotidien NEO varie légèrement selon les régions, environ de 00:00 à 03:00 heure de Moscou",
     connected: "Connecté",
     total_value: "Valeur Totale des Actifs",
+    refresh_data: "Actualiser les données",
     loading: "Chargement...",
     no_data: "Aucune donnée disponible",
     copy_success: "Copié dans le presse-papiers",

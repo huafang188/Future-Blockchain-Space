@@ -7,6 +7,7 @@ window.i18nData['it'] = {
     miner_deploy_tip: "Il tempo di deploy del miner è di 2-12 ore. L'ora di regolamento giornaliero NEO varia leggermente a seconda della regione, circa dalle 00:00 alle 03:00 ora di Mosca",
     connected: "Connesso",
     total_value: "Valore Totale Asset",
+    refresh_data: "Aggiorna dati",
     loading: "Caricamento...",
     no_data: "Nessun dato disponibile",
     copy_success: "Copiato negli appunti",
