@@ -212,6 +212,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 /* NRY 算力挖矿数据网格：下移露出顶部图片 */
 .miner-stats-grid.nry-stats-grid {
     margin-top: 20px;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 /* 火焰形状按钮 */
