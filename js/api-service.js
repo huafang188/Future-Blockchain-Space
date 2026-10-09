@@ -778,8 +778,11 @@ export async function refreshBalances() {
         return;
     }
     
-    const btn = document.getElementById('fbsRefreshBtn');
-    if (btn) btn.classList.add('spinning');
+    // 添加旋转动画
+    const refreshBtn = document.querySelector('button[onclick="refreshBalances()"] svg');
+    if (refreshBtn) {
+        refreshBtn.classList.add('animate-spin');
+    }
     
     try {
         await fetchUserData(address);
@@ -788,7 +791,10 @@ export async function refreshBalances() {
         console.error("[Refresh] 余额刷新失败:", error);
         alert("刷新失败，请重试");
     } finally {
-        if (btn) setTimeout(() => btn.classList.remove('spinning'), 500);
+        // 移除旋转动画
+        if (refreshBtn) {
+            setTimeout(() => refreshBtn.classList.remove('animate-spin'), 500);
+        }
     }
 }
 window.refreshBalances = refreshBalances;

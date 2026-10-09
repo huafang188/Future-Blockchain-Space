@@ -111,21 +111,22 @@
         return s || '--';
     }
 
-    // 数字从 0 动态滚动到目标值
+    // 数字从 0 动态滚动到目标值（iOS WebView 兜底：先设最终值再动画）
     function animateValue(id, targetStr, formatter, duration) {
         var el = document.getElementById(id);
         if (!el) return;
         var num = parseFloat(String(targetStr).replace(/[^0-9.\-]/g, '')) || 0;
-        if (num === 0) { el.textContent = formatter('0'); return; }
+        var finalText = formatter(String(num));
+        el.textContent = finalText;
+        if (num === 0) return;
         var start = 0, t0 = null, dur = duration || 800;
         function step(ts) {
             if (!t0) t0 = ts;
             var p = Math.min((ts - t0) / dur, 1);
-            var eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+            var eased = 1 - Math.pow(1 - p, 3);
             var cur = start + (num - start) * eased;
             el.textContent = formatter(String(cur));
             if (p < 1) requestAnimationFrame(step);
-            else el.textContent = formatter(String(num));
         }
         requestAnimationFrame(step);
     }
@@ -148,6 +149,10 @@
             set('nry_indirect_volume', '$--');
             set('nry_direct_count', '--');
             set('nry_team_volume', '$--');
+            set('nry_my_nry', '--');
+            set('nry_my_usdt', '--');
+            set('nry_my_lp', '--');
+            set('nry_my_dividend', '--');
             return;
         }
         var u = data.user || {};
@@ -169,6 +174,10 @@
         animateValue('nry_indirect_volume', u.indirectVolume, fmtUSD);
         animateValue('nry_direct_count', u.directCount, fmtInt);
         animateValue('nry_team_volume', u.teamVolume, fmtUSD);
+        set('nry_my_nry', fmtNum(u.myNry));
+        set('nry_my_usdt', fmtNum(u.myUsdt));
+        set('nry_my_lp', fmtNum(u.myLp));
+        set('nry_my_dividend', fmtNum(u.pendingDividend));
 
         renderDistribution(data.distribution);
     };
@@ -581,5 +590,56 @@
             if (e.code === 4001) alert('已取消签名');
             else alert('兑换失败：' + (e.message || e));
         }
+    };
+
+    window.addLiquidity = function () {
+        if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
+        var amounts = [1000, 3000, 5000, 8000, 10000, 15000, 30000, 50000, 80000, 100000];
+        var btns = amounts.map(function (v) {
+            var label = v >= 1000 ? (v / 1000) + 'K' : String(v);
+            return '<button type="button" onclick="window.setLiquidityAmount(\'' + v + '\')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">' +
+                '<span class="text-[10px] font-black text-slate-600">' + label + '</span>' +
+                '<span class="text-[7px] text-slate-400">USDT</span></button>';
+        }).join('');
+        window.showModal('nry_add_liquidity_title', `
+            <div class="space-y-3 text-left">
+                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
+                    <i class="fa-solid fa-circle-info text-slate-400 text-[10px]"></i>
+                    <span class="text-[9px] font-bold text-slate-500">USDT → ${PRIVATE_POOL_ADDR.slice(0, 8)}...${PRIVATE_POOL_ADDR.slice(-4)}</span>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_add_liquidity_label">选择 USDT 数量</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="liquidityAmount" placeholder="1000" step="any" min="1000" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0"><span class="text-xs font-black">USDT</span></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-5 gap-1.5">${btns}</div>
+                <button type="button" onclick="window.doAddLiquidity()" class="action-btn w-full mt-1">
+                    <span data-i18n="nry_add_liquidity_confirm">确认添加</span>
+                </button>
+            </div>`);
+    };
+    window.setLiquidityAmount = function (v) {
+        var el = document.getElementById('liquidityAmount');
+        if (el) el.value = v;
+    };
+    window.doAddLiquidity = async function () {
+        var amount = document.getElementById('liquidityAmount') && document.getElementById('liquidityAmount').value;
+        if (!amount || parseFloat(amount) <= 0) { alert('请输入 USDT 数量'); return; }
+        if (parseFloat(amount) < 1000) { alert('最低数量为 1000 USDT'); return; }
+        if (!window.executeOnChainTransfer) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeOnChainTransfer('添加流动性', 'USDT', String(amount), PRIVATE_POOL_ADDR);
+        if (window.closeModal) window.closeModal();
+        setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
+    };
+
+    window.withdrawLiquidity = function () {
+        if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
+        window.showModal("nry_btn_withdraw_liquidity", `
+            <div class="space-y-3 text-center py-4">
+                <i class="fa-solid fa-lock text-slate-300 text-2xl"></i>
+                <p class="text-[11px] font-bold text-slate-400 leading-relaxed" data-i18n="nry_liquidity_coming_soon">即将开放</p>
+            </div>`);
     };
 })();

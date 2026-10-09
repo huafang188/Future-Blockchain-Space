@@ -41,22 +41,8 @@ function getEVMProvider() {
                 'window.bitkeep:', !!window.bitkeep,
                 'window.tokenpocket:', !!window.tokenpocket);
 
-    // 1. 优先检测 window.ethereum（大多数钱包的标准注入方式）
-    try {
-        if (window.ethereum && typeof window.ethereum.request === 'function') {
-            console.log('[getEVMProvider] 使用 window.ethereum');
-            return window.ethereum;
-        }
-    } catch (e) { /* ignore */ }
-
-    // 2. Bitget 钱包（优先检测 isBitkeep 标志）
-    try {
-        if (window.ethereum && window.ethereum.isBitkeep) {
-            console.log('[getEVMProvider] 使用 window.ethereum (isBitkeep)');
-            return window.ethereum;
-        }
-    } catch (e) { /* ignore */ }
-
+    // 1. Bitget 钱包优先检测（iOS 兼容：window.bitkeep.ethereum 才是真正的钱包 provider）
+    //    必须在 window.ethereum 之前检测，否则 iOS 上会用错 provider 导致合约交易失败
     try {
         if (window.bitkeep) {
             console.log('[getEVMProvider] 检测到 window.bitkeep');
@@ -74,11 +60,26 @@ function getEVMProvider() {
                 console.log('[getEVMProvider] 使用 window.bitkeep (send)');
                 return window.bitkeep;
             }
-            return window.bitkeep;
         }
     } catch (e) { /* ignore */ }
 
-    // 3. TP 钱包
+    // 2. 检测 isBitkeep 标志（window.ethereum 本身就是 Bitget）
+    try {
+        if (window.ethereum && window.ethereum.isBitkeep && typeof window.ethereum.request === 'function') {
+            console.log('[getEVMProvider] 使用 window.ethereum (isBitkeep)');
+            return window.ethereum;
+        }
+    } catch (e) { /* ignore */ }
+
+    // 3. 标准 window.ethereum（MetaMask 等非 Bitget 钱包）
+    try {
+        if (window.ethereum && typeof window.ethereum.request === 'function') {
+            console.log('[getEVMProvider] 使用 window.ethereum');
+            return window.ethereum;
+        }
+    } catch (e) { /* ignore */ }
+
+    // 4. TP 钱包
     try {
         if (window.tokenpocket) {
             console.log('[getEVMProvider] 检测到 window.tokenpocket');
@@ -391,11 +392,18 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         // --- 3. 发起交易 ---
         if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
 
+        // iOS Bitget 钱包修复：window.ethereum 可能不支持合约交易，
+        // 优先使用 window.bitkeep.ethereum 发送交易
+        const txProvider = (window.bitkeep?.ethereum?.request) ? window.bitkeep.ethereum : evmProvider;
+        if (txProvider !== evmProvider) {
+            console.log('[Executors] 使用 window.bitkeep.ethereum 发送交易（iOS 兼容）');
+        }
+
         let txHash = null;
 
         if (tokenSymbol === nativeSymbol) {
             txHash = await Promise.race([
-                evmProvider.request({
+                txProvider.request({
                     method: 'eth_sendTransaction',
                     params: [{
                         from: userAddress,
@@ -414,7 +422,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             const transferData = '0xa9059cbb' + paddedTarget + paddedAmount;
 
             txHash = await Promise.race([
-                evmProvider.request({
+                txProvider.request({
                     method: 'eth_sendTransaction',
                     params: [{
                         from: userAddress,
@@ -437,7 +445,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         for (let i = 0; i < 8; i++) { // 最多 15 秒（8次 × 3s超时 + 等待）
             try {
                 const r = await Promise.race([
-                    evmProvider.request({ method: 'eth_getTransactionReceipt', params: [txHash] }),
+                    txProvider.request({ method: 'eth_getTransactionReceipt', params: [txHash] }),
                     new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
                 ]);
                 if (r) {

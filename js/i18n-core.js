@@ -55,15 +55,6 @@ window.i18nRender = function(lang) {
         }
     });
 
-    // --- B2. 处理 title 属性翻译 ---
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        const translation = dict[key];
-        if (translation !== undefined) {
-            el.title = translation;
-        }
-    });
-
     // --- B. 联动动态组件 (仅保留只需语言代码即可渲染的函数) ---
     /**
      * ⚠️ 修复说明：

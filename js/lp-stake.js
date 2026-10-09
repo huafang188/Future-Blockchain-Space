@@ -58,8 +58,6 @@
         // 保存原始数据快照，供弹窗读取未经格式化的数值
         window.lpStakeData = data || null;
         if (!data) {
-            set('lp_stake_tvl_neo', '--');
-            set('lp_stake_tvl_usdt', '--');
             set('lp_stake_my_neo', '--');
             set('lp_stake_my_usdt', '--');
             set('lp_stake_locked', '--');
@@ -68,13 +66,11 @@
         var pool = data.pool || {};
         var user = data.user || {};
         set('lp_stake_apy', fmt(pool.apy, '%', { empty: '--%' }));
-        set('lp_stake_tvl', fmt(pool.tvl, '', { prefix: '$', empty: '$ --' }));
+        set('lp_stake_tvl', fmt(user.pendingDividend, '', { empty: '--' }));
         set('lp_stake_my', fmt(user.staked, ' LP', { empty: '0.00 LP' }));
         set('lp_stake_reward', fmt(user.reward, ' NRY', { empty: '0.00 NRY' }));
         set('lp_stake_pair', pool.pair || 'NEO / USDT');
         set('lp_stake_reward_token', pool.rewardToken || 'NRY');
-        set('lp_stake_tvl_neo', fmtNum(pool.tvlNeo));
-        set('lp_stake_tvl_usdt', fmtNum(pool.tvlUsdt));
         set('lp_stake_my_neo', fmtNum(user.myNeo));
         set('lp_stake_my_usdt', fmtNum(user.myUsdt));
         set('lp_stake_locked', fmt(user.lockedLP, ' LP', { empty: '0.00 LP' }));
