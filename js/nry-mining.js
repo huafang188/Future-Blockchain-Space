@@ -244,6 +244,21 @@
         window.renderNryMining(data);
     };
 
+    // 强制刷新（用户手动点击刷新按钮）
+    window.forceRefreshNry = async function () {
+        var addr = localStorage.getItem('fbs_address') || '';
+        if (!addr) { alert('请先连接钱包'); return; }
+        if (window.showModal) window.showModal('modal_processing', '正在刷新数据...');
+        try {
+            var data = await window.fetchNryMiningInfo(addr);
+            window.renderNryMining(data);
+            if (window.refreshLPStake) await window.refreshLPStake(addr);
+        } catch (e) {
+            console.error('[NRY算力挖矿] 强制刷新失败:', e.message);
+        }
+        if (window.closeModal) window.closeModal();
+    };
+
     // 钱包地址/链变化时刷新
     var refreshTimer = null;
     window.addEventListener('fbs-storage-change', function () {
