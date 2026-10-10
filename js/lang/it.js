@@ -1,7 +1,7 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['it'] = {
     // --- 1. Globale & Navigazione ---
-    title: "Matrice di Mining NEO",
+    title: "NEO AI Matrice di Potenza di Hash",
     connect: "Connetti Wallet",
     moscow_time: "Ora di Mosca",
     miner_deploy_tip: "Il tempo di deploy del miner è di 2-12 ore. L'ora di regolamento giornaliero NEO varia leggermente a seconda della regione, circa dalle 00:00 alle 03:00 ora di Mosca",

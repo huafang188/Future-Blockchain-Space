@@ -1,7 +1,7 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['ar'] = {
     // --- 1. Global & Navigation ---
-    title: "مصفوفة تعدين NEO",
+    title: "NEO AI مصفوفة قوة التجزئة",
     connect: "ربط المحفظة",
     moscow_time: "وقت موسكو",
     miner_deploy_tip: "وقت نشر Майнер هو 2-12 ساعة. يختلف وقت التسوية اليومية لـ NEO قليلاً حسب المنطقة، حوالي 00:00-03:00 بتوقيت موسكو",

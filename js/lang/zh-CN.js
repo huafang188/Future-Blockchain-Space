@@ -1,7 +1,7 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['zh-CN'] = {
     // --- 1. 全局与导航 ---
-    title: "NEO生态挖矿矩阵",
+    title: "NEO AI算力矩阵",
     connect: "连接钱包",
     moscow_time: "莫斯科时间",
     miner_deploy_tip: "矿机部署时间为 2-12 小时，NEO 每日结算时间根据不同地区有些许差异，大约为莫斯科时间 00:00—03:00",

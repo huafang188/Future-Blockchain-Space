@@ -1,7 +1,7 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['ko'] = {
     // --- 1. 전역 및 내비게이션 ---
-    title: "NEO 마이닝 매트릭스",
+    title: "NEO AI 해시파워 매트릭스",
     connect: "지갑 연결",
     moscow_time: "모스크바 시간",
     miner_deploy_tip: "마이너 배포 시간은 2-12시간입니다. NEO 일일 정산 시간은 지역에 따라 약간 차이가 있으며, 모스크바 시간 00:00-03:00 정도입니다",

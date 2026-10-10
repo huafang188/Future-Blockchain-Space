@@ -1,7 +1,7 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['ja'] = {
     // --- 1. グローバル & ナビゲーション ---
-    title: "NEOマイニングマトリックス",
+    title: "NEO AI算力マトリックス",
     connect: "ウォレットを接続",
     moscow_time: "モスクワ時間",
     miner_deploy_tip: "マイナーのデプロイ時間は2-12時間です。NEOの日次決済時間は地域によって若干異なり、モスクワ時間の00:00～03:00頃となります",
