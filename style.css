@@ -2152,3 +2152,342 @@ body.agent-active .bottom-nav-pill {
     50% { transform: scale(1.12); box-shadow: 0 4px 14px rgba(249, 115, 22, 0.7); }
 }
 
+/* ==================== Yandex 战略合作模块 ==================== */
+.yandex-section {
+    position: relative;
+    overflow: hidden;
+    padding: 16px 4px;
+}
+/* 品牌双色渐变文字 */
+.yandex-gradient-text {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 30%, #7C3AED 70%, #10B981 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 6px rgba(249,115,22,0.3));
+}
+/* Banner */
+.yandex-banner {
+    text-align: center;
+    padding: 16px 8px 12px;
+    margin-bottom: 16px;
+}
+.yandex-banner-hello {
+    font-size: 28px;
+    font-weight: 700;
+    color: #FF4D00;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 6px;
+    text-shadow:
+        -1px -1px 0 rgba(255, 210, 180, 0.7),
+        -1px -1px 1px rgba(255, 190, 160, 0.4),
+        1px 1px 0 rgba(170, 30, 0, 0.8),
+        2px 2px 1px rgba(130, 20, 0, 0.6),
+        3px 3px 2px rgba(80, 10, 0, 0.4),
+        4px 4px 6px rgba(0, 0, 0, 0.22);
+}
+.yandex-banner-logo {
+    width: 130px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 6px;
+}
+.yandex-banner-title {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    color: #f97316;
+    margin-bottom: 2px;
+}
+.yandex-banner-slogan {
+    font-size: 14px;
+    font-weight: 700;
+    color: #f97316;
+    text-align: right;
+    margin-bottom: 6px;
+}
+.yandex-banner-desc {
+    font-size: 11px;
+    color: #7C3AED;
+    line-height: 1.6;
+    text-align: left;
+    margin: 0 0 10px;
+}
+.yandex-yandex-intro {
+    text-align: left;
+    margin-bottom: 12px;
+}
+.yandex-intro-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #7C3AED;
+    margin-bottom: 4px;
+}
+.yandex-intro-body {
+    font-size: 10px;
+    color: #7C3AED;
+    line-height: 1.7;
+    opacity: 0.85;
+}
+.yandex-tag {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 700;
+    background: rgba(255,237,213,0.7);
+    color: #f97316;
+    border: 1px solid rgba(249,115,22,0.2);
+    white-space: nowrap;
+}
+/* CTA 按钮 */
+.yandex-cta-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    border: 1.5px solid rgba(249,115,22,0.4);
+    box-shadow: 0 0 8px rgba(249,115,22,0.25), 0 2px 6px rgba(234,88,12,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.yandex-cta-primary:hover {
+    box-shadow: 0 0 18px rgba(249,115,22,0.5), 0 6px 14px rgba(234,88,12,0.25);
+    transform: translateY(-1px);
+}
+.yandex-cta-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #10B981;
+    background: transparent;
+    border: 1.5px solid rgba(16,185,129,0.5);
+    box-shadow: 0 0 6px rgba(16,185,129,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.yandex-cta-secondary:hover {
+    border-color: rgba(16,185,129,0.8);
+    box-shadow: 0 0 16px rgba(16,185,129,0.3);
+    transform: translateY(-1px);
+}
+/* 三大价值支撑 - 玻璃拟态卡片 */
+.yandex-values-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+@media (min-width: 640px) {
+    .yandex-values-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.yandex-value-card {
+    position: relative;
+    padding: 16px 12px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+    transition: all 0.25s;
+    overflow: hidden;
+}
+.yandex-value-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(249,115,22,0.3), rgba(124,58,237,0.2), rgba(16,185,129,0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.5;
+    pointer-events: none;
+}
+.yandex-value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.yandex-value-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+.yandex-value-icon-green {
+    background: linear-gradient(135deg, #10B981, #059669);
+    box-shadow: 0 0 16px rgba(16,185,129,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+}
+.yandex-value-icon-orange {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    box-shadow: 0 0 16px rgba(249,115,22,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+}
+.yandex-value-icon-blue {
+    background: linear-gradient(135deg, #7C3AED, #6366F1);
+    box-shadow: 0 0 16px rgba(124,58,237,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+}
+.yandex-value-title {
+    display: block;
+    font-size: 12px;
+    font-weight: 900;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+.yandex-value-desc {
+    font-size: 10px;
+    color: #64748b;
+    line-height: 1.6;
+}
+/* 战略公告 */
+.yandex-manifesto {
+    padding: 14px 10px;
+    margin-bottom: 16px;
+}
+.yandex-manifesto-body {
+    font-size: 10px;
+    color: #334155;
+    line-height: 1.7;
+    margin: 0;
+}
+.yandex-manifesto-body-orange {
+    font-size: 12px;
+    color: #f97316;
+    font-weight: 600;
+}
+.yandex-manifesto-body-wrap {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.yandex-key-sentence-wrap {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+/* 浮动小图 */
+.yandex-float-right-img {
+    float: right;
+    width: 90px;
+    height: auto;
+    border-radius: 10px;
+    margin: 2px 0 6px 10px;
+    opacity: 0.85;
+}
+.yandex-float-left-img {
+    float: left;
+    width: 90px;
+    height: auto;
+    border-radius: 10px;
+    margin: 2px 10px 6px 0;
+    opacity: 0.85;
+}
+/* 关键句 */
+.yandex-key-sentence {
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.6;
+    color: #f97316;
+}
+/* 动态数据展示 */
+.yandex-data-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.yandex-data-card {
+    text-align: center;
+    padding: 14px 6px 10px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    position: relative;
+}
+.yandex-data-number {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+.yandex-data-unit {
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 1px;
+}
+.yandex-data-number-green {
+    background: linear-gradient(135deg, #10B981, #059669);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 6px rgba(16,185,129,0.4));
+}
+.yandex-data-number-orange {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 6px rgba(249,115,22,0.4));
+}
+.yandex-data-number-blue {
+    background: linear-gradient(135deg, #7C3AED, #6366F1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 6px rgba(124,58,237,0.4));
+}
+/* 脉冲点 */
+.yandex-pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 6px auto 4px;
+    animation: yandexPulse 1.5s ease-in-out infinite;
+}
+.yandex-pulse-green { background: #10B981; box-shadow: 0 0 8px rgba(16,185,129,0.6); }
+.yandex-pulse-orange { background: #f97316; box-shadow: 0 0 8px rgba(249,115,22,0.6); }
+.yandex-pulse-blue { background: #7C3AED; box-shadow: 0 0 8px rgba(124,58,237,0.6); }
+@keyframes yandexPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.6); opacity: 0.5; }
+}
+.yandex-data-label {
+    font-size: 8px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+/* 底部结语 */
+.yandex-footer {
+    text-align: center;
+    padding: 16px 0 4px;
+}
+.yandex-footer-slogan {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+}
+.yandex-footer-sub {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 6px;
+}
+
