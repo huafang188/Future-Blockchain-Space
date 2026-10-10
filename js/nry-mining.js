@@ -478,6 +478,39 @@
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
+    // 提取 NRY 股东分红弹窗
+    window.withdrawNryDividend = function () {
+        var maxDiv = parseNum(getNryUser('pendingDividend'));
+        var display = maxDiv.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        window.showModal('nry_dividend_title', `
+            <div class="space-y-3 text-left">
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_dividend_max">最大可提取</span>
+                    <div class="flex items-center gap-1.5">${nryLogo()}<span class="text-sm font-black text-orange-400">${display} NRY</span></div>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_dividend_input_label">提取数量 (NRY)</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="nryDividendAmount" placeholder="0" step="any" min="0" max="${maxDiv}" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${nryLogo()}<span class="text-xs font-black">NRY</span></div>
+                    </div>
+                </div>
+                <button type="button" onclick="window.doWithdrawNryDividend()" class="action-btn w-full mt-1">
+                    <span data-i18n="nry_dividend_confirm">确认提取</span>
+                </button>
+            </div>`);
+    };
+    window.doWithdrawNryDividend = async function () {
+        var amount = document.getElementById('nryDividendAmount') && document.getElementById('nryDividendAmount').value;
+        if (!amount || parseFloat(amount) <= 0) { alert('请输入提取数量'); return; }
+        var maxDiv = parseNum(getNryUser('pendingDividend'));
+        if (parseFloat(amount) > maxDiv) { alert('提取数量超过可提取分红'); return; }
+        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeSignatureAction('提取NRY分红', amount, 'NRY', 'claim_nry_dividend', {});
+        if (window.closeModal) window.closeModal();
+        setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
+    };
+
     // 购买 NRY 弹窗（USDT → NRY）
     window.buyNry = function () {
         window.showModal('nry_btn_buy', `

@@ -153,7 +153,7 @@
         setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
     };
 
-    // ===== 锁定流动性 / 提取流动性 / 提取奖励（签名提交，无需链上转账）=====
+    // ===== 锁定流动性 / 提取流动性 / 提取奖励 / 提取NEO分红（签名提交，无需链上转账）=====
 
     // 读取 LP 数据快照中的用户字段（数值）
     function getLpUser(key) {
@@ -161,6 +161,41 @@
         var v = parseFloat(d[key]);
         return isNaN(v) ? 0 : v;
     }
+
+    // 提取 NEO 分红弹窗
+    window.withdrawNeoDividend = function () {
+        var maxDiv = getLpUser('pendingDividend');
+        var display = maxDiv.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        var nryLogoHtml = '<img src="assets/NRY.webp" alt="NRY" class="w-5 h-5 object-contain rounded-full" onerror="this.src=\'assets/head_logo.webp\'">';
+        var nryLogoSm = '<img src="assets/NRY.webp" alt="NRY" class="w-4 h-4 object-contain rounded-full" onerror="this.src=\'assets/head_logo.webp\'">';
+        window.showModal('neo_dividend_title', `
+            <div class="space-y-3 text-left">
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="neo_dividend_max">最大可提取</span>
+                    <div class="flex items-center gap-1.5">${nryLogoHtml}<span class="text-sm font-black text-orange-400">${display} NRY</span></div>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="neo_dividend_input_label">提取数量 (NRY)</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="neoDividendAmount" placeholder="0" step="any" min="0" max="${maxDiv}" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${nryLogoSm}<span class="text-xs font-black">NRY</span></div>
+                    </div>
+                </div>
+                <button type="button" onclick="window.doWithdrawNeoDividend()" class="action-btn w-full mt-1">
+                    <span data-i18n="neo_dividend_confirm">确认提取</span>
+                </button>
+            </div>`);
+    };
+    window.doWithdrawNeoDividend = async function () {
+        var amount = document.getElementById('neoDividendAmount') && document.getElementById('neoDividendAmount').value;
+        if (!amount || parseFloat(amount) <= 0) { alert('请输入提取数量'); return; }
+        var maxDiv = getLpUser('pendingDividend');
+        if (parseFloat(amount) > maxDiv) { alert('提取数量超过可提取分红'); return; }
+        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeSignatureAction('提取NEO分红', amount, 'NRY', 'claim_neo_dividend', {});
+        if (window.closeModal) window.closeModal();
+        setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
+    };
 
     // 锁定流动性弹窗（锁定我的流动性，周期 360 天）
     window.lockLP = async function () {

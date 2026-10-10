@@ -865,8 +865,13 @@
             </div>
         </div>
 
+        <div class="mt-3">
+            <button type="button" onclick="withdrawNryDividend()" class="px-4 py-1.5 rounded-full text-[10px] font-bold text-orange-500 bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-all">
+                <span data-i18n="nry_dividend_btn">提取分红</span>
+            </button>
+        </div>
+
         <div class="grid grid-cols-2 gap-3 mt-3">
-            <button type="button" onclick="addLiquidity()" class="action-btn lp-btn-secondary">
                 <span data-i18n="nry_btn_add_liquidity">添加流动性</span>
             </button>
             <button type="button" onclick="withdrawLiquidity()" class="action-btn lp-btn-secondary">
@@ -1014,6 +1019,9 @@
             <span class="font-bold text-slate-600"><span id="lp_stake_my_neo">--</span> NEO</span>
             <span class="text-slate-300 font-bold">+</span>
             <span class="font-bold text-slate-600"><span id="lp_stake_my_usdt">--</span> USDT</span>
+            <button type="button" onclick="withdrawNeoDividend()" class="ml-auto text-orange-500 text-[10px] font-bold underline-none border-none bg-transparent hover:text-orange-600 transition-all" style="text-decoration:underline">
+                <span data-i18n="neo_dividend_btn">提取分红</span>
+            </button>
         </div>
 
 
