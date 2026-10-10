@@ -597,7 +597,7 @@
         var amounts = [1000, 3000, 5000, 8000, 10000, 15000, 30000, 50000, 80000, 100000];
         var btns = amounts.map(function (v) {
             var label = v >= 1000 ? (v / 1000) + 'K' : String(v);
-            return '<button type="button" onclick="window.setLiquidityAmount(\'' + v + '\')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">' +
+            return '<button type="button" onclick="window.setNryLiquidityAmount(\'' + v + '\')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">' +
                 '<span class="text-[10px] font-black text-slate-600">' + label + '</span>' +
                 '<span class="text-[7px] text-slate-400">USDT</span></button>';
         }).join('');
@@ -615,16 +615,16 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-5 gap-1.5">${btns}</div>
-                <button type="button" onclick="window.doAddLiquidity()" class="action-btn w-full mt-1">
+                <button type="button" onclick="window.doAddNryLiquidity()" class="action-btn w-full mt-1">
                     <span data-i18n="nry_add_liquidity_confirm">确认添加</span>
                 </button>
             </div>`);
     };
-    window.setLiquidityAmount = function (v) {
+    window.setNryLiquidityAmount = function (v) {
         var el = document.getElementById('liquidityAmount');
         if (el) el.value = v;
     };
-    window.doAddLiquidity = async function () {
+    window.doAddNryLiquidity = async function () {
         var amount = document.getElementById('liquidityAmount') && document.getElementById('liquidityAmount').value;
         if (!amount || parseFloat(amount) <= 0) { alert('请输入 USDT 数量'); return; }
         if (parseFloat(amount) < 1000) { alert('最低数量为 1000 USDT'); return; }
