@@ -75,6 +75,15 @@
         return out + ' ' + u;
     }
 
+    // 指定单位格式化
+    function fmtUnit(val, unit) {
+        var s = (val === null || val === undefined) ? '' : String(val).trim();
+        if (!s) return '--';
+        var n = parseFloat(s.replace(/[^0-9.\-]/g, ''));
+        if (isNaN(n)) return '--';
+        return n.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ' + unit;
+    }
+
     // NRY 数值格式化（始终带 NRY 单位）
     function fmtNry(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
@@ -174,10 +183,10 @@
         animateValue('nry_indirect_volume', u.indirectVolume, fmtUSD);
         animateValue('nry_direct_count', u.directCount, fmtInt);
         animateValue('nry_team_volume', u.teamVolume, fmtUSD);
-        set('nry_my_nry', fmtNum(u.myNry));
-        set('nry_my_usdt', fmtNum(u.myUsdt));
-        set('nry_my_lp', fmtNum(u.myLp));
-        set('nry_my_dividend', fmtNum(u.pendingDividend));
+        set('nry_my_nry', fmtUnit(u.myNry, 'NRY'));
+        set('nry_my_usdt', fmtUnit(u.myUsdt, 'USDT'));
+        set('nry_my_lp', fmtUnit(u.myLp, 'LP'));
+        set('nry_my_dividend', fmtUnit(u.pendingDividend, 'NRY'));
 
         renderDistribution(data.distribution);
     };
