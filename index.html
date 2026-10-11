@@ -235,7 +235,7 @@
         </div>
     </header>
 
-    <section class="max-w-xl mx-auto px-4 mt-4">
+    <section id="top-card-section" class="max-w-xl mx-auto px-4 mt-4">
         <div class="glass-card blockchain-card p-4 flex flex-col items-center gap-0 relative overflow-hidden">
             <div class="blockchain-grid"></div>
             <!-- 橙色动态背景：缓慢旋转的 NRY 大写字母 -->
@@ -832,6 +832,228 @@
             </button>
         </div>
     </div>
+</div>
+
+<!-- ============== 市场页面 ============== -->
+<div id="page-market" class="page-view hidden space-y-6">
+
+<!-- ========== 市场 Hero ========== -->
+<section class="market-hero">
+    <div class="market-hero-grid"></div>
+    <div class="market-hero-orb market-hero-orb-a"></div>
+    <div class="market-hero-orb market-hero-orb-b"></div>
+    <div class="market-hero-coming-soon" data-i18n="market_coming_soon">即将上线，敬请期待</div>
+    <div class="relative z-10">
+        <div class="market-hero-badge">
+            <img src="assets/Yandex_Logo_2021.webp" alt="Yandex" class="market-hero-badge-logo" onerror="this.style.display='none'">
+            <span class="market-hero-badge-x">×</span>
+            <img src="assets/NEO.webp" alt="NEO" class="market-hero-badge-logo market-logo-circle" onerror="this.style.display='none'">
+            <span class="market-hero-badge-text" data-i18n="market_hero_badge">AI 算力矩阵 · 联合打造</span>
+        </div>
+        <h1 class="market-hero-title">
+            <span class="market-gradient-text" data-i18n="market_hero_title">算力交易市场</span>
+        </h1>
+        <p class="market-hero-sub" data-i18n="market_hero_sub">全球首创链上算力交易体系 · 让算力像水电一样自由流通</p>
+        <div class="market-hero-stats">
+            <div class="market-hero-stat">
+                <p class="market-hero-stat-num market-num-orange">24<span class="market-hero-stat-unit">h</span></p>
+                <p class="market-hero-stat-label" data-i18n="market_stat_1">不间断交易</p>
+            </div>
+            <div class="market-hero-stat">
+                <p class="market-hero-stat-num market-num-green">100<span class="market-hero-stat-unit">%</span></p>
+                <p class="market-hero-stat-label" data-i18n="market_stat_2">清洁能源</p>
+            </div>
+            <div class="market-hero-stat">
+                <p class="market-hero-stat-num market-num-purple">&lt;10<span class="market-hero-stat-unit">ms</span></p>
+                <p class="market-hero-stat-label" data-i18n="market_stat_3">撮合延迟</p>
+            </div>
+        </div>
+        <div class="market-hero-features">
+            <div class="market-hero-feature">
+                <i class="fas fa-globe"></i>
+                <span data-i18n="market_feat_1">全球首创交易市场</span>
+            </div>
+            <div class="market-hero-feature">
+                <i class="fas fa-link"></i>
+                <span data-i18n="market_feat_2">全球首创链上算力交易体系</span>
+            </div>
+            <div class="market-hero-feature">
+                <i class="fas fa-bolt"></i>
+                <span data-i18n="market_feat_3">全球最强大的清洁能源算力</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== NEO 买卖 ========== -->
+<section class="market-card market-neo-section">
+    <div class="market-card-header">
+        <div class="market-card-title-wrap">
+            <img src="assets/NEO.webp" alt="NEO" class="market-card-icon market-logo-circle" onerror="this.style.display='none'">
+            <div>
+                <h2 class="market-card-title" data-i18n="market_neo_title">NEO 买卖</h2>
+                <span class="market-data-pending-badge" data-i18n="market_data_pending">数据对接中</span>
+                <p class="market-card-sub" data-i18n="market_neo_sub">挂单交易 · 链上撮合 · 实时结算</p>
+            </div>
+        </div>
+        <div class="market-price-tag">
+            <span class="market-price-label" data-i18n="market_neo_price">最新价</span>
+            <span class="market-price-value" id="marketNeoPrice">— USDT</span>
+        </div>
+    </div>
+
+    <div class="market-trade-tabs">
+        <button type="button" class="market-tab market-tab-buy active" data-side="buy">
+            <span data-i18n="market_buy">买入 NEO</span>
+        </button>
+        <button type="button" class="market-tab market-tab-sell" data-side="sell">
+            <span data-i18n="market_sell">卖出 NEO</span>
+        </button>
+    </div>
+
+    <div class="market-trade-form">
+        <div class="market-form-row">
+            <label data-i18n="market_price_label">价格 (USDT)</label>
+            <input type="number" id="marketOrderPrice" placeholder="0.00" step="0.0001" min="0">
+        </div>
+        <div class="market-form-row">
+            <label data-i18n="market_amount_label">数量 (NEO)</label>
+            <input type="number" id="marketOrderAmount" placeholder="0.00" step="0.0001" min="0">
+        </div>
+        <div class="market-form-row market-form-summary">
+            <span data-i18n="market_total_label">总额</span>
+            <span id="marketOrderTotal">0.00 USDT</span>
+        </div>
+        <div class="market-form-quick">
+            <button type="button" data-pct="25">25%</button>
+            <button type="button" data-pct="50">50%</button>
+            <button type="button" data-pct="75">75%</button>
+            <button type="button" data-pct="100">100%</button>
+        </div>
+        <button type="button" id="marketPlaceOrder" class="market-place-btn market-place-buy">
+            <span data-i18n="market_place_buy">挂单买入</span>
+        </button>
+        <p class="market-form-hint"><span data-i18n="market_balance_hint">可用余额：</span><b id="marketBalance">0.00</b></p>
+    </div>
+
+    <div class="market-orderbook">
+        <div class="market-orderbook-col">
+            <h3 data-i18n="market_asks">卖单（高价→低价）</h3>
+            <div class="market-orderbook-list" id="marketAsksList"></div>
+        </div>
+        <div class="market-orderbook-col">
+            <h3 data-i18n="market_bids">买单（高价→低价）</h3>
+            <div class="market-orderbook-list" id="marketBidsList"></div>
+        </div>
+    </div>
+
+    <div class="market-recent">
+        <h3 data-i18n="market_recent">最近成交</h3>
+        <div class="market-recent-table">
+            <div class="market-recent-head">
+                <span data-i18n="market_recent_price">价格</span>
+                <span data-i18n="market_recent_amount">数量</span>
+                <span data-i18n="market_recent_time">时间</span>
+            </div>
+            <div id="marketRecentList" class="market-recent-body"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== 算力交易 ========== -->
+<section class="market-card market-power-section">
+    <div class="market-card-header">
+        <div class="market-card-title-wrap">
+            <div class="market-card-icon market-card-icon-power">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <div>
+                <h2 class="market-card-title" data-i18n="market_power_title">算力交易</h2>
+                <p class="market-card-sub" data-i18n="market_power_sub">提供算力方 · 租赁算力方 · 个人与企业均可参与</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="market-power-roles">
+        <div class="market-role-card market-role-provider">
+            <div class="market-role-icon">
+                <i class="fas fa-server"></i>
+            </div>
+            <h3 data-i18n="market_role_provider">提供算力方</h3>
+            <p data-i18n="market_role_provider_desc">将闲置 GPU/ASIC/超算资源上链挂单，按算力规格与时长灵活定价，自动结算收益。支持个人矿工、矿场、超算中心、企业级算力供应商。</p>
+            <ul class="market-role-list">
+                <li data-i18n="market_role_provider_li1">灵活定价 · 自由挂单</li>
+                <li data-i18n="market_role_provider_li2">链上自动结算 · 收益透明</li>
+                <li data-i18n="market_role_provider_li3">闲置算力 · 即挂即赚</li>
+            </ul>
+            <button type="button" class="market-role-btn market-role-btn-orange" onclick="window.switchPage('mine')">
+                <span data-i18n="market_role_provider_btn">接入提供算力</span>
+            </button>
+        </div>
+        <div class="market-role-card market-role-renter">
+            <div class="market-role-icon market-role-icon-renter">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h3 data-i18n="market_role_renter">租赁算力方</h3>
+            <p data-i18n="market_role_renter_desc">按需租用全球清洁能源算力，秒级下单、链上撮合、自动交付。覆盖 AI 训练、大模型推理、科学计算、渲染等场景，个人开发者与大型企业均可参与。</p>
+            <ul class="market-role-list">
+                <li data-i18n="market_role_renter_li1">按需租用 · 秒级下单</li>
+                <li data-i18n="market_role_renter_li2">全球清洁能源算力</li>
+                <li data-i18n="market_role_renter_li3">AI 训练 / 推理 / 渲染通用</li>
+            </ul>
+            <button type="button" class="market-role-btn market-role-btn-green" id="marketRentBtn">
+                <span data-i18n="market_role_renter_btn">浏览算力挂单</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="market-power-list-wrap">
+        <h3 data-i18n="market_power_list_title">算力挂单</h3>
+        <div class="market-power-table">
+            <div class="market-power-head">
+                <span data-i18n="market_power_spec">规格</span>
+                <span data-i18n="market_power_type">类型</span>
+                <span data-i18n="market_power_provider_col">提供方</span>
+                <span data-i18n="market_power_price">单价</span>
+                <span data-i18n="market_power_duration">时长</span>
+                <span data-i18n="market_power_action">操作</span>
+            </div>
+            <div id="marketPowerList" class="market-power-body"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== 市场特色区 ========== -->
+<section class="market-features-section">
+    <div class="market-features-grid">
+        <div class="market-feature-card market-feature-1">
+            <div class="market-feature-icon"><i class="fas fa-globe"></i></div>
+            <h3 data-i18n="market_f1_title">全球首创交易市场</h3>
+            <p data-i18n="market_f1_desc">NEO 首创将算力、代币与大模型训练权统一资产化，构建全球第一个去中心化算力交易市场，让闲置算力秒级变现。</p>
+        </div>
+        <div class="market-feature-card market-feature-2">
+            <div class="market-feature-icon"><i class="fas fa-link"></i></div>
+            <h3 data-i18n="market_f2_title">全球首创链上算力交易体系</h3>
+            <p data-i18n="market_f2_desc">链上撮合、链上结算、链上交付。从挂单、匹配、支付到算力交付全程智能合约执行，公开透明、不可篡改。</p>
+        </div>
+        <div class="market-feature-card market-feature-3">
+            <div class="market-feature-icon"><i class="fas fa-bolt"></i></div>
+            <h3 data-i18n="market_f3_title">全球最强大的清洁能源算力</h3>
+            <p data-i18n="market_f3_desc">依托西伯利亚极寒气候与天然水电，联合 Yandex 顶级超算集群，构建零碳、高稳定、可无限扩展的清洁能源智算中心。</p>
+        </div>
+    </div>
+    <div class="market-cta-wrap">
+        <button type="button" class="market-cta-primary" onclick="window.switchPage('mine')">
+            <i class="fas fa-bolt mr-1"></i>
+            <span data-i18n="market_cta1">立即接入算力交易</span>
+        </button>
+        <button type="button" class="market-cta-secondary" id="marketLearnMoreBtn">
+            <i class="fas fa-book-open mr-1"></i>
+            <span data-i18n="market_cta2">了解算力交易规则</span>
+        </button>
+    </div>
+</section>
+
 </div>
 
 <div id="page-mine" class="page-view hidden space-y-6">
@@ -1441,6 +1663,10 @@
                 <i class="fas fa-robot"></i>
                 <span data-i18n="nav_agent">Agent</span>
             </button>
+            <button onclick="switchPage('market')" id="nav-market" class="nav-item">
+                <i class="fas fa-store nav-market-icon"></i>
+                <span data-i18n="nav_market">市场</span>
+            </button>
             <button onclick="switchPage('mine')" id="nav-mine" class="nav-item">
                 <i class="fas fa-microchip"></i>
                 <span data-i18n="nav_mine">矿场</span>
@@ -1460,6 +1686,7 @@
 <script src="js/lp-stake.js?v=20260928k"></script>
 <script src="js/bank.js?v=20260928k"></script>
 <script src="js/nry-mining.js?v=20260928k"></script>
+<script src="js/market.js?v=20260928k"></script>
 
 <script type="module">
     // 按需加载其他语言文件

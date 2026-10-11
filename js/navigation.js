@@ -6,6 +6,9 @@ window.switchPage = function(page) {
     document.getElementById('nav-' + page).classList.add('active');
     // Agent 页面隐藏页面顶部标题栏，让聊天界面占据整个顶部；其他页面恢复
     document.body.classList.toggle('agent-active', page === 'agent');
+    // 市场页面隐藏顶部区块链卡片
+    var topCard = document.getElementById('top-card-section');
+    if (topCard) topCard.style.display = (page === 'market') ? 'none' : '';
 };
 
 // 跳转到 LP 质押池（跨页面：先切到 mine 页再滚动）
