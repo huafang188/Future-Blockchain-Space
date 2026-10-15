@@ -137,6 +137,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         type: type,            
         amount: String(amount),
         symbol: symbol,        
+        turnstileToken: window.getTurnstileToken ? window.getTurnstileToken() : "", // v3.4.6 人机验证
         ...extraFields
     };
 
@@ -165,6 +166,7 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         // 飞书 code 为 0 或 result.success 为 true 均代表写入成功
         if (result.success || result.code === 0) {
             console.log(`[API] ${type} 后端写入成功`);
+            if (window.resetTurnstile) window.resetTurnstile(); // v3.4.6 刷新 Turnstile token
             
             // 成功后关闭所有可能存在的弹窗
             if (window.closeModal) window.closeModal();

@@ -10,3 +10,4 @@ compatibility_date = "2024-09-01"
 #   APPS_SCRIPT_EXEC_URL         Apps Script 实时结算 Web App URL
 #   DIAG_SECRET                  诊断接口 ?diagnostic=1&key=xxx 的访问密钥
 #   ALLOWED_ORIGINS              允许的 Origin 白名单，逗号分隔（如 "https://neoneo.ink,https://www.neoneo.ink"）
+#   TURNSTILE_SECRET_KEY         Cloudflare Turnstile Secret Key（人机验证，从 Dashboard → Turnstile 获取）

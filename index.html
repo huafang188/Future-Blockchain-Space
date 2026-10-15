@@ -142,8 +142,34 @@
         ]
     }
     </script>
+    <!-- Cloudflare Turnstile 人机验证（v3.4.6）-->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
+    <script>
+        window.TURNSTILE_SITEKEY = "0x4AAAAAAAxxxxxxxxxxxxxxxx"; // ← 替换为你的 Turnstile Site Key
+        window._turnstileToken = "";
+        window.onTurnstileLoad = function () {
+            if (!window.turnstile) return;
+            var container = document.getElementById("turnstile-widget");
+            if (!container) return;
+            window.turnstile.render(container, {
+                sitekey: window.TURNSTILE_SITEKEY,
+                theme: "light",
+                appearance: "execute",
+                callback: function (token) { window._turnstileToken = token; },
+                "error-callback": function () { window._turnstileToken = ""; },
+                "expired-callback": function () { window._turnstileToken = ""; window.turnstile.reset(); }
+            });
+        };
+        window.getTurnstileToken = function () { return window._turnstileToken || ""; };
+        window.resetTurnstile = function () {
+            window._turnstileToken = "";
+            if (window.turnstile) window.turnstile.reset();
+        };
+    </script>
 </head>
 <body class="bg-slate-50">
+<!-- Turnstile 隐形验证容器 -->
+<div id="turnstile-widget" style="position:fixed;bottom:-9999px;right:0;z-index:-1;"></div>
     <!-- 加载遮罩层 -->
     <div id="loading-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-50">
         <div class="flex flex-col items-center">
