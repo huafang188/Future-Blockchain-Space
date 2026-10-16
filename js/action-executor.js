@@ -1,4 +1,4 @@
-import { getReceiveAddress, getContractAddress, getCurrentChainConfig, setCurrentChain, CHAIN_CONTRACT_ADDRS } from './config.js';
+import { getReceiveAddress, getContractAddress, getCurrentChainConfig, setCurrentChain, CHAIN_CONTRACT_ADDRS, API_BASE } from './config.js';
 import { postTransactionRecord } from './api-service.js';
 
 // 导入 fetchUserData 用于刷新数据
@@ -188,6 +188,93 @@ async function ensureNetwork() {
         // 不阻止后续操作，钱包可能已在正确链上
         return true;
     }
+}
+
+/**
+ * iOS 兼容：带超时的 RPC 请求封装
+ */
+async function rpcCall(provider, method, params, timeoutMs = 8000) {
+    if (!provider || typeof provider.request !== 'function') throw new Error('provider 不可用');
+    return Promise.race([
+        provider.request({ method, params }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error(method + ' 超时')), timeoutMs))
+    ]);
+}
+
+/**
+ * iOS 兼容：准备合约转账所需的链上元数据（gas / gasPrice / nonce）
+ * 多 provider 依次尝试，任一失败继续下一个，最终兜底默认值
+ */
+async function getTxMeta(providers, userAddress, contractAddr, transferData) {
+    let gas = '0x186A0';   // 默认 100000，ERC20 transfer 足够
+    let gasPrice = null;
+    let nonce = null;
+
+    const tryEach = async (fn) => {
+        for (const p of providers) {
+            try {
+                const v = await fn(p);
+                if (v !== null && v !== undefined) return v;
+            } catch (e) { /* 继续下一个 provider */ }
+        }
+        return null;
+    };
+
+    const estGas = await tryEach((p) => rpcCall(p, 'eth_estimateGas', [{ from: userAddress, to: contractAddr, data: transferData }], 5000));
+    if (estGas) gas = estGas;
+
+    gasPrice = await tryEach((p) => rpcCall(p, 'eth_gasPrice', [], 5000));
+
+    const nonceHex = await tryEach((p) => rpcCall(p, 'eth_getTransactionCount', [userAddress, 'pending'], 5000));
+    if (nonceHex) nonce = nonceHex;
+
+    return { gas, gasPrice, nonce };
+}
+
+/**
+ * iOS 兼容：ERC20 合约转账（签名 + 服务端广播）
+ * 背景：iOS Bitget 钱包对 eth_sendTransaction（ERC20）会静默忽略不弹窗，
+ *       而 eth_signTransaction 能正常唤起钱包签名（与 doBuyNry 一致，已验证）。
+ * 流程：构造完整 tx 参数 → eth_signTransaction 签名 → POST /api/broadcast-tx 服务端广播 → 返回 txHash
+ */
+async function signAndBroadcastTransfer(txProvider, evmProvider, userAddress, contractAddr, transferData) {
+    const chainConfig = getCurrentChainConfig();
+    const chainId = chainConfig.chainId || '0x38';
+
+    const providers = [];
+    if (txProvider) providers.push(txProvider);
+    if (evmProvider && !providers.includes(evmProvider)) providers.push(evmProvider);
+
+    const meta = await getTxMeta(providers, userAddress, contractAddr, transferData);
+
+    const txParams = {
+        from: userAddress,
+        to: contractAddr,
+        data: transferData,
+        value: '0x0',
+        chainId: chainId
+    };
+    if (meta.gas) txParams.gas = meta.gas;
+    if (meta.gasPrice) txParams.gasPrice = meta.gasPrice;
+    if (meta.nonce) txParams.nonce = meta.nonce;
+
+    const raw = await Promise.race([
+        txProvider.request({ method: 'eth_signTransaction', params: [txParams] }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包签名超时（60秒）')), 60000))
+    ]);
+    if (!raw) throw new Error('钱包未返回签名交易');
+
+    const broadcastUrl = (API_BASE || 'https://api.neoneo.ink/api/user').replace(/\/api\/user$/, '/api/broadcast-tx');
+    const resp = await fetch(broadcastUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ raw })
+    });
+    const respJson = await resp.json().catch(() => null);
+    if (respJson && respJson.success && respJson.txHash) {
+        return respJson.txHash;
+    }
+    throw new Error('交易广播失败: ' + ((respJson && respJson.msg) || '未知错误'));
 }
 
 /**
@@ -421,17 +508,24 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             const paddedAmount = amountToPay.toString(16).padStart(64, '0');
             const transferData = '0xa9059cbb' + paddedTarget + paddedAmount;
 
-            txHash = await Promise.race([
-                txProvider.request({
-                    method: 'eth_sendTransaction',
-                    params: [{
-                        from: userAddress,
-                        to: contractAddr,
-                        data: transferData
-                    }]
-                }),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认超时（60秒）')), 60000))
-            ]);
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+            if (isIOS) {
+                // iOS Bitget 钱包对 ERC20 的 eth_sendTransaction 静默忽略（不弹窗），
+                // 改用 eth_signTransaction + 服务端广播（与 doBuyNry 一致，已验证可唤起）
+                txHash = await signAndBroadcastTransfer(txProvider, evmProvider, userAddress, contractAddr, transferData);
+            } else {
+                txHash = await Promise.race([
+                    txProvider.request({
+                        method: 'eth_sendTransaction',
+                        params: [{
+                            from: userAddress,
+                            to: contractAddr,
+                            data: transferData
+                        }]
+                    }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认超时（60秒）')), 60000))
+                ]);
+            }
         }
 
         if (!txHash) throw new Error("钱包未返回交易哈希");
