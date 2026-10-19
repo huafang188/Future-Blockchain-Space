@@ -657,7 +657,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 // ========== BNB 微支付防垃圾（替代验签）==========
 const BNB_FEE_TO_ADDRESS = "0x8007c1F954D46f98D108EB6E0dD979406C5Bb444";
 const BNB_FEE_AMOUNT = "0.0001";
-const BNB_PAY_EXEMPT_ACTIONS = new Set(["bind_inviter", "bind_email"]);
+
 
 /**
  * 支付 0.0001 BNB 防垃圾费，返回已确认的 txHash（后端据此放行）
@@ -732,12 +732,10 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
-        // BNB 微支付防垃圾：bind 类免付费，其余需支付 0.0001 BNB
+        // BNB 微支付防垃圾：所有签名类操作（含绑定关系/申请团队）均需支付 0.0001 BNB
         let bnbPayTxHash = "";
-        if (!BNB_PAY_EXEMPT_ACTIONS.has(feishuAction)) {
-            if (window.showModal) window.showModal("modal_submitting", "正在支付 0.0001 BNB 防垃圾费...");
-            bnbPayTxHash = await payBnbFee(address);
-        }
+        if (window.showModal) window.showModal("modal_submitting", "正在支付 0.0001 BNB 防垃圾费...");
+        bnbPayTxHash = await payBnbFee(address);
 
         if (window.showModal) window.showModal("modal_submitting", "正在同步后台...");
         const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { bnbPayTxHash, ...extraFields });
