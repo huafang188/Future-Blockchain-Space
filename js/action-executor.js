@@ -32,6 +32,37 @@ async function refreshUserDataAfterTransaction() {
 const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
 
 /**
+ * 金额字符串 → 最小单位 BigInt（替代 ethers.parseUnits，避免依赖 CDN）
+ * @param {string|number} amount 十进制金额，如 "0.0001"
+ * @param {number} decimals 代币精度
+ * @returns {bigint}
+ */
+function toWei(amount, decimals) {
+    const str = String(amount).trim();
+    const m = str.match(/^(\d+)(?:\.(\d+))?$/);
+    if (!m) throw new Error("无效金额格式: " + str);
+    const intPart = m[1];
+    const fracPart = (m[2] || '').padEnd(decimals, '0').slice(0, decimals);
+    return BigInt(intPart + fracPart);
+}
+
+/**
+ * 最小单位 BigInt → 十进制金额字符串（替代 ethers.formatEther/formatUnits，避免依赖 CDN）
+ * @param {bigint|string|number} valueWei 最小单位数值
+ * @param {number} decimals 代币精度
+ * @returns {string}
+ */
+function fromWei(valueWei, decimals) {
+    let v = BigInt(valueWei);
+    const neg = v < 0n;
+    if (neg) v = -v;
+    const s = v.toString().padStart(decimals + 1, '0');
+    const intPart = s.slice(0, s.length - decimals) || '0';
+    let fracPart = s.slice(s.length - decimals).replace(/0+$/, '');
+    return (neg ? '-' : '') + intPart + (fracPart ? '.' + fracPart : '');
+}
+
+/**
  * 兼容旧浏览器的 EVM Provider 检测
  * 所有属性访问都包裹 try-catch，防止旧浏览器访问 getter 时抛出异常
  */
@@ -392,7 +423,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const chainConfig = getCurrentChainConfig();
         const nativeSymbol = chainConfig.nativeCurrency.symbol;
         const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || chainConfig.nativeCurrency.decimals;
-        const amountToPay = ethers.parseUnits(cleanAmount, decimals);
+        const amountToPay = toWei(cleanAmount, decimals);
 
         // --- 2. 转账前检查余额（多 provider 并行查询，失败直接阻止）---
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
@@ -458,8 +489,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         // 余额查询成功且不足 → 直接阻止，提示用户补充资金
         if (balanceOk && userBalance < amountToPay) {
             const balStr = tokenSymbol === nativeSymbol
-                ? ethers.formatEther(userBalance)
-                : ethers.formatUnits(userBalance, decimals);
+                ? fromWei(userBalance, 18)
+                : fromWei(userBalance, decimals);
             console.warn(`[Executors] 余额不足：${balStr} < ${cleanAmount}，阻止交易`);
             if (window.closeModal) window.closeModal();
             alert(`⚠️ 余额不足\n\n您的 ${tokenSymbol} 余额：${balStr}\n本次需要支付：${cleanAmount} ${tokenSymbol}\n\n请先向钱包充值后重试`);
@@ -635,7 +666,7 @@ async function payBnbFee(userAddress) {
     const evmProvider = getEVMProvider();
     if (!evmProvider) throw new Error("未检测到钱包");
     const txProvider = (window.bitkeep?.ethereum?.request) ? window.bitkeep.ethereum : evmProvider;
-    const feeWei = ethers.parseUnits(BNB_FEE_AMOUNT, 18);
+    const feeWei = toWei(BNB_FEE_AMOUNT, 18);
 
     const txHash = await Promise.race([
         txProvider.request({
