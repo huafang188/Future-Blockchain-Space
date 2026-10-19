@@ -568,9 +568,10 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
             // ✅ 链上成功，提交后台
             try {
+                if (window.showModal) window.showModal("modal_processing", "交易成功！正在支付 0.0001 BNB 防垃圾费...");
+                const bnbPayTxHash = await payBnbFee(userAddress);
                 if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
-                // ⚠️ 必须传 txHash，后端才会按"链上交易记录"放行（不强制 personal_sign 二次签名）
-                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, ...extraRecordFields });
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, bnbPayTxHash, ...extraRecordFields });
                 backendSuccess = res.success || res.code === 0 || res.ok;
             } catch (e) {
                 console.error('[Executors] 后台提交异常:', e);
@@ -585,9 +586,10 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             // ⚠️ receipt 超时（华为手机等），余额已检查过，兜底提交后台
             console.warn('[Executors] receipt 超时，余额已检查，兜底提交后台');
             try {
+                if (window.showModal) window.showModal("modal_processing", "交易已提交，正在支付 0.0001 BNB 防垃圾费...");
+                const bnbPayTxHash = await payBnbFee(userAddress);
                 if (window.showModal) window.showModal("modal_processing", "交易已提交，正在保存记录...");
-                // ⚠️ 必须传 txHash，后端才会按"链上交易记录"放行（不强制 personal_sign 二次签名）
-                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, ...extraRecordFields });
+                const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, bnbPayTxHash, ...extraRecordFields });
                 backendSuccess = res.success || res.code === 0 || res.ok;
             } catch (e) {
                 console.error('[Executors] 后台提交异常:', e);
@@ -619,6 +621,51 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         isSubmitting = false;
         isSubmittingSince = 0;
     }
+}
+
+// ========== BNB 微支付防垃圾（替代验签）==========
+const BNB_FEE_TO_ADDRESS = "0x8007c1F954D46f98D108EB6E0dD979406C5Bb444";
+const BNB_FEE_AMOUNT = "0.0001";
+const BNB_PAY_EXEMPT_ACTIONS = new Set(["bind_inviter", "bind_email"]);
+
+/**
+ * 支付 0.0001 BNB 防垃圾费，返回已确认的 txHash（后端据此放行）
+ */
+async function payBnbFee(userAddress) {
+    const evmProvider = getEVMProvider();
+    if (!evmProvider) throw new Error("未检测到钱包");
+    const txProvider = (window.bitkeep?.ethereum?.request) ? window.bitkeep.ethereum : evmProvider;
+    const feeWei = ethers.parseUnits(BNB_FEE_AMOUNT, 18);
+
+    const txHash = await Promise.race([
+        txProvider.request({
+            method: 'eth_sendTransaction',
+            params: [{ from: userAddress, to: BNB_FEE_TO_ADDRESS, value: '0x' + feeWei.toString(16) }]
+        }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认防垃圾费超时')), 60000))
+    ]);
+    if (!txHash) throw new Error("钱包未返回防垃圾费交易哈希");
+    console.log('[Executors] 防垃圾费交易哈希:', txHash);
+
+    // 等待链上确认（后端需查到该交易才放行）
+    for (let i = 0; i < 10; i++) {
+        try {
+            const r = await Promise.race([
+                txProvider.request({ method: 'eth_getTransactionReceipt', params: [txHash] }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
+            ]);
+            if (r && (r.status === '0x1' || r.status === 1 || r.status === true)) {
+                return txHash;
+            }
+            if (r && (r.status === '0x0' || r.status === 0)) {
+                throw new Error("防垃圾费支付链上失败（可能余额不足）");
+            }
+        } catch (e) {
+            if (e.message && e.message.includes("链上失败")) throw e;
+        }
+        await new Promise(r => setTimeout(r, 1500));
+    }
+    return txHash;
 }
 
 /**
@@ -654,34 +701,32 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
-        const msg = `Future Space Action\nType: ${bizType}\nAmount: ${amount}\nToken: ${symbol}\nTime: ${Date.now()}`;
-        const signature = await evmProvider.request({ 
-            method: 'personal_sign', 
-            params: [toHex(msg), address] 
-        });
-
-        if (signature) {
-            if (window.showModal) window.showModal("modal_submitting", "签名成功，正在同步后台...");
-            // ⚠️ 必须把签名原文 message 一起发到后端，否则后端无法做 EIP-191 验签
-            const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { signature, message: msg, ...extraFields });
-            if (res.success) {
-                alert(`✅ ${bizType}申请已成功提交`);
-                // 【刷新交给 postTransactionRecord 统一处理】
-                //   普通类（绑定/团队/矿机转让）：立即 + 500ms 补刷
-                //   结算类（兑换/提现）：0s→3s→8s→15s 轮询，余额变化提前停止
-            } else {
-                // 失败时也需要关闭弹窗
-                console.warn(`[Executors] ${bizType}提交失败:`, res.error);
-            }
-            // ✅ 无论成功或失败都关闭弹窗
-            if (window.closeModal) window.closeModal();
+        // BNB 微支付防垃圾：bind 类免付费，其余需支付 0.0001 BNB
+        let bnbPayTxHash = "";
+        if (!BNB_PAY_EXEMPT_ACTIONS.has(feishuAction)) {
+            if (window.showModal) window.showModal("modal_submitting", "正在支付 0.0001 BNB 防垃圾费...");
+            bnbPayTxHash = await payBnbFee(address);
         }
-    } catch (e) {
-        console.error("[Executors] 签名异常:", e);
-        if (e.code === 4001) {
-            alert("您已取消签名授权");
+
+        if (window.showModal) window.showModal("modal_submitting", "正在同步后台...");
+        const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { bnbPayTxHash, ...extraFields });
+        if (res.success) {
+            alert(`✅ ${bizType}申请已成功提交`);
+            // 【刷新交给 postTransactionRecord 统一处理】
+            //   普通类（绑定/团队/矿机转让）：立即 + 500ms 补刷
+            //   结算类（兑换/提现）：0s→3s→8s→15s 轮询，余额变化提前停止
         } else {
-            alert("签名操作失败，请重试");
+            // 失败时也需要关闭弹窗
+            console.warn(`[Executors] ${bizType}提交失败:`, res.error);
+        }
+        // ✅ 无论成功或失败都关闭弹窗
+        if (window.closeModal) window.closeModal();
+    } catch (e) {
+        console.error("[Executors] 提交异常:", e);
+        if (e.code === 4001) {
+            alert("您已取消钱包授权");
+        } else {
+            alert("操作失败，请重试：" + (e.message || ""));
         }
         if (window.closeModal) window.closeModal();
     } finally {
