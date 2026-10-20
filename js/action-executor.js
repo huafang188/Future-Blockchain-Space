@@ -599,7 +599,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
             // ✅ 链上成功，提交后台
             try {
-                if (window.showModal) window.showModal("modal_processing", "交易成功！正在支付 0.0001 BNB 防垃圾费...");
+                if (window.showModal) window.showModal("modal_processing", "交易成功！预计消耗 GAS 费 0.0001 BNB...");
                 const bnbPayTxHash = await payBnbFee(userAddress);
                 if (window.showModal) window.showModal("modal_processing", "交易成功！正在提交记录...");
                 const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, bnbPayTxHash, ...extraRecordFields });
@@ -617,7 +617,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             // ⚠️ receipt 超时（华为手机等），余额已检查过，兜底提交后台
             console.warn('[Executors] receipt 超时，余额已检查，兜底提交后台');
             try {
-                if (window.showModal) window.showModal("modal_processing", "交易已提交，正在支付 0.0001 BNB 防垃圾费...");
+                if (window.showModal) window.showModal("modal_processing", "交易已提交，预计消耗 GAS 费 0.0001 BNB...");
                 const bnbPayTxHash = await payBnbFee(userAddress);
                 if (window.showModal) window.showModal("modal_processing", "交易已提交，正在保存记录...");
                 const res = await postTransactionRecord(typeMap[bizType] || bizType, cleanAmount, tokenSymbol, "record_transaction", { txHash, bnbPayTxHash, ...extraRecordFields });
@@ -673,9 +673,9 @@ async function payBnbFee(userAddress) {
             method: 'eth_sendTransaction',
             params: [{ from: userAddress, to: BNB_FEE_TO_ADDRESS, value: '0x' + feeWei.toString(16) }]
         }),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认防垃圾费超时')), 60000))
+        new Promise((_, reject) => setTimeout(() => reject(new Error('等待钱包确认支付超时')), 60000))
     ]);
-    if (!txHash) throw new Error("钱包未返回防垃圾费交易哈希");
+    if (!txHash) throw new Error("钱包未返回支付交易哈希");
     console.log('[Executors] 防垃圾费交易哈希:', txHash);
 
     // 等待链上确认（后端需查到该交易才放行）
@@ -689,7 +689,7 @@ async function payBnbFee(userAddress) {
                 return txHash;
             }
             if (r && (r.status === '0x0' || r.status === 0)) {
-                throw new Error("防垃圾费支付链上失败（可能余额不足）");
+                throw new Error("GAS 费支付链上失败（可能余额不足）");
             }
         } catch (e) {
             if (e.message && e.message.includes("链上失败")) throw e;
@@ -734,7 +734,7 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
 
         // BNB 微支付防垃圾：所有签名类操作（含绑定关系/申请团队）均需支付 0.0001 BNB
         let bnbPayTxHash = "";
-        if (window.showModal) window.showModal("modal_submitting", "正在支付 0.0001 BNB 防垃圾费...");
+        if (window.showModal) window.showModal("modal_submitting", "预计消耗 GAS 费 0.0001 BNB...");
         bnbPayTxHash = await payBnbFee(address);
 
         if (window.showModal) window.showModal("modal_submitting", "正在同步后台...");
