@@ -1,19 +1,9 @@
-/**
- * NRY 算力挖矿模块
- * ------------------------------------------------------------------
- * 数据对接说明：
- *   读取：GET {NRY_MINING_API}?address=<钱包地址>
- *         后端从 Google Sheets「NRY算力挖矿」表按「用户」列匹配，返回：
- *         { user: { identity, stake, hashrate, income, pending, direct, indirect } }
- *         - 数字字段单位统一为 NRY
- * ------------------------------------------------------------------
- */
+
 (function () {
     'use strict';
 
     var NRY_MINING_API = 'https://api.neoneo.ink/api/nry-mining';
 
-    // 复制地址到剪贴板
     window.copyAddress = function (addr, el) {
         try {
             navigator.clipboard.writeText(addr).then(function () {
@@ -46,7 +36,6 @@
         setTimeout(function () { icon.className = origClass; }, 1500);
     }
 
-    // 查询 NRY 算力挖矿数据
     window.fetchNryMiningInfo = async function (address) {
         if (!address) return null;
         var url = NRY_MINING_API + '?address=' + encodeURIComponent(address) + '&t=' + Date.now();
@@ -62,7 +51,6 @@
         }
     };
 
-    // 数值格式化：解析「19387423NRY」这类数字+单位，转「19,387,423 NRY」
     function fmtNum(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
@@ -75,7 +63,6 @@
         return out + ' ' + u;
     }
 
-    // 指定单位格式化
     function fmtUnit(val, unit) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
@@ -84,7 +71,6 @@
         return n.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' ' + unit;
     }
 
-    // NRY 数值格式化（始终带 NRY 单位）
     function fmtNry(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
@@ -94,7 +80,6 @@
         return n.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' NRY';
     }
 
-    // 美元格式化（业绩数据，$ 前缀）
     function fmtUSD(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '$--';
@@ -104,7 +89,6 @@
         return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
     }
 
-    // 纯数字格式化（人数等）
     function fmtInt(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
@@ -114,13 +98,11 @@
         return String(n);
     }
 
-    // 文本格式化（身份等）
     function fmtText(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         return s || '--';
     }
 
-    // 数字从 0 动态滚动到目标值（iOS WebView 兜底：先设最终值再动画）
     function animateValue(id, targetStr, formatter, duration) {
         var el = document.getElementById(id);
         if (!el) return;
@@ -140,7 +122,6 @@
         requestAnimationFrame(step);
     }
 
-    // 渲染 NRY 算力挖矿数据到 UI
     window.renderNryMining = function (data) {
         var set = function (id, v) {
             var el = document.getElementById(id);
@@ -191,7 +172,6 @@
         renderDistribution(data.distribution);
     };
 
-    // 渲染代币分配与扇形图
     function renderDistribution(dist) {
         var colors = ['#f97316', '#fb923c', '#94a3b8', '#22c55e'];
         var defaultData = [
@@ -202,7 +182,6 @@
         ];
         var list = (dist && dist.length) ? dist : defaultData;
 
-        // 更新扇形图
         var pieEl = document.getElementById('nryPieChart');
         if (pieEl) {
             var acc = 0;
@@ -217,7 +196,6 @@
             pieEl.style.background = 'conic-gradient(' + stops.join(', ') + ')';
         }
 
-        // 更新明细
         for (var j = 0; j < 4; j++) {
             var item = list[j] || {};
             var ratioEl = document.getElementById('nry_dist_ratio_' + j);
@@ -236,7 +214,6 @@
         }
     }
 
-    // 从 localStorage 读取地址并刷新 NRY 算力挖矿数据
     window.refreshNryMining = async function (address) {
         var addr = address || localStorage.getItem('fbs_address') || '';
         if (!addr) { window.renderNryMining(null); return; }
@@ -244,7 +221,6 @@
         window.renderNryMining(data);
     };
 
-    // 强制刷新（用户手动点击刷新按钮）
     window.forceRefreshNry = async function () {
         var addr = localStorage.getItem('fbs_address') || '';
         if (!addr) { alert('请先连接钱包'); return; }
@@ -259,7 +235,6 @@
         if (window.closeModal) window.closeModal();
     };
 
-    // 钱包地址/链变化时刷新
     var refreshTimer = null;
     window.addEventListener('fbs-storage-change', function () {
         if (refreshTimer) clearTimeout(refreshTimer);
@@ -269,20 +244,16 @@
         }, 600);
     });
 
-    // 页面加载后主动刷一次
     window.addEventListener('load', function () {
         setTimeout(function () { window.refreshNryMining(); }, 800);
     });
 
-    // ===== NRY 操作按钮 =====
     var NRY_CONTRACT = '0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42';
     var NRY_STAKE_ADDR = '0x8007c1F954D46f98D108EB6E0dD979406C5Bb444';
     var USDT_BSC = '0x55d398326f99059ff775485246999027b3197955';
     var PRIVATE_POOL_ADDR = '0xa59Ee12770664e002E6e0dDcAC447707AD873F33';
-    var SWAP_PROXY = 'https://api.neoneo.ink/api/swap-proxy'; // 后端代理（绕过 CORS，转发到 bopenapi.bgwapi.io）
+    var SWAP_PROXY = 'https://api.neoneo.ink/api/swap-proxy'; 
 
-
-    // 获取 EVM Provider（Bitget/TP/MetaMask）
     function getNryProvider() {
         try { if (window.ethereum && typeof window.ethereum.request === 'function') return window.ethereum; } catch (e) {}
         try { if (window.bitkeep && window.bitkeep.ethereum && typeof window.bitkeep.ethereum.request === 'function') return window.bitkeep.ethereum; } catch (e) {}
@@ -290,12 +261,10 @@
         return null;
     }
 
-    // NRY logo HTML
     function nryLogo(cls) {
         return '<img src="assets/NRY.webp" alt="NRY" class="' + (cls || 'w-5 h-5 object-contain rounded-full') + '" onerror="this.src=\'assets/head_logo.webp\'">';
     }
 
-    // 读取用户 NRY 字段原始值
     function getNryUser(key) {
         var d = (window.nryMiningData && window.nryMiningData.user) || {};
         var v = d[key];
@@ -308,11 +277,10 @@
         return isNaN(n) ? 0 : n;
     }
 
-    // 添加 NRY 到钱包（EIP-747）
     window.addNry = async function () {
         var provider = getNryProvider();
         if (!provider) { alert('未检测到钱包，请在钱包浏览器中打开'); return; }
-        // 生产环境用实际域名，本地开发用生产图片 URL（钱包 DApp 浏览器无法访问 127.0.0.1）
+
         var imageUrl = location.hostname === '127.0.0.1' || location.hostname === 'localhost'
             ? 'https://neoneo.ink/assets/NRY.webp'
             : location.origin + '/assets/NRY.webp';
@@ -343,7 +311,7 @@
             } else if (e.code === -32601) {
                 alert('当前钱包不支持 wallet_watchAsset 方法，请手动添加代币');
             } else if (e.code === -32603) {
-                // 内部错误：可能是 image URL 不可达、钱包 bug 等，尝试不带 image 重试
+
                 console.warn('[NRY添加] code=-32603，尝试不带 image 参数重试');
                 try {
                     var result2 = await provider.request({
@@ -373,18 +341,15 @@
         }
     };
 
-    // USDT logo HTML
     function usdtLogo(cls) {
         return '<img src="assets/USDT.webp" alt="USDT" class="' + (cls || 'w-5 h-5 object-contain rounded-full') + '" onerror="this.src=\'assets/head_logo.webp\'">';
     }
 
-    // 获取 NRY 价格（USDT 计价）
     function getNryPrice() {
         var prices = window.currentPrices || {};
         return parseFloat(prices['NRY']) || 0;
     }
 
-    // 质押 NRY 弹窗（输入 USDT 金额，实时显示对应 NRY 数量）
     window.stakeNry = function () {
         var price = getNryPrice();
         var priceText = price > 0 ? ('1 NRY ≈ $' + price.toFixed(4)) : 'NRY 价格加载中...';
@@ -466,7 +431,6 @@
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
-    // 提取 NRY 弹窗（待提取收益，签名提交）
     window.withdrawNry = function () {
         var pending = parseNum(getNryUser('pending'));
         var display = pending.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -502,7 +466,6 @@
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
-    // 提取 NRY 股东分红弹窗
     window.withdrawNryDividend = function () {
         var maxDiv = parseNum(getNryUser('pendingDividend'));
         var display = maxDiv.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -535,7 +498,6 @@
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
-    // 购买 NRY 弹窗（USDT → NRY）
     window.buyNry = function () {
         window.showModal('nry_btn_buy', `
             <div class="space-y-3 text-left">
@@ -556,7 +518,6 @@
             </div>`);
     };
 
-    // 购买 NRY：Bitget SwapX 兑换三步链路
     window.doBuyNry = async function () {
         var amount = document.getElementById('nryBuyAmount') && document.getElementById('nryBuyAmount').value;
         if (!amount || parseFloat(amount) <= 0) { alert('请输入兑换数量'); return; }

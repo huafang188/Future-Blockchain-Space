@@ -1,22 +1,18 @@
 import { getReceiveAddress, getContractAddress, getCurrentChainConfig, setCurrentChain, CHAIN_CONTRACT_ADDRS, API_BASE } from './config.js';
 import { postTransactionRecord } from './api-service.js';
 
-// 导入 fetchUserData 用于刷新数据
 let fetchUserDataFunc = null;
 
-// 🚨 防重复提交标记
 let isSubmitting = false;
 let isSubmittingSince = 0;
-const SUBMIT_TIMEOUT_MS = 60000; // 60秒强制重置，防止标志卡死
+const SUBMIT_TIMEOUT_MS = 60000; 
 
-// 初始化 fetchUserData 函数引用
 function initFetchUserData() {
     if (!fetchUserDataFunc && window.fetchUserData) {
         fetchUserDataFunc = window.fetchUserData;
     }
 }
 
-// 刷新用户数据（从后端获取最新数据）
 async function refreshUserDataAfterTransaction() {
     initFetchUserData();
     const address = localStorage.getItem('fbs_address');
@@ -26,17 +22,8 @@ async function refreshUserDataAfterTransaction() {
     }
 }
 
-/**
- * ️ 辅助：将文字转为钱包兼容的 Hex 格式
- */
 const toHex = (msg) => '0x' + Array.from(new TextEncoder().encode(msg)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-/**
- * 金额字符串 → 最小单位 BigInt（替代 ethers.parseUnits，避免依赖 CDN）
- * @param {string|number} amount 十进制金额，如 "0.0001"
- * @param {number} decimals 代币精度
- * @returns {bigint}
- */
 function toWei(amount, decimals) {
     const str = String(amount).trim();
     const m = str.match(/^(\d+)(?:\.(\d+))?$/);
@@ -46,12 +33,6 @@ function toWei(amount, decimals) {
     return BigInt(intPart + fracPart);
 }
 
-/**
- * 最小单位 BigInt → 十进制金额字符串（替代 ethers.formatEther/formatUnits，避免依赖 CDN）
- * @param {bigint|string|number} valueWei 最小单位数值
- * @param {number} decimals 代币精度
- * @returns {string}
- */
 function fromWei(valueWei, decimals) {
     let v = BigInt(valueWei);
     const neg = v < 0n;
@@ -62,18 +43,12 @@ function fromWei(valueWei, decimals) {
     return (neg ? '-' : '') + intPart + (fracPart ? '.' + fracPart : '');
 }
 
-/**
- * 兼容旧浏览器的 EVM Provider 检测
- * 所有属性访问都包裹 try-catch，防止旧浏览器访问 getter 时抛出异常
- */
 function getEVMProvider() {
-    // 诊断日志
+
     console.log('[getEVMProvider] window.ethereum:', !!window.ethereum,
                 'window.bitkeep:', !!window.bitkeep,
                 'window.tokenpocket:', !!window.tokenpocket);
 
-    // 1. Bitget 钱包优先检测（iOS 兼容：window.bitkeep.ethereum 才是真正的钱包 provider）
-    //    必须在 window.ethereum 之前检测，否则 iOS 上会用错 provider 导致合约交易失败
     try {
         if (window.bitkeep) {
             console.log('[getEVMProvider] 检测到 window.bitkeep');
@@ -82,7 +57,7 @@ function getEVMProvider() {
                     console.log('[getEVMProvider] 使用 window.bitkeep.ethereum');
                     return window.bitkeep.ethereum;
                 }
-            } catch (e) { /* getter 可能抛异常 */ }
+            } catch (e) {  }
             if (typeof window.bitkeep.request === 'function') {
                 console.log('[getEVMProvider] 使用 window.bitkeep (request)');
                 return window.bitkeep;
@@ -92,25 +67,22 @@ function getEVMProvider() {
                 return window.bitkeep;
             }
         }
-    } catch (e) { /* ignore */ }
+    } catch (e) {  }
 
-    // 2. 检测 isBitkeep 标志（window.ethereum 本身就是 Bitget）
     try {
         if (window.ethereum && window.ethereum.isBitkeep && typeof window.ethereum.request === 'function') {
             console.log('[getEVMProvider] 使用 window.ethereum (isBitkeep)');
             return window.ethereum;
         }
-    } catch (e) { /* ignore */ }
+    } catch (e) {  }
 
-    // 3. 标准 window.ethereum（MetaMask 等非 Bitget 钱包）
     try {
         if (window.ethereum && typeof window.ethereum.request === 'function') {
             console.log('[getEVMProvider] 使用 window.ethereum');
             return window.ethereum;
         }
-    } catch (e) { /* ignore */ }
+    } catch (e) {  }
 
-    // 4. TP 钱包
     try {
         if (window.tokenpocket) {
             console.log('[getEVMProvider] 检测到 window.tokenpocket');
@@ -119,16 +91,15 @@ function getEVMProvider() {
                     console.log('[getEVMProvider] 使用 window.tokenpocket.ethereum');
                     return window.tokenpocket.ethereum;
                 }
-            } catch (e) { /* getter 可能抛异常 */ }
+            } catch (e) {  }
             if (typeof window.tokenpocket.request === 'function') return window.tokenpocket;
             if (typeof window.tokenpocket.toEthereum === 'function') {
                 return window.tokenpocket.toEthereum();
             }
             return window.tokenpocket;
         }
-    } catch (e) { /* ignore */ }
+    } catch (e) {  }
 
-    // 4. 多钱包环境：检查 providers 数组 (EIP-5749)
     try {
         if (window.ethereum && Array.isArray(window.ethereum.providers)) {
             for (const p of window.ethereum.providers) {
@@ -138,16 +109,12 @@ function getEVMProvider() {
                 }
             }
         }
-    } catch (e) { /* ignore */ }
+    } catch (e) {  }
 
     console.warn('[getEVMProvider] 未检测到任何 EVM provider');
     return null;
 }
 
-/**
- * 🔒 核心：强制切换/添加当前选中的区块链
- * 非阻塞式：切链失败不阻止后续操作（钱包可能已在正确链上）
- */
 async function ensureNetwork() {
     const provider = getEVMProvider();
     if (!provider) {
@@ -160,13 +127,12 @@ async function ensureNetwork() {
     const targetChainIdDecimal = String(chainConfig.chainIdDecimal);
 
     try {
-        // 带超时的 RPC 调用（5 秒超时）
+
         const currentChainId = await Promise.race([
             provider.request({ method: 'eth_chainId' }),
             new Promise((_, reject) => setTimeout(() => reject(new Error('eth_chainId 超时')), 5000))
         ]);
 
-        // 已在正确链上
         if (currentChainId === targetChainId || currentChainId === targetChainIdDecimal) {
             console.log('[ensureNetwork] 已在目标链:', chainConfig.chainName);
             return true;
@@ -174,7 +140,6 @@ async function ensureNetwork() {
 
         console.log('[ensureNetwork] 当前链:', currentChainId, '目标链:', targetChainId, '尝试切换...');
 
-        // 尝试切链（带超时）
         try {
             await Promise.race([
                 provider.request({
@@ -187,7 +152,7 @@ async function ensureNetwork() {
             return true;
         } catch (switchError) {
             if (switchError.code === 4902 || switchError.message?.includes('超时')) {
-                // 链不存在或超时，尝试添加
+
                 try {
                     await Promise.race([
                         provider.request({
@@ -210,20 +175,17 @@ async function ensureNetwork() {
             } else {
                 console.warn('[ensureNetwork] 切链失败:', switchError.message);
             }
-            // 切链失败不阻止后续操作
+
             console.warn('[ensureNetwork] 切链失败，继续尝试后续操作');
             return true;
         }
     } catch (error) {
         console.warn('[ensureNetwork] 获取链ID失败:', error.message, '继续尝试后续操作');
-        // 不阻止后续操作，钱包可能已在正确链上
+
         return true;
     }
 }
 
-/**
- * iOS 兼容：带超时的 RPC 请求封装
- */
 async function rpcCall(provider, method, params, timeoutMs = 8000) {
     if (!provider || typeof provider.request !== 'function') throw new Error('provider 不可用');
     return Promise.race([
@@ -232,12 +194,8 @@ async function rpcCall(provider, method, params, timeoutMs = 8000) {
     ]);
 }
 
-/**
- * iOS 兼容：准备合约转账所需的链上元数据（gas / gasPrice / nonce）
- * 多 provider 依次尝试，任一失败继续下一个，最终兜底默认值
- */
 async function getTxMeta(providers, userAddress, contractAddr, transferData) {
-    let gas = '0x186A0';   // 默认 100000，ERC20 transfer 足够
+    let gas = '0x186A0';   
     let gasPrice = null;
     let nonce = null;
 
@@ -246,7 +204,7 @@ async function getTxMeta(providers, userAddress, contractAddr, transferData) {
             try {
                 const v = await fn(p);
                 if (v !== null && v !== undefined) return v;
-            } catch (e) { /* 继续下一个 provider */ }
+            } catch (e) {  }
         }
         return null;
     };
@@ -262,12 +220,6 @@ async function getTxMeta(providers, userAddress, contractAddr, transferData) {
     return { gas, gasPrice, nonce };
 }
 
-/**
- * iOS 兼容：ERC20 合约转账（签名 + 服务端广播）
- * 背景：iOS Bitget 钱包对 eth_sendTransaction（ERC20）会静默忽略不弹窗，
- *       而 eth_signTransaction 能正常唤起钱包签名（与 doBuyNry 一致，已验证）。
- * 流程：构造完整 tx 参数 → eth_signTransaction 签名 → POST /api/broadcast-tx 服务端广播 → 返回 txHash
- */
 async function signAndBroadcastTransfer(txProvider, evmProvider, userAddress, contractAddr, transferData) {
     const chainConfig = getCurrentChainConfig();
     const chainId = chainConfig.chainId || '0x38';
@@ -308,13 +260,8 @@ async function signAndBroadcastTransfer(txProvider, evmProvider, userAddress, co
     throw new Error('交易广播失败: ' + ((respJson && respJson.msg) || '未知错误'));
 }
 
-/**
- * 💸 逻辑 A：链上真实转账 (用于：充值、购买矿机、缴电费)
- * 增加：金额清洗与余额预检查逻辑
- * 兼容 Bitget/TP/MetaMask 等钱包
- */
 async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAddr, extraRecordFields = {}) {
-    // 防重复提交 + 超时强制重置
+
     if (isSubmitting) {
         const elapsed = Date.now() - isSubmittingSince;
         if (elapsed > SUBMIT_TIMEOUT_MS) {
@@ -339,19 +286,16 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         return;
     }
 
-    // 先切换到 BSC 链（Bitget 钱包在正确链上才能正常请求账号）
     if (!await ensureNetwork()) {
         isSubmitting = false;
         isSubmittingSince = 0;
         return;
     }
 
-    // 获取钱包地址（兼容 Bitget 钱包：先试 eth_accounts，再试 eth_requestAccounts）
     let userAddress = null;
     try {
         if (window.showModal) window.showModal("modal_processing", "正在连接钱包...");
 
-        // 带超时的 RPC 请求封装
         const rpcWithTimeout = (provider, method, params, timeoutMs = 8000) => {
             return Promise.race([
                 provider.request({ method, params }),
@@ -359,7 +303,6 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             ]);
         };
 
-        // 1. 先尝试 eth_accounts（已连接的钱包会直接返回地址，不弹窗）
         let accounts = [];
         try {
             accounts = await rpcWithTimeout(evmProvider, 'eth_accounts');
@@ -367,13 +310,12 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             console.warn('[Executors] eth_accounts 失败:', e.message);
         }
 
-        // 2. 如果没拿到地址，尝试 eth_requestAccounts（会弹窗请求授权）
         if (!accounts || accounts.length === 0) {
             try {
                 accounts = await rpcWithTimeout(evmProvider, 'eth_requestAccounts', [], 15000);
             } catch (e) {
                 console.warn('[Executors] eth_requestAccounts 失败:', e.message);
-                // 3. 尝试旧版 enable() API（部分旧版 Bitget 钱包仅支持 enable）
+
                 try {
                     if (typeof evmProvider.enable === 'function') {
                         console.log('[Executors] 尝试 enable() 方式连接');
@@ -385,7 +327,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                 } catch (e2) {
                     console.warn('[Executors] enable() 失败:', e2.message);
                 }
-                // 4. Bitget 钱包专用：通过 bitkeep 对象获取
+
                 if ((!accounts || accounts.length === 0) && window.bitkeep && window.bitkeep.ethereum) {
                     try {
                         accounts = await rpcWithTimeout(window.bitkeep.ethereum, 'eth_requestAccounts', [], 15000);
@@ -399,7 +341,6 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         userAddress = accounts && accounts[0];
         if (!userAddress) throw new Error("未获取到钱包地址，请确保钱包已解锁并已连接");
 
-        // 同步写入 localStorage（postTransactionRecord 依赖此值）
         const existingAddr = localStorage.getItem('fbs_address');
         if (!existingAddr || existingAddr.toLowerCase() !== userAddress.toLowerCase()) {
             localStorage.setItem('fbs_address', userAddress);
@@ -414,7 +355,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
     }
 
     try {
-        // --- 1. 金额强力清洗：只保留数字和小数点 ---
+
         const cleanAmount = String(rawAmount).replace(/[^\d.]/g, '');
         if (!cleanAmount || isNaN(parseFloat(cleanAmount))) {
             throw new Error("无效的金额格式");
@@ -425,19 +366,17 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         const decimals = window.TOKEN_DECIMALS?.[tokenSymbol] || chainConfig.nativeCurrency.decimals;
         const amountToPay = toWei(cleanAmount, decimals);
 
-        // --- 2. 转账前检查余额（多 provider 并行查询，失败直接阻止）---
         if (window.showModal) window.showModal("modal_processing", "正在检查余额...");
 
         let userBalance = BigInt(0);
         let balanceOk = false;
 
         try {
-            // 收集所有可用 provider（Bitget 优先，更可靠）
+
             const balanceProviders = [];
             if (window.bitkeep?.ethereum?.request) balanceProviders.push(window.bitkeep.ethereum);
             if (evmProvider && !balanceProviders.includes(evmProvider)) balanceProviders.push(evmProvider);
 
-            // 构造查询参数（原生代币用 eth_getBalance，合约代币用 eth_call）
             let method, params;
             if (tokenSymbol === nativeSymbol) {
                 method = 'eth_getBalance';
@@ -458,7 +397,6 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
             let balanceHex = null;
 
-            // 并行查询所有 provider，谁先成功用谁（不支持 Promise.any 时降级为串行）
             if (balanceProviders.length > 1 && typeof Promise.any === 'function') {
                 try {
                     balanceHex = await Promise.any(balanceProviders.map(queryWithTimeout));
@@ -467,7 +405,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                     console.warn('[Executors] 所有 provider 余额查询均失败');
                 }
             } else {
-                // 串行降级：Bitget 优先
+
                 for (const p of balanceProviders) {
                     try {
                         balanceHex = await queryWithTimeout(p);
@@ -486,7 +424,6 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             console.warn('[Executors] 余额查询异常:', balErr.message);
         }
 
-        // 余额查询成功且不足 → 直接阻止，提示用户补充资金
         if (balanceOk && userBalance < amountToPay) {
             const balStr = tokenSymbol === nativeSymbol
                 ? fromWei(userBalance, 18)
@@ -497,7 +434,6 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             return;
         }
 
-        // 余额查询失败 → 直接阻止交易（必须确认余额充足才能支付，避免余额不足仍弹钱包）
         if (!balanceOk) {
             console.warn('[Executors] 余额查询失败，阻止交易');
             if (window.closeModal) window.closeModal();
@@ -507,11 +443,8 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
         console.log('[Executors] 余额检查通过，允许支付');
 
-        // --- 3. 发起交易 ---
         if (window.showModal) window.showModal("modal_processing", "请在钱包中确认转账...");
 
-        // iOS Bitget 钱包修复：window.ethereum 可能不支持合约交易，
-        // 优先使用 window.bitkeep.ethereum 发送交易
         const txProvider = (window.bitkeep?.ethereum?.request) ? window.bitkeep.ethereum : evmProvider;
         if (txProvider !== evmProvider) {
             console.log('[Executors] 使用 window.bitkeep.ethereum 发送交易（iOS 兼容）');
@@ -541,8 +474,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
             const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
             if (isIOS) {
-                // iOS Bitget 钱包对 ERC20 的 eth_sendTransaction 静默忽略（不弹窗），
-                // 改用 eth_signTransaction + 服务端广播（与 doBuyNry 一致，已验证可唤起）
+
                 txHash = await signAndBroadcastTransfer(txProvider, evmProvider, userAddress, contractAddr, transferData);
             } else {
                 txHash = await Promise.race([
@@ -562,12 +494,11 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
         if (!txHash) throw new Error("钱包未返回交易哈希");
         console.log('[Executors] 交易哈希:', txHash);
 
-        const typeMap = { "RECHARGE": "充值", "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
+        const typeMap = { "MINER": "购买矿机", "ELECTRIC": "缴纳电费" };
 
-        // --- 4. 短时间轮询 receipt（15秒，确认交易成败）---
         if (window.showModal) window.showModal("modal_processing", "交易已提交，正在确认链上状态...");
         let receipt = null;
-        for (let i = 0; i < 8; i++) { // 最多 15 秒（8次 × 3s超时 + 等待）
+        for (let i = 0; i < 8; i++) { 
             try {
                 const r = await Promise.race([
                     txProvider.request({ method: 'eth_getTransactionReceipt', params: [txHash] }),
@@ -578,11 +509,10 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                     console.log('[Executors] 收到 receipt:', JSON.stringify({ status: r.status }));
                     break;
                 }
-            } catch (e) { /* 忽略，继续轮询 */ }
+            } catch (e) {  }
             await new Promise(r => setTimeout(r, 1500));
         }
 
-        // --- 5. 根据 receipt 结果决定是否提交后台 ---
         let backendSuccess = false;
 
         if (receipt) {
@@ -591,13 +521,12 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
             console.log('[Executors] 交易状态:', status, '确认:', txConfirmed);
 
             if (!txConfirmed) {
-                // ❌ 链上明确失败（余额不足/revert），不提交后台
+
                 alert(`❌ 链上交易失败，未扣款\n交易哈希: ${txHash}\n可能原因：余额不足或合约执行失败`);
                 if (window.closeModal) window.closeModal();
                 return;
             }
 
-            // ✅ 链上成功，提交后台
             try {
                 if (window.showModal) window.showModal("modal_processing", "交易成功！预计消耗 GAS 费 0.0001 BNB...");
                 const bnbPayTxHash = await payBnbFee(userAddress);
@@ -614,7 +543,7 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
                 alert(`✅ 链上交易成功，但后台记录提交失败\n交易哈希: ${txHash}\n请联系客服手动确认`);
             }
         } else {
-            // ⚠️ receipt 超时（华为手机等），余额已检查过，兜底提交后台
+
             console.warn('[Executors] receipt 超时，余额已检查，兜底提交后台');
             try {
                 if (window.showModal) window.showModal("modal_processing", "交易已提交，预计消耗 GAS 费 0.0001 BNB...");
@@ -636,7 +565,6 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
     } catch (e) {
         console.error("[Executors] 交易异常详情:", e);
 
-        // 解析更加友好的错误信息
         let msg = e.message || "未知错误";
         if (e.code === 4001 || e.code === 'ACTION_REJECTED' || msg.includes("user rejected") || msg.includes("拒绝")) {
             msg = "您已取消交易签名";
@@ -654,14 +582,9 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
     }
 }
 
-// ========== BNB 微支付防垃圾（替代验签）==========
 const BNB_FEE_TO_ADDRESS = "0x8007c1F954D46f98D108EB6E0dD979406C5Bb444";
 const BNB_FEE_AMOUNT = "0.0001";
 
-
-/**
- * 支付 0.0001 BNB 防垃圾费，返回已确认的 txHash（后端据此放行）
- */
 async function payBnbFee(userAddress) {
     const evmProvider = getEVMProvider();
     if (!evmProvider) throw new Error("未检测到钱包");
@@ -678,7 +601,6 @@ async function payBnbFee(userAddress) {
     if (!txHash) throw new Error("钱包未返回支付交易哈希");
     console.log('[Executors] 防垃圾费交易哈希:', txHash);
 
-    // 等待链上确认（后端需查到该交易才放行）
     for (let i = 0; i < 10; i++) {
         try {
             const r = await Promise.race([
@@ -699,11 +621,8 @@ async function payBnbFee(userAddress) {
     return txHash;
 }
 
-/**
- * ✍️ 逻辑 B：钱包签名并提交数据 (用于：提现、兑换、绑定、团队、矿机转让、内转)
- */
 async function executeSignatureAction(bizType, amount, symbol, feishuAction, extraFields = {}) {
-    // 🚨 防重复提交检查 + 超时强制重置
+
     if (isSubmitting) {
         const elapsed = Date.now() - isSubmittingSince;
         if (elapsed > SUBMIT_TIMEOUT_MS) {
@@ -732,7 +651,6 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
-        // BNB 微支付防垃圾：所有签名类操作（含绑定关系/申请团队）均需支付 0.0001 BNB
         let bnbPayTxHash = "";
         if (window.showModal) window.showModal("modal_submitting", "预计消耗 GAS 费 0.0001 BNB...");
         bnbPayTxHash = await payBnbFee(address);
@@ -741,14 +659,12 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { bnbPayTxHash, ...extraFields });
         if (res.success) {
             alert(`✅ ${bizType}申请已成功提交`);
-            // 【刷新交给 postTransactionRecord 统一处理】
-            //   普通类（绑定/团队/矿机转让）：立即 + 500ms 补刷
-            //   结算类（兑换/提现）：0s→3s→8s→15s 轮询，余额变化提前停止
+
         } else {
-            // 失败时也需要关闭弹窗
+
             console.warn(`[Executors] ${bizType}提交失败:`, res.error);
         }
-        // ✅ 无论成功或失败都关闭弹窗
+
         if (window.closeModal) window.closeModal();
     } catch (e) {
         console.error("[Executors] 提交异常:", e);
@@ -759,28 +675,12 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         }
         if (window.closeModal) window.closeModal();
     } finally {
-        // ✅ 确保无论成功或失败，都重置提交状态
+
         isSubmitting = false;
         isSubmittingSince = 0;
     }
 }
 
-// ==========================================
-// 🚀 全局映射挂载
-// ==========================================
-
-// 1. 充值
-window.doRecharge = async function() {
-    const symbol = document.getElementById('recToken')?.value;
-    const amount = document.getElementById('recAmount')?.value;
-    if (!amount || parseFloat(amount) <= 0) return alert("请输入正确金额");
-    
-    const receiveAddr = getReceiveAddress('RECHARGE');
-    console.log(`[Recharge] 收款地址: ${receiveAddr} (链: ${window.currentChain || 'BSC'})`);
-    await executeOnChainTransfer("RECHARGE", symbol, amount, receiveAddr);
-};
-
-// 2. 购买矿机 & 缴纳电费
 window.doChainPay = async function(bizType) {
     let rawValue = "";
     if (bizType === 'MINER') {
@@ -789,7 +689,6 @@ window.doChainPay = async function(bizType) {
         rawValue = document.getElementById('elecCost')?.innerText || "0";
     }
 
-    // 清洗掉 $ 或 USDT 字符
     const amount = rawValue.replace(/[^\d.]/g, '');
     if (!amount || parseFloat(amount) <= 0) return alert("金额计算异常，请重试");
 
@@ -800,7 +699,6 @@ window.doChainPay = async function(bizType) {
     await executeOnChainTransfer(bizType, "USDT", amount, target);
 };
 
-// 3. 提币
 window.doWithdrawSignature = async function() {
     const symbol = document.getElementById('witToken')?.value;
     const amount = document.getElementById('witAmount')?.value;
@@ -808,7 +706,6 @@ window.doWithdrawSignature = async function() {
     await executeSignatureAction("提现", amount, symbol, "record_transaction");
 };
 
-// 4. 兑换
 window.doExchangeSignature = async function() {
     const fromT = document.getElementById('sFromToken')?.value;
     const toT = document.getElementById('sToToken')?.value;
@@ -817,7 +714,6 @@ window.doExchangeSignature = async function() {
     await executeSignatureAction("兑换", fromAmt, `${fromT}->${toT}`, "record_transaction");
 };
 
-// 4.5 质押
 window.doStakeSignature = async function() {
     const symbol = document.getElementById('stakeToken')?.value || 'NEO';
     const amount = document.getElementById('stakeAmount')?.value;
@@ -830,7 +726,6 @@ window.doStakeSignature = async function() {
     });
 };
 
-// 4.6 使用 NEO 购买矿机（限时优惠 145 美元/台）
 window.doNeoBuyMinerSubmit = async function() {
     const count = document.getElementById('neoBuyCount')?.value;
     if (!count || parseFloat(count) <= 0) return alert("请输入矿机数量");
@@ -839,10 +734,8 @@ window.doNeoBuyMinerSubmit = async function() {
     const neoPrice = parseFloat(window.currentPrices?.NEO) || 0;
     if (neoPrice <= 0) return alert("NEO 价格获取中，请稍后重试");
 
-    // 实时计算需消耗的 NEO（145 美元/台）
     const need = (145 * parseFloat(count)) / neoPrice;
 
-    // 余额不足校验：需消耗 NEO 大于可用余额时拦截提交
     const neoBal = parseFloat(window.userBalances?.NEO ?? 0) || 0;
     if (need > neoBal) {
         alert(`NEO 余额不足\n\n需消耗：${need.toFixed(6)} NEO\n可用余额：${neoBal.toFixed(6)} NEO\n\n请先充值或减少矿机数量`);
@@ -854,7 +747,6 @@ window.doNeoBuyMinerSubmit = async function() {
     });
 };
 
-// 4.7 使用 NEO 缴纳电费（限时优惠 28.5 美元/台/月，支持 30/90/180/360 天周期）
 window.doNeoPayFeeSubmit = async function() {
     const count = document.getElementById('neoFeeCount')?.value;
     if (!count || parseFloat(count) <= 0) return alert("请输入矿机数量");
@@ -863,11 +755,9 @@ window.doNeoPayFeeSubmit = async function() {
     const neoPrice = parseFloat(window.currentPrices?.NEO) || 0;
     if (neoPrice <= 0) return alert("NEO 价格获取中，请稍后重试");
 
-    // 缴纳天数换算为月份倍数（28.5 美元/台/月）
     const days = Number(document.getElementById('neoFeeDays')?.value || 30);
     const need = (28.5 * parseFloat(count) * (days / 30)) / neoPrice;
 
-    // 余额不足校验：需消耗 NEO 大于可用余额时拦截提交
     const neoBal = parseFloat(window.userBalances?.NEO ?? 0) || 0;
     if (need > neoBal) {
         alert(`NEO 余额不足\n\n需消耗：${need.toFixed(6)} NEO\n可用余额：${neoBal.toFixed(6)} NEO\n\n请先充值或减少矿机数量`);
@@ -879,54 +769,47 @@ window.doNeoPayFeeSubmit = async function() {
     });
 };
 
-// 5. 绑定推荐人
 window.doSubmitBindInviter = async function(event) {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     if (!inviterId) return alert("请输入推荐码");
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-    
-    // 显示加载状态
+
     const btn = document.getElementById('btn_bind_inviter');
     if (btn) {
         const originalText = btn.textContent;
         btn.textContent = "绑定中...";
         btn.disabled = true;
-        
-        // 添加进度提示
+
         const progressDiv = document.createElement('div');
         progressDiv.id = 'bind-progress';
         progressDiv.className = 'text-center text-xs text-slate-500 mt-2';
         progressDiv.textContent = '正在连接钱包...';
         btn.parentNode.appendChild(progressDiv);
-        
-        // 监听签名进度
+
         const originalShowModal = window.showModal;
         window.showModal = function(title, content) {
             const progress = document.getElementById('bind-progress');
             if (progress) progress.textContent = '等待钱包签名确认...';
             originalShowModal(title, content);
         };
-        
+
         try {
             await executeSignatureAction("绑定关系", "0", "INFO", "bind_inviter", { 
                 inviterId: inviterId, 
                 myInviteCode: myCode 
             });
-            
-            // 更新进度
+
             const progress = document.getElementById('bind-progress');
             if (progress) progress.textContent = '绑定成功！正在刷新数据...';
-            
+
         } finally {
-            // 恢复按钮状态
+
             btn.textContent = originalText;
             btn.disabled = false;
-            
-            // 移除进度提示
+
             const progress = document.getElementById('bind-progress');
             if (progress) progress.remove();
-            
-            // 恢复原始 showModal
+
             window.showModal = originalShowModal;
         }
     } else {
@@ -937,14 +820,12 @@ window.doSubmitBindInviter = async function(event) {
     }
 };
 
-// 6. 申请团队数据
 window.doTeamEmailSubmit = async function() {
     const email = document.getElementById('team_email')?.value.trim();
     if (!email || !email.includes('@')) return alert("请输入有效邮箱");
     await executeSignatureAction("团队申请", "0", "INFO", "bind_email", { email: email });
 };
 
-// 7. 转让矿机
 window.doMinerTransfer = async function() {
     const receiver = document.getElementById('minerT_Addr')?.value.trim();
     const amount = document.getElementById('minerT_Amount')?.value;
@@ -952,7 +833,6 @@ window.doMinerTransfer = async function() {
     await executeSignatureAction("矿机转让", amount, "MINER", "transfer_miner", { receiver: receiver });
 };
 
-// 8. 内部转账
 window.doInternalTransfer = async function() {
     const to = document.getElementById('transAddr')?.value.trim();
     const symbol = document.getElementById('transToken')?.value;

@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['hi'] = {
-    // --- 1. वैश्विक और नेविगेशन ---
+
     yandex_title: "नमस्ते, Yandex!",
     yandex_subtitle: "—— वैश्विक AI कंप्यूटिंग शक्ति का नया युग",
     yandex_cta1: "कंप्यूटिंग शक्ति बाजार तक पहुंचें",
@@ -61,7 +61,6 @@ window.i18nData['hi'] = {
     neo_ton_partnership: "TON आ रहा है: NEO जल्द ही The Open Network का समर्थन करेगा - दुनिया का अग्रणी L1 ब्लॉकचेन: सबसे तेज गति, सबसे कम शुल्क, सब-सेकंड पुष्टि, लगभग शून्य लागत, Telegram पर 1 अरब से अधिक उपयोगकर्ताओं तक मूल पहुंच।",
     neo_solana_partnership: "NEO जल्द ही SOLANA का समर्थन करेगा - दुनिया की सबसे तेज उच्च प्रदर्शन वाली ब्लॉकचेनों में से एक, सब-सेकंड पुष्टि, अत्यंत कम शुल्क, DeFi और NFT पारिस्थितिकी तंत्रों के लिए शक्तिशाली समर्थन।",
 
-    // --- 2. खनन पृष्ठ (Miner Page) ---
     miner_title: "मेरा खनन उपकरण",
     miner_name: "NEO Eco AI स्मार्ट खनन उपकरण",
     miner_desc: "प्रति उपकरण हैश पावर ≈ 30TH/s, बिजली खपत: 1500W",
@@ -126,7 +125,7 @@ window.i18nData['hi'] = {
     nry_private_pool_desc: "USDT को निजी पूल में जोड़ने के लिए राशि चुनें (BSC)",
     nry_private_pool_selected: "चयनित",
     nry_private_pool_confirm: "पुष्टि करें",
-    
+
     nry_addr_official: "आधिकारिक पता",nry_addr_contract: "अनुबंध",
     nry_addr_dev: "डेवलपर",
     nry_addr_stake: "स्टेक",
@@ -152,7 +151,6 @@ window.i18nData['hi'] = {
     miner_detail_status_stopped: "बंद",
     miner_detail_note: "माइनर विवरण जल्द आ रहा है, बने रहें",
 
-    // --- 2.3 NCL क्रॉस-चेन सिक्का मशीन ---
     ncl_machine_status: "मशीन स्थिति",
     ncl_status_active: "चालू",
     ncl_machine_name: "NCL Монетоприемник",
@@ -167,7 +165,6 @@ window.i18nData['hi'] = {
     ncl_chain: "चेन",
     ncl_locked: "लॉक",
 
-    // --- 2.5 नेटवर्क खनन उपकरण स्थिति ---
     network_miner_title: "नेटवर्क खनन उपकरण स्थिति",
     neo_total_supply: "NEO कुल आपूर्ति",
     data_syncing: "डेटा सिंक हो रहा है, कृपया प्रतीक्षा करें",
@@ -180,7 +177,6 @@ window.i18nData['hi'] = {
     neo_total_output: "कुल NEO उत्पादन",
     neo_burned: "NEO जलाया गया",
 
-    // --- 3. संपत्ति और टीम (User Page) ---
     assets_list: "संपत्ति सूची",
     recharge: "रिचार्ज",
     withdraw: "निकासी",
@@ -203,7 +199,7 @@ window.i18nData['hi'] = {
     neo_need_ne: "आवश्यक NEO",
     neo_bal_ne: "उपलब्ध NEO",
     neo_submit: "जमा करें",
-    // सितंबर अभियान
+
     act_badge: "सीमित ऑफ़र · जारी है",
     act_title: "सुनहरा सितंबर · उपहार आपके लिए",
     act_countdown_label: "समाप्ति में",
@@ -240,7 +236,6 @@ window.i18nData['hi'] = {
     btn_bind_inviter: "मेरा रेफरर बाइंड करें",
     team_detail: "टीम डेटा का अनुरोध करें",
 
-    // --- 4. मोडल ---
     btn_confirm: "पुष्टि करें भेजें",
     btn_confirm_bind: "तुरंत बाइंड और साइन करें",
     btn_transfer_now: "हस्तांतरण साइन भेजें",
@@ -294,8 +289,7 @@ window.i18nData['hi'] = {
     bank_principal_confirm: "निकासी की पुष्टि करें",
     bank_btn: "जल्द आ रहा है",
     transfer_fee: "शुल्क: 0.00USDT",
-    
-    // --- 5. महत्वपूर्ण घोषणा ---
+
     important_announcement: "महत्वपूर्ण घोषणा",
     news_title_short: "समाचार",
     news_section_title: "घोषणाएं और समाचार",
@@ -319,30 +313,26 @@ window.i18nData['hi'] = {
     neo_update_closing: "NRY का आधिकारिक लॉन्च केवल NEO माइनिंग मैट्रिक्स का एक महत्वपूर्ण मील का पत्थर नहीं है, बल्कि विकेंद्रीकृत सहमति का एक बिल्कुल नया अभ्यास है। आइए साथ मिलकर आगे बढ़ें और ऑन-चेन माइनिंग का नया युग खोलें!",
     neo_update_signature: "NRY समुदाय संचालन टीम",
 
-    // --- Latest Announcement ---
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
-    
+
     recharge_amount: "रिचार्ज राशि",
     select_recharge_asset: "रिचार्ज संपत्ति चुनें",
     receiver_address_placeholder: "प्राप्तकर्ता पता (0x...)",
     amount_max_placeholder: "राशि (अधिकतम {max})",
     max_available: "अधिकतम उपलब्ध",
 
-    // --- 5. मोडल शीर्षक ---
     modal_register_title: "खनन खाता सक्रिय करें",
     modal_bind_title: "रेफरल संबंध बाइंड करें",
     miner_transfer_title: "आंतरिक खनन उपकरण हस्तांतरण",
     modal_team_title: "टीम विस्तृत विवरण का अनुरोध",
     internal_transfer: "आंतरिक ट्रांसफर",
 
-    // --- 6. विवरण ---
     register_desc: "अपनी हैश पावर नोड को सक्रिय करने के लिए रेफरर ID दर्ज करें",
     team_detail_desc: "डेटा मात्रा बड़ी होने के कारण, टीम का विस्तृत रिपोर्ट आपके ईमेल पर भेजा जाएगा",
     wait_audit: "अनुरोध सबमिट हो गया है, कृपया समीक्षा की प्रतीक्षा करें",
     sign_to_confirm: "पहचान की पुष्टि के लिए वॉलेट में साइन करें",
 
-    // --- 7. स्थिति और प्रकार मैपिंग ---
     "已提交": "सबमिट",
     "处理中": "प्रसंस्करण में",
     "成功": "सफल",
@@ -355,7 +345,6 @@ window.i18nData['hi'] = {
     "购买矿机": "खनन उपकरण खरीदें",
     "缴纳电费": "बिल्ली शुल्क भरें",
 
-    // --- खनन स्तर अनुवाद ---
     钻石大师: "हीरा मास्टर",
     钻石节点: "हीरा नोड",
     钻石矿工: "हीरा खनिक",
@@ -368,7 +357,6 @@ window.i18nData['hi'] = {
     账户锁定: "खाता लॉक",
     账户异常: "खाता असामान्य",
 
-    // --- 8. समाचार और घोषणाएँ ---
     news_title: "घोषणाएँ और समाचार",
     history_title: "लेनदेन इतिहास",
     transfer_title: "ट्रांसफर रिकॉर्ड",
@@ -389,7 +377,6 @@ window.i18nData['hi'] = {
         "<b>वैश्विक नोड भर्ती जारी रहती है：</b>नोड्स के लिए वैश्विक पार्टनरों की भर्ती कार्यक्रम सक्रिय रूप से जारी है। उपयोगकर्ता 20 माइनिंग मशीनें खरीदकर और चलाकर इकोसिस्टम नोड बन सकते हैं, कंप्यूटिंग पावर पर स्थायी 1% बोनस और लेनदेन टैक्स में अनन्य छूट प्राप्त कर सकते हैं।"
     ],
 
-    // --- 9. टोकन विवरण (Stats Page) ---
     stats_title: "टोकन विवरण और पैरामीटर",
     stats_subtitle: "टोकन अर्थशास्त्र और बाजार डेटा",
     token_labels: {
@@ -404,7 +391,6 @@ window.i18nData['hi'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "क्रॉस-चेन हब / इंटरऑपरेबिलिटी माध्यम", total: "400,000,000", dist: "क्रॉस-चेन नोड पुरस्कार 40% | साझेदारी 30% | शासन 15% | विकास 15%", mech: "प्रोटोकॉल डॉकिंग पर चरणबद्ध रिलीज।" }
     ],
 
-    // --- 11. Whitepaper ---
     wp_title: "व्हाइटपेपर अवलोकन",
     wp_subtitle: "(यह व्हाइटपेपर समुदाय द्वारा संयुक्त रूप से बनाए रखा जाता है। कॉपीराइट और अंतिम व्याख्या अधिकार समुदाय के सदस्यों के हैं)",
     wp_ch0_title: "कार्यकारी सारांश",
@@ -486,7 +472,6 @@ window.i18nData['hi'] = {
     wp_ch3_s2_i6: "अपस्फीति आर्थिक मॉडल:",
     wp_ch3_s2_i6_desc: "NET ईंधन जलन, लेनदेन शुल्क जलन, पारिस्थितिकी वापसी नष्ट, स्टेकिंग लॉक आदि तंत्रों द्वारा टोकन परिसंचरण नियंत्रित करना, दीर्घकालिक मूल्य स्थिरता बढ़ाना। अपस्फीति तंत्र वास्तविक कंप्यूटिंग पावर लाभ के साथ संयोजित, मूल्य समर्थन दोहरे इंजन बनाना।",
 
-    // अध्याय 4: तकनीकी आर्किटेक्चर
     wp_ch4_title: "4 तकनीकी आर्किटेक्चर",
     wp_ch4_s1_title: "4.1 अंतर्गत ब्लॉकचेन आर्किटेक्चर",
     wp_ch4_s1_p1: "प्रोजेक्ट स्व-विकसित मॉड्यूलर अंतर्गत सार्वजनिक श्रृंखला अपनाता है, मुख्य मॉड्यूल में P2P नेटवर्क मॉड्यूल, वितरित खाता मॉड्यूल, एन्क्रिप्शन हस्ताक्षर मॉड्यूल, स्मार्ट कॉन्ट्रैक्ट वर्चुअल मशीन, लेन-देन मेमोरी पूल, ब्लॉक पैकेजिंग और सिंक्रनाइज़ेशन मॉड्यूल, डेटा शार्डिंग स्टोरेज मॉड्यूल, क्रॉस-चेन प्रोटोकॉल एडाप्टेशन मॉड्यूल शामिल हैं।",
@@ -512,7 +497,6 @@ window.i18nData['hi'] = {
     wp_ch4_s4_p1: "कंप्यूटिंग पावर डेटा, ऊर्जा खपत डेटा, ब्लॉक ऊंचाई, लेन-देन रिकॉर्ड, टोकन आवंटन, नष्ट रिकॉर्ड, स्टेकिंग मात्रा, खनिक उत्पादन सभी ऑन-चेन हैं, कोई भी ब्लॉकचेन ब्राउज़र के माध्यम से वास्तविक समय में क्वेरी कर सकता है, पूर्ण रूप से खुला, पारदर्शी, पता लगाने योग्य प्राप्त करता है।",
     wp_ch4_s4_p2: "सभी नियम समायोजन, पैरामीटर संशोधन, अनुबंध अपग्रेड घोषित किए जाने चाहिए और ऑन-चेन पर निष्पादित किए जाने चाहिए, काले बॉक्स संचालन को समाप्त करना। डेटा पारदर्शिता तंत्र पारिस्थितिकी विश्वास का आधार है और सामुदायिक शासन का महत्वपूर्ण आधार है।",
 
-    // अध्याय 5: Consensus Mechanism and Mining Principles
     wp_ch5_title: "5 Consensus Mechanism and Mining Principles",
     wp_ch5_s1_title: "5.1 Consensus : PoE + PoS + DPoS Hybrid",
     wp_ch5_s1_1_title: "5.1.1 PoE (Proof of Energy) Energy Computing Proof",
@@ -544,7 +528,6 @@ window.i18nData['hi'] = {
     wp_ch5_s3_r5: "Early participants (within first year) enjoy 1.8x early bonus coefficient",
     wp_ch5_s3_r6: "Invitation reward: 5% of lower level income rewards inviter, up to 10 levels",
 
-    // अध्याय 6: Token Economic System
     wp_ch6_title: "6 Token Economic System",
     wp_ch6_s1_title: "6.1 Token System Overview",
     wp_ch6_s1_p1: "This project's token economic system adopts a \"six-dimensional coordination model\", different from the single or dual token models widely used in the industry.",
@@ -562,7 +545,6 @@ window.i18nData['hi'] = {
     wp_ch6_s7_title: "6.7 NCL Detailed Design",
     wp_ch6_s7_p1: "NCL (Neo Core Link) is cross-chain hub token. Total: 400,000,000 tokens",
 
-    // Chapters 7-13
     wp_ch7_title: "7 Ecological Application Scenarios",
     wp_ch7_s1_title: "7.1 Personal Mining",
     wp_ch7_s1_p1: "Ordinary users can participate in mining via light nodes on phones and computers without professional miners, low energy consumption, low threshold, easy operation.",
@@ -573,7 +555,6 @@ window.i18nData['hi'] = {
     wp_ch12_title: "12 Compliance Statement",
     wp_ch13_title: "13 Appendix",
 
-    // --- 4. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: हरी ऊर्जा कंप्यूटिंग पावर पारिस्थितिकी",
     infra_title: "बुनियादी ढाँचा और हार्डवेयर विनिर्देश",
     infra_desc: "NEO Energy का मुख्यालय रूस में स्थित है, स्थानीय कानूनों और विनियमों के पूर्ण अनुपालन में, उच्च प्रदर्शन, अनुपालन कंप्यूटिंग पावर क्लस्टर का निर्माण करता है।",
@@ -628,7 +609,7 @@ window.i18nData['hi'] = {
     claim_reward_balance: "लंबित पुरस्कार",
     claim_reward_input_label: "निकालने की राशि",
     claim_reward_confirm: "निकासी की पुष्टि करें",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "AI कंप्यूट मैट्रिक्स · संयुक्त निर्माण",
     market_hero_title: "कंप्यूट ट्रेडिंग मार्केट",
     market_hero_sub: "दुनिया का पहला ऑन-चेन कंप्यूट ट्रेडिंग सिस्टम · कंप्यूट पानी-बिजली की तरह मुफ्त बहता है",

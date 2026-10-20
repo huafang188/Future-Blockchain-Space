@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['es'] = {
-    // --- 1. Global & Navigation ---
+
     yandex_title: "¡Hola, Yandex!",
     yandex_subtitle: "—— Una nueva era de potencia de cómputo IA global",
     yandex_cta1: "Acceder al mercado de potencia de cómputo",
@@ -61,7 +61,6 @@ window.i18nData['es'] = {
     neo_ton_partnership: "TON está llegando: NEO pronto soportará The Open Network — la cadena L1 líder mundial: velocidad máxima, tarifas mínimas, confirmación en subsegundos, costo casi cero, acceso nativo a más de 1 mil millones de usuarios de Telegram.",
     neo_solana_partnership: "NEO pronto soportará SOLANA — una de las blockchains de alto rendimiento más rápidas del mundo, confirmación en subsegundos, tarifas extremadamente bajas, soporte potente para ecosistemas DeFi y NFT.",
 
-    // --- 2. Interfaz del Minero (Página de Minería) ---
     miner_title: "Mis Mineros",
     miner_name: "Minero Inteligente AI NEO Eco",
     miner_desc: "Potencia ≈ 30TH/s, Consumo: 1500W",
@@ -127,7 +126,7 @@ window.i18nData['es'] = {
     nry_private_pool_desc: "Seleccionar cantidad para añadir USDT al pool privado (BSC)",
     nry_private_pool_selected: "Seleccionado",
     nry_private_pool_confirm: "Confirmar",
-    
+
     nry_addr_official: "Dirección oficial",nry_addr_contract: "Contrato",
     nry_addr_dev: "Desarrollador",
     nry_addr_stake: "Stake",
@@ -153,7 +152,6 @@ window.i18nData['es'] = {
     miner_detail_status_stopped: "Detenido",
     miner_detail_note: "Los detalles del minero llegarán pronto, manténgase atento",
 
-    // --- 2.3 Máquina de Monedas Cross-Chain NCL ---
     ncl_machine_status: "Estado de la Máquina",
     ncl_status_active: "En funcionamiento",
     ncl_machine_name: "NCL Монетоприемник",
@@ -168,7 +166,6 @@ window.i18nData['es'] = {
     ncl_chain: "Cadenas",
     ncl_locked: "Bloqueado",
 
-    // --- 2.5 Estado de los Mineros de la Red ---
     network_miner_title: "Estado de los Mineros de la Red",
     neo_total_supply: "Suministro Total de NEO",
     data_syncing: "Sincronización de datos, espere por favor",
@@ -181,7 +178,6 @@ window.i18nData['es'] = {
     neo_total_output: "Producción Total NEO",
     neo_burned: "NEO Quemado",
 
-    // --- 3. Activos y Equipo (Página de Usuario) ---
     assets_list: "Lista de Activos",
     recharge: "Depósito",
     withdraw: "Retiro",
@@ -226,8 +222,7 @@ window.i18nData['es'] = {
     bank_principal_confirm: "Confirmar retiro",
     bank_btn: "Próximamente",
     transfer_fee: "Comisión: 0.00USDT",
-    
-    // --- 5. Aviso importante ---
+
     important_announcement: "Aviso importante",
     news_title_short: "Noticias",
     news_section_title: "Anuncios y Noticias",
@@ -251,10 +246,9 @@ window.i18nData['es'] = {
     neo_update_closing: "El lanzamiento oficial de NRY no solo es un hito importante para la matriz de minería NEO, sino también una práctica totalmente nueva de consenso descentralizado. ¡Avancemos juntos y abramos una nueva era de minería on-chain!",
     neo_update_signature: "Equipo de operaciones de la comunidad NRY",
 
-    // --- Latest Announcement ---
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
-    
+
     transfer: "Transferencia",
     team_title: "Mi Equipo",
     my_identity: "Mi Identidad",
@@ -273,7 +267,7 @@ window.i18nData['es'] = {
     neo_need_ne: "NEO requerido",
     neo_bal_ne: "NEO disponible",
     neo_submit: "Enviar",
-    // Campaña de septiembre
+
     act_badge: "Evento limitado · En marcha",
     act_title: "Septiembre dorado · Regalos",
     act_countdown_label: "Termina en",
@@ -309,13 +303,9 @@ window.i18nData['es'] = {
     reg_time: "Fecha de Registro",
     btn_bind_inviter: "Vincular Invitador",
 
-    // --- 4. Tablero de Mercado ---
     "24h_high": "Máximo 24h",
     "24h_low": "Mínimo 24h",
 
-    // --- 5. Transacciones ---
-
-    // --- Traducción del Nivel de Minero ---
     钻石大师: "Maestro Diamante",
     钻石节点: "Nodo Diamante",
     钻石矿工: "Minero Diamante",
@@ -328,7 +318,6 @@ window.i18nData['es'] = {
     账户锁定: "Cuenta bloqueada",
     账户异常: "Cuenta anormal",
 
-    // --- 7. Noticias y Anuncios ---
     news_title: "Anuncios y Noticias",
     history_title: "Historial de Transacciones",
     transfer_title: "Historial de Transferencias",
@@ -349,7 +338,6 @@ window.i18nData['es'] = {
         "<b>Reclutamiento global de nodos en curso：</b>El programa de reclutamiento de socios globales para nodos continúa activamente. Los usuarios pueden convertirse en nodos del ecosistema comprando y operando 20 máquinas de minería, obteniendo un bono permanente del 1% en potencia de cómputo y reducciones exclusivas en impuestos de transacción."
     ],
 
-    // --- 8. Detalles de Tokens (Página de Estadísticas) ---
     stats_title: "Economía de Tokens",
     stats_subtitle: "Datos de Mercado y Parámetros",
     token_labels: {
@@ -364,9 +352,6 @@ window.i18nData['es'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Medio de interoperabilidad", total: "400,000,000", dist: "Premios nodos cross-chain 40% | Alianzas 30% | Gobernanza 15% | Desarrollo 15%", mech: "Liberación durante la integración de protocolos y servicios." }
     ],
 
-    // --- 9. Fábrica de Minería ---
-
-    // --- 10. Whitepaper ---
     wp_title: "Resumen del Libro Blanco",
     wp_subtitle: "(Este Libro Blanco es mantenido conjuntamente por la comunidad. Los derechos de autor y la interpretación final pertenecen a los miembros de la comunidad)",
     wp_ch0_title: "Resumen Ejecutivo",
@@ -525,7 +510,6 @@ window.i18nData['es'] = {
     wp_ch6_s8_title: "6.8 Ciclo Cerrado de Circulación de Tokens",
     wp_ch6_s8_flow: "Usuario mina → obtiene NEO → staking para NEX/NRY → pago comisiones NET → emisión/comercio NEA → tenencia NRY para dividendos → NCL interoperabilidad cross-chain → quema deflación todos escenarios → retorno de valor hacia NEO",
 
-    // Capítulos 7-13: Escenarios, Gobernanza, Roadmap, Equipo, Riesgos, Conformidad, Anexo
     wp_ch7_title: "7 Escenarios de Aplicación Ecológica",
     wp_ch7_s1_title: "7.1 Minería Personal",
     wp_ch7_s1_p1: "Usuarios ordinarios pueden participar en minería mediante nodos ligeros en teléfonos y computadoras, sin necesidad de mineros profesionales, bajo consumo energético, baja umbral, fácil operación.",
@@ -634,7 +618,7 @@ window.i18nData['es'] = {
     claim_reward_balance: "Recompensas pendientes",
     claim_reward_input_label: "Cantidad a retirar",
     claim_reward_confirm: "Confirmar retiro",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "Matriz de IA · Construcción conjunta",
     market_hero_title: "Mercado de cómputo",
     market_hero_sub: "Primer sistema on-chain de cómputo · El cómputo fluye libre como agua y electricidad",

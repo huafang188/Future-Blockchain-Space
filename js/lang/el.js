@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['el'] = {
-    // --- 1. Καθολικό & Πλοήγηση ---
+
     yandex_title: "Γεια σου, Yandex!",
     yandex_subtitle: "—— Μια νέα εποχή παγκόσμιας υπολογιστικής ισχύος AI",
     yandex_cta1: "Πρόσβαση στην αγορά υπολογιστικής ισχύος",
@@ -61,7 +61,6 @@ window.i18nData['el'] = {
     neo_ton_partnership: "Το TON έρχεται: Το NEO θα υποστηρίξει σύντομα το The Open Network — η κορυφαία L1 blockchain στον κόσμο: μέγιστη ταχύτητα, ελάχιστες τέλη, επιβεβαίωση υποδευτερόλεπτης, σχεδόν μηδενική χρέωση, ενεργό πρόσβαση σε πάνω από 1 δισ. χρήστες στο Telegram.",
     neo_solana_partnership: "Το NEO θα υποστηρίξει σύντομα το SOLANA — μία από τις πιο γρήγορες υψηλής απόδοσης blockchains στον κόσμο, επιβεβαίωση υποδευτερόλεπτης, εξαιρετικά χαμηλά τέλη, ισχυρή υποστήριξη για οικοσυστήματα DeFi και NFT.",
 
-    // --- 2. Σελίδα Ορυχείου ---
     miner_title: "Το Ορυχείο Μου",
     miner_name: "Έξυπνη Συσκευή Εξόρυξης AI NEO Eco",
     miner_desc: "Ισχύς υπολογισμού ανά συσκευή ≈ 30TH/s, κατανάλωση ενέργειας: 1500W",
@@ -126,7 +125,7 @@ window.i18nData['el'] = {
     nry_private_pool_desc: "Επιλέξτε ποσό για προσθήκη USDT στο ιδιωτικό pool (BSC)",
     nry_private_pool_selected: "Επιλεγμένο",
     nry_private_pool_confirm: "Επιβεβαίωση",
-    
+
     nry_addr_official: "Επίσημη διεύθυνση",nry_addr_contract: "Συμβόλαιο",
     nry_addr_dev: "Προγραμματιστής",
     nry_addr_stake: "Stake",
@@ -152,7 +151,6 @@ window.i18nData['el'] = {
     miner_detail_status_stopped: "Διακοπή",
     miner_detail_note: "Οι λεπτομέρειες του miner έρχονται σύντομα, μείνετε συντονισμένοι",
 
-    // --- 2.3 NCL Cross-Chain Μηχανή Νομισμάτων ---
     ncl_machine_status: "Κατάσταση Μηχανής",
     ncl_status_active: "Σε λειτουργία",
     ncl_machine_name: "NCL Монетоприемник",
@@ -167,7 +165,6 @@ window.i18nData['el'] = {
     ncl_chain: "Αλυσίδες",
     ncl_locked: "Κλειδωμένο",
 
-    // --- 2.5 Κατάσταση Συσκευών Εξόρυξης Δικτύου ---
     network_miner_title: "Κατάσταση Συσκευών Εξόρυξης Δικτύου",
     neo_total_supply: "Συνολική Προσφορά NEO",
     data_syncing: "Συγχρονισμός δεδομένων σε εξέλιξη, παρακαλώ περιμένετε",
@@ -180,7 +177,6 @@ window.i18nData['el'] = {
     neo_total_output: "Συνολική Παραγωγή NEO",
     neo_burned: "Καμένο NEO",
 
-    // --- 3. Περιουσία & Ομάδα (User Page) ---
     assets_list: "Λίστα Περιουσιακών",
     recharge: "Κατάθεση",
     withdraw: "Ανάληψη",
@@ -203,7 +199,7 @@ window.i18nData['el'] = {
     neo_need_ne: "Απαιτούμενο NEO",
     neo_bal_ne: "Διαθέσιμο NEO",
     neo_submit: "Υποβολή",
-    // Καμπάνια Σεπτεμβρίου
+
     act_badge: "Περιορισμένη προσφορά · Σε εξέλιξη",
     act_title: "Χρυσός Σεπτέμβριος · Δώρα",
     act_countdown_label: "Λήγει σε",
@@ -240,7 +236,6 @@ window.i18nData['el'] = {
     btn_bind_inviter: "Δέσμευση Προσώπου που Πρότεινε",
     team_detail: "Αίτημα Δεδομένων Ομάδας",
 
-    // --- 4. Αναδυόμενα ---
     btn_confirm: "Επιβεβαίωση Υποβολής",
     btn_confirm_bind: "Άμεση Δέσμευση & Υπογραφή",
     btn_transfer_now: "Υποβολή Υπογραφής Μεταφοράς",
@@ -294,8 +289,7 @@ window.i18nData['el'] = {
     bank_principal_confirm: "Επιβεβαίωση ανάληψης",
     bank_btn: "Σύντομα",
     transfer_fee: "Προμήθεια: 0.00USDT",
-    
-    // --- 5. Σημαντική Ανακοίνωση ---
+
     important_announcement: "Σημαντική Ανακοίνωση",
     news_title_short: "Νέα",
     news_section_title: "Ανακοινώσεις και Ειδήσεις",
@@ -319,30 +313,26 @@ window.i18nData['el'] = {
     neo_update_closing: "Η επίσημη κυκλοφορία του NRY δεν είναι μόνο ένα σημαντικό ορόσημο για τη μήτρα εξόρυξης NEO, αλλά και μια εντελώς νέα πρακτική αποκεντροποιημένη συναίνεσης. Ας προχωρήσουμε μαζί και ας ανοίξουμε μια νέα εποχή εξόρυξης on-chain!",
     neo_update_signature: "Ομάδα λειτουργιών κοινότητας NRY",
 
-    // --- Latest Announcement ---
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
-    
+
     recharge_amount: "Ποσότητα Κατάθεσης",
     select_recharge_asset: "Επιλογή Περιουσίας Κατάθεσης",
     receiver_address_placeholder: "Διεύθυνση Παραλήπτη (0x...)",
     amount_max_placeholder: "Ποσότητα (μέχρι {max})",
     max_available: "Μέγιστο Διαθέσιμο",
 
-    // --- 5. Τίτλοι Αναδυόμενων ---
     modal_register_title: "Ενεργοποίηση Λογαριασμού Εξόρυξης",
     modal_bind_title: "Δέσμευση Σχέσης Πρότασης",
     miner_transfer_title: "Εσωτερική Μεταφορά Συσκευής Εξόρυξης",
     modal_team_title: "Αίτημα Λεπτομερούς Ομάδας",
     internal_transfer: "Εσωτερική Μεταφορά",
 
-    // --- 6. Περιγραφές ---
     register_desc: "Εισάγετε το ID του Προσώπου που Πρότεινε για να ενεργοποιήσετε τον κόμβο υπολογιστικής σας",
     team_detail_desc: "Λόγω του μεγάλου όγκου δεδομένων, η αναλυτική έκθεση της ομάδας θα σταλεί στο email σας",
     wait_audit: "Το αίτημα υποβλήθηκε, παρακαλώ περιμένετε τον έλεγχο",
     sign_to_confirm: "Υπογράψτε στο πορτοφόλι για επιβεβαίωση ταυτότητας",
 
-    // --- 7. Χάρτης Κατάστασης & Τύπου ---
     "已提交": "Υποβλήθηκε",
     "处理中": "Σε Επεξεργασία",
     "成功": "Επιτυχία",
@@ -355,7 +345,6 @@ window.i18nData['el'] = {
     "购买矿机": "Αγορά Συσκευής Εξόρυξης",
     "缴纳电费": "Πληρωμή Διακομιστικών",
 
-    // --- Μετάφραση Επιπέδου Μεταλλωρύχου ---
     钻石大师: "Διαμαντένιος Μάστερ",
     钻石节点: "Διαμαντένιος Κόμβος",
     钻石矿工: "Διαμαντένιος Μεταλλωρύχος",
@@ -368,7 +357,6 @@ window.i18nData['el'] = {
     账户锁定: "Λογαριασμός κλειδωμένος",
     账户异常: "Λογαριασμός σε ανωμαλία",
 
-    // --- 8. Νέα & Ανακοινώσεις ---
     news_title: "Ανακοινώσεις & Νέα",
     history_title: "Ιστορικό Συναλλαγών",
     transfer_title: "Αρχείο Μεταφορών",
@@ -389,7 +377,6 @@ window.i18nData['el'] = {
         "<b>Η παγκόσμια προσλήψη κόμβων συνεχίζεται：</b>Το πρόγραμμα προσλήψης παγκόσμιων συνεργατών για κόμβους συνεχίζεται ενεργά. Οι χρήστες μπορούν να γίνουν κόμβοι του οικοσυστήματος αγοράζοντας και λειτουργώντας 20 μηχανές εξόρυξης, και να αποκτήσουν μια μόνιμη προμήθεια 1% υπολογιστικής ισχύος και αποκλειστικές εκπτώσεις φόρου συναλλαγής."
     ],
 
-    // --- 9. Λεπτομέρειες Token (Stats Page) ---
     stats_title: "Λεπτομέρειες & Παράμετροι Token",
     stats_subtitle: "Οικονομικά Token & Δεδομένα Αγοράς",
     token_labels: {
@@ -404,7 +391,6 @@ window.i18nData['el'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Κεντρικός σημείο cross-chain / Μέσο διαλειτουργικότητας", total: "400,000,000", dist: "Αμοιβές cross-chain κόμβων 40% | Συνεργασίες 30% | Διοίκηση κοινότητας 15% | Ανάπτυξη 15%", mech: "Προσαυξανόμενη κυκλοφορία κατά την ενσωμάτωση πρωτοκόλλων." }
     ],
 
-    // --- 11. Whitepaper ---
     wp_title: "Επισκόπηση Λευκής Βίβλου",
     wp_subtitle: "(Αυτή η Λευκή Βίβλος συντηρείται από την κοινότητα. Τα πνευματικά δικαιώματα και η τελική ερμηνεία ανήκουν στα μέλη της κοινότητας)",
     wp_ch0_title: "Εκτελεστικό Περίληψη",
@@ -486,7 +472,6 @@ window.i18nData['el'] = {
     wp_ch3_s2_i6: "Αποπληθωριστικό Οικονομικό Μοντέλο:",
     wp_ch3_s2_i6_desc: "Έλεγχος κυκλοφορίας token μέσω μηχανισμών όπως καύσιμο καυσίμου NET, καύσιμο τελών συναλλαγών, buyback-destroy οικοσυστήματος, κλείδωμα staking, αύξηση μακροχρόνιας σταθερότητας αξίας. Ο αποπληθωριστικός μηχανισμός σε συνδυασμό με πραγματικά έσοδα εξόρυξης, σχηματίζει twin engine στήριξης αξίας.",
 
-    // Κεφάλαιο 4: Τεχνητική Αρχιτεκτονική
     wp_ch4_title: "4 Τεχνητική Αρχιτεκτονική",
     wp_ch4_s1_title: "4.1 Βασική Αρχιτεκτονική Blockchain",
     wp_ch4_s1_p1: "Το έργο υιοθετεί αυτοαναπτυγμένη αρθρωτή βασική δημόσια αλυσίδα, με κεντρικές μονάδες που περιλαμβάνουν ενότητα P2P δικτύου, ενότητα κατανεμημένου λογαριασμού, ενότητα κρυπτογραφικής υπογραφής, εικονική μηχανή έξυπνων συμβολαίων, μνήμη συναλλαγών, ενότητα συσκευασίας και συγχρονισμού μπλοκ, ενότητα αποθήκευσης δεδομένων sharding, ενότητα προσαρμογής πρωτοκόλλου cross-chain.",
@@ -512,7 +497,6 @@ window.i18nData['el'] = {
     wp_ch4_s4_p1: "Δεδομένα υπολογιστικής ισχύος, δεδομένα κατανάλωσης ενέργειας, ύψος μπλοκ, αρχεία συναλλαγών, κατανομή token, αρχεία καταστροφής, ποσότητες staking, παραγωγή εξόρυξης είναι όλα on-chain, οποιοσδήποτε μπορεί να τα αναζητήσει σε πραγματικό χρόνο μέσω browser blockchain, επιτυγχάνοντας πλήρη ανοιχτότητα, διαφάνεια, ικανότητα ανίχνευσης.",
     wp_ch4_s4_p2: "Όλες οι προσαρμογές κανόνων, τροποποιές παραμέτρων, αναβαθμίσεις συμβολαίων πρέπει να δημοσιοποιούνται και να εκτελούνται on-chain, εξαλείφοντας τις μαύρες κουτί λειτουργίες. Ο μηχανισμός διαφάνειας δεδομένων είναι η βάση της οικολογικής εμπιστοσύνης και σημαντική βάση της κοινοτικής διακυβέρνησης.",
 
-    // Κεφάλαιο 5: Μηχανισμός Συμφωνίας και Αρχές Εξόρυξης
     wp_ch5_title: "5 Μηχανισμός Συμφωνίας και Αρχές Εξόρυξης",
     wp_ch5_s1_title: "5.1 Συμφωνία : PoE + PoS + DPoS Υβριδικό",
     wp_ch5_s1_1_title: "5.1.1 PoE (Proof of Energy) Απόδειξη Ενέργειας Υπολογισμού",
@@ -544,7 +528,6 @@ window.i18nData['el'] = {
     wp_ch5_s3_r5: "Οι πρώτοι συμμετέχοντες (εντός πρώτου έτους) απολαμβάνουν συντελεστή πρώιμου μπόνους 1.8x",
     wp_ch5_s3_r6: "Ανταμοιβή πρόσκλησης: 5% του εισοδήματος κατώτερου επιπέδου ανταμείβει τον προσκαλέστη, έως 10 επίπεδα",
 
-    // Κεφάλαιο 6: Σύστημα Οικονομίας Token
     wp_ch6_title: "6 Σύστημα Οικονομίας Token",
     wp_ch6_s1_title: "6.1 Επισκόπηση Συστήματος Token",
     wp_ch6_s1_p1: "Το σύστημα οικονομίας token αυτού του проекта υιοθετεί ένα \"μodelo συντονισμού έξι διαστάσεων\", διαφορετικό από τα μοντέλα ενός ή δύο token που χρησιμοποιούνται ευρέως στη βιομηχανία.",
@@ -562,7 +545,6 @@ window.i18nData['el'] = {
     wp_ch6_s7_title: "6.7 Λεπτομερής Σχεδιασμός NCL",
     wp_ch6_s7_p1: "Το NCL (Neo Core Link) είναι token κεντρικού cross-chain. Σύνολο: 400,000,000 token",
 
-    // Κεφάλαια 7-13
     wp_ch7_title: "7 Σενάρια Εφαρμογής Οικοσυστήματος",
     wp_ch7_s1_title: "7.1 Προσωπική Εξόρυξη",
     wp_ch7_s1_p1: "Οι συνηθισμένοι χρήστες μπορούν να συμμετάσχουν σε εξόρυξη μέσω ελαφρών κόμβων σε κινητά και υπολογιστές χωρίς επαγγελματικούς εξορύκτες, χαμηλή κατανάλωση ενέργειας, χαμηλό όριο, εύκολη χρήση.",
@@ -573,7 +555,6 @@ window.i18nData['el'] = {
     wp_ch12_title: "12 Δήλωση Συμμόρφωσης",
     wp_ch13_title: "13 Παράρτημα",
 
-    // --- 4. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: Οικοσύστημα Χαθαρής Ενέργειας Υπολογιστικής Ισχύος",
     infra_title: "Υποδομές & Ποιοτικά Χαρακτηριστικά Υλικού",
     infra_desc: "Η NEO Energy έχει την έδρα της στη Ρωσία, κατασκευάζοντας ένα υψηλής απόδοσης, συμμόρφονο σύμπλεγμα υπολογιστικής ισχύος σε πλήρη συμμόρφωση με τις τοπικές νομοθεσίες και κανονισμούς.",
@@ -628,7 +609,7 @@ window.i18nData['el'] = {
     claim_reward_balance: "Εκκρεμείς ανταμοιβές",
     claim_reward_input_label: "Ποσό ανάληψης",
     claim_reward_confirm: "Επιβεβαίωση ανάληψης",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "Πίνακας υπολογισμού AI · Κοινή κατασκευή",
     market_hero_title: "Αγορά υπολογισμού",
     market_hero_sub: "Πρώτο on-chain σύστημα υπολογισμού · Ο υπολογισμός ρέει ελεύθερα σαν νερό και ρεύμα",

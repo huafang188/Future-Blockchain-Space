@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['ko'] = {
-    // --- 1. 전역 및 내비게이션 ---
+
     yandex_title: "안녕하세요, Yandex!",
     yandex_subtitle: "—— 글로벌 AI 연산력의 새로운 시대를 열다",
     yandex_cta1: "연산력 거래 시장 접속",
@@ -61,7 +61,6 @@ window.i18nData['ko'] = {
     neo_ton_partnership: "TON 이 곧 도착합니다: NEO 가 The Open Network 를 지원합니다——세계 최고의 L1 블록체인: 가장 빠른 속도, 가장 낮은 비용, 아초 단위 확인, 거의 무료, Telegram 의 10 억 이상 사용자에게 원본 액세스。",
     neo_solana_partnership: "NEO 가 SOLANA 를 지원합니다——세계에서 가장 빠른 고성능 블록체인 중 하나, 아초 단위 확인, 매우 낮은 수수료, DeFi 및 NFT 생태계에 강력한 지원을 제공합니다。",
 
-    // --- 2. 채굴기 인터페이스 (Miner Page) ---
     miner_title: "내 채굴기",
     miner_name: "NEO 에코 AI 스마트 채굴기",
     miner_desc: "대당 해시파워 ≈ 30TH/s, 소비전력: 1500W",
@@ -127,7 +126,7 @@ window.i18nData['ko'] = {
     nry_private_pool_desc: "금액을 선택하여 USDT를 프라이빗 풀로 전송 (BSC)",
     nry_private_pool_selected: "선택됨",
     nry_private_pool_confirm: "확인",
-    
+
     nry_addr_official: "공식 주소",nry_addr_contract: "컨트랙트",
     nry_addr_dev: "개발자",
     nry_addr_stake: "스테이크",
@@ -153,7 +152,6 @@ window.i18nData['ko'] = {
     miner_detail_status_stopped: "중지됨",
     miner_detail_note: "채굴기 상세 정보는 곧 출시됩니다. 기대해 주세요",
 
-    // --- 2.3 NCL 크로스체인 코인 머신 ---
     ncl_machine_status: "머신 상태",
     ncl_status_active: "가동 중",
     ncl_machine_name: "NCL Монетоприемник",
@@ -168,7 +166,6 @@ window.i18nData['ko'] = {
     ncl_chain: "체인 수",
     ncl_locked: "잠금",
 
-    // --- 2.5 네트워크 채굴기 현황 ---
     network_miner_title: "네트워크 채굴기 현황",
     neo_total_supply: "NEO 총 발행량",
     data_syncing: "데이터 연동 중, 잠시만 기다려주세요",
@@ -181,7 +178,6 @@ window.i18nData['ko'] = {
     neo_total_output: "NEO 총 생산량",
     neo_burned: "NEO 소각 수량",
 
-    // --- 3. 자산 및 팀 (User Page) ---
     assets_list: "자산 목록",
     recharge: "충전",
     withdraw: "출금",
@@ -204,7 +200,7 @@ window.i18nData['ko'] = {
     neo_need_ne: "소요 NEO",
     neo_bal_ne: "사용 가능 NEO",
     neo_submit: "제출",
-    // 9월 캠페인
+
     act_badge: "한정 이벤트 · 진행 중",
     act_title: "황금 9월 · 선물 증정",
     act_countdown_label: "종료까지",
@@ -241,7 +237,6 @@ window.i18nData['ko'] = {
     btn_bind_inviter: "추천인 바인딩",
     team_detail: "팀 데이터 신청",
 
-    // --- 4. 팝업 공통 (Modals) ---
     btn_confirm: "확인 및 제출",
     btn_confirm_bind: "서명하여 바인딩",
     btn_transfer_now: "서명하여 전송",
@@ -293,8 +288,7 @@ window.i18nData['ko'] = {
     bank_principal_confirm: "원금 출금 확인",
     bank_btn: "곧 출시",
     transfer_fee: "수수료: 0.00USDT",
-    
-    // --- 5. 중요 공지 ---
+
     important_announcement: "중요 공지",
     news_title_short: "뉴스",
     news_section_title: "공지 및 뉴스",
@@ -318,35 +312,29 @@ window.i18nData['ko'] = {
     neo_update_closing: "NRY의 정식 출시는 NEO 생태계 마이닝 매트릭스의 중요한 이정표일 뿐만 아니라, 탈중앙화 합의의 완전히 새로운 실천입니다. 함께 나아가며, 온체인 마이닝의 새 시대를 열어갑시다!",
     neo_update_signature: "NRY 커뮤니티 운영팀",
 
-    // --- Latest Announcement ---
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
 
-    // --- 6. 채굴기 구매 팝업 ---
     buy_num_placeholder: "수량 입력 (1-100)",
     confirm_pay_bsc: "결제 확인 (BSC)",
-    
-    // --- 6. 전기료 팝업 ---
+
     elec_num_placeholder: "채굴기 수량",
     days_30: "30 일",
     days_90: "90 일",
     days_180: "180 일",
     days_360: "360 일",
-    
-    // --- 7. 업무별 팝업 제목 (Modal Titles) ---
+
     modal_register_title: "채굴 계정 활성화",
     modal_bind_title: "추천 관계 바인딩",
     miner_transfer_title: "내부 채굴기 전송",
     modal_team_title: "팀 상세 데이터 신청",
     internal_transfer: "내부 전송",
 
-    // --- 6. 설명 문구 ---
     register_desc: "추천인 ID를 입력하여 해시 노드를 활성화하세요",
     team_detail_desc: "데이터 양이 많으므로 팀 상세 보고서는 이메일로 발송됩니다",
     wait_audit: "신청이 완료되었습니다. 심사를 기다려주세요",
     sign_to_confirm: "지갑에서 서명하여 본인임을 확인해주세요",
 
-    // --- 7. 백엔드 상태 및 유형 매핑 (Key는 원본 데이터 유지를 위해 간체 사용) ---
     已提交: "제출됨",
     待处理: "대기 중",
     处理中: "처리 중",
@@ -359,8 +347,7 @@ window.i18nData['ko'] = {
     内部转账: "내부 전송",
     购买矿机: "채굴기 구매",
     缴纳电费: "전기료 납부",
-    
-    // --- 마이너 레벨 번역 ---
+
     钻石大师: "다이아몬드 마스터",
     钻石节点: "다이아몬드 노드",
     钻石矿工: "다이아몬드 마이너",
@@ -373,7 +360,6 @@ window.i18nData['ko'] = {
     账户锁定: "계정 잠금",
     账户异常: "계정 이상",
 
-    // --- 8. 뉴스 및 공지사항 ---
     news_title: "공지 및 뉴스",
     history_title: "거래 내역",
     transfer_title: "전송 내역",
@@ -394,7 +380,6 @@ window.i18nData['ko'] = {
         "<b>글로벌 노드 모집 지속推进：</b>글로벌 파트너를 대상으로 한 노드 모집 프로그램이 계속해서 활발히 진행 중입니다. 사용자는 20대의 채굴 기계를 구매하고 운영함으로써 생태계 노드로 승격할 수 있으며, 영구적인 1%의 컴퓨팅 파워 가산 및 전용 거래세 감면 혜택을 받을 수 있습니다."
     ],
 
-    // --- 9. 토큰 상세 정보 (Stats Page) ---
     stats_title: "토큰 이코노미",
     stats_subtitle: "토큰 경제 모델 및 시장 데이터",
     token_labels: {
@@ -409,7 +394,6 @@ window.i18nData['ko'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "크로스체인 허브 / 생태계 상호 운용 매개체", total: "400,000,000", dist: "크로스체인 노드 보상 40% | 파트너십 30% | 거버넌스 15% | 개발팀 15%", mech: "프로토콜 연결 및 서비스 연동 시 단계별 릴리스." }
     ],
 
-    // --- 11. 화이트페이퍼 ---
     wp_title: "화이트페이퍼 개요",
     wp_subtitle: "(이 화이트페이퍼는 커뮤니티가 공동으로 유지 관리하며, 저작권과 최종 해석권은 커뮤니티 구성원에게 귀속됩니다)",
     wp_ch0_title: "요약",
@@ -491,7 +475,6 @@ window.i18nData['ko'] = {
     wp_ch3_s2_i6: "디플레이션형 경제 모델：",
     wp_ch3_s2_i6_desc: "NET 연료 소각, 거래 수수료 소각, 에코 매입 소각, 스테이킹 록업 등 메커니즘을 통해 토큰 유통량을 제어하고 장기 가치 안정성을 향상시킵니다. 디플레이션 메커니즘과 실제 컴퓨팅 수익의 결합으로 가치 지원 듀엔진을 형성합니다。",
 
-    // 제4장: 기술 아키텍처
     wp_ch4_title: "4 기술 아키텍처",
     wp_ch4_s1_title: "4.1 하위 블록체인 아키텍처",
     wp_ch4_s1_p1: "프로젝트는 자체 개발 모듈형 하위 퍼블릭 체인을 채택하며, 핵심 모듈에는 P2P 네트워크 모듈, 분산 장부 모듈, 암호화 서명 모듈, 스마트 계약 가상 머신, 거래 메모리 풀, 블록 패키징 및 동기화 모듈, 데이터 샤딩 저장 모듈, 크로스체인 프로토콜 적응 모듈이 포함됩니다.",
@@ -517,7 +500,6 @@ window.i18nData['ko'] = {
     wp_ch4_s4_p1: "컴퓨팅 파워 데이터, 에너지 소비 데이터, 블록 높이, 거래 기록, 토큰 배분, 폐기 기록, 스테이킹량, 마이닝 산출량은 모두 온체인이며 누구나 블록체인 브라우저를 통해 실시간으로 조회할 수 있어 완전한 공개, 투명성, 추적 가능성을 실현합니다.",
     wp_ch4_s4_p2: "모든 규칙 조정, 매개변수 수정, 계약 업그레이드는 공고되고 온체인에서 실행되어야 하며 블박스 조작을 배제합니다. 데이터 투명성 메커니즘은 생태 신뢰의 기반이며 커뮤니티 거버넌스의 중요한 근거입니다.",
 
-    // 제5장: 합의 메커니즘과 채굴 원리
     wp_ch5_title: "5 합의 메커니즘과 채굴 원리",
     wp_ch5_s1_title: "5.1 합의: PoE + PoS + DPoS 하이브리드 합의",
     wp_ch5_s1_1_title: "5.1.1 PoE (Proof of Energy) 에너지 연산력 증명",
@@ -536,38 +518,27 @@ window.i18nData['ko'] = {
     wp_ch5_s1_3_title: "5.1.3 DPoS (Delegated Proof of Stake) 커뮤니티 노드 거버넌스",
     wp_ch5_s1_3_p1: "커뮤니티 투표로 21개 슈퍼 노드를 선출하여 블록 생성과 거버넌스를 담당하고 추가 노드 보상을 받습니다. 슈퍼 노드는 정기적으로 교체되어 분산화를 보장합니다.",
 
-    // 제6장: 토큰 경제 시스템
     wp_ch6_title: "6 토큰 경제 시스템",
     wp_ch6_s1_title: "6.1 토큰 시스템 개요",
     wp_ch6_s1_p1: "본 프로젝트의 토큰 경제 시스템은 '육차원 협동 모델'을 채택하여 업계에서 일반적으로 사용되는 단일 토큰 또는 이중 토큰 모델과 구별됩니다. 기능적 디커플링을 통해 생태계 내부 가치 흐름의 정밀한 분업을 실현합니다.",
     wp_ch6_s1_p2: "6종류의 토큰은 각각 가치 앵커, 연산력 게인, 네트워크 연료, 자산 매핑, 이익 배당, 크로스체인 허브 기능을 담당하여 상호 지원, 상호 제약, 상호 촉진하는 폐루프 경제 시스템을 형성합니다.",
 
-    // 제7장: 생태계 응용 시나리오
     wp_ch7_title: "7 생태계 응용 시나리오",
     wp_ch7_s1_title: "7.1 개인 채굴",
     wp_ch7_s1_p1: "일반 사용자는 휴대폰, PC 라이트 노드를 통해 채굴에 참여할 수 있으며, 전문 채굴기 불필요, 저전력, 낮은 진입 장벽, 간편 조작입니다.",
 
-    // 제8장: 프로젝트 거버넌스와 커뮤니티 자치
     wp_ch8_title: "8 프로젝트 거버넌스와 커뮤니티 자치",
 
-    // 제9장: 개발 로드맵
     wp_ch9_title: "9 개발 로드맵",
 
-    // 제10장: 팀과 협력 기관
     wp_ch10_title: "10 팀과 협력 기관",
 
-    // 제11장: 리스크 경고
     wp_ch11_title: "11 리스크 경고",
 
-    // 제12장: 준수 성명
     wp_ch12_title: "12 준수 성명",
 
-    // 제13장: 부록
     wp_ch13_title: "13 부록",
 
-    // --- 4. 창립자 프로필 ---
-
-    // --- 5. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: 그린 에너지 연산력 생태계",
     infra_title: "인프라구조와 하드웨어 사양",
     infra_desc: "NEO Energy는 러시아에 본사를 두고 있으며, 현지 법률 규정을 완전히 준수하는 프레임워크에서 고성능, 규정 준수형 연산력 클러스터를 구축하고 있습니다.",
@@ -622,7 +593,7 @@ window.i18nData['ko'] = {
     claim_reward_balance: "미수령 보상",
     claim_reward_input_label: "수령 수량",
     claim_reward_confirm: "수령 확인",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "AI 연산 매트릭스 · 공동 구축",
     market_hero_title: "연산력 거래 시장",
     market_hero_sub: "세계 최초 온체인 연산력 거래 체계 · 연산력이 물·전기처럼 자유롭게 유통",

@@ -1,21 +1,11 @@
 import { API_BASE, getTeamByInviter, findTopLevelInviter, ACTIVE_CHAINS } from './config.js';
 
-// 用于管理请求取消，彻底解决并发请求导致的 "Failed to fetch" 报错
 let fetchController = null;
 
-// CSRF token 管理
 let csrfToken = null;
 
-// 请求去重：存储当前正在进行的请求
 let pendingRequest = null;
 
-// ========== 交易后智能刷新 ==========
-
-/**
- * 判断当前提交是否属于"需要 Apps Script 后台结算"类型
- * （与 worker.js 的 shouldTriggerSettlement 关键字保持一致）
- * 这类操作写入后不会立即影响余额，需要轮询等待结算结果
- */
 function isSettlementSubmission(type, action) {
   const settleActions = new Set(["exchange", "redeem", "swap", "sell", "buy", "withdraw_exchange", "兑换"]);
   if (action && settleActions.has(String(action).toLowerCase())) return true;
@@ -28,9 +18,6 @@ function isSettlementSubmission(type, action) {
   return false;
 }
 
-/**
- * 抓取当前余额快照（用于结算前后对比，变化了就停止轮询）
- */
 function snapshotBalances() {
   const b = window.userBalances || (window.currentUserInfo && window.currentUserInfo.balances) || {};
   const snap = {};
@@ -41,11 +28,6 @@ function snapshotBalances() {
   return JSON.stringify(snap);
 }
 
-/**
- * 交易成功后的智能刷新策略
- *  - 普通类（绑定/转让/充值等）：立即刷 1 次 → 再 500ms 补 1 次
- *  - 结算类（兑换/提现/出售）：轮询 0s→3s→8s→15s，余额变化提前停止
- */
 async function smartRefreshAfterTransaction(type, action, address) {
   if (!address) return;
   const needPolling = isSettlementSubmission(type, action);
@@ -61,14 +43,12 @@ async function smartRefreshAfterTransaction(type, action, address) {
     }
   };
 
-  // 非结算类：立即 + 500ms 补刷
   if (!needPolling) {
     await doRefresh("立即");
     setTimeout(() => doRefresh("补刷(500ms)"), 500);
     return;
   }
 
-  // 结算类：轮询 + 余额对比提前停止
   console.log(`[API][轮询] 检测到结算类操作 ${type}，启动 4 次轮询刷新`);
   const schedule = [0, 3000, 8000, 15000];
   let initialSnapshot = null;
@@ -92,21 +72,15 @@ async function smartRefreshAfterTransaction(type, action, address) {
   console.log(`[API][轮询] 已完成全部 ${schedule.length} 次刷新，若余额仍未变化请稍后手动刷新`);
 }
 
-/**
- * 生成或获取 CSRF token
- */
 function getCsrfToken() {
     if (!csrfToken) {
         csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        // 存储到 localStorage
+
         localStorage.setItem('fbs_csrf_token', csrfToken);
     }
     return csrfToken;
 }
 
-/**
- * 辅助函数：统一处理API错误
- */
 function handleApiError(message) {
     if (window.showModal) {
         window.showModal("错误", `<div class="p-4 text-center">${message}</div>`);
@@ -115,13 +89,9 @@ function handleApiError(message) {
     }
 }
 
-/**
- * 1. 提交交易/申请记录到后端 (POST)
- * 涵盖：充值、提现、兑换、绑定推荐人、矿机/内部转账
- */
 export async function postTransactionRecord(type, amount, symbol, action = "record_transaction", extraFields = {}) {
     const address = localStorage.getItem('fbs_address');
-    
+
     if (!address) {
         alert("请先连接钱包");
         return { success: false };
@@ -133,21 +103,20 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     const payload = {
         action: action,        
         address: cleanAddr,
-        chain: chain,                // v3.4.4 新增：Worker 端要求链类型与地址严格匹配，防 TON/SOL 假地址脚本攻击
+        chain: chain,                
         type: type,            
         amount: String(amount),
         symbol: symbol,        
-        turnstileToken: window.getTurnstileToken ? window.getTurnstileToken() : "", // v3.4.6 人机验证
+        turnstileToken: window.getTurnstileToken ? window.getTurnstileToken() : "", 
         ...extraFields
     };
 
     console.log(`[API] 发起 POST 请求 [${action}]:`, payload);
 
-    // 创建超时控制器（30秒超时）
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
         controller.abort();
-    }, 30000); // 30秒超时
+    }, 30000); 
 
     try {
         const response = await fetch(API_BASE, {
@@ -158,20 +127,17 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
             body: JSON.stringify(payload),
             signal: controller.signal
         });
-        
+
         clearTimeout(timeoutId);
-        
+
         const result = await response.json();
 
-        // 飞书 code 为 0 或 result.success 为 true 均代表写入成功
         if (result.success || result.code === 0) {
             console.log(`[API] ${type} 后端写入成功`);
-            if (window.resetTurnstile) window.resetTurnstile(); // v3.4.6 刷新 Turnstile token
-            
-            // 成功后关闭所有可能存在的弹窗
+            if (window.resetTurnstile) window.resetTurnstile(); 
+
             if (window.closeModal) window.closeModal();
-            
-            // 绑定关系需要立即弹推荐人/推荐码，先立即刷一次
+
             if (type === "绑定关系") {
                 try {
                     await fetchUserData(address, { silent: true });
@@ -187,11 +153,6 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
                 }
             }
 
-            // 🔥 关键：交给智能刷新策略统一处理
-            //  - 普通类（绑定/转让/充值等）：立即刷 1 次 → 500ms 再补刷 1 次
-            //  - 结算类（兑换/提现/出售等）：0s→3s→8s→15s 轮询，余额变化提前停止
-            // 用 setTimeout 0 包裹：return 返回后再跑，不阻塞用户响应
-            // 绑定关系已在上面分支立即刷新并弹窗，跳过重复刷
             if (type !== "绑定关系") {
                 setTimeout(() => {
                     smartRefreshAfterTransaction(type, action, address).catch(e =>
@@ -199,21 +160,21 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
                     );
                 }, 0);
             }
-            
+
             return { success: true, data: result };
         } else {
-            // 失败也要关闭弹窗
+
             if (window.closeModal) window.closeModal();
             handleApiError(`提交失败: ${result.msg || "服务器繁忙"}`);
             return { success: false };
         }
     } catch (e) {
-        // 捕获超时错误
+
         if (e.name === 'AbortError') {
             handleApiError("请求超时，请检查网络连接或稍后重试");
             return { success: false, error: "timeout" };
         }
-        // 捕获因刷新页面导致的连接中断
+
         if (e.message === 'Failed to fetch') return { success: false };
         console.error("[API] POST 请求异常:", e);
         handleApiError(`请求异常: ${e.message}`);
@@ -221,66 +182,55 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
     }
 }
 
-/**
- * 2. 获取用户完整数据并同步渲染 UI (GET)
- * 包含资产余额、实时单价、团队业绩、矿机运行状态
- * @param {string} address - 用户地址
- * @param {Object} options - 配置选项
- * @param {boolean} options.silent - 静默模式，不显示加载提示
- */
 export async function fetchUserData(address, options = {}) {
     if (!address) return;
 
     const { silent = false } = options;
     const chain = localStorage.getItem('fbs_chain') || 'BSC';
-    
-    // 检查是否为激活的链，非激活链不发起请求
+
     if (!ACTIVE_CHAINS.includes(chain)) {
         console.log(`[API] 当前链 ${chain} 未激活，跳过数据请求`);
         return;
     }
 
-    // 请求去重：如果有相同地址和链的请求正在进行，则等待该请求完成
     const requestKey = `${chain}:${address}`;
     if (pendingRequest && pendingRequest.key === requestKey) {
         console.log(`[API] 检测到重复请求 (${requestKey})，等待已有请求完成`);
         try {
             return await pendingRequest.promise;
         } catch (e) {
-            // 如果等待时出错，忽略并继续执行新请求
+
             console.warn(`[API] 等待重复请求时出错: ${e.message}`);
         }
     }
 
-    // 终止上一次未完成的请求，防止数据混乱和 Failed to fetch 报错
     if (fetchController) fetchController.abort();
     fetchController = new AbortController();
     const { signal } = fetchController;
-    
-    // 创建新的请求承诺用于去重
+
     let resolvePromise, rejectPromise;
     const requestPromise = new Promise((resolve, reject) => {
         resolvePromise = resolve;
         rejectPromise = reject;
     });
-    
+
     pendingRequest = {
         key: requestKey,
         promise: requestPromise,
         resolve: resolvePromise,
         reject: rejectPromise
     };
-    
+
     try {
         if (!silent) {
             console.log(`[API] 正在从后端同步数据: ${address} (链: ${chain})`);
         }
         const requestStart = Date.now();
         const cleanAddr = address.toLowerCase().trim();
-        
+
         const res = await fetch(`${API_BASE}?address=${cleanAddr}&t=${Date.now()}`, { signal });
         const requestDuration = Date.now() - requestStart;
-        
+
         if (!res.ok) {
             let errDetail = `HTTP Error: ${res.status}`;
             try {
@@ -292,67 +242,59 @@ export async function fetchUserData(address, options = {}) {
                 } else if (errBody?.error) {
                     errDetail += ` | ${errBody.error}`;
                 }
-            } catch (_) { /* ignore body parse error */ }
+            } catch (_) {  }
             throw new Error(errDetail);
         }
-        
+
         const parseStart = Date.now();
         const data = await res.json();
         const parseDuration = Date.now() - parseStart;
-        
+
         if (!silent) {
             console.log(`[API] 请求耗时: ${requestDuration}ms, JSON解析: ${parseDuration}ms, 总计: ${requestDuration + parseDuration}ms`);
             console.log("[API] 后端原始数据包:", data);
         }
 
-        // 缓存数据供其他模块使用
         window.lastFetchedData = data;
 
-        // --- 核心逻辑：新用户初始化，取消自动弹窗 ---
         if (data.newUser) {
             if (!silent) console.log("[API] 该地址为新用户，待手动绑定");
             updateText('info_inviteCode', '---');
             updateText('info_inviter', '---');
-            // 此处清空资产显示，防止显示上一个钱包的数据
+
             if (window.renderTokenList) window.renderTokenList({});
-            
-            // 新用户也尝试渲染矿工等级（可能已有预填写数据）
+
             renderMinerLevel(data);
             renderIdentityWeight(data);
-            
+
             return;
         }
 
-        // 🚀 优化：分阶段渲染 - 第一阶段立即渲染价格和余额
         if (data.allPrices) {
             const normalizedPrices = {};
             Object.keys(data.allPrices).forEach(key => {
                 normalizedPrices[key.toUpperCase()] = parseFloat(data.allPrices[key]);
             });
             window.currentPrices = normalizedPrices; 
-            
+
             if (window.updateNeoPriceDisplay) {
                 const neoPrice = normalizedPrices['NEO'] || 0;
                 window.updateNeoPriceDisplay(neoPrice);
             }
         }
 
-        // 将用户资产存入全局供 calculations.js 使用
         window.userBalances = data.balances || {};
 
-        // 🚀 优化：立即渲染资产列表（不等待其他数据）
         if (window.renderTokenList) {
             window.renderTokenList(data.balances || {});
         }
 
-        // 🚀 优化：使用 requestIdleCallback 延迟渲染非关键内容
         const renderNonCritical = () => {
-            // 历史价格数据
+
             if (data.priceHistory) {
                 window.priceHistory = data.priceHistory;
             }
 
-            // --- 团队识别与推荐链处理 ---
             const userInfo = {
                 inviteCode: data.info?.["推荐码"],
                 inviter: data.info?.["推荐人"],
@@ -360,33 +302,29 @@ export async function fetchUserData(address, options = {}) {
                 team: null,
                 topInviter: null
             };
-            
-            // 1. 优先使用后端返回的团队信息（来自推荐关系列表中的"团队"列）
+
             if (data.info?.["团队"]) {
                 userInfo.team = data.info["团队"];
             }
-            // 2. 如果有推荐链，找到最高层级的推荐码并确定团队
+
             else if (userInfo.inviterChain && userInfo.inviterChain.length > 0) {
                 const topResult = findTopLevelInviter(userInfo.inviterChain);
                 userInfo.topInviter = topResult.inviter;
                 userInfo.team = topResult.team;
             }
-            // 3. 如果只有直接推荐人，根据推荐人确定团队
+
             else if (userInfo.inviter) {
                 userInfo.team = getTeamByInviter(userInfo.inviter);
                 userInfo.topInviter = userInfo.inviter;
             }
-            
-            // 保存到全局状态
+
             window.currentUserInfo = userInfo;
             if (!silent) console.log(`[Team] 用户团队识别结果: ${userInfo.team} (最高层级推荐人: ${userInfo.topInviter || '无'})`);
 
-            // C. 渲染资料信息
             updateText('info_inviteCode', data.info?.["推荐码"]);
             updateText('info_inviter', data.info?.["推荐人"]);
             updateText('info_regTime', data.info?.["注册时间"]);
-            
-            // 控制绑定推荐人按钮显示：已绑定则隐藏
+
             const bindBtn = document.getElementById('btn_bind_inviter');
             if (bindBtn) {
                 if (data.info?.["推荐人"] && data.info["推荐人"] !== '---' && data.info["推荐人"] !== '') {
@@ -396,7 +334,6 @@ export async function fetchUserData(address, options = {}) {
                 }
             }
 
-            // D. 渲染团队数据（从后端获取）
             let teamData = {
                 directCount: 0,
                 directSales: 0,
@@ -404,8 +341,7 @@ export async function fetchUserData(address, options = {}) {
                 totalSales: 0,
                 totalReward: 0
             };
-            
-            // 直接使用后端返回的团队数据
+
             if (data.team) {
                 teamData = {
                     directCount: data.team["直推人数"] || 0,
@@ -415,15 +351,13 @@ export async function fetchUserData(address, options = {}) {
                     totalReward: data.team["累计奖励"] || 0
                 };
             }
-            
-            // 渲染团队数据（业绩显示为整数）
+
             updateText('team_directCount', teamData.directCount);
             updateText('team_directSales', Math.round(teamData.directSales));
             updateText('team_totalCount', teamData.totalCount);
             updateText('team_totalSales', Math.round(teamData.totalSales));
             updateText('team_totalReward', Math.round(teamData.totalReward));
 
-            // E. 渲染矿机数据 (严格匹配飞书文字列名)
             if (data.miner) {
                 updateText('miner_count', data.miner["矿机数量"]);
                 updateText('miner_running', data.miner["在运行"]);
@@ -432,23 +366,19 @@ export async function fetchUserData(address, options = {}) {
                 updateText('miner_locked', data.miner["锁仓数量"]);
             }
 
-            // F. 渲染矿工等级
             renderMinerLevel(data);
-            // F. 渲染"我的身份"与社区权重（与矿工等级使用相同的数据源）
+
             renderIdentityWeight(data);
 
-            // F. 执行各 UI 模块的渲染函数
             if (window.renderHistory) window.renderHistory(data.history || []);
             if (window.renderTransfers) window.renderTransfers(data.transfers || []);
-            
-            // 🚀 优化：K线图延迟渲染，避免阻塞主线程
+
             setTimeout(() => {
                 if (window.renderPriceCharts) window.renderPriceCharts();
 
             }, 100);
         };
 
-        // 使用 requestIdleCallback 或 setTimeout 延迟渲染非关键内容
         if ('requestIdleCallback' in window) {
             requestIdleCallback(renderNonCritical, { timeout: 200 });
         } else {
@@ -460,35 +390,30 @@ export async function fetchUserData(address, options = {}) {
             console.warn("[API] 请求被中止或页面重载");
         } else {
             console.error("[API] 同步用户数据失败:", e);
-            // 显示错误提示，但不阻止后续操作
+
             if (!silent) {
                 handleApiError(`数据同步失败: ${e.message}`);
             }
         }
-        // 清理 pendingRequest
+
         if (pendingRequest && pendingRequest.key === requestKey) {
             pendingRequest.reject(e);
             pendingRequest = null;
         }
-        // ❌ 抛出错误让调用者知道
+
         throw e;
     }
-    
-    // 清理 pendingRequest
+
     if (pendingRequest && pendingRequest.key === requestKey) {
         pendingRequest.resolve();
         pendingRequest = null;
     }
 }
 
-/**
- * 3. 绑定推荐人业务逻辑
- */
 export async function submitBindInviter() {
     const inviterId = document.getElementById('input_inviter_id')?.value.trim();
     if (!inviterId) return alert("请输入推荐码");
-    
-    // 生成临时随机码
+
     const myCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
     const res = await postTransactionRecord(
@@ -498,107 +423,85 @@ export async function submitBindInviter() {
         "bind_inviter", 
         { inviterId: inviterId, myInviteCode: myCode }
     );
-    
+
     if (res.success) {
         alert("✅ 推荐人绑定成功");
     }
 }
 
-/**
- * 4. 统一文本更新工具
- * 自动识别数值字段并进行千分位格式化 (Apple 风格)
- */
 export function updateText(id, value) {
     const el = document.getElementById(id);
-    if (!el) return; // 容错：如果 ID 不在当前页面，直接跳过不报错
-    
-    // 定义数值类型的 ID 特征
+    if (!el) return; 
+
     const isNumberField = id.includes('Sales') || id.includes('Reward') || id.includes('totalValue') || 
                           id.includes('bal_') || id.includes('val_') || id.includes('price_') || 
                           id.includes('locked') || id.includes('daily') || id.includes('Count');
-    
-    // 处理空值
+
     if (value === undefined || value === null || value === "" || value === "NaN") {
         el.innerText = isNumberField ? "0.00" : "--";
         return;
     }
 
-    // 处理数值格式化
     if (isNumberField && !isNaN(value)) {
         let num = parseFloat(value);
-        // 单价展示 4 位，业绩/奖励展示整数，其余金额/数量展示 2 位
+
         let decimals = id.includes('price_') ? 4 : (id.includes('Sales') || id.includes('Reward')) ? 0 : 2;
         el.innerText = num.toLocaleString('en-US', {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
         });
     } else {
-        // 纯文本展示
+
         el.innerText = value;
-        // 挖矿期限等长文本：超出单行时折叠为省略号，点击弹窗查看完整内容
+
         if (id === 'miner_deadline') {
             applyClampBehavior(el, String(value));
         }
     }
 }
 
-/**
- * 长文本优雅折叠
- * 内容溢出单行时显示省略号 + 提示角标，点击弹出弹窗展示完整数据
- * @param {HTMLElement} el - 目标元素
- * @param {string} rawValue - 完整文本
- */
 function applyClampBehavior(el, rawValue) {
-    // 重置状态
+
     el.classList.remove('fbs-clamp');
     el.onclick = null;
     el.title = '';
 
     const raw = String(rawValue ?? '');
-    // 多行数据折叠：只显示第一行，其余行隐藏，点击"···"弹窗查看全部
+
     const firstLine = (raw.split('\n')[0] || '').trim();
     const hasMore = raw.includes('\n');
     el.innerText = firstLine;
 
-    // 先应用折叠样式，下一帧测量是否真正溢出
     el.classList.add('fbs-clamp');
 
     requestAnimationFrame(() => {
-        // 可见时精确测量溢出；隐藏时（用户不在该页）用文本长度兜底判断
+
         const visible = el.offsetWidth > 0 || el.offsetHeight > 0;
         const overflow = visible ? (el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight) : false;
-        // 兜底：文本超过 14 个字符视为需要折叠（窄格子内必然折行）；多行数据必定折叠
+
         const needClamp = hasMore || overflow || firstLine.length > 14;
         if (!needClamp) {
-            // 内容单行放得下，取消折叠
+
             el.classList.remove('fbs-clamp');
             return;
         }
-        el.title = hasMore ? raw : firstLine; // 桌面端悬停提示
+        el.title = hasMore ? raw : firstLine; 
         el.onclick = function (e) {
             e.stopPropagation();
             if (!window.showModal) return;
-            // 弹窗展示完整原始文本（含换行）
+
             const safe = raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             window.showModal("m_term", `<div class="p-2 text-left break-words whitespace-pre-wrap text-sm font-bold text-slate-700 leading-relaxed">${safe}</div>`);
         };
     });
 }
 
-/**
- * 获取矿工等级的多语言翻译
- * @param {string} level - 原始矿工等级（中文）
- * @returns {string} - 翻译后的等级名称
- */
 function getMinerLevelTranslation(level) {
     const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
     const dict = window.i18nData?.[lang] || window.i18nData?.['zh-CN'] || {};
     return dict[level] || level;
 }
 
-/**
- * 矿工等级对应的样式配置（8个等级 + 3个特殊状态，从低到高）
- */
 const LEVEL_STYLES = {
     '未激活': { color: 'from-gray-400 to-gray-500', textColor: 'text-white', borderColor: 'border-gray-300' },
     '白银矿工': { color: 'from-slate-300 to-slate-400', textColor: 'text-white', borderColor: 'border-slate-300' },
@@ -613,43 +516,21 @@ const LEVEL_STYLES = {
     '账户异常': { color: 'from-red-700 to-red-800', textColor: 'text-white', borderColor: 'border-red-500' }
 };
 
-/**
- * 从后端数据中提取矿工等级（支持多个可能的字段名，去除首尾空格）
- * @param {Object} data - 后端返回的数据
- * @returns {string} 矿工等级（中文），未找到时返回空字符串
- */
 function extractMinerLevel(data) {
     if (!data) return '';
     return String(data.info?.["矿工等级"] || data.info?.["等级"] ||
                   data.team?.["矿工等级"] || data.team?.["等级"] || '').trim();
 }
 
-/**
- * 渲染矿工等级（直接从飞书多维表格读取预填写的数据）
- * 矿工等级分为8级（从低到高）：
- * 0. 未激活 - 灰色
- * 1. 白银矿工 - 银色
- * 2. 白银节点 - 银蓝色
- * 3. 黄金矿工 - 金色
- * 4. 黄金节点 - 金橙色
- * 5. 钻石矿工 - 青蓝色
- * 6. 钻石节点 - 蓝紫色
- * 7. 钻石大师 - 紫粉色（最高级）
- * 数据来自用户团队表格（table=tblPKLs0jYlN0UnJ）中的"矿工等级"字段
- * 支持多语言切换
- * @param {Object} data - 后端返回的数据（可选，不传则重新渲染当前数据）
- */
 function renderMinerLevel(data) {
     const levelEl = document.getElementById('minerLevel');
 
-    // 如果传入了数据且是有效对象（不是语言代码字符串），保存到全局变量用于语言切换时重新渲染
     if (data && typeof data === 'object' && (data.info || data.team)) {
         window.currentMinerLevelData = data;
     }
-    // 如果没有传入数据或传入的是语言代码字符串，尝试使用全局缓存的数据
+
     data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
 
-    // 提取矿工等级
     const minerLevel = extractMinerLevel(data);
 
     if (!levelEl) {
@@ -663,54 +544,43 @@ function renderMinerLevel(data) {
         return;
     }
 
-    // 打印调试信息，帮助排查问题
     console.log("[MinerLevel] 数据对象结构:", {
         info: data.info ? Object.keys(data.info) : null,
         team: data.team ? Object.keys(data.team) : null
     });
     console.log("[MinerLevel] 读取到的矿工等级:", minerLevel);
 
-    // 如果有矿工等级数据且在配置中存在，则显示
     if (minerLevel && LEVEL_STYLES[minerLevel]) {
         const style = LEVEL_STYLES[minerLevel];
-        // 使用多语言翻译
+
         const translatedLevel = getMinerLevelTranslation(minerLevel);
         levelEl.innerText = translatedLevel;
         levelEl.className = `miner-level-badge bg-gradient-to-r ${style.color} ${style.textColor} px-3 py-1 rounded-full text-[9px] font-bold border ${style.borderColor} mb-2 inline-block opacity-100 shadow-md`;
         console.log("[MinerLevel] 成功显示矿工等级:", minerLevel, "(翻译后:", translatedLevel, ")");
     } else {
-        // 没有数据或等级不匹配，隐藏徽章
+
         levelEl.className = 'miner-level-badge opacity-0';
         console.log("[MinerLevel] 矿工等级数据为空或不匹配，隐藏徽章");
     }
 }
 
-/**
- * 渲染"我的身份"与社区权重（0%-100% 数轴，随等级提高而增加，权重越高颜色越深）
- * 我的身份 = 后台获取的矿工等级（与首页矿工等级徽章一致）
- * @param {Object} data - 后端返回的数据（可选，不传则使用缓存数据）
- */
 function renderIdentityWeight(data) {
     const identityEl = document.getElementById('identity_level');
     const weightBar = document.getElementById('weight_bar');
     const weightValue = document.getElementById('weight_value');
     if (!identityEl || !weightBar || !weightValue) return;
 
-    // 如果传入了数据且是有效对象，保存到全局变量用于语言切换时重新渲染
     if (data && typeof data === 'object' && (data.info || data.team)) {
         window.currentMinerLevelData = data;
     }
-    // 如果没有传入数据或传入的是语言代码字符串，尝试使用全局缓存的数据
+
     data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
 
-    // 提取矿工等级（与首页矿工等级徽章使用相同的数据源）
     const minerLevel = extractMinerLevel(data);
     console.log("[IdentityWeight] 渲染身份与权重, 等级:", minerLevel, "元素存在:", !!identityEl, !!weightBar, !!weightValue);
 
-    // 更新"我的持有"（NEO 余额）
     updateHoldingValue(data);
 
-    // 等级 → 社区权重映射
     const levelWeightMap = {
         '未激活': 0,
         '白银矿工': 20,
@@ -729,12 +599,12 @@ function renderIdentityWeight(data) {
         const style = LEVEL_STYLES[minerLevel];
         const translatedLevel = getMinerLevelTranslation(minerLevel);
         identityEl.innerText = translatedLevel;
-        // 身份徽章使用与等级相同的渐变色
+
         identityEl.className = `text-[10px] font-black px-3 py-1 rounded-full bg-gradient-to-r ${style.color} ${style.textColor} shadow-sm`;
 
         const weight = levelWeightMap[minerLevel] ?? 0;
         weightValue.innerText = weight + '%';
-        // 权重越高颜色越深：基于紫色主色调，透明度随权重加深
+
         const opacity = 0.15 + (weight / 100) * 0.85;
         weightBar.style.width = weight + '%';
         weightBar.style.background = `rgba(124, 58, 237, ${opacity})`;
@@ -747,22 +617,17 @@ function renderIdentityWeight(data) {
     }
 }
 
-/**
- * 更新"我的持有"（NEO 余额展示）
- * @param {Object} data - 后端返回的数据（含 balances）
- */
 function updateHoldingValue(data) {
     const holdingEl = document.getElementById('holding_value');
     if (!holdingEl) return;
     const neoBal = parseFloat(data?.balances?.['NEO'] ?? 0) || 0;
-    // 与资产列表 bal_NEO 保持一致的 6 位小数展示
+
     holdingEl.textContent = neoBal.toLocaleString(undefined, {
         minimumFractionDigits: 6,
         maximumFractionDigits: 6
     }) + ' NEO';
 }
 
-// 暴露到全局，确保 HTML 按钮、导航和其它模块能调用
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
@@ -770,22 +635,18 @@ window.updateText = updateText;
 window.renderMinerLevel = renderMinerLevel;
 window.renderIdentityWeight = renderIdentityWeight;
 
-/**
- * 刷新余额 - 重新从后台获取用户数据
- */
 export async function refreshBalances() {
     const address = window.currentAddress || localStorage.getItem('fbs_address');
     if (!address) {
         alert("请先连接钱包");
         return;
     }
-    
-    // 添加旋转动画
+
     const refreshBtn = document.querySelector('button[onclick="refreshBalances()"] svg');
     if (refreshBtn) {
         refreshBtn.classList.add('animate-spin');
     }
-    
+
     try {
         await fetchUserData(address);
         console.log("[Refresh] 余额刷新成功");
@@ -793,7 +654,7 @@ export async function refreshBalances() {
         console.error("[Refresh] 余额刷新失败:", error);
         alert("刷新失败，请重试");
     } finally {
-        // 移除旋转动画
+
         if (refreshBtn) {
             setTimeout(() => refreshBtn.classList.remove('animate-spin'), 500);
         }

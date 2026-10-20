@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['ar'] = {
-    // --- 1. Global & Navigation ---
+
     yandex_title: "مرحباً، Yandex!",
     yandex_subtitle: "—— عصر جديد لقوة الحوسبة الذكية عالمياً",
     yandex_cta1: "الدخول إلى سوق قوة الحوسبة",
@@ -61,7 +61,6 @@ window.i18nData['ar'] = {
     neo_ton_partnership: "TON قادم: سيدعم NEO قريبًا The Open Network — قوة Blockchain L1 الرائدة عالميًا: أسرع سرعة، أقل رسوم، تأكيد أقل من الثانية، تكلفة صفرية تقريبًا، وصول أصلي لأكثر من 1 بليون مستخدم على Telegram.",
     neo_solana_partnership: "سيدعم NEO قريبًا SOLANA — أحد أسرع سلاسل الكتل عالية الأداء في العالم، تأكيد أقل من الثانية، رسوم منخفضة للغاية، دعم قوي لأنظمة DeFi و NFT.",
 
-    // --- 2. Miner Page ---
     miner_title: "جهاز التعدين الخاص بي",
     miner_name: "جهاز التعدين الذكي AI NEO Eco",
     miner_desc: "قوة حوسبة كل جهاز ≈ 30TH/s، استهلاك طاقة: 1500W",
@@ -127,7 +126,7 @@ window.i18nData['ar'] = {
     nry_private_pool_desc: "اختر المبلغ لإضافة USDT إلى التجمع الخاص (BSC)",
     nry_private_pool_selected: "محدد",
     nry_private_pool_confirm: "تأكيد",
-    
+
     nry_addr_official: "العنوان الرسمي",nry_addr_contract: "العقد",
     nry_addr_dev: "المطور",
     nry_addr_stake: "الرهن",
@@ -153,7 +152,6 @@ window.i18nData['ar'] = {
     miner_detail_status_stopped: "متوقف",
     miner_detail_note: "تفاصيل جهاز التعدين قادمة قريباً، ترقبوا",
 
-    // --- 2.3 آلة عملات عبر السلاسل NCL ---
     ncl_machine_status: "حالة الآلة",
     ncl_status_active: "يعمل",
     ncl_machine_name: "NCL Монетоприемник",
@@ -168,7 +166,6 @@ window.i18nData['ar'] = {
     ncl_chain: "السلاسل",
     ncl_locked: "مغلق",
 
-    // --- 2.5 حالة أجهزة التعدين في الشبكة ---
     network_miner_title: "حالة أجهزة التعدين في الشبكة",
     neo_total_supply: "إجمالي المعروض من NEO",
     data_syncing: "جارٍ مزامنة البيانات، يرجى الانتظار",
@@ -181,7 +178,6 @@ window.i18nData['ar'] = {
     neo_total_output: "إجمالي إنتاج NEO",
     neo_burned: "NEO المحترق",
 
-    // --- 3. Assets & Team (User Page) ---
     assets_list: "قائمة الأصول",
     recharge: "إيداع",
     withdraw: "سحب",
@@ -204,7 +200,7 @@ window.i18nData['ar'] = {
     neo_need_ne: "NEO المطلوب",
     neo_bal_ne: "NEO المتاح",
     neo_submit: "إرسال",
-    // حملة سبتمبر
+
     act_badge: "عرض محدود · جارٍ الآن",
     act_title: "سبتمبر الذهبي · هدايا بانتظارك",
     act_countdown_label: "ينتهي خلال",
@@ -241,7 +237,6 @@ window.i18nData['ar'] = {
     btn_bind_inviter: "ربط المُحيل الخاص بي",
     team_detail: "طلب بيانات الفريق",
 
-    // --- 4. Modals ---
     btn_confirm: "تأكيد الإرسال",
     btn_confirm_bind: "ربط وتوقيع الآن",
     btn_transfer_now: "إرسال توقيع النقل",
@@ -295,8 +290,7 @@ window.i18nData['ar'] = {
     bank_principal_confirm: "تأكيد السحب",
     bank_btn: "قريباً",
     transfer_fee: "الرسوم: 0.00USDT",
-    
-    // --- 5. إعلان هام ---
+
     important_announcement: "إعلان هام",
     news_title_short: "أخبار",
     news_section_title: "الإعلانات والأخبار",
@@ -320,30 +314,26 @@ window.i18nData['ar'] = {
     neo_update_closing: "إطلاق NRY الرسمي ليس فقط معلماً مهماً لمصفوفة تعدين NEO، بل أيضاً ممارسة جديدة تماماً للإجماع اللامركزي. دعونا نتقدم معاً ونفتح عهداً جديداً للتعدين على السلسلة!",
     neo_update_signature: "فريق عمليات مجتمع NRY",
 
-    // --- Latest Announcement ---
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
-    
+
     recharge_amount: "كمية الإيداع",
     select_recharge_asset: "اختر الأصل للإيداع",
     receiver_address_placeholder: "عنوان المستلم (0x...)",
     amount_max_placeholder: "الكمية (الأقصى {max})",
     max_available: "الأقصى المتاح",
 
-    // --- 5. Modal Titles ---
     modal_register_title: "تفعيل حساب التعدين",
     modal_bind_title: "ربط علاقة الإحالة",
     miner_transfer_title: "نقل داخلي لجهاز التعدين",
     modal_team_title: "طلب تفاصيل الفريق",
     internal_transfer: "تحويل داخلي",
 
-    // --- 6. Descriptions ---
     register_desc: "أدخل معرف المُحيل لتفعيل عقدة القوة الحسابية الخاصة بك",
     team_detail_desc: "بسبب كمية البيانات الكبيرة، سيتم إرسال التقرير المفصل للفريق إلى بريدك الإلكتروني",
     wait_audit: "تم إرسال الطلب، يرجى الانتظار للمراجعة",
     sign_to_confirm: "يرجى التوقيع في المحفظة لتأكيد الهوية",
 
-    // --- 7. Status & Type Mapping ---
     "已提交": "تم الإرسال",
     "处理中": "قيد المعالجة",
     "成功": "نجاح",
@@ -356,7 +346,6 @@ window.i18nData['ar'] = {
     "购买矿机": "شراء جهاز تعدين",
     "缴纳电费": "دفع رسوم كهرباء",
 
-    // --- 矿工等级翻译 ---
     钻石大师: "سيد الماس",
     钻石节点: "عقدة الماس",
     钻石矿工: "عامل منجم الماس",
@@ -369,7 +358,6 @@ window.i18nData['ar'] = {
     账户锁定: "الحساب مقفل",
     账户异常: "الحساب غير طبيعي",
 
-    // --- 8. News ---
     news_title: "الإعلانات والأخبار",
     history_title: "سجل المعاملات",
     transfer_title: "سجل التحويلات",
@@ -390,7 +378,6 @@ window.i18nData['ar'] = {
         "<b>استمرار تعيين العقداء العالمي：</b>يستمر برنامج تعيين شركاء العالم لـ العقداء بنشاط. يمكن للمستخدمين أن يصبحوا عقداء النظام عن طريق شراء تشغيل 20 آلة تعدين، والحصول على مكافأة دائمة بنسبة 1% من قوة الحوسبة وخصومات حصرية على ضريبة المعاملة."
     ],
 
-    // --- 9. Token Details (Stats Page) ---
     stats_title: "تفاصيل ومعاملات العملات الرقمية",
     stats_subtitle: "اقتصاديات العملات وبيانات السوق",
     token_labels: {
@@ -405,7 +392,6 @@ window.i18nData['ar'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "محور تبادل السلاسل / وسيط التشغيل البيني", total: "400,000,000", dist: "مكافآت العقد البينية 40% | شراكات 30% | حوكمة المجتمع 15% | تطوير الفريق 15%", mech: "إصدار تدريجي عند تكامل البروتوكولات." }
     ],
 
-    // --- 11. Whitepaper ---
     wp_title: "نظرة عامة على الورقة البيضاء",
     wp_subtitle: "(هذه الورقة البيضاء يتم صيانتها بشكل مشترك من قبل المجتمع. حقوق النشر والتفسير النهائي تعود لأعضاء المجتمع)",
     wp_ch0_title: "الملخص التنفيذي",
@@ -487,7 +473,6 @@ window.i18nData['ar'] = {
     wp_ch3_s2_i6: "نموذج اقتصادي انكماشي:",
     wp_ch3_s2_i6_desc: "عبر آليات مثل احتراق وقود NET، احتراق رسوم المعاملات، إعادة شراء بيئية وتدمير، وstaking قفل، يتحكم في كمية التوكن المتداول.",
 
-    // الفصل 4: البنية التقنية
     wp_ch4_title: "4 البنية التقنية",
     wp_ch4_s1_title: "4.1 بنية بلوكشين الأساسية",
     wp_ch4_s1_p1: "يعتمد المشروع سلسلة عامة أساسية معيارية مطورة ذاتيًا، وتتضمن الوحدات الأساسية وحدة الشبكة P2P، وحدة دفتر الأستاذ الموزع، وحدة التوقيع المشفر، والآلة الافتراضية للعقود الذكية، ومجمع الذاكرة للمعاملات، وحدة تغليف المزامنة للكتل، وحدة تخزين تجزئة البيانات، وحدة تكيف بروتوكول السلسلة المتقاطعة.",
@@ -513,7 +498,6 @@ window.i18nData['ar'] = {
     wp_ch4_s4_p1: "بيانات قوة الحساب، بيانات استهلاك الطاقة، ارتفاع الكتلة، سجلات المعاملات، توزيع التوكنات، سجلات الإتلاف، كميات الرهن، إنتاجية التعدين كلها على السلسلة، ويمكن لأي شخص الاستعلام عنها في الوقت الفعلي عبر متصفح بلوكشين، تحقيق الانفتاح الكامل والشفافية وقابلية التتبع.",
     wp_ch4_s4_p2: "جميع تعديلات القواعد، تعديلات المعلمات، ترقيات العقود يجب أن تكون معلنة ومنفذة على السلسلة، لاستبعاد العمليات الصندوق الأسود. آلية الشفافية البيانات هي أساس الثقة البيئية وأساس مهم لحوكمة المجتمع.",
 
-    // الفصل 5: آلية الإجماع ومبادئ التعدين
     wp_ch5_title: "5 آلية الإجماع ومبادئ التعدين",
     wp_ch5_s1_title: "5.1 الإجماع: PoE + PoS + DPoS هجين",
     wp_ch5_s1_1_title: "5.1.1 PoE (Proof of Energy) إثبات الطاقة الحسابية",
@@ -545,7 +529,6 @@ window.i18nData['ar'] = {
     wp_ch5_s3_r5: "المشاركون المبكرون (خلال السنة الأولى) يستمتعون معامل مكافأة مبكرة 1.8x",
     wp_ch5_s3_r6: "مكافأة الدعوة: 5% من دخل المستوى السفلي يمنح للداعي، حد أقصى 10 مستويات",
 
-    // الفصل 6: نظام الاقتصاد الرقمي
     wp_ch6_title: "6 نظام الاقتصاد الرقمي",
     wp_ch6_s1_title: "6.1 نظرة عامة على نظام التوكنز",
     wp_ch6_s1_p1: "يعتمد نظام اقتصاد التوكنز لهذا المشروع \"نموذج التنسيق ستة أبعاد\"، مختلفاً عن نماذج التوكن الواحد أو الاثنين المستخدمة على نطاق واسع في الصناعة. من خلال فك الارتباط الوظيفي يتم تقسيم دفق القيمة الداخلي للنظام البيئي بدقة. ستة توكنز تتولى وظائف ربط القيمة، تعزيز القدرة الحسابية، وقود الشبكة، تعيين الأصول، أرباح الدخل، ومحور cross-chain، مشكلة نظام اقتصادي مغلق من الدعم المتبادل والقيود المتبادلة والتحفيز المتبادل.",
@@ -563,7 +546,6 @@ window.i18nData['ar'] = {
     wp_ch6_s7_title: "6.7 تصميم تفصيلي لـ NCL",
     wp_ch6_s7_p1: "NCL (Neo Core Link) هو توكن محور cross-chain. إجمالي: 400,000,000 توكن",
 
-    // الفصول 7-13: السيناريوهات، الحوكمة، خارطة الطريق، الفريق، المخاطر، الامتثال، الملحق
     wp_ch7_title: "7 سيناريوهات تطبيق النظام البيئي",
     wp_ch7_s1_title: "7.1 التعدين الشخصي",
     wp_ch7_s1_p1: "المستخدمون العاديون يمكنهم المشاركة في التعدين عبر عقد خفيفة على الهواتف والحواسيب، بدون حاجة لمناجم مهنية، استهلاك طاقة منخفض، عتبة منخفضة، سهولة التشغيل.",
@@ -577,7 +559,6 @@ window.i18nData['ar'] = {
     wp_ch12_title: "12 بيان الامتثال",
     wp_ch13_title: "13 ملحق",
 
-    // --- 4. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: نظام بيئي للقدرة الحسابية بالطاقة النظيفة",
     infra_title: "المنشآت والمواصفات المادية",
     infra_desc: "تقع مقر NEO Energy في روسيا، وتقوم ببناء مجموعة قدرة حسابية عالية الأداء ومتوافقة بشكل كامل مع القوانين واللوائح المحلية.",
@@ -632,7 +613,7 @@ window.i18nData['ar'] = {
     claim_reward_balance: "المكافآت المعلقة",
     claim_reward_input_label: "مبلغ السحب",
     claim_reward_confirm: "تأكيد السحب",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "مصفوفة حساب AI · بناء مشترك",
     market_hero_title: "سوق تداول الحوسبة",
     market_hero_sub: "أول نظام تداول للحوسبة على السلسلة · الحوسبة تتدفق بحرية كالماء والكهرباء",

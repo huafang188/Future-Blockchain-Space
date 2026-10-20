@@ -1,8 +1,5 @@
 import { tokenConfig } from './config.js';
 
-/**
- * HTML 转义函数，防止 XSS
- */
 function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -22,28 +19,28 @@ function escapeHtml(str) {
  */
 export function animateNumber(element, targetValue, duration = 1500, decimals = 2) {
     if (!element) return;
-    
+
     const startValue = parseFloat(element.innerText.replace(/[^0-9.-]/g, '')) || 0;
     const startTime = performance.now();
-    
+
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         // 使用缓动函数
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const currentValue = startValue + (targetValue - startValue) * easeOutQuart;
-        
+
         element.innerText = currentValue.toLocaleString(undefined, {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
         });
-        
+
         if (progress < 1) {
             requestAnimationFrame(update);
         }
     }
-    
+
     requestAnimationFrame(update);
 }
 
@@ -56,7 +53,7 @@ export function animateNumber(element, targetValue, duration = 1500, decimals = 
 export function updateNumberWithAnimation(elementId, value, options = {}) {
     const element = document.getElementById(elementId);
     if (!element) return;
-    
+
     const { 
         duration = 1200, 
         decimals = 2, 
@@ -64,21 +61,21 @@ export function updateNumberWithAnimation(elementId, value, options = {}) {
         suffix = '',
         splitDecimal = false
     } = options;
-    
+
     const startValue = parseFloat(element.innerText.replace(/[^0-9.-]/g, '')) || 0;
     const startTime = performance.now();
-    
+
     function animate(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const currentValue = startValue + (value - startValue) * easeOutQuart;
-        
+
         const formatted = currentValue.toLocaleString(undefined, {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
         });
-        
+
         if (splitDecimal) {
             const parts = formatted.split('.');
             const intPart = parts[0];
@@ -90,12 +87,12 @@ export function updateNumberWithAnimation(elementId, value, options = {}) {
         } else {
             element.innerText = `${prefix}${formatted}${suffix}`;
         }
-        
+
         if (progress < 1) {
             requestAnimationFrame(animate);
         }
     }
-    
+
     requestAnimationFrame(animate);
 }
 
@@ -106,20 +103,20 @@ export function updateNumberWithAnimation(elementId, value, options = {}) {
 export function refreshAssetDisplay(balances = {}) {
     const livePrices = window.currentPrices || {};
     let totalValUSD = 0;
-    
+
     Object.keys(tokenConfig).forEach(symbol => {
         const priceKey = symbol.toUpperCase();
         let unitPrice = parseFloat(livePrices[priceKey]) || 0;
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         totalValUSD += currentTokenValue;
-        
+
         // 刷新单个代币余额
         const balEl = document.getElementById(`bal_${symbol}`);
         if (balEl) {
             updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 6 });
         }
-        
+
         // 刷新单个代币价值
         const valEl = document.getElementById(`val_${symbol}`);
         if (valEl) {
@@ -128,7 +125,7 @@ export function refreshAssetDisplay(balances = {}) {
                 prefix: '$' 
             });
         }
-        
+
         // 刷新代币价格
         const priceEl = document.getElementById(`price_${symbol}`);
         if (priceEl) {
@@ -138,7 +135,7 @@ export function refreshAssetDisplay(balances = {}) {
             });
         }
     });
-    
+
     // 刷新总资产
     const totalEl = document.getElementById('totalValue');
     if (totalEl) {
@@ -181,7 +178,7 @@ export function renderNews(lang) {
 
     const announcementPanel = container.querySelector('#announcement-panel');
     const newsPanel = container.querySelector('#news-panel');
-    
+
     if (announcementPanel && newsPanel) {
         const newsHtml = newsList.map(newsText => `
             <div class="bg-slate-50/50 p-3 rounded-lg">
@@ -248,7 +245,7 @@ export function renderStatsPage(lang) {
                         <span class="text-slate-800 text-xs font-black tracking-tighter">${token.total}</span>
                     </div>
                 </div>
-                
+
                 <div class="px-1 space-y-3">
                     <div>
                         <span class="text-slate-400 uppercase text-[8px] font-black tracking-widest flex items-center gap-1">
@@ -288,12 +285,12 @@ export function renderTokenList(balances = {}) {
     Object.keys(tokenConfig).forEach(symbol => {
         if (HIDDEN_TOKENS.includes(symbol)) return;
         const config = tokenConfig[symbol];
-        
+
         const priceKey = symbol.toUpperCase();
         let unitPrice = parseFloat(livePrices[priceKey]) || 0;
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
-        
+
         totalValUSD += currentTokenValue;
 
         html += `
@@ -317,7 +314,7 @@ export function renderTokenList(balances = {}) {
     });
 
     container.innerHTML = html;
-    
+
     // 使用 requestAnimationFrame 确保 DOM 渲染完成后再执行动画
     requestAnimationFrame(() => {
         // 带动画更新页面顶部的总资产数值显示
@@ -325,14 +322,14 @@ export function renderTokenList(balances = {}) {
         if (totalEl) {
             updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2, splitDecimal: true });
         }
-        
+
         // 带动画更新各个代币的价格、余额和价值
         Object.keys(tokenConfig).forEach(symbol => {
             if (HIDDEN_TOKENS.includes(symbol)) return;
             const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0;
             const balance = parseFloat(balances[symbol] || 0);
             const currentTokenValue = balance * unitPrice;
-            
+
             // 更新价格
             const priceEl = document.getElementById(`price_${symbol}`);
             if (priceEl) {
@@ -341,13 +338,13 @@ export function renderTokenList(balances = {}) {
                     prefix: '$' 
                 });
             }
-            
+
             // 更新余额
             const balEl = document.getElementById(`bal_${symbol}`);
             if (balEl) {
                 updateNumberWithAnimation(`bal_${symbol}`, balance, { decimals: 6 });
             }
-            
+
             // 更新价值
             const valEl = document.getElementById(`val_${symbol}`);
             if (valEl) {
@@ -450,7 +447,7 @@ export function renderHistory(history = []) {
         const time = escapeHtml(item['交易时间'] || item.time || '--');
         const note = escapeHtml(item['备注'] || item.remark || item.note || '');
         const tokenLogo = getTokenLogo(symbol);
-        
+
         // 判断资金流向渲染颜色（仅用于图标背景）
         const isPositive = amount > 0 || type.includes('充值') || type.includes('奖励') || type.includes('收益') || type.includes('挖矿');
 

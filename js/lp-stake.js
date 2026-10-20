@@ -1,21 +1,9 @@
-/**
- * NEO-USDT LP 质押池模块
- * ------------------------------------------------------------------
- * 数据对接说明：
- *   读取：GET {LP_STAKE_API}?address=<钱包地址>
- *         后端从 Google Sheets「NEO-USDT-LP」表按「用户」列匹配，返回：
- *         { pool: { apy, tvl, pair, rewardToken }, user: { staked, reward } }
- *         - 年化收益率 / 总锁仓价值：池子级参数（每行各自维护）
- *         - 我的质押 / 待提取收益：用户级
- *   写入：stake_lp / unstake_lp / claim_reward 仍为接口预留，后续接通
- * ------------------------------------------------------------------
- */
+
 (function () {
     'use strict';
 
     var LP_STAKE_API = 'https://api.neoneo.ink/api/lp-stake';
 
-    // 查询质押池与用户质押信息
     window.fetchLPStakeInfo = async function (address) {
         if (!address) return null;
         var url = LP_STAKE_API + '?address=' + encodeURIComponent(address) + '&t=' + Date.now();
@@ -31,7 +19,6 @@
         }
     };
 
-    // 数值格式化：避免单位重复（sheet 里可能已带 % / $ / LP / NRY）
     function fmt(val, unit, opts) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return (opts && opts.empty) || unit;
@@ -42,20 +29,18 @@
         return s + unit;
     }
 
-    // 数值格式化：千分位 + 最多 2 位小数
     function fmtNum(val) {
         var n = parseFloat(String(val || "0").replace(/,/g, ""));
         if (isNaN(n)) return "--";
         return n.toLocaleString("en-US", { maximumFractionDigits: 2 });
     }
 
-    // 渲染质押池数据到 UI（元素 id 与 index.html 一一对应）
     window.renderLPStake = function (data) {
         var set = function (id, v) {
             var el = document.getElementById(id);
             if (el) el.textContent = v;
         };
-        // 保存原始数据快照，供弹窗读取未经格式化的数值
+
         window.lpStakeData = data || null;
         if (!data) {
             set('lp_stake_my_neo', '--');
@@ -76,7 +61,6 @@
         set('lp_stake_locked', fmt(user.lockedLP, ' LP', { empty: '0.00 LP' }));
     };
 
-    // 从 localStorage 读取地址并刷新 LP 数据
     window.refreshLPStake = async function (address) {
         var addr = address || localStorage.getItem('fbs_address') || '';
         if (!addr) { window.renderLPStake(null); return; }
@@ -84,7 +68,6 @@
         window.renderLPStake(data);
     };
 
-    // 钱包地址/链变化时刷新（fbs-storage-change 事件由 app-init.js 派发）
     var refreshTimer = null;
     window.addEventListener('fbs-storage-change', function () {
         if (refreshTimer) clearTimeout(refreshTimer);
@@ -94,14 +77,10 @@
         }, 600);
     });
 
-    // 页面加载后主动刷一次（连接钱包后由上述事件再次触发）
     window.addEventListener('load', function () {
         setTimeout(function () { window.refreshLPStake(); }, 800);
     });
 
-    // ===== 以下写入动作仍为接口预留，暂未接通后端 =====
-
-    // 增加流动性弹窗（输入 NEO 数量，链上转 USDT，后台扣除 NEO）
     window.stakeLP = async function () {
         var balances = window.userBalances || (window.currentUserInfo && window.currentUserInfo.balances) || {};
         var neoVal = parseFloat(balances['NEO']) || 0;
@@ -135,7 +114,6 @@
             </div>`);
     };
 
-    // 确认增加流动性：签名提交 NEO 数量到后台
     window.doAddLiquidity = async function () {
         var neoAmount = parseFloat(document.getElementById('addLiqNeoAmount') && document.getElementById('addLiqNeoAmount').value) || 0;
         if (neoAmount <= 0) {
@@ -153,16 +131,12 @@
         setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
     };
 
-    // ===== 锁定流动性 / 提取流动性 / 提取奖励 / 提取NEO分红（签名提交，无需链上转账）=====
-
-    // 读取 LP 数据快照中的用户字段（数值）
     function getLpUser(key) {
         var d = (window.lpStakeData && window.lpStakeData.user) || {};
         var v = parseFloat(d[key]);
         return isNaN(v) ? 0 : v;
     }
 
-    // 提取 NEO 分红弹窗
     window.withdrawNeoDividend = function () {
         var maxDiv = getLpUser('pendingDividend');
         var display = maxDiv.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -197,7 +171,6 @@
         setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
     };
 
-    // 锁定流动性弹窗（锁定我的流动性，周期 360 天）
     window.lockLP = async function () {
         var staked = getLpUser('staked');
         window.showModal('lock_liq_title', `
@@ -226,7 +199,6 @@
             </div>`);
     };
 
-    // 提取流动性弹窗（返还 NEO 与 USDT）
     window.unstakeLP = async function () {
         var myNeo = getLpUser('myNeo');
         var myUsdt = getLpUser('myUsdt');
@@ -274,7 +246,6 @@
             </div>`);
     };
 
-    // 提取奖励弹窗（提取 NRY）
     window.claimLP = async function () {
         var reward = getLpUser('reward');
         var nryLogo = (window.tokenConfig && window.tokenConfig['NRY'] && window.tokenConfig['NRY'].logo) || 'assets/NRY.webp';
@@ -308,7 +279,6 @@
             </div>`);
     };
 
-    // 确认锁定流动性
     window.doLockLiquidity = async function () {
         var amount = parseFloat(document.getElementById('lockLiqAmount') && document.getElementById('lockLiqAmount').value) || 0;
         if (amount <= 0) { alert('请输入锁定数量'); return; }
@@ -319,7 +289,6 @@
         setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
     };
 
-    // 确认提取流动性
     window.doRemoveLiquidity = async function () {
         var amount = parseFloat(document.getElementById('removeLiqAmount') && document.getElementById('removeLiqAmount').value) || 0;
         if (amount <= 0) { alert('请输入提取数量'); return; }
@@ -330,7 +299,6 @@
         setTimeout(function () { window.refreshLPStake && window.refreshLPStake(); }, 2000);
     };
 
-    // 确认提取奖励
     window.doClaimLPReward = async function () {
         var amount = parseFloat(document.getElementById('claimRewardAmount') && document.getElementById('claimRewardAmount').value) || 0;
         if (amount <= 0) { alert('请输入提取数量'); return; }

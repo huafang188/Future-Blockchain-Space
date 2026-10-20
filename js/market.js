@@ -1,8 +1,7 @@
-// 市场页面逻辑（NEO 买卖挂单 + 算力挂单 + 订单簿模拟）
+
 (function () {
     'use strict';
 
-    // ---------- 工具 ----------
     function $(id) { return document.getElementById(id); }
     function fmt(n, d) { d = d == null ? 4 : d; return Number(n).toFixed(d); }
     function nowHM() {
@@ -11,7 +10,6 @@
     }
     function rand(min, max) { return Math.random() * (max - min) + min; }
 
-    // ---------- 状态 ----------
     var state = {
         neoPrice: 0.325,
         balanceUSDT: 8642.50,
@@ -23,7 +21,6 @@
         powerList: []
     };
 
-    // ---------- 初始化订单簿 ----------
     function initOrderBook() {
         state.asks = [];
         state.bids = [];
@@ -76,7 +73,6 @@
         return p.provider || '';
     }
 
-    // ---------- 渲染 ----------
     function renderPrice() {
         if ($('marketNeoPrice')) $('marketNeoPrice').textContent = fmt(state.neoPrice, 4) + ' USDT';
     }
@@ -144,7 +140,6 @@
         if ($('marketOrderTotal')) $('marketOrderTotal').textContent = fmt(p * a, 2) + ' USDT';
     }
 
-    // ---------- 交互 ----------
     function switchSide(side) {
         state.side = side;
         var buyBtn = document.querySelector('.market-tab-buy');
@@ -244,7 +239,6 @@
             '</div>');
     }
 
-    // ---------- 模拟行情跳动 ----------
     function tick() {
         state.neoPrice += rand(-0.001, 0.001);
         if (state.neoPrice < 0.32) state.neoPrice = 0.32 + rand(0, 0.002);
@@ -261,7 +255,6 @@
         }
     }
 
-    // ---------- 初始化 ----------
     function init() {
         initOrderBook();
         initRecent();

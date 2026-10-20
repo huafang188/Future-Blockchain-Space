@@ -1,17 +1,16 @@
-// 导航核心函数（必须全局，否则导航栏失效）
+
 window.switchPage = function(page) {
     document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     document.getElementById('page-' + page).classList.remove('hidden');
     document.getElementById('nav-' + page).classList.add('active');
-    // Agent 页面隐藏页面顶部标题栏，让聊天界面占据整个顶部；其他页面恢复
+
     document.body.classList.toggle('agent-active', page === 'agent');
-    // 市场页面隐藏顶部区块链卡片
+
     var topCard = document.getElementById('top-card-section');
     if (topCard) topCard.style.display = (page === 'market') ? 'none' : '';
 };
 
-// 跳转到 LP 质押池（跨页面：先切到 mine 页再滚动）
 window.goToLPStake = function() {
     var target = document.getElementById('lp-stake-section');
     if (!target) return;
@@ -21,7 +20,6 @@ window.goToLPStake = function() {
     });
 };
 
-// 跳转到 NRY 算力挖矿区域
 window.goToNryMining = function() {
     var target = document.getElementById('nry-mining-section');
     if (!target) return;
@@ -31,18 +29,16 @@ window.goToNryMining = function() {
     });
 };
 
-// 顶部导航（白皮书等）
 window.handleNav = function(key) {
     if (key === 'whitepaper') {
         window.showModal('白皮书', '<div class="p-8 text-center">白皮书即将上线</div>');
     }
 };
 
-// 输入法（软键盘）弹出检测：弹出时隐藏底部导航栏，避免悬浮在键盘上方
 (function () {
     var vv = window.visualViewport;
     if (!vv) return;
-    var KEYBOARD_THRESHOLD = 120; // 视口高度缩小超过该值视为键盘弹出
+    var KEYBOARD_THRESHOLD = 120; 
     function onViewportChange() {
         var keyboardOpen = window.innerHeight - vv.height > KEYBOARD_THRESHOLD;
         document.body.classList.toggle('keyboard-open', keyboardOpen);

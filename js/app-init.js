@@ -22,28 +22,20 @@ import {
     renderNews 
 } from './ui-render.js';
 
-import { updateNetworkMinerDisplay } from './network-miner-stats.js';
-
 import { mountModalHandlers } from './modal-handler.js';
 import { mountCalculationHandlers } from './calculations.js';
 import { mountActionExecutors } from './action-executor.js';
 
 import { CHAIN_CONFIG, setCurrentChain, TOKEN_DECIMALS, ACTIVE_CHAINS } from './config.js';
 
-// 导出到 window
 window.CHAIN_CONFIG = CHAIN_CONFIG;
 window.TOKEN_DECIMALS = TOKEN_DECIMALS;
 
-/**
- * 🎁 金秋九月活动倒计时
- * 以莫斯科标准时间 (UTC+3) 为截止基准，每秒刷新
- */
 function mountActivityCountdown() {
     const dayEl = document.getElementById('activityDays');
     const timeEl = document.getElementById('activityTime');
     if (!dayEl || !timeEl) return;
 
-    // 活动期限截止 2026/09/30 23:59:59（莫斯科标准时间）
     const deadline = new Date('2026-09-30T23:59:59+03:00').getTime();
 
     const tick = () => {
@@ -66,92 +58,81 @@ function mountActivityCountdown() {
     setInterval(tick, 1000);
 }
 
-/**
- * 1. 全局挂载器
- * 核心：将所有分散在模块中的函数强制导出给 window 变量
- * 解决 HTML 中 onclick="..." 找不到函数的问题
- */
 function mountAllGlobals() {
     console.log("[Init] 开始挂载全局函数...");
 
-    // A. 基础 API 与 UI 渲染函数挂载
     window.updateText = updateText;
     window.fetchUserData = fetchUserData;
     window.postTransactionRecord = postTransactionRecord;
     window.submitBindInviter = submitBindInviter;
-    
+
     window.renderTokenList = renderTokenList;
     window.renderHistory = renderHistory;
     window.renderTransfers = renderTransfers;
     window.renderStatsPage = renderStatsPage;
     window.renderNews = renderNews;
 
-    // B. 执行各模块的挂载函数 (执行内部的 window.xxx = ... 赋值)
-    mountWalletClickHandler();        // 挂载钱包点击逻辑 (wallet-utils)
-    mountAccountChangeListener();     // 挂载账户变化监听器 (wallet-utils)
-    mountModalHandlers();             // 挂载弹窗与复制逻辑 (modal-handler)
-    mountCalculationHandlers();       // 挂载计算器逻辑 (calculations)
-    mountActionExecutors();           // 挂载业务交互逻辑 (action-executor)
-    mountActivityCountdown();          // 金秋九月活动倒计时
+    mountWalletClickHandler();        
+    mountAccountChangeListener();     
+    mountModalHandlers();             
+    mountCalculationHandlers();       
+    mountActionExecutors();           
+    mountActivityCountdown();          
 
-    // 导出 syncWalletUI 到全局
     window.syncWalletUI = syncWalletUI;
 
     console.log("[Init] 全局函数挂载完成");
-    
-    // 轮播功能
+
     let carouselCurrentIndex = 0;
     let carouselInterval = null;
-    
+
     window.carouselNext = function() {
         const items = document.querySelectorAll('.carousel-item');
         const indicators = document.querySelectorAll('[data-index]');
         if (items.length === 0) return;
-        
+
         items[carouselCurrentIndex].classList.remove('active');
         indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.3)';
-        
+
         carouselCurrentIndex = (carouselCurrentIndex + 1) % items.length;
-        
+
         items[carouselCurrentIndex].classList.add('active');
         indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.5)';
     };
-    
+
     window.carouselPrev = function() {
         const items = document.querySelectorAll('.carousel-item');
         const indicators = document.querySelectorAll('[data-index]');
         if (items.length === 0) return;
-        
+
         items[carouselCurrentIndex].classList.remove('active');
         indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.3)';
-        
+
         carouselCurrentIndex = (carouselCurrentIndex - 1 + items.length) % items.length;
-        
+
         items[carouselCurrentIndex].classList.add('active');
         indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.5)';
     };
-    
+
     window.carouselGoTo = function(index) {
         const items = document.querySelectorAll('.carousel-item');
         const indicators = document.querySelectorAll('[data-index]');
         if (items.length === 0 || index < 0 || index >= items.length) return;
-        
+
         items[carouselCurrentIndex].classList.remove('active');
         indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.3)';
-        
+
         carouselCurrentIndex = index;
-        
+
         items[carouselCurrentIndex].classList.add('active');
         indicators[carouselCurrentIndex].style.backgroundColor = 'rgba(255,255,255,0.5)';
     };
-    
-    // 自动轮播
+
     window.startCarousel = function() {
         if (carouselInterval) clearInterval(carouselInterval);
         carouselInterval = setInterval(carouselNext, 5000);
     };
-    
-    // 停止轮播
+
     window.stopCarousel = function() {
         if (carouselInterval) {
             clearInterval(carouselInterval);
@@ -159,10 +140,6 @@ function mountAllGlobals() {
         }
     };
 
-    // 检测钱包环境（使用 wallet-utils.js 导出的 detectWalletEnv）
-
-
-    // 切换语言下拉菜单
     window.toggleLangDropdown = function(event) {
         if (event) event.stopPropagation();
         const wrappers = document.querySelectorAll('.custom-select-wrapper');
@@ -170,15 +147,13 @@ function mountAllGlobals() {
         const wrapper = document.querySelector('.custom-select-wrapper.lang-select-wrapper');
         if (wrapper) wrapper.classList.toggle('open');
     };
-    
-    // 选择语言
+
     window.selectLang = function(lang) {
         const wrapper = document.querySelector('.custom-select-wrapper.lang-select-wrapper');
         if (wrapper) wrapper.classList.remove('open');
         window.switchLang(lang);
     };
-    
-    // 点击其他地方关闭下拉菜单
+
     document.addEventListener('click', function(event) {
         const wrappers = document.querySelectorAll('.custom-select-wrapper');
         wrappers.forEach(wrapper => {
@@ -189,18 +164,13 @@ function mountAllGlobals() {
     });
 }
 
-/**
- * 2. 应用程序初始化入口
- */
 function initApp() {
-    // 立即执行挂载，确保在 DOM 加载前函数已就绪
+
     mountAllGlobals();
 
-    // 页面加载完成后的逻辑
     window.addEventListener('load', () => {
         console.log("[App] 页面加载完成，检查初始状态...");
-        
-        // --- 2.0 隐藏加载遮罩 ---
+
         setTimeout(() => {
             const loadingOverlay = document.getElementById('loading-overlay');
             if (loadingOverlay) {
@@ -211,50 +181,35 @@ function initApp() {
                 }, 300);
             }
         }, 200);
-        
-        // --- 2.0.5 固定 BSC 链 ---
+
         window.currentChain = 'BSC';
         setCurrentChain('BSC');
-        
-        // --- 2.1 基础环境初始化 ---
+
         const savedLang = localStorage.getItem('fbs_lang') || 'zh-CN';
         if (window.i18nRender) {
             window.i18nRender(savedLang);
         }
 
-        // 预渲染静态组件 (公告、看板)
         if (window.renderNews) renderNews(savedLang);
         if (window.renderStatsPage) renderStatsPage(savedLang);
-        
-        // 初始化全网矿机数据
-        if (window.updateNetworkMinerDisplay) window.updateNetworkMinerDisplay();
 
-        // --- 2.2 登录态恢复逻辑 ---
-        // 不保留登录状态，必须用户手动点击连接钱包
         console.log('[App] 清除登录状态，等待用户手动连接钱包');
-        
-        // 清除 localStorage 中的钱包数据，确保点击"连接钱包"时不会触发退出逻辑
+
         localStorage.removeItem('fbs_address');
         localStorage.removeItem('fbs_chain');
         localStorage.removeItem('user_logout_manual');
-        
-        // 清空全局数据缓存
+
         if (window.userBalances) window.userBalances = {};
         if (window.lastFetchedData) window.lastFetchedData = null;
         if (window.currentUserInfo) window.currentUserInfo = null;
-        
+
         resetWalletUI();
-                
-        // 清空列表缓存（数据会在连接钱包后重新拉取）
+
         if (window.renderHistory) window.renderHistory([]); 
         if (window.renderTransfers) window.renderTransfers([]); 
         if (window.renderTokenList) window.renderTokenList({});
     });
 
-    /**
-     * 3. 监听 localStorage 变化（跨标签页或同页内）
-     * 用于钱包切换、链切换、退出登录时同步 UI
-     */
     window.addEventListener('storage', (e) => {
         if (e.key === 'fbs_address' || e.key === 'fbs_chain') {
             console.log('[App] 检测到 storage 变化，同步钱包 UI');
@@ -262,8 +217,6 @@ function initApp() {
         }
     });
 
-    // 同页面内 localStorage 变化监听（通过自定义事件，替代轮询）
-    // 重写 localStorage 方法以触发事件
     const origSetItem = localStorage.setItem.bind(localStorage);
     const origRemoveItem = localStorage.removeItem.bind(localStorage);
 
@@ -280,7 +233,6 @@ function initApp() {
         }
     };
 
-    // 防抖处理：300ms 内的多次变化只触发一次同步
     let syncWalletTimeout = null;
     window.addEventListener('fbs-storage-change', () => {
         console.log('[App] 检测到地址变化，同步钱包 UI');
@@ -294,7 +246,6 @@ function initApp() {
     });
 }
 
-// --- 莫斯科时间与天气功能 ---
 window.initMoscowTime = function() {
     function updateTime() {
         const now = new Date();
@@ -305,7 +256,7 @@ window.initMoscowTime = function() {
             minute: '2-digit',
             second: '2-digit'
         });
-        
+
         const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
         const dateStr = now.toLocaleDateString(currentLang, {
             timeZone: 'Europe/Moscow',
@@ -314,14 +265,14 @@ window.initMoscowTime = function() {
             day: '2-digit',
             weekday: 'short'
         });
-        
+
         const timeEl = document.getElementById('moscowTime');
         const dateEl = document.getElementById('moscowDate');
-        
+
         if (timeEl) timeEl.textContent = timeStr;
         if (dateEl) dateEl.textContent = dateStr;
     }
-    
+
     function getWeatherEmoji(code) {
         if (code >= 0 && code <= 3) return '☀️';
         if (code >= 45 && code <= 48) return '🌫️';
@@ -331,19 +282,19 @@ window.initMoscowTime = function() {
         if (code >= 95 && code <= 99) return '⛈️';
         return '🌤️';
     }
-    
+
     async function fetchWeather() {
         try {
             const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&current_weather=true');
             const data = await response.json();
-            
+
             if (data.current_weather) {
                 const emoji = getWeatherEmoji(data.current_weather.weathercode);
                 const temp = Math.round(data.current_weather.temperature);
-                
+
                 const emojiEl = document.getElementById('weatherEmoji');
                 const tempEl = document.getElementById('weatherTemp');
-                
+
                 if (emojiEl) emojiEl.textContent = emoji;
                 if (tempEl) tempEl.textContent = `${temp}°C`;
             }
@@ -351,10 +302,10 @@ window.initMoscowTime = function() {
             console.log('[Moscow Time] Weather fetch failed, using default');
         }
     }
-    
+
     updateTime();
     fetchWeather();
-    
+
     setInterval(updateTime, 1000);
     setInterval(fetchWeather, 300000);
 };
@@ -367,5 +318,4 @@ window.addEventListener('load', () => {
     }, 300);
 });
 
-// --- 启动程序 ---
 initApp();

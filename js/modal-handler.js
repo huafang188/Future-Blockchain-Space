@@ -1,23 +1,15 @@
 import { tokenConfig, CONTRACT_ADDRS } from './config.js';
 
-// 将 tokenConfig 暴露为全局变量
 window.tokenConfig = tokenConfig;
 
-/**
- * 🛠️ 弹窗模块：管理所有动态 UI 交互
- */
 export function mountModalHandlers() {
 
-    // --- 0. 辅助功能：获取带 Logo 的币种选项 (原生 select) ---
     const getLogoOptions = (selectedSymbol) => {
         return Object.keys(tokenConfig)
             .map(symbol => `<option value="${symbol}" ${symbol === selectedSymbol ? 'selected' : ''}>${symbol}</option>`)
             .join('');
     };
 
-
-
-    // --- 1. 复制功能 (兼容移动端钱包) ---
     window.copyInviteCode = function(text) {
         if (!text || text === '---') {
             alert("暂无数据可复制");
@@ -38,22 +30,20 @@ export function mountModalHandlers() {
         document.body.removeChild(textArea);
     };
 
-    // --- 2. 更新弹窗内的 Logo ---
     window.updateModalLogo = function(selectId, imgId) {
         const symbol = document.getElementById(selectId)?.value;
         const imgEl = document.getElementById(imgId);
         if (symbol && imgEl && tokenConfig[symbol]) {
             imgEl.src = tokenConfig[symbol].logo;
         }
-        // 如果是兑换弹窗，联动计算
+
         if (selectId.startsWith('s') && window.calcSwap) {
             window.calcSwap();
         }
     };
 
-    // --- 3. 矿机模块 (购买/电费) ---
     window.openMinerModal = function(type) {
-        // 防御性检查：确保 showModal 已加载
+
         if (typeof window.showModal !== 'function') {
             console.error('[Modal] showModal 未加载，脚本可能未完全初始化');
             alert('页面正在加载中，请稍后重试');
@@ -100,10 +90,9 @@ export function mountModalHandlers() {
         }
     };
 
-    // --- 4. 矿机转让 ---
     window.openTransferMinerModal = function() {
         const rawCount = document.getElementById('miner_count')?.innerText || "0";
-        // 矿机数量可能是 "1+1" 格式（多币种矿机组合），解析总和作为上限
+
         const sumMatch = String(rawCount).match(/^(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)$/);
         const max = sumMatch ? (parseFloat(sumMatch[1]) + parseFloat(sumMatch[2])).toString() : rawCount;
         const displayMax = sumMatch ? `${rawCount} (合计 ${max})` : rawCount;
@@ -116,8 +105,6 @@ export function mountModalHandlers() {
         `);
     };
 
-
-    // --- 4.6 NEO 购买矿机 (限时优惠) ---
     window.openNeoBuyMinerModal = function() {
         if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
         window.showModal("neo_buy_title", `
@@ -148,7 +135,6 @@ export function mountModalHandlers() {
         window.calcNeoBuy();
     };
 
-    // --- 4.7 NEO 缴纳电费 (限时优惠) ---
     window.openNeoPayFeeModal = function() {
         if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
         window.showModal("neo_fee_title", `
@@ -190,7 +176,6 @@ export function mountModalHandlers() {
         window.calcNeoFee();
     };
 
-    // --- 4.8 实时计算需消耗的 NEO（按当前 NEO 价格） ---
     window.calcNeeNeed = function(needId, balId, countValue, unitUsd) {
         const needEl = document.getElementById(needId);
         const balEl = document.getElementById(balId);
@@ -207,7 +192,7 @@ export function mountModalHandlers() {
 
         const neoNeed = (unitUsd * count) / neoPrice;
         needEl.textContent = neoNeed.toFixed(6);
-        // 余额不足时标红提醒
+
         needEl.className = 'text-sm font-black tracking-tight truncate ' + (neoNeed > neoBal ? 'text-red-600' : 'text-purple-700');
     };
     window.calcNeoBuy = function() {
@@ -215,11 +200,10 @@ export function mountModalHandlers() {
     };
     window.calcNeoFee = function() {
         const days = Number(document.getElementById('neoFeeDays')?.value || 30);
-        // 电费按 28.5 美元/台/月计费，缴纳天数换算为月份倍数
+
         window.calcNeeNeed('neoFeeNeed', 'neoFeeBal', document.getElementById('neoFeeCount')?.value, 28.5 * (days / 30));
     };
 
-    // 切换缴纳天数（30/90/180/360 天）
     window.selectNeoFeeDays = function(days) {
         const hidden = document.getElementById('neoFeeDays');
         if (hidden) hidden.value = days;
@@ -230,9 +214,6 @@ export function mountModalHandlers() {
         window.calcNeoFee();
     };
 
-    // --- 5. 金融模块 (提现/兑换) ---
-
-    // 各链支持的代币
     const CHAIN_TOKENS = {
         'BSC': {
             withdraw: ['NRY', 'NCL'],
@@ -273,7 +254,7 @@ export function mountModalHandlers() {
                 <input type="number" id="witAmount" placeholder="提现数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doWithdrawSignature()" class="action-btn w-full mt-2 !from-red-500">确认提现签名</button>
             </div>`);
-        // 延迟执行以确保 DOM 已渲染
+
         setTimeout(() => window.updateWitBalanceHint(), 50);
     };
 
@@ -309,7 +290,7 @@ window.openExchangeModal = function() {
                             </select>
                             <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
                         </div>
-                        
+
                         <!-- 右侧：宽大的输入框，文字右对齐 -->
                         <input type="number" id="sFromAmt" oninput="window.calcSwap()" placeholder="0" 
                                class="flex-1 min-w-0 bg-transparent font-black text-2xl text-right outline-none border-none p-0 text-slate-800">
@@ -355,20 +336,19 @@ window.openExchangeModal = function() {
                             </select>
                             <i class="fa-solid fa-chevron-down text-[8px] text-slate-300"></i>
                         </div>
-                        
+
                         <!-- 右侧：展示框，文字右对齐 -->
                         <input type="number" id="sToAmt" readonly placeholder="0" 
                                class="flex-1 min-w-0 bg-transparent font-black text-2xl text-right outline-none border-none p-0 text-indigo-600">
                     </div>
                 </div>
-                
+
                 <button type="button" onclick="window.doExchangeSignature()" class="action-btn w-full mt-4">提交兑换签名</button>
             </div>`);
     };
 
-    // 质押弹窗
     window.openStakeModal = function() {
-        // 质押周期 → 利率映射
+
         window.stakeRates = { 60: 10, 120: 20, 180: 25, 240: 32, 360: 53 };
         window.showModal("stake", `
             <div class="space-y-3 text-left">
@@ -428,7 +408,6 @@ window.openExchangeModal = function() {
             </div>`);
     };
 
-    // 计算并显示质押预估收益（本金 + 利息，按当前周期利率）
     window.calcStakePreview = function() {
         const previewEl = document.getElementById('stakePreview');
         if (!previewEl) return;
@@ -457,7 +436,6 @@ window.openExchangeModal = function() {
         window.calcStakePreview();
     };
 
-    // 切换质押代币（图标按钮组）
     window.selectStakeToken = function(symbol) {
         const hidden = document.getElementById('stakeToken');
         if (hidden) hidden.value = symbol;
@@ -472,21 +450,19 @@ window.openExchangeModal = function() {
         const fromEl = document.getElementById('sFromToken');
         const toEl = document.getElementById('sToToken');
         if (!fromEl || !toEl) return;
-        
+
         const fromVal = fromEl.value;
         const toVal = toEl.value;
-        
+
         fromEl.value = toVal;
         toEl.value = fromVal;
-        
-        // 更新 logo
+
         document.getElementById('swapFromLogo').src = tokenConfig[toVal].logo;
         document.getElementById('swapToLogo').src = tokenConfig[fromVal].logo;
-        
+
         window.calcSwap();
     };
 
-    // 链切换时更新弹窗代币选项
     window.updateWithdrawTokens = function() {
         const select = document.getElementById('witToken');
         if (!select) return;
@@ -495,7 +471,7 @@ window.openExchangeModal = function() {
         select.innerHTML = tokens.map(symbol => 
             `<option value="${symbol}" ${symbol === currentVal ? 'selected' : ''}>${symbol}</option>`
         ).join('');
-        // 如果当前选中的代币不在新列表中，默认选第一个
+
         if (!tokens.includes(currentVal)) {
             select.value = tokens[0];
             document.getElementById('witLogo').src = tokenConfig[tokens[0]].logo;
@@ -510,15 +486,14 @@ window.openExchangeModal = function() {
         const tokens = getChainTokens().swap;
         const fromVal = fromSelect.value;
         const toVal = toSelect.value;
-        
+
         fromSelect.innerHTML = tokens.map(symbol => 
             `<option value="${symbol}" ${symbol === fromVal ? 'selected' : ''}>${symbol}</option>`
         ).join('');
         toSelect.innerHTML = tokens.map(symbol => 
             `<option value="${symbol}" ${symbol === toVal ? 'selected' : ''}>${symbol}</option>`
         ).join('');
-        
-        // 如果当前选中的代币不在新列表中，默认选第一个和第二个
+
         if (!tokens.includes(fromVal)) {
             fromSelect.value = tokens[0];
             document.getElementById('swapFromLogo').src = tokenConfig[tokens[0]].logo;
@@ -530,7 +505,6 @@ window.openExchangeModal = function() {
         window.calcSwap();
     };
 
-    // --- 6. 绑定与申请 ---
     window.openBindInviterModal = function() {
         window.showModal("modal_register_title", `
             <div class="space-y-4">
@@ -549,7 +523,6 @@ window.openExchangeModal = function() {
             </div>`);
     };
 
-    // --- 核心：弹窗展示逻辑 ---
     window.showModal = function(titleKey, html) {
         const overlay = document.getElementById('modalOverlay');
         const titleEl = document.getElementById('modalTitle');
@@ -567,18 +540,15 @@ window.openExchangeModal = function() {
         titleEl.setAttribute('data-i18n', titleKey);
         contentEl.innerHTML = html;
 
-        // 多重保险显示弹窗（兼容各种手机浏览器）
-        // 1. 直接赋值（最广泛兼容）
         overlay.style.display = 'flex';
-        // 2. setProperty !important（覆盖 CSS）
+
         overlay.style.setProperty('display', 'flex', 'important');
-        // 3. 移除可能存在的 hidden 属性/类
+
         overlay.removeAttribute('hidden');
         overlay.classList.remove('hidden');
-        // 4. 强制重绘
+
         void overlay.offsetHeight;
 
-        // 阻止弹窗内所有 input/textarea 的 Enter 键提交表单（使用命名函数避免重复绑定）
         if (!contentEl._modalKeyHandler) {
             contentEl._modalKeyHandler = function(e) {
                 if (e.key === 'Enter' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
@@ -589,7 +559,6 @@ window.openExchangeModal = function() {
             contentEl.addEventListener('keydown', contentEl._modalKeyHandler, true);
         }
 
-        // 阻止弹窗内所有 button 的默认表单提交行为
         if (!contentEl._modalClickHandler) {
             contentEl._modalClickHandler = function(e) {
                 if (e.target.tagName === 'BUTTON') {
@@ -599,16 +568,14 @@ window.openExchangeModal = function() {
             contentEl.addEventListener('click', contentEl._modalClickHandler, true);
         }
 
-        // 触发局部语言渲染
         if (window.i18nRender) {
             const currentLang = localStorage.getItem('fbs_lang') || 'zh-CN';
             window.i18nRender(currentLang);
         }
     };
 
-    // --- 辅助：创建带Logo的自定义币种选择器 ---
     function createTokenSelector(selectId, imgId, selectedSymbol) {
-        // 确保 selectedSymbol 在 tokenConfig 中存在，否则取第一个
+
         if (!tokenConfig[selectedSymbol]) {
             const keys = Object.keys(tokenConfig);
             selectedSymbol = keys.length > 0 ? keys[0] : 'USDT';

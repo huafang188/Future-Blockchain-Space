@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['zh-CN'] = {
-    // --- 1. 全局与导航 ---
+
     yandex_title: "你好，Yandex！",
     yandex_subtitle: "—— 开启全球 AI 算力新纪元",
     yandex_cta1: "接入算力交易市场",
@@ -61,15 +61,14 @@ window.i18nData['zh-CN'] = {
     neo_ton_partnership: "TON 即将来袭：NEO 即将支持 The Open Network——全球领先的L1区块链：速度最快，费用最低，亚秒级确认，几乎零费用，原生访问 Telegram 上超过 10 亿用户。",
     neo_solana_partnership: "NEO 即将支持 SOLANA——全球最快的高性能区块链之一，亚秒级确认，极低手续费，为DeFi和NFT生态提供强大支持。",
 
-    // --- 2. 矿机主界面 (Miner Page) ---
     miner_title: "我的矿机",
     miner_name: "NEO 生态 AI 智能矿机",
     miner_desc: "每台矿机算力≈30TH/s，功耗：1500W",
     m_count: "矿机数量",
     m_running: "在运行数量",
     m_yield: "预估日产",
-    m_term: "挖矿期限", // 对齐飞书截图
-    m_locked: "锁仓数量", // 对齐飞书截图
+    m_term: "挖矿期限", 
+    m_locked: "锁仓数量", 
     miner_model: "FBS 智能矿机 S1",
     partners_title: "合作伙伴 & 钱包",
     buy_miner: "购买矿机",
@@ -127,7 +126,7 @@ window.i18nData['zh-CN'] = {
     nry_private_pool_desc: "选择添加金额，向私募底池转入 USDT（BSC 链）",
     nry_private_pool_selected: "已选择",
     nry_private_pool_confirm: "确认添加",
-    
+
     nry_addr_official: "官方地址",nry_addr_contract: "合约",
     nry_addr_dev: "开发者",
     nry_addr_stake: "质押",
@@ -153,7 +152,6 @@ window.i18nData['zh-CN'] = {
     miner_detail_status_stopped: "已停止",
     miner_detail_note: "矿机详情即将上线，敬请期待",
 
-    // --- 2.3 NCL 跨链产币机 ---
     ncl_machine_status: "产币机状态",
     ncl_status_active: "运行中",
     ncl_machine_name: "NCL Монетоприемник",
@@ -168,7 +166,6 @@ window.i18nData['zh-CN'] = {
     ncl_chain: "跨链数",
     ncl_locked: "锁仓",
 
-    // --- 2.5 全网矿机运行情况 ---
     network_miner_title: "全网矿机运行情况",
     neo_total_supply: "NEO总发行量",
     data_syncing: "数据对接中，敬请期待",
@@ -181,7 +178,6 @@ window.i18nData['zh-CN'] = {
     neo_total_output: "NEO产出总量",
     neo_burned: "NEO销毁数量",
 
-    // --- 3. 资产与团队 ---
     assets_list: "资产列表",
     recharge: "充值",
     withdraw: "提现",
@@ -204,7 +200,7 @@ window.i18nData['zh-CN'] = {
     neo_need_ne: "需消耗 NEO",
     neo_bal_ne: "可用 NEO",
     neo_submit: "提交",
-    // 金秋九月活动
+
     act_badge: "限时活动 · 火爆进行中",
     act_title: "金秋九月 · 好礼相送",
     act_countdown_label: "距活动结束",
@@ -239,9 +235,6 @@ window.i18nData['zh-CN'] = {
     total_rewards: "累计奖励",
     reg_time: "注册时间",
 
-    // --- 4. 创始人简介 ---
-
-    // --- 5. NEO Energy Mining 核心特性 ---
     neo_energy_title: "NEO Energy Mining: 绿色能源算力生态系统",
     infra_title: "基础设施与硬件规格",
     infra_desc: "NEO Energy总部位于俄罗斯，在完全符合当地法律法规的框架下，构建了高性能、合规化的算力集群。",
@@ -262,7 +255,6 @@ window.i18nData['zh-CN'] = {
     btn_bind_inviter: "绑定我的推荐人",
     team_detail: "申请团队数据",
 
-    // --- 4. 弹窗公共部分 (Modals) ---
     btn_confirm: "确认提交",
     btn_confirm_bind: "立即绑定签名",
     btn_transfer_now: "提交转让签名",
@@ -321,8 +313,7 @@ window.i18nData['zh-CN'] = {
     receiver_address_placeholder: "接收者地址 (0x...)",
     amount_max_placeholder: "数量 (最多 {max})",
     max_available: "最大可用",
-    
-    // --- 5. 重要公告 ---
+
     important_announcement: "公告",
     news_title_short: "新闻",
     news_section_title: "公告与新闻",
@@ -346,35 +337,29 @@ window.i18nData['zh-CN'] = {
     neo_update_closing: "NRY 的正式上线不仅是 NEO 生态挖矿矩阵的重要里程碑，更是去中心化共识的一次全新实践。让我们携手同行，共同开启链上挖矿的新纪元！",
     neo_update_signature: "NRY 社区运营团队",
 
-    // --- 最新公告：多链升级与矿机部署调整 ---
     neo_multichain_title: "关于 NEO 生态多链升级与矿机部署调整的公告",
     neo_multichain_content: "尊敬的 NEO 社区成员与合作伙伴：\n\n大家好！为了给全球用户提供更广阔的生态互联体验，我们近期正式上线了多链支持功能。由于跨链数据处理量迎来爆发式增长，导致部分节点在数据加载时出现短暂延迟。目前，核心技术团队已全力投入专项优化，全力确保网络的高效与流畅。\n\n与此同时，受限于不同区块链网络底层的兼容性差异，为了确保每位用户的资产安全与系统稳定性， 我们将矿机部署时间调整为 12 小时以内 。\n\n追求卓越体验是我们始终不渝的目标。在此期间给您带来的不便，我们深表歉意，并由衷感谢全体社区成员的理解与包容。请与我们一同见证 NEO 的成长，我们将持续打磨产品，为您呈献更极致、更完美的生态体验！\n\nNEO 团队",
 
-    // --- 6. 购买矿机弹窗 ---
     buy_num_placeholder: "输入数量 (1-100)",
     confirm_pay_bsc: "确认支付 (BSC)",
-    
-    // --- 6. 电费弹窗 ---
+
     elec_num_placeholder: "矿机数量",
     days_30: "30 天",
     days_90: "90 天",
     days_180: "180 天",
     days_360: "360 天",
-    
-    // --- 7. 业务具体弹窗标题 (Modal Titles) ---
+
     modal_register_title: "激活挖矿账户",
     modal_bind_title: "绑定推荐关系",
     miner_transfer_title: "内部转让矿机",
     modal_team_title: "申请团队详单",
     internal_transfer: "内部转账",
 
-    // --- 6. 描述文字 ---
     register_desc: "请输入推荐人 ID 以激活您的算力节点",
     team_detail_desc: "由于数据量较大，团队详细报表将发送至您的邮箱",
     wait_audit: "申请已提交，请等待后台审核",
     sign_to_confirm: "请在钱包中签名以确认身份",
 
-    // --- 7. 后端状态与类型映射 (保持 Key 为中文以匹配飞书) ---
     已提交: "已提交",
     待处理: "待处理",
     处理中: "处理中",
@@ -386,8 +371,7 @@ window.i18nData['zh-CN'] = {
     内部转账: "内部转账",
     购买矿机: "购买矿机",
     缴纳电费: "缴纳电费",
-    
-    // --- 矿工等级翻译 ---
+
     钻石大师: "钻石大师",
     钻石节点: "钻石节点",
     钻石矿工: "钻石矿工",
@@ -400,7 +384,6 @@ window.i18nData['zh-CN'] = {
     账户锁定: "账户锁定",
     账户异常: "账户异常",
 
-    // --- 8. 新闻与公告 ---
     news_title: "公告与新闻",
     history_title: "交易历史",
     transfer_title: "转账流水",
@@ -421,7 +404,6 @@ window.i18nData['zh-CN'] = {
         "<b>全球节点招募持续推进：</b>针对全球合作伙伴的节点招募计划仍在火热进行中。用户通过购买并运行20台矿机即可晋升为生态节点，除享有永久1%的算力加成外，还将获得专属的交易税减免权益。"
     ],
 
-    // --- 9. 代币详情页 (Stats Page) ---
     stats_title: "代币详情与参数",
     stats_subtitle: "代币经济学与市场数据",
     token_labels: {
@@ -436,7 +418,6 @@ window.i18nData['zh-CN'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "跨链枢纽 / 生态互通媒介", total: "400,000,000", dist: "跨链节点奖励 40% | 生态合作 30% | 社区治理 15% | 团队开发 15%", mech: "跨链交互、协议对接时逐步释放。" }
     ],
 
-    // --- 11. 白皮书 (Whitepaper) ---
     wp_title: "白皮书概要",
     wp_subtitle: "（此白皮书为社区共同维护，著作权与最终解释权归社区成员所有）",
     wp_ch0_title: "摘要",
@@ -518,7 +499,6 @@ window.i18nData['zh-CN'] = {
     wp_ch3_s2_i6: "通缩型经济模型：",
     wp_ch3_s2_i6_desc: "通过 NET 燃料燃烧、交易手续费燃烧、生态回购销毁、质押锁仓等机制控制代币流通量，提升长期价值稳定性。通缩机制与真实算力收益相结合，形成价值支撑双引擎。",
 
-    // 第4章：技术架构
     wp_ch4_title: "4 技术架构",
     wp_ch4_s1_title: "4.1 底层区块链架构",
     wp_ch4_s1_p1: "项目采用自主研发模块化底层公链，核心模块包括 P2P 网络模块、分布式账本模块、加密签名模块、智能合约虚拟机、交易内存池、区块打包与同步模块、数据分片存储模块、跨链协议适配模块。",
@@ -544,7 +524,6 @@ window.i18nData['zh-CN'] = {
     wp_ch4_s4_p1: "算力数据、能耗数据、区块高度、交易记录、通证分配、销毁记录、质押量、挖矿产出量全部上链，任何人可通过区块链浏览器实时查询，实现完全公开、透明、可追溯。",
     wp_ch4_s4_p2: "所有规则调整、参数修改、合约升级均需公示并上链执行，杜绝暗箱操作。数据透明机制是生态信任的基础，也是社区治理的重要依据。",
 
-    // 第5章：共识机制与挖矿原理
     wp_ch5_title: "5 共识机制与挖矿原理",
     wp_ch5_s1_title: "5.1 共识机制：PoE + PoS + DPoS 混合共识",
     wp_ch5_s1_1_title: "5.1.1 PoE（Proof of Energy）能源算力证明",
@@ -577,7 +556,6 @@ window.i18nData['zh-CN'] = {
     wp_ch5_s3_r5: "早期参与者（第一年内）享受 1.8 倍早期红利系数",
     wp_ch5_s3_r6: "邀请奖励：下级收益的 5% 奖励给邀请人，上限 10 级",
 
-    // 第6章：通证经济体系
     wp_ch6_title: "6 通证经济体系",
     wp_ch6_s1_title: "6.1 通证体系总览",
     wp_ch6_s1_p1: "本项目通证经济体系采用 \"六维协同模型\"，区别于行业内普遍采用的单一代币或双代币模型，通过功能解耦实现生态内部价值流动的精细化分工。",
@@ -640,7 +618,6 @@ window.i18nData['zh-CN'] = {
     wp_ch6_s8_title: "6.8 通证流转闭环",
     wp_ch6_s8_flow: "用户挖矿→获得 NEO→质押获取 NEX/NRY→支付 NET 手续费→发行/交易 NEA→持有 NRY 分红→NCL 跨链互通→全场景燃烧通缩→价值回流 NEO",
 
-    // 第7章：生态应用场景
     wp_ch7_title: "7 生态应用场景",
     wp_ch7_s1_title: "7.1 个人挖矿",
     wp_ch7_s1_p1: "普通用户通过手机、电脑轻节点参与挖矿，无需专业矿机，低功耗、低门槛、易操作。系统根据在线时长、贡献度、清洁能源使用情况发放奖励，实现全民参与。",
@@ -657,7 +634,6 @@ window.i18nData['zh-CN'] = {
     wp_ch7_s7_title: "7.7 去中心化治理",
     wp_ch7_s7_p1: "社区投票决定参数调整、挖矿规则、燃烧比例、生态预算、合约升级等重大事项。",
 
-    // 第8章：项目治理与社区自治
     wp_ch8_title: "8 项目治理与社区自治",
     wp_ch8_s1_title: "8.1 治理架构",
     wp_ch8_s1_i1: "核心理事会：战略、合规、风险",
@@ -672,7 +648,6 @@ window.i18nData['zh-CN'] = {
     wp_ch8_s3_title: "8.3 治理内容",
     wp_ch8_s3_p1: "通证发行、挖矿收益、燃烧机制、跨链接入、生态预算、节点奖惩、系统升级等。",
 
-    // 第9章：发展路线图
     wp_ch9_title: "9 发展路线图",
     wp_ch9_s1_title: "阶段一：基础搭建（Q1–Q2）",
     wp_ch9_s1_p1: "底层公链开发、测试网上线、钱包/浏览器开发、六类通证合约部署、安全审计、早期节点招募。",
@@ -683,12 +658,10 @@ window.i18nData['zh-CN'] = {
     wp_ch9_s4_title: "阶段四：生态成熟（次年）",
     wp_ch9_s4_p1: "AI 算力接入、元宇宙算力合作、全球清洁能源节点布局、完全去中心化自治。",
 
-    // 第10章：团队与合作机构
     wp_ch10_title: "10 团队与合作机构",
     wp_ch10_s1_p1: "核心团队由区块链底层开发工程师、矿场运营专家、清洁能源行业资深人士、通证经济设计师、安全审计专家、法务合规顾问组成，具备多年行业经验。",
     wp_ch10_s2_p1: "合作机构包括：清洁能源电站、算力硬件厂商、区块链安全公司、第三方审计机构、分布式算力平台、行业协会、绿色能源研究机构。",
 
-    // 第11章：风险提示
     wp_ch11_title: "11 风险提示",
     wp_ch11_s1_title: "11.1 政策监管风险",
     wp_ch11_s1_p1: "全球各国对区块链、挖矿、数字资产政策存在不确定性，可能导致项目在部分地区无法正常运营。",
@@ -705,7 +678,6 @@ window.i18nData['zh-CN'] = {
     wp_ch11_s7_title: "11.7 合作与运营风险",
     wp_ch11_s7_p1: "矿场接入不及预期、清洁能源合作推进缓慢、市场推广未达目标可能影响生态发展。",
 
-    // 第12章：合规声明
     wp_ch12_title: "12 合规声明",
     wp_ch12_i1: "本项目严格遵守运营所在地法律法规，不面向受制裁国家、地区及不合格投资者提供服务。",
     wp_ch12_i2: "生态内所有通证均为功能型通证，不构成证券、股票、股权、期货、基金或任何形式的理财产品。",
@@ -715,7 +687,6 @@ window.i18nData['zh-CN'] = {
     wp_ch12_i6: "团队有权根据政策法规调整生态机制、通证规则、功能模块，调整前将进行社区公示。",
     wp_ch12_i7: "严禁利用本系统从事非法金融活动、洗钱、诈骗、恐怖主义融资等行为，违者永久封禁。",
 
-    // 第13章：附录
     wp_ch13_title: "13 附录",
     wp_ch13_s1_title: "13.1 术语表",
     wp_ch13_s1_p1: "PoE、PoS、DPoS、NEO、NEX、NET、NEA、NRY、NCL、算力映射、燃烧通缩、跨链桥、链上核验、清洁能源系数等。",
@@ -764,7 +735,7 @@ window.i18nData['zh-CN'] = {
     claim_reward_balance: "待提取奖励",
     claim_reward_input_label: "提取数量",
     claim_reward_confirm: "确认提取",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "AI 算力矩阵 · 联合打造",
     market_hero_title: "算力交易市场",
     market_hero_sub: "全球首创链上算力交易体系 · 让算力像水电一样自由流通",

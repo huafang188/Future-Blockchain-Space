@@ -1,20 +1,9 @@
-/**
- * NEO 链上银行模块
- * ------------------------------------------------------------------
- * 数据对接说明：
- *   读取：GET {BANK_API}?address=<钱包地址>
- *         后端从 Google Sheets「银行」表按「用户」列匹配，返回：
- *         { pool: { totalStaked }, user: { myStake, period, rate, daily } }
- *         - 全网总质押(totalStaked)：公共数据，每个用户加载相同值
- *         - 我的质押/质押周期/质押利率/预估每日收益：用户级
- * ------------------------------------------------------------------
- */
+
 (function () {
     'use strict';
 
     var BANK_API = 'https://api.neoneo.ink/api/bank';
 
-    // 查询银行公共数据与用户存款信息
     window.fetchBankInfo = async function (address) {
         if (!address) return null;
         var url = BANK_API + '?address=' + encodeURIComponent(address) + '&t=' + Date.now();
@@ -30,7 +19,6 @@
         }
     };
 
-    // 通用格式化：避免单位重复（sheet 里可能已带 % / $ / NEO / 天）
     function fmt(val, unit, opts) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return (opts && opts.empty) || unit;
@@ -41,7 +29,6 @@
         return s + (unit || '');
     }
 
-    // 金额/数量格式化：解析「19387423NEO」这类数字+单位，转「19,387,423 NEO」
     function fmtAmount(val, defaultUnit) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
@@ -55,7 +42,6 @@
         return u ? (out + ' ' + u) : out;
     }
 
-    // 渲染银行数据到 UI
     window.renderBank = function (data) {
         var set = function (id, v) {
             var el = document.getElementById(id);
@@ -79,7 +65,6 @@
         set('bank_my_daily', fmtAmount(user.daily, 'NEO'));
     };
 
-    // 从 localStorage 读取地址并刷新银行数据
     window.refreshBank = async function (address) {
         var addr = address || localStorage.getItem('fbs_address') || '';
         if (!addr) { window.renderBank(null); return; }
@@ -87,7 +72,6 @@
         window.renderBank(data);
     };
 
-    // 钱包地址/链变化时刷新
     var refreshTimer = null;
     window.addEventListener('fbs-storage-change', function () {
         if (refreshTimer) clearTimeout(refreshTimer);
@@ -97,19 +81,16 @@
         }, 600);
     });
 
-    // 页面加载后主动刷一次
     window.addEventListener('load', function () {
         setTimeout(function () { window.refreshBank(); }, 800);
     });
 
-    // 读取用户银行字段原始值
     function getBankUser(key) {
         var d = (window.bankData && window.bankData.user) || {};
         var v = d[key];
         return (v === null || v === undefined) ? '' : String(v).trim();
     }
 
-    // 提取收益弹窗（可提取收益 + 输入框）
     window.claimBankIncome = function () {
         var income = fmtAmount(getBankUser('daily'), 'NEO');
         window.showModal('bank_btn_income', `
@@ -134,7 +115,6 @@
             </div>`);
     };
 
-    // 提取本金弹窗（可提取本金 + 到期时间 + 输入框）
     window.withdrawBankPrincipal = function () {
         var principal = fmtAmount(getBankUser('myStake'), 'NEO');
         var due = fmt(getBankUser('period'), '', { empty: '--' });
@@ -164,7 +144,6 @@
             </div>`);
     };
 
-    // 确认提取收益
     window.doClaimBankIncome = async function () {
         var amount = parseFloat(document.getElementById('bankIncomeAmount') && document.getElementById('bankIncomeAmount').value) || 0;
         if (amount <= 0) { alert('请输入提取数量'); return; }
@@ -173,7 +152,6 @@
         setTimeout(function () { window.refreshBank && window.refreshBank(); }, 2000);
     };
 
-    // 确认提取本金（按输入数量提取）
     window.doWithdrawBankPrincipal = async function () {
         var amount = parseFloat(document.getElementById('bankPrincipalAmount') && document.getElementById('bankPrincipalAmount').value) || 0;
         if (amount <= 0) { alert('请输入提取数量'); return; }

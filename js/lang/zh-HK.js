@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['zh-HK'] = {
-    // --- 1. 全局與導航 ---
+
     yandex_title: "你好，Yandex！",
     yandex_subtitle: "—— 開啟全球 AI 算力新紀元",
     yandex_cta1: "接入算力交易市場",
@@ -61,14 +61,13 @@ window.i18nData['zh-HK'] = {
     neo_ton_partnership: "TON 即將來襲：NEO 即將支援 The Open Network——全球領先的L1區塊鏈：速度最快，費用最低，亞秒級確認，幾乎零費用，原生訪問 Telegram 上超過 10 億用戶。",
     neo_solana_partnership: "NEO 即將支援 SOLANA——全球最快的高性能區塊鏈之一，亞秒級確認，極低手續費，為DeFi和NFT生態提供強大支援。",
 
-    // --- 2. 礦機主界面 (Miner Page) ---
     miner_title: "我的礦機",
     miner_name: "NEO 生態 AI 智能礦機",
     miner_desc: "每台礦機算力≈30TH/s，功耗：1500W",
     m_count: "礦機數量",
     m_yield: "預估日產",
-    m_term: "挖礦期限", // 對齊飛書截圖
-    m_locked: "鎖倉數量", // 對齊飛書截圖
+    m_term: "挖礦期限", 
+    m_locked: "鎖倉數量", 
     miner_model: "FBS 智能礦機 S1",
     partners_title: "合作夥伴 & 錢包",
     buy_miner: "購買礦機",
@@ -126,7 +125,7 @@ window.i18nData['zh-HK'] = {
     nry_private_pool_desc: "選擇添加金額，向私募底池轉入 USDT（BSC 鏈）",
     nry_private_pool_selected: "已選擇",
     nry_private_pool_confirm: "確認添加",
-    
+
     nry_addr_official: "官方地址",nry_addr_contract: "合約",
     nry_addr_dev: "開發者",
     nry_addr_stake: "質押",
@@ -152,7 +151,6 @@ window.i18nData['zh-HK'] = {
     miner_detail_status_stopped: "已停止",
     miner_detail_note: "礦機詳情即將上線，敬請期待",
 
-    // --- 2.3 NCL 跨鏈產幣機 ---
     ncl_machine_status: "產幣機狀態",
     ncl_status_active: "運行中",
     ncl_machine_name: "NCL Монетоприемник",
@@ -167,7 +165,6 @@ window.i18nData['zh-HK'] = {
     ncl_chain: "跨鏈數",
     ncl_locked: "鎖倉",
 
-    // --- 2.5 全網礦機運行情況 ---
     network_miner_title: "全網礦機運行情況",
     neo_total_supply: "NEO總發行量",
     data_syncing: "數據對接中，敬請期待",
@@ -180,7 +177,6 @@ window.i18nData['zh-HK'] = {
     neo_total_output: "NEO產出總量",
     neo_burned: "NEO銷毀數量",
 
-    // --- 3. 資產與團隊 (User Page) ---
     assets_list: "資產列表",
     recharge: "充值",
     withdraw: "提幣",
@@ -203,7 +199,7 @@ window.i18nData['zh-HK'] = {
     neo_need_ne: "需消耗 NEO",
     neo_bal_ne: "可用 NEO",
     neo_submit: "提交",
-    // 金秋九月活動
+
     act_badge: "限時活動 · 火爆進行中",
     act_title: "金秋九月 · 好禮相送",
     act_countdown_label: "距活動結束",
@@ -240,7 +236,6 @@ window.i18nData['zh-HK'] = {
     btn_bind_inviter: "綁定我的推薦人",
     team_detail: "申請團隊數據",
 
-    // --- 4. 彈窗公共部分 (Modals) ---
     btn_confirm: "確認提交",
     btn_confirm_bind: "立即綁定簽名",
     btn_transfer_now: "提交轉讓簽名",
@@ -292,8 +287,7 @@ window.i18nData['zh-HK'] = {
     bank_principal_confirm: "確認提取本金",
     bank_btn: "敬請期待",
     transfer_fee: "手續費：0.00USDT",
-    
-    // --- 5. 重要公告 ---
+
     important_announcement: "重要公告",
     news_title_short: "新聞",
     news_section_title: "公告與新聞",
@@ -317,24 +311,20 @@ window.i18nData['zh-HK'] = {
     neo_update_closing: "NRY 的正式上線不僅是 NEO 生態挖礦矩陣的重要里程碑，更是去中心化共識的一次全新實踐。讓我們攜手同行，共同開啟鏈上挖礦的新紀元！",
     neo_update_signature: "NRY 社區運營團隊",
 
-    // --- 最新公告：多鏈升級與礦機部署調整 ---
     neo_multichain_title: "關於 NEO 生態多鏈升級與礦機部署調整的公告",
     neo_multichain_content: "尊敬的 NEO 社區成員與合作夥伴：\n\n大家好！為了給全球用戶提供更廣闊的生態互聯體驗，我們近期正式上線了多鏈支持功能。由於跨鏈數據處理量迎來爆發式增長，導致部分節點在數據加載時出現短暫延遲。目前，核心技術團隊已全力投入專項優化，全力確保網絡的高效與流暢。\n\n與此同時，受限於不同區塊鏈網絡底層的兼容性差異，為了確保每位用戶的資產安全與系統穩定性，我們將礦機部署時間調整為 12 小時以內。\n\n追求卓越體驗是我們始終不渝的目標。在此期間給您帶來的不便，我們深表歉意，並由衷感謝全體社區成員的理解與包容。請與我們一同見證 NEO 的成長，我們將持續打磨產品，為您呈獻更極致、更完美的生態體驗！\n\nNEO 團隊",
 
-    // --- 6. 業務具體彈窗標題 (Modal Titles) ---
     modal_register_title: "激活挖礦帳戶",
     modal_bind_title: "綁定推薦關係",
     miner_transfer_title: "內部轉讓礦機",
     modal_team_title: "申請團隊詳單",
     internal_transfer: "內部轉賬",
 
-    // --- 6. 描述文字 ---
     register_desc: "請輸入推薦人 ID 以激活您的算力節點",
     team_detail_desc: "由於數據量較大，團隊詳細報表將發送至您的郵箱",
     wait_audit: "申請已提交，請等待後台審核",
     sign_to_confirm: "請在錢包中簽名以確認身份",
 
-    // --- 7. 後端狀態與類型映射 (保持 Key 為簡體以匹配飛書原始數據) ---
     已提交: "已提交",
     待处理: "待處理",
     处理中: "處理中",
@@ -347,8 +337,7 @@ window.i18nData['zh-HK'] = {
     內部轉賬: "內部轉賬",
     購買礦機: "購買礦機",
     缴纳电费: "繳納電費",
-    
-    // --- 礦工等級翻譯 ---
+
     钻石大师: "鑽石大師",
     钻石节点: "鑽石節點",
     钻石矿工: "鑽石礦工",
@@ -361,7 +350,6 @@ window.i18nData['zh-HK'] = {
     账户锁定: "賬戶鎖定",
     账户异常: "賬戶異常",
 
-    // --- 8. 新聞與公告 ---
     news_title: "公告與新聞",
     history_title: "交易歷史",
     transfer_title: "轉賬流水",
@@ -382,7 +370,6 @@ window.i18nData['zh-HK'] = {
         "<b>全球節點招募持續推進：</b>針對全球合作夥伴的節點招募計劃仍在火熱進行中。用戶通過購買並運行20台礦機即可晉升為生態節點，除享有永久1%的算力加成外，還將獲得專屬的交易稅減免權益。"
     ],
 
-    // --- 9. 代幣詳情頁 (Stats Page) ---
     stats_title: "代幣詳情與參數",
     stats_subtitle: "代幣經濟學與市場數據",
     token_labels: {
@@ -397,7 +384,6 @@ window.i18nData['zh-HK'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "跨鏈樞紐 / 生態互通媒介", total: "400,000,000", dist: "跨鏈節點獎勵 40% | 生態合作 30% | 社區治理 15% | 團隊開發 15%", mech: "跨鏈交互、協議對接時逐步釋放。" }
     ],
 
-    // --- 11. 白皮書 (Whitepaper) ---
     wp_title: "白皮書概要",
     wp_subtitle: "（此白皮書為社區共同維護，著作權與最終解釋權歸社區成員所有）",
     wp_ch0_title: "摘要",
@@ -479,7 +465,6 @@ window.i18nData['zh-HK'] = {
     wp_ch3_s2_i6: "通縮型經濟模型：",
     wp_ch3_s2_i6_desc: "通過 NET 燃料燃燒、手續費燃燒、生態回購銷毀等機制控制代幣流通量，提升長期價值穩定性。",
 
-    // 第4章：技術架構
     wp_ch4_title: "4 技術架構",
     wp_ch4_s1_title: "4.1 底層區塊鏈架構",
     wp_ch4_s1_p1: "項目採用自主研發模組化底層公鏈，核心模組包括 P2P 網路模組、分散式帳本模組、加密簽名模組、智能合約虛擬機、交易記憶池、區塊打包與同步模組、數據分片存儲模組、跨鏈協議適配模組。",
@@ -505,7 +490,6 @@ window.i18nData['zh-HK'] = {
     wp_ch4_s4_p1: "算力數據、能耗數據、區塊高度、交易記錄、通證分配、銷毀記錄、質押量、挖礦產出量全部上鏈，任何人可通過區塊鏈瀏覽器實時查詢，實現完全公開、透明、可追溯。",
     wp_ch4_s4_p2: "所有規則調整、參數修改、合約升級均需公示並上鏈執行，杜絕暗箱操作。數據透明機制是生態信任的基礎，也是社區治理的重要依據。",
 
-    // 第5章：共識機制與挖礦原理
     wp_ch5_title: "5 共識機制與挖礦原理",
     wp_ch5_s1_title: "5.1 共識機制：PoE + PoS + DPoS 混合共識",
     wp_ch5_s1_1_title: "5.1.1 PoE（Proof of Energy）能源算力證明",
@@ -538,7 +522,6 @@ window.i18nData['zh-HK'] = {
     wp_ch5_s3_r5: "早期參與者（第一年內）享受 1.8 倍早期紅利係數",
     wp_ch5_s3_r6: "邀請獎勵：下級收益的 5% 獎勵給邀請人，上限 10 級",
 
-    // 第6章：通證經濟體系
     wp_ch6_title: "6 通證經濟體系",
     wp_ch6_s1_title: "6.1 通證體系總覽",
     wp_ch6_s1_p1: "本項目通證經濟體系採用「六維協同模型」，區別於行業內普遍採用的單一代幣或雙代幣模型，通過功能解耦實現生態內部價值流動的精細化分工。",
@@ -601,7 +584,6 @@ window.i18nData['zh-HK'] = {
     wp_ch6_s8_title: "6.8 通證流轉閉環",
     wp_ch6_s8_flow: "用戶挖礦→獲得 NEO→質押獲取 NEX/NRY→支付 NET 手續費→發行/交易 NEA→持有 NRY 分紅→NCL 跨鏈互通→全場景燃燒通縮→價值回流 NEO",
 
-    // 第7章：生態應用場景
     wp_ch7_title: "7 生態應用場景",
     wp_ch7_s1_title: "7.1 個人挖礦",
     wp_ch7_s1_p1: "普通用戶通過手機、電腦輕節點參與挖礦，無需專業礦機，低功耗、低門檻、易操作。系統根據在線時長、貢獻度、清滿能源使用情況發放獎勵，實現全民參與。",
@@ -618,7 +600,6 @@ window.i18nData['zh-HK'] = {
     wp_ch7_s7_title: "7.7 去中心化治理",
     wp_ch7_s7_p1: "社區投票決定參數調整、挖礦規則、燃燒比例、生態預算、合約升級等重大事項。",
 
-    // 第8章：項目治理與社區自治
     wp_ch8_title: "8 項目治理與社區自治",
     wp_ch8_s1_title: "8.1 治理架構",
     wp_ch8_s1_i1: "核心理事會：戰略、合規、風險",
@@ -633,7 +614,6 @@ window.i18nData['zh-HK'] = {
     wp_ch8_s3_title: "8.3 治理內容",
     wp_ch8_s3_p1: "通證發行、挖礦收益、燃燒機制、跨鏈接入、生態預算、節點獎懲、系統升級等。",
 
-    // 第9章：發展路線圖
     wp_ch9_title: "9 發展路線圖",
     wp_ch9_s1_title: "階段一：基礎搭建（Q1–Q2）",
     wp_ch9_s1_p1: "底層公鏈開發、測試網上線、錢包/瀏覽器開發、六類通證合約部署、安全審計、早期節點招募。",
@@ -644,12 +624,10 @@ window.i18nData['zh-HK'] = {
     wp_ch9_s4_title: "階段四：生態成熟（次年）",
     wp_ch9_s4_p1: "AI 算力接入、元宇宙算力合作、全球清滿能源節點佈局、完全去中心化自治。",
 
-    // 第10章：團隊與合作機構
     wp_ch10_title: "10 團隊與合作機構",
     wp_ch10_s1_p1: "核心團隊由區塊鏈底層開發工程師、礦場運營專家、清滿能源行業資深人士、通證經濟設計師、安全審計專家、法務合規顧問組成，具備多年行業經驗。",
     wp_ch10_s2_p1: "合作機構包括：清滿能源電站、算力硬件廠商、區塊鏈安全公司、第三方審計機構、分布式算力平台、行業協會、綠色能源研究機構。",
 
-    // 第11章：風險提示
     wp_ch11_title: "11 風險提示",
     wp_ch11_s1_title: "11.1 政策監管風險",
     wp_ch11_s1_p1: "全球各國對區塊鏈、挖礦、數字資產政策存在不確定性，可能導致項目在部分地區無法正常運營。",
@@ -666,7 +644,6 @@ window.i18nData['zh-HK'] = {
     wp_ch11_s7_title: "11.7 合作與運營風險",
     wp_ch11_s7_p1: "礦場接入不及預期、清滿能源合作推進緩慢、市場推廣未達目標可能影響生態發展。",
 
-    // 第12章：合規聲明
     wp_ch12_title: "12 合規聲明",
     wp_ch12_i1: "本項目嚴格遵守運營所在地法律法規，不面向受制裁國家、地區及不合格投資者提供服務。",
     wp_ch12_i2: "生態內所有通證均為功能型通證，不構成證券、股票、股權、期貨、基金或任何形式的理財產品。",
@@ -676,7 +653,6 @@ window.i18nData['zh-HK'] = {
     wp_ch12_i6: "團隊有權根據政策法規調整生態機制、通證規則、功能模塊，調整前將進行社區公示。",
     wp_ch12_i7: "嚴禁利用本系統從事非法金融活動、洗錢、詐騙、恐怖主義融資等行為，違者永久封禁。",
 
-    // 第13章：附錄
     wp_ch13_title: "13 附錄",
     wp_ch13_s1_title: "13.1 術語表",
     wp_ch13_s1_p1: "PoE、PoS、DPoS、NEO、NEX、NET、NEA、NRY、NCL、算力映射、燃燒通縮、跨鏈橋、鏈上核驗、清滿能源係數等。",
@@ -689,9 +665,6 @@ window.i18nData['zh-HK'] = {
     wp_ch13_s5_title: "13.5 版本更新記錄",
     wp_ch13_s5_p1: "V1.0：初始完整版白皮書，後續升級以社區投票公示為準。",
 
-    // --- 4. 創始人簡介 ---
-
-    // --- 5. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining: 綠色能源算力生態系統",
     infra_title: "基礎設施與硬件規格",
     infra_desc: "NEO Energy總部位於俄羅斯，在完全符合當地法律法規的框架下，構建了高性能、合規化的算力集群。",
@@ -746,7 +719,7 @@ window.i18nData['zh-HK'] = {
     claim_reward_balance: "待提取獎勵",
     claim_reward_input_label: "提取數量",
     claim_reward_confirm: "確認提取",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "AI 算力矩陣 · 聯合打造",
     market_hero_title: "算力交易市場",
     market_hero_sub: "全球首創鏈上算力交易體系 · 讓算力像水電一樣自由流通",

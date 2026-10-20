@@ -1,6 +1,6 @@
 window.i18nData = window.i18nData || {};
 window.i18nData['fr'] = {
-    // --- 1. Global & Navigation ---
+
     yandex_title: "Bonjour, Yandex !",
     yandex_subtitle: "—— Une nouvelle ère de la puissance de calcul IA mondiale",
     yandex_cta1: "Accéder au marché de puissance de calcul",
@@ -61,7 +61,6 @@ window.i18nData['fr'] = {
     neo_ton_partnership: "TON arrive bientôt: NEO supportera bientôt The Open Network — le plus grand L1 blockchain au monde: vitesse maximale, frais minimaux, confirmation en sous-seconde, coût presque nul, accès natif à plus de 1 milliard d'utilisateurs Telegram.",
     neo_solana_partnership: "NEO va bientôt prendre en charge SOLANA — l'une des blockchains haute performance les plus rapides au monde, confirmation en sous-seconde, frais extrêmement bas, soutien puissant pour les écosystèmes DeFi et NFT.",
 
-    // --- 2. Interface Mineur (Miner Page) ---
     miner_title: "Mes Mineurs",
     miner_name: "Mineur Intelligent AI NEO Eco",
     miner_desc: "Puissance ≈ 30TH/s, Consommation : 1500W",
@@ -127,7 +126,7 @@ window.i18nData['fr'] = {
     nry_private_pool_desc: "Choisir le montant pour ajouter USDT au pool privé (BSC)",
     nry_private_pool_selected: "Sélectionné",
     nry_private_pool_confirm: "Confirmer",
-    
+
     nry_addr_official: "Adresse officielle",nry_addr_contract: "Contrat",
     nry_addr_dev: "Développeur",
     nry_addr_stake: "Stake",
@@ -153,7 +152,6 @@ window.i18nData['fr'] = {
     miner_detail_status_stopped: "Arrêté",
     miner_detail_note: "Les détails du mineur arrivent bientôt, restez à l'écoute",
 
-    // --- 2.3 Machine à Pièces Cross-Chain NCL ---
     ncl_machine_status: "Statut de la Machine",
     ncl_status_active: "En fonctionnement",
     ncl_machine_name: "NCL Монетоприемник",
@@ -168,7 +166,6 @@ window.i18nData['fr'] = {
     ncl_chain: "Chaînes",
     ncl_locked: "Bloqué",
 
-    // --- 2.5 Statut des Mineurs du Réseau ---
     network_miner_title: "Statut des Mineurs du Réseau",
     neo_total_supply: "Offre Totale NEO",
     data_syncing: "Synchronisation des données, veuillez patienter",
@@ -181,7 +178,6 @@ window.i18nData['fr'] = {
     neo_total_output: "Production Totale NEO",
     neo_burned: "NEO Brûlé",
 
-    // --- 3. Actifs et Équipe (User Page) ---
     assets_list: "Liste des Actifs",
     recharge: "Dépôt",
     withdraw: "Retrait",
@@ -204,7 +200,7 @@ window.i18nData['fr'] = {
     neo_need_ne: "NEO requis",
     neo_bal_ne: "NEO disponible",
     neo_submit: "Envoyer",
-    // Campagne de septembre
+
     act_badge: "Événement limité · En cours",
     act_title: "Septembre doré · Cadeaux offerts",
     act_countdown_label: "Fin dans",
@@ -241,7 +237,6 @@ window.i18nData['fr'] = {
     btn_bind_inviter: "Lier le Parrain",
     team_detail: "Demander Données Équipe",
 
-    // --- 4. Éléments communs des fenêtres (Modals) ---
     btn_confirm: "Confirmer l'envoi",
     btn_confirm_bind: "Signer et Lier",
     btn_transfer_now: "Signer et Transférer",
@@ -293,8 +288,7 @@ window.i18nData['fr'] = {
     bank_principal_confirm: "Confirmer le retrait",
     bank_btn: "Bientôt",
     transfer_fee: "Frais: 0.00USDT",
-    
-    // --- 5. Annonce importante ---
+
     important_announcement: "Annonce importante",
     news_title_short: "Actualités",
     news_section_title: "Annonces et Actualités",
@@ -318,24 +312,20 @@ window.i18nData['fr'] = {
     neo_update_closing: "Le lancement officiel de NRY n'est pas seulement une étape majeure pour la matrice de minage NEO, mais aussi une pratique entièrement nouvelle du consensus décentralisé. Avançons ensemble et ouvrons une nouvelle ère du minage on-chain !",
     neo_update_signature: "Équipe des opérations de la communauté NRY",
 
-    // --- Latest Announcement ---
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
 
-    // --- 6. Titres des fenêtres (Modal Titles) ---
     modal_register_title: "Activer Compte de Minage",
     modal_bind_title: "Liaison de Parrainage",
     miner_transfer_title: "Transfert Interne de Mineur",
     modal_team_title: "Demande de Données Équipe",
     internal_transfer: "Transfert Interne",
 
-    // --- 6. Descriptions ---
     register_desc: "Entrez l'ID du parrain pour activer votre nœud de puissance",
     team_detail_desc: "En raison du volume de données, le rapport détaillé sera envoyé par e-mail",
     wait_audit: "Demande soumise, en attente de révision",
     sign_to_confirm: "Veuillez signer dans votre portefeuille pour confirmer",
 
-    // --- 7. Mapping des statuts Backend (Clés en chinois pour compatibilité) ---
     已提交: "Soumis",
     待处理: "En attente",
     处理中: "En cours",
@@ -349,7 +339,6 @@ window.i18nData['fr'] = {
     购买矿机: "Achat Mineur",
     缴纳电费: "Paiement Électricité",
 
-    // --- Traduction du Niveau de Mineur ---
     钻石大师: "Maître Diamant",
     钻石节点: "Nœud Diamant",
     钻石矿工: "Mineur Diamant",
@@ -362,7 +351,6 @@ window.i18nData['fr'] = {
     账户锁定: "Compte verrouillé",
     账户异常: "Compte anormal",
 
-    // --- 8. Nouvelles et Annonces ---
     news_title: "Annonces et Nouvelles",
     history_title: "Historique des Transactions",
     transfer_title: "Historique des Transfers",
@@ -383,7 +371,6 @@ window.i18nData['fr'] = {
         "<b>Recrutement mondial de nœuds en cours：</b>Le programme de recrutement de partenaires mondiaux pour les nœuds continue activement. Les utilisateurs peuvent devenir des nœuds de l'écosystème en achetant et exploitant 20 machines de minage, bénéficiant d'un bonus de puissance de calcul permanent de 1% et de réductions exclusives sur les taxes de transaction."
     ],
 
-    // --- 4. NEO Energy Mining Features ---
     neo_energy_title: "NEO Energy Mining : Écosystème de puissance de calcul à énergie verte",
     infra_title: "Infrastructure & Spécifications matérielles",
     infra_desc: "NEO Energy a son siège en Russie et construit un cluster de puissance de calcul performant et conforme dans le respect total des lois et réglementations locales.",
@@ -402,7 +389,6 @@ window.i18nData['fr'] = {
     green_complement: "Complément multi-énergies : Intègre l'hydroélectricité, le photovoltaïque, l'éolien et l'énergie biomasses.",
     green_efficiency: "Optimisation de l'efficacité énergétique : Réduit l'intensité des émissions de carbone à la source et transforme la puissance de calcul blockchain en un moteur essentiel pour la transition énergétique verte.",
 
-    // --- 9. Détails des Jetons (Stats Page) ---
     stats_title: "Tokenomics",
     stats_subtitle: "Données Marché & Paramètres",
     token_labels: {
@@ -417,7 +403,6 @@ window.i18nData['fr'] = {
         { symbol: "NCL", name: "Neo Core Link", desc: "Hub cross-chain / Média d'interopérabilité", total: "400,000,000", dist: "Récompenses nœuds 40% | Partenariats 30% | Gouvernance 15% | Développement 15%", mech: "Libération lors de l'intégration des protocoles." }
     ],
 
-    // --- 11. Whitepaper ---
     wp_title: "Aperçu du Livre Blanc",
     wp_subtitle: "(Ce Livre Blanc est maintenu conjointement par la communauté. Les droits d'auteur et l'interprétation finale appartiennent aux membres de la communauté)",
     wp_ch0_title: "Résumé Exécutif",
@@ -499,7 +484,6 @@ window.i18nData['fr'] = {
     wp_ch3_s2_i6: "Modèle Économique Déflationniste :",
     wp_ch3_s2_i6_desc: "Par des mécanismes tels que la combustion de carburant NET, la combustion des frais de transaction, le rachat-écologique et la destruction, ainsi que le verrouillage-staking, contrôle la quantité de tokens en circulation, améliorant la stabilité de valeur à long terme. Le mécanisme déflationniste combiné aux vrais revenus de minage forme un double moteur de soutien de valeur.",
 
-    // Chapitre 4: Architecture Technique
     wp_ch4_title: "4 Architecture Technique",
     wp_ch4_s1_title: "4.1 Architecture Blockchain Sous-jacente",
     wp_ch4_s1_p1: "Le projet adopte une chaîne publique sous-jacente modulaire auto-développée, avec des modules centraux comprenant module réseau P2P, module de registre distribué, module de signature cryptographique, machine virtuelle de contrats intelligents, pool de mémoire de transactions, module d'emballage et de synchronisation de blocs, module de stockage de données sharding, module d'adaptation de protocole cross-chain.",
@@ -525,7 +509,6 @@ window.i18nData['fr'] = {
     wp_ch4_s4_p1: "Données de puissance de calcul, données de consommation énergétique, hauteur de bloc, enregistrements de transactions, distribution de tokens, enregistrements de destruction, quantités de staking, production de minage sont tous sur chaîne, quiconque peut les consulter en temps réel via le navigateur blockchain, réalisant une ouverture complète, transparence, traçabilité.",
     wp_ch4_s4_p2: "Tous les ajustements de règles, modifications de paramètres, mises à niveau de contrats doivent être publiés et exécutés sur chaîne, éliminant les opérations en boîte noire. Le mécanisme de transparence des données est la base de la confiance écologique et une base importante de gouvernance communautaire.",
 
-    // Chapitre 5: Mécanisme de Consensus et Principes de Minage
     wp_ch5_title: "5 Mécanisme de Consensus et Principes de Minage",
     wp_ch5_s1_title: "5.1 Consensus : PoE + PoS + DPoS Hybride",
     wp_ch5_s1_1_title: "5.1.1 PoE (Proof of Energy) Preuve d'Énergie Calculatoire",
@@ -557,7 +540,6 @@ window.i18nData['fr'] = {
     wp_ch5_s3_r5: "Les participants précoces (dans la première année) bénéficient d'un coefficient de bonus précoce 1.8x",
     wp_ch5_s3_r6: "Récompense d'invitation : 5% du revenu du niveau inférieur récompense l'invitant, maximum 10 niveaux",
 
-    // Chapitre 6: Système Économique de Tokens
     wp_ch6_title: "6 Système Économique de Tokens",
     wp_ch6_s1_title: "6.1 Aperçu du Système de Tokens",
     wp_ch6_s1_p1: "Le système économique de tokens de ce projet adopte un \"modèle de coordination six dimensions\", se distinguant des modèles à un ou deux tokens largement utilisés dans l'industrie. Par le découplage fonctionnel est réalisée une division précise du flux de valeurs interne de l'écosystème. Six tokens assument respectivement les fonctions d'ancrage de valeur, de renforcement de puissance de calcul, de carburant réseau, de mappage d'actifs, de dividendes de revenus et de hub cross-chain, formant un système économique fermé de soutien mutuel, de contrainte mutuelle et de stimulation mutuelle.",
@@ -583,7 +565,6 @@ window.i18nData['fr'] = {
     wp_ch6_s8_title: "6.8 Boucle Fermée de Circulation de Tokens",
     wp_ch6_s8_flow: "Utilisateur mine → obtient NEO → staking pour NEX/NRY → paiement de frais NET → émission/commerce NEA → détention NRY pour dividendes → NCL interopérabilité cross-chain → combustion déflation tous scénarios → retour de valeur vers NEO",
 
-    // Chapitre 7: Scénarios d'Application Écologique
     wp_ch7_title: "7 Scénarios d'Application Écologique",
     wp_ch7_s1_title: "7.1 Minage Personnel",
     wp_ch7_s1_p1: "Les utilisateurs ordinaires peuvent participer au minage via des nœuds légers sur téléphones et ordinateurs, sans besoin de mineurs professionnels, faible consommation énergétique, faible seuil, facile à utiliser. Le système distribue les récompenses selon le temps en ligne, la contribution, l'utilisation d'énergie propre, réalisant la participation de tous.",
@@ -600,7 +581,6 @@ window.i18nData['fr'] = {
     wp_ch7_s7_title: "7.7 Gouvernance Décentralisée",
     wp_ch7_s7_p1: "Le vote communautaire décide de l'ajustement des paramètres, règles de minage, proportions de combustion, budget écologique, mises à jour de contrats et autres questions importantes.",
 
-    // Chapitre 8: Gouvernance de Projet et Autonomie Communautaire
     wp_ch8_title: "8 Gouvernance de Projet et Autonomie Communautaire",
     wp_ch8_s1_title: "8.1 Architecture de Gouvernance",
     wp_ch8_s1_i1: "Conseil stratégique : stratégie, conformité, risques",
@@ -614,7 +594,6 @@ window.i18nData['fr'] = {
     wp_ch8_s2_k: "K : Bonus de contribution de nœud",
     wp_ch8_s3_title: "8.3 Contenu de Gouvernance",
 
-    // Chapitre 9: Feuille de Route de Développement
     wp_ch9_title: "9 Feuille de Route de Développement",
     wp_ch9_s1_title: "Phase 1 : Construction de Base (Q1–Q2)",
     wp_ch9_s1_p1: "Développement de l'infrastructure blockchain publique, lancement du testnet, développement wallet/navigateur, déploiement de contrats de six types de tokens, audit de sécurité, recrutement précoce de nœuds.",
@@ -625,12 +604,10 @@ window.i18nData['fr'] = {
     wp_ch9_s4_title: "Phase 4 : Maturité Écologique (année suivante)",
     wp_ch9_s4_p1: "Connexion de puissance de calcul AI, coopération métavers de puissance de calcul, déploiement mondial de nœuds d'énergie propre, autonomie décentralisée complète.",
 
-    // Chapitre 10: Équipe et Organisations Partenaires
     wp_ch10_title: "10 Équipe et Organisations Partenaires",
     wp_ch10_s1_p1: "L'équipe centrale se compose d'ingénieurs en développement blockchain de base, d'experts en exploitation de mines, de vétérans de l'industrie de l'énergie propre, de concepteurs d'économie de tokens, d'experts en audit de sécurité, de conseillers juridiques conformité, possédant une expérience sectorielle pluriannuelle.",
     wp_ch10_s2_p1: "Les organisations partenaires incluent : centrales d'énergie propre, fabricants de matériel de puissance de calcul, entreprises de sécurité blockchain, organisations d'audit tierces, plateformes de puissance de calcul distribuées, associations sectorielles, organisations de recherche sur l'énergie verte.",
 
-    // Chapitre 11: Avertissement de Risques
     wp_ch11_title: "11 Avertissement de Risques",
     wp_ch11_s1_title: "11.1 Risque Politique et Réglementaire",
     wp_ch11_s1_p1: "Les politiques de divers pays concernant la blockchain, le minage, les actifs numériques contiennent de l'incertitude, ce qui pourrait empêcher le projet de fonctionner normalement dans certaines régions.",
@@ -647,7 +624,6 @@ window.i18nData['fr'] = {
     wp_ch11_s7_title: "11.7 Risque de Coopération et d'Exploitation",
     wp_ch11_s7_p1: "Une connexion de mines insuffisante, une lenteur du partenariat d'énergie propre, le non-atteinte des objectifs marketing peuvent affecter le développement de l'écosystème.",
 
-    // Chapitre 12: Déclaration de Conformité
     wp_ch12_title: "12 Déclaration de Conformité",
     wp_ch12_i1: "Ce projet respecte strictement les lois du lieu d'exploitation et ne fournit pas de services aux pays sanctionnés, régions et investisseurs non qualifiés.",
     wp_ch12_i2: "Tous les tokens au sein de l'écosystème sont des tokens fonctionnels et ne constituent pas des valeurs mobilières, actions, participations, futures, fonds ou toute forme de produits financiers.",
@@ -657,7 +633,6 @@ window.i18nData['fr'] = {
     wp_ch12_i6: "L'équipe a le droit d'ajuster les mécanismes écologiques, règles de tokens, modules fonctionnels selon la politique et la loi, avant ajustement une annonce communautaire est faite.",
     wp_ch12_i7: "Il est interdit d'utiliser ce système pour des activités financières illégales, blanchiment d'argent, fraude, financement du terrorisme etc., les contrevenants seront bloqués définitivement.",
 
-    // Chapitre 13: Annexe
     wp_ch13_title: "13 Annexe",
     wp_ch13_s1_title: "13.1 Glossaire",
     wp_ch13_s2_title: "13.2 Tableau Détaillé de Distribution de Tokens",
@@ -701,7 +676,7 @@ window.i18nData['fr'] = {
     claim_reward_balance: "Récompenses en attente",
     claim_reward_input_label: "Montant à retirer",
     claim_reward_confirm: "Confirmer le retrait",
-    // --- 市场页面 (Market Page) ---
+
     market_hero_badge: "Matrice de calcul IA · Co-construite",
     market_hero_title: "Marché du calcul",
     market_hero_sub: "Premier système de trading on-chain de calcul · Le calcul circule librement comme l'eau et l'électricité",
