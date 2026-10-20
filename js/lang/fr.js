@@ -53,7 +53,7 @@ window.i18nData['fr'] = {
     agent_input_placeholder: "Tapez un message...",
     agent_clear_confirm: "Effacer toutes les conversations ?",
     agent_error: "Désolé, une erreur s'est produite. Veuillez réessayer plus tard.",
-    nav_mine: "Minage",
+    nav_mine: "Écosystème",
     nav_market: "Marché",
     nav_me: "Profil",
     nav_wp: "Livre Blanc",

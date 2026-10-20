@@ -53,7 +53,7 @@ window.i18nData['ru'] = {
     agent_input_placeholder: "Введите сообщение...",
     agent_clear_confirm: "Очистить все разговоры?",
     agent_error: "Извините, произошла ошибка. Пожалуйста, попробуйте позже.",
-    nav_mine: "Майнинг",
+    nav_mine: "Экосистема",
     nav_market: "Рынок",
     nav_me: "Профиль",
     nav_wp: "Whitepaper",

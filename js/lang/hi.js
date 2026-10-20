@@ -53,7 +53,7 @@ window.i18nData['hi'] = {
     agent_input_placeholder: "संदेश लिखें...",
     agent_clear_confirm: "सभी वार्तालाप साफ़ करें?",
     agent_error: "क्षमा करें, एक त्रुटि हुई। कृपया बाद में पुनः प्रयास करें।",
-    nav_mine: "खान",
+    nav_mine: "पारिस्थितिकी तंत्र",
     nav_market: "बाजार",
     nav_me: "मेरा",
     nav_wp: "व्हाइट पेपर",

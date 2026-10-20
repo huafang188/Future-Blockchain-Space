@@ -53,7 +53,7 @@ window.i18nData['mn'] = {
     agent_input_placeholder: "Зурвас оруул...",
     agent_clear_confirm: "Бүх харилцан яриаг устгах уу?",
     agent_error: "Уучлаарай, алдаа гарлаа. Дараа дахин оролдоно уу.",
-    nav_mine: "Уул уурхай",
+    nav_mine: "Экосистем",
     nav_market: "Зах зээл",
     nav_me: "Миний",
     nav_wp: "Цагаан ном",

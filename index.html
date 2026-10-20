@@ -1237,88 +1237,6 @@
     </div>
 </section>
 
-<section class="miner-card">
-    <!-- 网格背景 -->
-    <div class="miner-grid-bg"></div>
-    <div class="relative z-10">
-        <div class="flex justify-between items-center mb-4">
-            <!-- 优化1: 加上 data-i18n -->
-            <span class="text-xs font-black text-orange-400 uppercase tracking-widest" data-i18n="miner_status_label">矿机状态</span>
-            <span class="bg-emerald-50 text-emerald-500 px-3 py-1 rounded-full text-[9px] font-bold border border-emerald-100" data-i18n="miner_status_running">运行中</span>
-        </div>
-
-    <div class="miner-header">
-        <img src="assets/miner_logo.webp" class="miner-img-small" loading="lazy" onerror="this.src='assets/head_logo.webp'">
-        <div class="miner-info-text">
-            <h3 data-i18n="miner_name">阿瓦隆 1066 智能矿机</h3>
-            <div class="space-y-1 text-[10px] text-slate-600">
-                <p data-i18n="miner_spec_hashrate">挖矿算力：≈30TH/S（每秒30*10^12次哈希碰撞）</p>
-                <p data-i18n="miner_spec_ai">AI算力：≈256 EFLOPS（25.6亿亿次浮点运算总功）</p>
-                <p data-i18n="miner_spec_power">最大功耗：1500W</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 数据展示：2x2 网格 -->
-    <div class="miner-stats-grid">
-        <div class="stat-item">
-            <!-- 确保这里的 m_count 与语言包里的 Key 完全一致 -->
-            <span class="stat-label" data-i18n="m_count">数量</span>
-            <span id="miner_count" class="stat-value">0</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label" data-i18n="m_running">在运行</span>
-            <span id="miner_running" class="stat-value">0</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label" data-i18n="m_yield">日产量</span>
-            <span id="miner_daily" class="stat-value">0.00</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label" data-i18n="m_term">期限</span>
-            <span id="miner_deadline" class="stat-value">--</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label" data-i18n="m_locked">锁仓</span>
-            <span id="miner_locked" class="stat-value">0.00</span>
-        </div>
-
-    </div>
-
-    <div class="miner-info-tip mt-4 px-4 py-3 bg-orange-50/50 rounded-xl border border-orange-100">
-        <p class="text-[11px] text-slate-600 text-center leading-relaxed" data-i18n="miner_deploy_tip">矿机部署时间为 2-12 小时，NEO 每日结算时间根据不同地区有些许差异，大约为莫斯科时间 00:00—03:00</p>
-    </div>
-
-    <!-- NEO K线图 -->
-    <div class="relative w-full h-48 mt-6 overflow-hidden">
-        <div id="neo-price-label" class="absolute top-2 left-3 z-10 font-black text-[10px] text-slate-500 uppercase tracking-wider">NEO</div>
-        <div id="neo-price-value" class="absolute top-6 left-3 z-10 font-black text-lg text-green-500" style="font-family: 'Orbitron', monospace;">$0.00</div>
-        <canvas id="chart-NEO-miner" class="w-full h-full"></canvas>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mt-6">
-<button onclick="openMinerModal('buy')" class="action-btn">
-    <span data-i18n="buy_miner">购买矿机</span>
-</button>
-<button onclick="openTransferMinerModal()" class="action-btn hidden">
-    <span data-i18n="transfer_miner">转让矿机</span>
-</button>
-<button onclick="openMinerModal('fee')" class="action-btn secondary">
-    <span data-i18n="pay_fee">缴纳电费</span>
-</button>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mt-3">
-<button onclick="openNeoBuyMinerModal()" class="action-btn neo-pay-btn">
-    <span data-i18n="neo_buy_miner_btn">使用 NEO 购买矿机</span>
-</button>
-<button onclick="openNeoPayFeeModal()" class="action-btn secondary neo-pay-btn">
-    <span data-i18n="neo_pay_fee_btn">使用 NEO 缴纳电费</span>
-</button>
-    </div>
-    </div>
-</section>
-
 <!-- ========== NEO-USDT LP 质押池 ========== -->
 <section class="miner-card mt-6" id="lp-stake-section">
     <div class="miner-grid-bg"></div>
@@ -1462,91 +1380,6 @@
     </div>
 </section>
 
-
-<!-- ========== 全网矿机运行情况 (Network Miner Status) ========== -->
-<section class="network-miner-section mt-6">
-    <div class="glass-card p-6">
-        <div class="flex items-center gap-2 mb-4 px-1">
-            <span class="w-1.5 h-4 bg-cyan-500 rounded-full"></span>
-            <h3 class="font-black text-slate-800 text-sm uppercase tracking-widest" data-i18n="network_miner_title">全网矿机运行情况</h3>
-        </div>
-        
-        <!-- 数据网格: 单列布局 -->
-        <div class="space-y-2">
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="neo_total_supply">NEO总发行量</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="neo_total_supply" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">1,000,000,000</div>
-                    <div class="text-xs text-slate-600">NEO</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="network_miner_total">全网运行矿机总数</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="network_miner_total" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">393,262</div>
-                    <div class="text-xs text-slate-600">台</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="network_daily_output">全网NEO日产量</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="network_daily_output" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">3,440,255</div>
-                    <div class="text-xs text-slate-600">NEO</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="single_miner_output">单台矿机NEO产量</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="single_miner_output" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">7.78</div>
-                    <div class="text-xs text-slate-600">NEO/台</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="today_new_original">昨日新增原始矿机</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="today_new_original" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">2,340</div>
-                    <div class="text-xs text-slate-600">台</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="today_new_synthetic">昨日新增合成矿机</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="today_new_synthetic" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">1,092</div>
-                    <div class="text-xs text-slate-600">台</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="neo_holders">NEO持有者数量</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="neo_holders" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">93,262</div>
-                    <div class="text-xs text-slate-600">地址</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="neo_total_output">NEO产出总量</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="neo_total_output" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">187,808,498</div>
-                    <div class="text-xs text-slate-600">NEO</div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between py-1">
-                <div class="text-xs text-slate-700 uppercase tracking-wider" data-i18n="neo_burned">NEO销毁数量</div>
-                <div class="flex items-baseline gap-1.5">
-                    <div id="neo_burned" class="text-xl font-black" style="font-family: 'Orbitron', monospace; color: #fb923c;">4,252,611</div>
-                    <div class="text-xs text-slate-600">NEO</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- ========== 工厂模块 (Factory) ========== -->
 <section class="factory-section space-y-6 mt-6">
@@ -1695,7 +1528,7 @@
             </button>
             <button onclick="switchPage('mine')" id="nav-mine" class="nav-item">
                 <i class="fas fa-microchip"></i>
-                <span data-i18n="nav_mine">矿场</span>
+                <span data-i18n="nav_mine">生态</span>
             </button>
             <button onclick="switchPage('user')" id="nav-user" class="nav-item">
                 <i class="fas fa-circle-user"></i>

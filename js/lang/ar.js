@@ -53,7 +53,7 @@ window.i18nData['ar'] = {
     agent_input_placeholder: "اكتب رسالة...",
     agent_clear_confirm: "مسح كل المحادثات؟",
     agent_error: "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى لاحقاً.",
-    nav_mine: "المنجم",
+    nav_mine: "النظام البيئي",
     nav_market: "السوق",
     nav_me: "حسابي",
     nav_wp: "الكتاب الأبيض",

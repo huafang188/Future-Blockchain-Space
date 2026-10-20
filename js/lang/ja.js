@@ -53,7 +53,7 @@ window.i18nData['ja'] = {
     agent_input_placeholder: "メッセージを入力...",
     agent_clear_confirm: "すべての会話を消去しますか？",
     agent_error: "申し訳ありません、エラーが発生しました。後でもう一度お試しください。",
-    nav_mine: "マイニング",
+    nav_mine: "エコシステム",
     nav_market: "市場",
     nav_me: "マイページ",
     nav_wp: "白書",

@@ -53,7 +53,7 @@ window.i18nData['zh-CN'] = {
     agent_input_placeholder: "输入消息...",
     agent_clear_confirm: "清空所有对话？",
     agent_error: "抱歉，发生了错误。请稍后重试。",
-    nav_mine: "矿场",
+    nav_mine: "生态",
     nav_market: "市场",
     nav_me: "我的",
     nav_wp: "白皮书",

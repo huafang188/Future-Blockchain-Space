@@ -53,7 +53,7 @@ window.i18nData['ug'] = {
     agent_input_placeholder: "ئۇچۇر كىرگۈزۈڭ...",
     agent_clear_confirm: "بارلىق سۆھبەتلەرنى تازىلايمۇ؟",
     agent_error: "كەچۈرۈڭ، خاتالىق يۈز بەردى. كېيىن قايتا سىناڭ.",
-    nav_mine: "كانچىلىق بازىسى",
+    nav_mine: "ئېكولوگىيە",
     nav_market: "بازار",
     nav_me: "مەن",
     nav_wp: "ئاق قەغەز",

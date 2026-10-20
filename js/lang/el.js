@@ -53,7 +53,7 @@ window.i18nData['el'] = {
     agent_input_placeholder: "Πληκτρολογήστε ένα μήνυμα...",
     agent_clear_confirm: "Διαγραφή όλων των συνομιλιών;",
     agent_error: "Συγγνώμη, προέκυψε σφάλμα. Δοκιμάστε ξανά αργότερα.",
-    nav_mine: "Ορυχείο",
+    nav_mine: "Οικοσύστημα",
     nav_market: "Αγορά",
     nav_me: "Εγώ",
     nav_wp: "Λευκή Βίβλος",

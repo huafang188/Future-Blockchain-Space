@@ -53,7 +53,7 @@ window.i18nData['en'] = {
     agent_input_placeholder: "Type a message...",
     agent_clear_confirm: "Clear all conversations?",
     agent_error: "Sorry, an error occurred. Please try again later.",
-    nav_mine: "Mining",
+    nav_mine: "Ecosystem",
     nav_market: "Market",
     nav_me: "Profile",
     nav_wp: "Whitepaper",

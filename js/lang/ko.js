@@ -53,7 +53,7 @@ window.i18nData['ko'] = {
     agent_input_placeholder: "메시지 입력...",
     agent_clear_confirm: "모든 대화를 지우시겠습니까?",
     agent_error: "죄송합니다. 오류가 발생했습니다. 나중에 다시 시도해 주세요.",
-    nav_mine: "마이닝",
+    nav_mine: "생태계",
     nav_market: "시장",
     nav_me: "마이",
     nav_wp: "백서",
