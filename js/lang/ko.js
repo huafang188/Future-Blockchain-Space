@@ -73,7 +73,6 @@ window.i18nData['ko'] = {
     partners_title: "파트너 & 지갑",
     buy_miner: "채굴기 구매",
     pay_fee: "전기료 납부",
-    transfer_miner: "채굴기 전송",
     miner_status_label: "채굴기 상태",
     nry_mining_title: "NRY 해시레이트 마이닝",
     nry_identity: "내 신분",
@@ -182,7 +181,6 @@ window.i18nData['ko'] = {
     recharge: "충전",
     withdraw: "출금",
     exchange: "스왑",
-    transfer: "전송",
     team_title: "내 팀",
     my_identity: "내 신분",
     my_holding: "보유 자산",
@@ -239,12 +237,10 @@ window.i18nData['ko'] = {
 
     btn_confirm: "확인 및 제출",
     btn_confirm_bind: "서명하여 바인딩",
-    btn_transfer_now: "서명하여 전송",
     btn_submit_email: "서명하여 신청",
     placeholder_inviter_id: "추천인 ID를 입력하세요",
     placeholder_email: "이메일 주소를 입력하세요",
     receiver_address: "수신자 지갑 주소",
-    transfer_amount: "전송 수량",
     expected_pay: "예상 결제 금액",
     elec_cost: "필요 전기료",
     available: "사용 가능 잔액",
@@ -287,7 +283,6 @@ window.i18nData['ko'] = {
     bank_principal_due: "만기일",
     bank_principal_confirm: "원금 출금 확인",
     bank_btn: "곧 출시",
-    transfer_fee: "수수료: 0.00USDT",
 
     important_announcement: "중요 공지",
     news_title_short: "뉴스",
@@ -326,9 +321,7 @@ window.i18nData['ko'] = {
 
     modal_register_title: "채굴 계정 활성화",
     modal_bind_title: "추천 관계 바인딩",
-    miner_transfer_title: "내부 채굴기 전송",
     modal_team_title: "팀 상세 데이터 신청",
-    internal_transfer: "내부 전송",
 
     register_desc: "추천인 ID를 입력하여 해시 노드를 활성화하세요",
     team_detail_desc: "데이터 양이 많으므로 팀 상세 보고서는 이메일로 발송됩니다",
@@ -344,7 +337,6 @@ window.i18nData['ko'] = {
     挖矿: "마이닝",
     提现: "출금",
     兑换: "스왑",
-    内部转账: "내부 전송",
     购买矿机: "채굴기 구매",
     缴纳电费: "전기료 납부",
 
@@ -362,7 +354,6 @@ window.i18nData['ko'] = {
 
     news_title: "공지 및 뉴스",
     history_title: "거래 내역",
-    transfer_title: "전송 내역",
     news_1: "<b>NEO 생태계 마이닝 매트릭스 글로벌 확장：</b>노르딕 지역에 컴퓨팅 센터 건설, 노드 모집 열띤 진행 중",
     news_2: "<b>NEO 글로벌 뉴스：</b>현재까지 NEO 생태계 마이닝 매트릭스는 전 세계 87개국 및 지역에서 안정적으로 운영되고 있습니다.",
     news_3: "<b>국제 인프라 건설 시작：</b>증가하는 컴퓨팅 수요에 대응하기 위해 아이슬란드, 노르웨이, 캐나다에 위치한 NEO 컴퓨팅 센터 건설 계획이 공식적으로 승인되었습니다. 이 공사는 2026년 7월 1일에 착공하여 약 6개월간 건설될 예정이며, 고위도 지역의 지리적 이점을 활용하여 에너지 효율성을 높이는 것을 목표로 합니다.",

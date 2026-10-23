@@ -73,7 +73,6 @@ window.i18nData['ar'] = {
     partners_title: "الشركاء والمحافظ",
     buy_miner: "شراء جهاز تعدين",
     pay_fee: "دفع رسوم الكهرباء",
-    transfer_miner: "نقل جهاز التعدين",
     miner_status_label: "حالة الجهاز",
     nry_mining_title: "تعدين الهاش ريت NRY",
     nry_identity: "هويتي",
@@ -182,7 +181,6 @@ window.i18nData['ar'] = {
     recharge: "إيداع",
     withdraw: "سحب",
     exchange: "تبديل",
-    transfer: "تحويل",
     team_title: "فريقي",
     my_identity: "هويتي",
     my_holding: "ممتلكاتي",
@@ -239,12 +237,10 @@ window.i18nData['ar'] = {
 
     btn_confirm: "تأكيد الإرسال",
     btn_confirm_bind: "ربط وتوقيع الآن",
-    btn_transfer_now: "إرسال توقيع النقل",
     btn_submit_email: "إرسال طلب التوقيع",
     placeholder_inviter_id: "أدخل معرف المُحيل",
     placeholder_email: "أدخل بريدك الإلكتروني للتواصل",
     receiver_address: "عنوان محفظة المستلم",
-    transfer_amount: "الكمية المحولة",
     expected_pay: "الدفع المتوقع",
     elec_cost: "رسوم الكهرباء المطلوبة",
     available: "الرصيد المتاح",
@@ -289,7 +285,6 @@ window.i18nData['ar'] = {
     bank_principal_due: "تاريخ الاستحقاق",
     bank_principal_confirm: "تأكيد السحب",
     bank_btn: "قريباً",
-    transfer_fee: "الرسوم: 0.00USDT",
 
     important_announcement: "إعلان هام",
     news_title_short: "أخبار",
@@ -319,15 +314,11 @@ window.i18nData['ar'] = {
 
     recharge_amount: "كمية الإيداع",
     select_recharge_asset: "اختر الأصل للإيداع",
-    receiver_address_placeholder: "عنوان المستلم (0x...)",
-    amount_max_placeholder: "الكمية (الأقصى {max})",
     max_available: "الأقصى المتاح",
 
     modal_register_title: "تفعيل حساب التعدين",
     modal_bind_title: "ربط علاقة الإحالة",
-    miner_transfer_title: "نقل داخلي لجهاز التعدين",
     modal_team_title: "طلب تفاصيل الفريق",
-    internal_transfer: "تحويل داخلي",
 
     register_desc: "أدخل معرف المُحيل لتفعيل عقدة القوة الحسابية الخاصة بك",
     team_detail_desc: "بسبب كمية البيانات الكبيرة، سيتم إرسال التقرير المفصل للفريق إلى بريدك الإلكتروني",
@@ -342,7 +333,6 @@ window.i18nData['ar'] = {
     "挖矿": "تعدين",
     "提现": "سحب",
     "兑换": "تبديل",
-    "内部转账": "تحويل داخلي",
     "购买矿机": "شراء جهاز تعدين",
     "缴纳电费": "دفع رسوم كهرباء",
 
@@ -360,7 +350,6 @@ window.i18nData['ar'] = {
 
     news_title: "الإعلانات والأخبار",
     history_title: "سجل المعاملات",
-    transfer_title: "سجل التحويلات",
     news_1: "<b>التوسع العالمي لمصفوفة تعدين نظام NEO：</b>مراكز الحوسبة في أوروبا الشمالية، وتعيين العقداء جارٍ",
     news_2: "<b>NEO أخبار عالمية：</b>حتى الآن، تعمل مصفوفة تعدين نظام NEO بنجاح في 87 دولة ومنطقة حول العالم.",
     news_3: "<b>بدء بناء البنى التحتية الدولية：</b>للتعامل مع الطلب المتزايد على قوة الحوسبة، تمت الموافقة الرسمية على مشاريع مراكز بيانات NEO في آيسلندا والنرويج وكندا. ستبدأ الأعمال في 1 يوليو 2026 وستستمر لمدة 6 أشهر تقريبًا، بهدف تحسين كفاءة الطاقة باستخدام المزايا الجغرافية لخطوط العرض العليا.",

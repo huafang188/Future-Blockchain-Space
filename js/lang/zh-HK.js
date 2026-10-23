@@ -72,7 +72,6 @@ window.i18nData['zh-HK'] = {
     partners_title: "合作夥伴 & 錢包",
     buy_miner: "購買礦機",
     pay_fee: "繳納電費",
-    transfer_miner: "轉讓礦機",
     miner_status_label: "礦機狀態",
     nry_mining_title: "NRY算力挖礦",
     nry_identity: "我的身份",
@@ -181,7 +180,6 @@ window.i18nData['zh-HK'] = {
     recharge: "充值",
     withdraw: "提幣",
     exchange: "兌換",
-    transfer: "轉賬",
     team_title: "我的團隊",
     my_identity: "我的身份",
     my_holding: "我的持有",
@@ -238,12 +236,10 @@ window.i18nData['zh-HK'] = {
 
     btn_confirm: "確認提交",
     btn_confirm_bind: "立即綁定簽名",
-    btn_transfer_now: "提交轉讓簽名",
     btn_submit_email: "提交申請簽名",
     placeholder_inviter_id: "請輸入推薦人 ID",
     placeholder_email: "請輸入您的聯繫郵箱",
     receiver_address: "接收者錢包地址",
-    transfer_amount: "轉出數量",
     expected_pay: "預計支付",
     elec_cost: "所需電費",
     available: "可用餘額",
@@ -286,7 +282,6 @@ window.i18nData['zh-HK'] = {
     bank_principal_due: "到期時間",
     bank_principal_confirm: "確認提取本金",
     bank_btn: "敬請期待",
-    transfer_fee: "手續費：0.00USDT",
 
     important_announcement: "重要公告",
     news_title_short: "新聞",
@@ -316,9 +311,7 @@ window.i18nData['zh-HK'] = {
 
     modal_register_title: "激活挖礦帳戶",
     modal_bind_title: "綁定推薦關係",
-    miner_transfer_title: "內部轉讓礦機",
     modal_team_title: "申請團隊詳單",
-    internal_transfer: "內部轉賬",
 
     register_desc: "請輸入推薦人 ID 以激活您的算力節點",
     team_detail_desc: "由於數據量較大，團隊詳細報表將發送至您的郵箱",
@@ -352,7 +345,6 @@ window.i18nData['zh-HK'] = {
 
     news_title: "公告與新聞",
     history_title: "交易歷史",
-    transfer_title: "轉賬流水",
     news_1: "<b>NEO生態挖礦矩陣全球版圖擴張：</b>算力中心落戶北歐，節點招募火熱進行",
     news_2: "<b>NEO全球訊：</b>截至目前，NEO生態挖礦矩陣已成功在全球87個國家與地區實現穩定運行。",
     news_3: "<b>跨國基礎設施建設啟動：</b>為應對日益增長的算力需求，位於冰島、挪威及加拿大的NEO算力中心機房已正式完成立項。該工程預計於2026年7月1日動工，建設周期約為6個月，旨在利用高緯度地區的地理優勢提升能源能效。",

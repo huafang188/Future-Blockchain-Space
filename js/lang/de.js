@@ -73,7 +73,6 @@ window.i18nData['de'] = {
     partners_title: "Partner & Wallet",
     buy_miner: "Miner kaufen",
     pay_fee: "Stromkosten zahlen",
-    transfer_miner: "Miner übertragen",
     miner_status_label: "Miner-Status",
     nry_mining_title: "NRY Hashrate-Mining",
     nry_identity: "Meine Identität",
@@ -182,7 +181,6 @@ window.i18nData['de'] = {
     recharge: "Einzahlen",
     withdraw: "Auszahlen",
     exchange: "Swap",
-    transfer: "Transfer",
     team_title: "Mein Team",
     my_identity: "Meine Identität",
     my_holding: "Meine Bestände",
@@ -239,12 +237,10 @@ window.i18nData['de'] = {
 
     btn_confirm: "Bestätigen",
     btn_confirm_bind: "Signieren & Binden",
-    btn_transfer_now: "Signieren & Übertragen",
     btn_submit_email: "Signieren & Beantragen",
     placeholder_inviter_id: "Einladungs-ID eingeben",
     placeholder_email: "E-Mail-Adresse eingeben",
     receiver_address: "Empfänger-Adresse",
-    transfer_amount: "Übertragungsmenge",
     expected_pay: "Voraussichtliche Zahlung",
     elec_cost: "Stromkosten",
     available: "Verfügbares Guthaben",
@@ -287,7 +283,6 @@ window.i18nData['de'] = {
     bank_principal_due: "Fälligkeit",
     bank_principal_confirm: "Abhebung bestätigen",
     bank_btn: "Demnächst",
-    transfer_fee: "Gebühr: 0.00USDT",
 
     important_announcement: "Wichtige Ankündigung",
     news_title_short: "Neuigkeiten",
@@ -317,9 +312,7 @@ window.i18nData['de'] = {
 
     modal_register_title: "Mining-Konto aktivieren",
     modal_bind_title: "Empfehlung binden",
-    miner_transfer_title: "Interner Miner-Transfer",
     modal_team_title: "Team-Bericht anfordern",
-    internal_transfer: "Interner Transfer",
 
     register_desc: "Geben Sie die Einladungs-ID ein, um Ihren Hash-Knoten zu aktivieren",
     team_detail_desc: "Aufgrund der Datenmenge wird der detaillierte Team-Bericht per E-Mail gesendet",
@@ -335,7 +328,6 @@ window.i18nData['de'] = {
     挖矿: "Mining",
     提现: "Auszahlung",
     兑换: "Swap",
-    内部转账: "Interner Transfer",
     购买矿机: "Miner-Kauf",
     缴纳电费: "Stromzahlung",
 
@@ -353,7 +345,6 @@ window.i18nData['de'] = {
 
     news_title: "Ankündigungen & News",
     history_title: "Transaktionsverlauf",
-    transfer_title: "Transferverlauf",
     news_1: "<b>Globale Expansion der NEO-Ökosystem-Mining-Matrix：</b>Rechenzentren in Nordeuropa etabliert, Knotenrekrutierung in vollem Gange",
     news_2: "<b>NEO Global News：</b>Bis heute operiert die NEO-Ökosystem-Mining-Matrix erfolgreich in 87 Ländern und Regionen weltweit.",
     news_3: "<b>Start der internationalen Infrastrukturkonstruktion：</b>Um der wachsenden Nachfrage nach Rechenleistung gerecht zu werden, wurden die NEO-Rechenzentrenprojekte in Island, Norwegen und Kanada offiziell genehmigt. Die Bauarbeiten beginnen am 1. Juli 2026 und dauern etwa 6 Monate, mit dem Ziel, die Energieeffizienz durch die geografischen Vorteile der hohen Breitengrade zu verbessern.",

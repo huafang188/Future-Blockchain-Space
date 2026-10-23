@@ -73,7 +73,6 @@ window.i18nData['ja'] = {
     partners_title: "パートナー & ウォレット",
     buy_miner: "マイナー購入",
     pay_fee: "電気代支払い",
-    transfer_miner: "マイナー譲渡",
     miner_status_label: "マイナーステータス",
     nry_mining_title: "NRYハッシュレートマイニング",
     nry_identity: "私の身分",
@@ -182,7 +181,6 @@ window.i18nData['ja'] = {
     recharge: "入金",
     withdraw: "出金",
     exchange: "スワップ",
-    transfer: "送金",
     team_title: "マイチーム",
     my_identity: "私の身分",
     my_holding: "保有資産",
@@ -239,12 +237,10 @@ window.i18nData['ja'] = {
 
     btn_confirm: "確認して送信",
     btn_confirm_bind: "署名して紐付け",
-    btn_transfer_now: "署名して譲渡",
     btn_submit_email: "署名して申請",
     placeholder_inviter_id: "紹介者IDを入力してください",
     placeholder_email: "メールアドレスを入力してください",
     receiver_address: "受取人ウォレットアドレス",
-    transfer_amount: "送金数量",
     expected_pay: "支払い予定額",
     elec_cost: "必要な電気代",
     available: "利用可能残高",
@@ -287,7 +283,6 @@ window.i18nData['ja'] = {
     bank_principal_due: "満期日",
     bank_principal_confirm: "元本を確認",
     bank_btn: "近日公開",
-    transfer_fee: "手数料：0.00USDT",
 
     important_announcement: "重要なお知らせ",
     news_title_short: "ニュース",
@@ -325,9 +320,7 @@ window.i18nData['ja'] = {
 
     modal_register_title: "マイニングアカウントの有効化",
     modal_bind_title: "紹介関係の紐付け",
-    miner_transfer_title: "内部マイナー譲渡",
     modal_team_title: "チーム詳細データの申請",
-    internal_transfer: "内部送金",
 
     register_desc: "紹介者IDを入力して、ハッシュパワーノードを有効化してください",
     team_detail_desc: "データ量が多いため、チーム詳細レポートはメールにて送信されます",
@@ -343,7 +336,6 @@ window.i18nData['ja'] = {
     挖矿: "マイニング",
     提现: "出金",
     兑换: "スワップ",
-    内部转账: "内部送金",
     购买矿机: "マイナー購入",
     缴纳电费: "電気代支払い",
 
@@ -361,7 +353,6 @@ window.i18nData['ja'] = {
 
     news_title: "お知らせとニュース",
     history_title: "取引履歴",
-    transfer_title: "送金履歴",
     news_1: "<b>NEOエコシステムマイニングマトリックスのグローバル拡大：</b>北欧にコンピューティングセンターを設立、ノード募集が盛んに行われています",
     news_2: "<b>NEOグローバルニュース：</b>現在までに、NEOエコシステムマイニングマトリックスは全世界87カ国と地域で安定的に運行しています。",
     news_3: "<b>国際的なインフラストラクチャ建設の開始：</b>増大するコンピューティング需要に応えるため、アイスランド、ノルウェー、カナダに位置するNEOコンピューティングセンターの建設計画が正式に承認されました。同プロジェクトは2026年7月1日に着工し、建設期間は約6ヶ月で、高緯度地域の地理的な特徴を生かしてエネルギー効率を向上させることを目指しています。",

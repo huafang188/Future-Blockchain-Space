@@ -73,7 +73,6 @@ window.i18nData['en'] = {
     partners_title: "Partners & Wallet",
     buy_miner: "Buy Miner",
     pay_fee: "Pay Electric",
-    transfer_miner: "Transfer Miner",
     miner_status_label: "Miner Status",
     nry_mining_title: "NRY Hashrate Mining",
     nry_identity: "My Identity",
@@ -182,7 +181,6 @@ window.i18nData['en'] = {
     recharge: "Deposit",
     withdraw: "Withdraw",
     exchange: "Swap",
-    transfer: "Transfer",
     team_title: "My Team",
     my_identity: "My Identity",
     my_holding: "My Holdings",
@@ -257,12 +255,10 @@ window.i18nData['en'] = {
 
     btn_confirm: "Confirm Submit",
     btn_confirm_bind: "Sign to Bind",
-    btn_transfer_now: "Sign to Transfer",
     btn_submit_email: "Sign to Apply",
     placeholder_inviter_id: "Enter Inviter ID",
     placeholder_email: "Enter your contact email",
     receiver_address: "Recipient Address",
-    transfer_amount: "Transfer Amount",
     expected_pay: "Estimated Pay",
     elec_cost: "Electric Cost",
     available: "Available Balance",
@@ -307,11 +303,8 @@ window.i18nData['en'] = {
     bank_principal_due: "Due Date",
     bank_principal_confirm: "Confirm Withdrawal",
     bank_btn: "Coming Soon",
-    transfer_fee: "Fee: 0.00USDT",
     recharge_amount: "Recharge Amount",
     select_recharge_asset: "Select Recharge Asset",
-    receiver_address_placeholder: "Recipient Address (0x...)",
-    amount_max_placeholder: "Amount (max {max})",
     max_available: "Max Available",
 
     important_announcement: "Important Announcement",
@@ -351,9 +344,7 @@ window.i18nData['en'] = {
 
     modal_register_title: "Activate Mining Account",
     modal_bind_title: "Referral Binding",
-    miner_transfer_title: "Internal Miner Transfer",
     modal_team_title: "Request Team Report",
-    internal_transfer: "Internal Transfer",
 
     register_desc: "Enter inviter ID to activate your hash node",
     team_detail_desc: "Team reports will be sent to your email due to large data volume",
@@ -369,7 +360,6 @@ window.i18nData['en'] = {
     挖矿: "Mining",
     提现: "Withdraw",
     兑换: "Swap",
-    内部转账: "Internal Transfer",
     购买矿机: "Buy Miner",
     缴纳电费: "Pay Electric Fee",
 
@@ -387,7 +377,6 @@ window.i18nData['en'] = {
 
     news_title: "Announcements",
     history_title: "Transaction History",
-    transfer_title: "Transfer History",
     news_1: "<b>NEO Ecosystem Mining Matrix Global Expansion:</b> Computing centers established in Northern Europe, node recruitment in full swing",
     news_2: "<b>NEO Global News:</b> To date, the NEO ecosystem mining matrix has successfully achieved stable operation in 87 countries and regions worldwide.",
     news_3: "<b>Multinational Infrastructure Construction Launched:</b> To meet the growing demand for computing power, NEO computing center facilities in Iceland, Norway, and Canada have been officially approved. The project is scheduled to commence on July 1, 2026, with a construction period of approximately 6 months, aiming to leverage the geographical advantages of high-latitude regions to improve energy efficiency.",

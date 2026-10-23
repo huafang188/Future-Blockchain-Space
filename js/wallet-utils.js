@@ -322,7 +322,7 @@ export function logout(showConfirm) {
     if (window.currentUserInfo) window.currentUserInfo = null;
 
     if (typeof window.renderHistory === 'function') window.renderHistory([]);
-    if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
+
     if (typeof window.renderTokenList === 'function') window.renderTokenList({});
 
     const teamFields = ['team_directCount', 'team_directSales', 'team_totalCount', 'team_totalSales', 'team_totalReward'];
@@ -393,7 +393,7 @@ export function syncWalletUI() {
         if (window.currentUserInfo) window.currentUserInfo = null;
 
         if (typeof window.renderHistory === 'function') window.renderHistory([]);
-        if (typeof window.renderTransfers === 'function') window.renderTransfers([]);
+
         if (typeof window.renderTokenList === 'function') window.renderTokenList({});
 
         resetWalletUI();

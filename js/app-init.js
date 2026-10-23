@@ -17,7 +17,7 @@ import {
 import { 
     renderTokenList, 
     renderHistory, 
-    renderTransfers, 
+
     renderStatsPage, 
     renderNews 
 } from './ui-render.js';
@@ -68,7 +68,7 @@ function mountAllGlobals() {
 
     window.renderTokenList = renderTokenList;
     window.renderHistory = renderHistory;
-    window.renderTransfers = renderTransfers;
+
     window.renderStatsPage = renderStatsPage;
     window.renderNews = renderNews;
 
@@ -206,7 +206,7 @@ function initApp() {
         resetWalletUI();
 
         if (window.renderHistory) window.renderHistory([]); 
-        if (window.renderTransfers) window.renderTransfers([]); 
+
         if (window.renderTokenList) window.renderTokenList({});
     });
 

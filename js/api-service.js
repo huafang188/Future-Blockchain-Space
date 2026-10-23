@@ -371,7 +371,7 @@ export async function fetchUserData(address, options = {}) {
             renderIdentityWeight(data);
 
             if (window.renderHistory) window.renderHistory(data.history || []);
-            if (window.renderTransfers) window.renderTransfers(data.transfers || []);
+
 
             setTimeout(() => {
                 if (window.renderPriceCharts) window.renderPriceCharts();

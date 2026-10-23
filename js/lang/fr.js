@@ -73,7 +73,6 @@ window.i18nData['fr'] = {
     partners_title: "Partenaires & Portefeuille",
     buy_miner: "Acheter Mineur",
     pay_fee: "Payer Électricité",
-    transfer_miner: "Transférer Mineur",
     miner_status_label: "Statut du Mineur",
     nry_mining_title: "Minage de hashrate NRY",
     nry_identity: "Mon identité",
@@ -182,7 +181,6 @@ window.i18nData['fr'] = {
     recharge: "Dépôt",
     withdraw: "Retrait",
     exchange: "Échange (Swap)",
-    transfer: "Transfert",
     team_title: "Mon Équipe",
     my_identity: "Mon Identité",
     my_holding: "Mes avoirs",
@@ -239,12 +237,10 @@ window.i18nData['fr'] = {
 
     btn_confirm: "Confirmer l'envoi",
     btn_confirm_bind: "Signer et Lier",
-    btn_transfer_now: "Signer et Transférer",
     btn_submit_email: "Signer et Postuler",
     placeholder_inviter_id: "Entrez l'ID du parrain",
     placeholder_email: "Entrez votre e-mail",
     receiver_address: "Adresse du destinataire",
-    transfer_amount: "Quantité à transférer",
     expected_pay: "Montant à payer",
     elec_cost: "Coût de l'électricité",
     available: "Solde disponible",
@@ -287,7 +283,6 @@ window.i18nData['fr'] = {
     bank_principal_due: "Échéance",
     bank_principal_confirm: "Confirmer le retrait",
     bank_btn: "Bientôt",
-    transfer_fee: "Frais: 0.00USDT",
 
     important_announcement: "Annonce importante",
     news_title_short: "Actualités",
@@ -317,9 +312,7 @@ window.i18nData['fr'] = {
 
     modal_register_title: "Activer Compte de Minage",
     modal_bind_title: "Liaison de Parrainage",
-    miner_transfer_title: "Transfert Interne de Mineur",
     modal_team_title: "Demande de Données Équipe",
-    internal_transfer: "Transfert Interne",
 
     register_desc: "Entrez l'ID du parrain pour activer votre nœud de puissance",
     team_detail_desc: "En raison du volume de données, le rapport détaillé sera envoyé par e-mail",
@@ -335,7 +328,6 @@ window.i18nData['fr'] = {
     挖矿: "Minage",
     提现: "Retrait",
     兑换: "Échange",
-    内部转账: "Transfert Interne",
     购买矿机: "Achat Mineur",
     缴纳电费: "Paiement Électricité",
 
@@ -353,7 +345,6 @@ window.i18nData['fr'] = {
 
     news_title: "Annonces et Nouvelles",
     history_title: "Historique des Transactions",
-    transfer_title: "Historique des Transfers",
     news_1: "<b>Expansion mondiale de la Matrice de Minage de l'Écosystème NEO：</b>Centres de calcul installés en Europe du Nord, recrutement de nœuds en cours",
     news_2: "<b>NEO Actualités Mondiales：</b>À ce jour, la Matrice de Minage de l'Écosystème NEO fonctionne avec succès dans 87 pays et régions du monde.",
     news_3: "<b>Lancement de la construction d'infrastructures internationales：</b>Pour répondre à la demande croissante de puissance de calcul, les projets de centres de données NEO en Islande, en Norvège et au Canada ont officiellement reçu l'approbation. Les travaux commenceront le 1er juillet 2026, avec une durée de construction d'environ 6 mois, visant à améliorer l'efficacité énergétique grâce aux avantages géographiques des hautes latitudes.",

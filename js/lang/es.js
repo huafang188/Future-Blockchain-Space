@@ -73,7 +73,6 @@ window.i18nData['es'] = {
     partners_title: "Socios & Billetera",
     buy_miner: "Comprar Minero",
     pay_fee: "Pagar Electricidad",
-    transfer_miner: "Transferir Minero",
     miner_status_label: "Estado del Minero",
     nry_mining_title: "Minería de hashrate NRY",
     nry_identity: "Mi identidad",
@@ -221,7 +220,6 @@ window.i18nData['es'] = {
     bank_principal_due: "Vencimiento",
     bank_principal_confirm: "Confirmar retiro",
     bank_btn: "Próximamente",
-    transfer_fee: "Comisión: 0.00USDT",
 
     important_announcement: "Aviso importante",
     news_title_short: "Noticias",
@@ -249,7 +247,6 @@ window.i18nData['es'] = {
     neo_multichain_title: "Announcement on NEO Ecosystem Multi-chain Upgrade & Miner Deployment Adjustment",
     neo_multichain_content: "Dear NEO Community Members and Partners,\n\nHello everyone! To provide global users with a broader ecosystem interconnection experience, we have officially launched the multi-chain support feature. Due to the explosive growth of cross-chain data processing volume, some nodes are experiencing temporary delays during data loading. Currently, our core technical team has fully devoted itself to special optimization to ensure network efficiency and smoothness.\n\nAt the same time, due to the compatibility differences of underlying blockchain networks, to ensure the asset security and system stability for every user, we have adjusted the miner deployment time to within 12 hours.\n\nPursuing an excellent experience is our unwavering goal. We sincerely apologize for any inconvenience caused during this period and sincerely thank all community members for your understanding and tolerance. Please join us in witnessing NEO's growth!\n\nThe NEO Team",
 
-    transfer: "Transferencia",
     team_title: "Mi Equipo",
     my_identity: "Mi Identidad",
     my_holding: "Mis tenencias",
@@ -320,7 +317,6 @@ window.i18nData['es'] = {
 
     news_title: "Anuncios y Noticias",
     history_title: "Historial de Transacciones",
-    transfer_title: "Historial de Transferencias",
     news_1: "<b>Expansión global de la Matriz de Minería del Ecosistema NEO：</b>Centros de cómputo instalados en Europa del Norte, reclutamiento de nodos en curso",
     news_2: "<b>NEO Noticias Globales：</b>Hasta la fecha, la Matriz de Minería del Ecosistema NEO funciona con éxito en 87 países y regiones de todo el mundo.",
     news_3: "<b>Inicio de la construcción de infraestructura internacional：</b>Para responder a la creciente demanda de potencia de cómputo, los proyectos de centros de datos NEO en Islandia, Noruega y Canadá han sido oficialmente aprobados. Las obras comenzarán el 1 de julio de 2026 y tendrán una duración de aproximadamente 6 meses, con el objetivo de mejorar la eficiencia energética aprovechando las ventajas geográficas de las altas latitudes.",

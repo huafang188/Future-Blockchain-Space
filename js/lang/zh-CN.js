@@ -73,7 +73,6 @@ window.i18nData['zh-CN'] = {
     partners_title: "合作伙伴 & 钱包",
     buy_miner: "购买矿机",
     pay_fee: "缴纳电费",
-    transfer_miner: "转让矿机",
     miner_status_label: "矿机状态",
     nry_mining_title: "NRY算力挖矿",
     nry_identity: "我的身份",
@@ -182,7 +181,6 @@ window.i18nData['zh-CN'] = {
     recharge: "充值",
     withdraw: "提现",
     exchange: "兑换",
-    transfer: "转账",
     team_title: "我的团队",
     my_identity: "我的身份",
     my_holding: "我的持有",
@@ -257,12 +255,10 @@ window.i18nData['zh-CN'] = {
 
     btn_confirm: "确认提交",
     btn_confirm_bind: "立即绑定签名",
-    btn_transfer_now: "提交转让签名",
     btn_submit_email: "提交申请签名",
     placeholder_inviter_id: "请输入推荐人 ID",
     placeholder_email: "请输入您的联系邮箱",
     receiver_address: "接收者钱包地址",
-    transfer_amount: "转出数量",
     expected_pay: "预计支付",
     elec_cost: "所需电费",
     available: "可用余额",
@@ -307,11 +303,8 @@ window.i18nData['zh-CN'] = {
     bank_principal_due: "到期时间",
     bank_principal_confirm: "确认提取本金",
     bank_btn: "敬请期待",
-    transfer_fee: "手续费：0.00USDT",
     recharge_amount: "充值数量",
     select_recharge_asset: "选择充值资产",
-    receiver_address_placeholder: "接收者地址 (0x...)",
-    amount_max_placeholder: "数量 (最多 {max})",
     max_available: "最大可用",
 
     important_announcement: "公告",
@@ -351,9 +344,7 @@ window.i18nData['zh-CN'] = {
 
     modal_register_title: "激活挖矿账户",
     modal_bind_title: "绑定推荐关系",
-    miner_transfer_title: "内部转让矿机",
     modal_team_title: "申请团队详单",
-    internal_transfer: "内部转账",
 
     register_desc: "请输入推荐人 ID 以激活您的算力节点",
     team_detail_desc: "由于数据量较大，团队详细报表将发送至您的邮箱",
@@ -368,7 +359,6 @@ window.i18nData['zh-CN'] = {
     充值: "充值",
     提现: "提现",
     兑换: "兑换",
-    内部转账: "内部转账",
     购买矿机: "购买矿机",
     缴纳电费: "缴纳电费",
 
@@ -386,7 +376,6 @@ window.i18nData['zh-CN'] = {
 
     news_title: "公告与新闻",
     history_title: "交易历史",
-    transfer_title: "转账流水",
     news_1: "<b>NEO生态挖矿矩阵全球版图扩张：</b>算力中心落地北欧，节点招募火热进行",
     news_2: "<b>NEO全球讯：</b>截至目前，NEO生态挖矿矩阵已成功在全球87个国家与地区实现稳定运行。",
     news_3: "<b>跨国基础设施建设启动：</b>为应对日益增长的算力需求，位于冰岛、挪威及加拿大的NEO算力中心机房已正式完成立项。该工程预计于2026年7月1日动工，建设周期约为6个月，旨在利用高纬度地区的地理优势提升能源能效。",

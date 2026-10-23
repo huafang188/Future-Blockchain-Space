@@ -73,7 +73,6 @@ window.i18nData['it'] = {
     partners_title: "Partner & Wallet",
     buy_miner: "Acquista Miner",
     pay_fee: "Paga Elettricità",
-    transfer_miner: "Trasferisci Miner",
     miner_status_label: "Stato del Miner",
     nry_mining_title: "Mining hashrate NRY",
     nry_identity: "La mia identità",
@@ -182,7 +181,6 @@ window.i18nData['it'] = {
     recharge: "Deposito",
     withdraw: "Prelievo",
     exchange: "Scambio (Swap)",
-    transfer: "Trasferimento",
     team_title: "Il Mio Team",
     my_identity: "La Mia Identità",
     my_holding: "I miei possedimenti",
@@ -239,12 +237,10 @@ window.i18nData['it'] = {
 
     btn_confirm: "Conferma Invio",
     btn_confirm_bind: "Firma per Collegare",
-    btn_transfer_now: "Firma per Trasferire",
     btn_submit_email: "Firma per Richiedere",
     placeholder_inviter_id: "Inserisci ID Invitante",
     placeholder_email: "Inserisci la tua e-mail",
     receiver_address: "Indirizzo Ricevente",
-    transfer_amount: "Quantità da Trasferire",
     expected_pay: "Pagamento Stimato",
     elec_cost: "Costo Elettricità",
     available: "Saldo Disponibile",
@@ -287,7 +283,6 @@ window.i18nData['it'] = {
     bank_principal_due: "Scadenza",
     bank_principal_confirm: "Conferma prelievo",
     bank_btn: "In arrivo",
-    transfer_fee: "Commissione: 0.00USDT",
 
     important_announcement: "Annuncio Importante",
     news_title_short: "Notizie",
@@ -317,9 +312,7 @@ window.i18nData['it'] = {
 
     modal_register_title: "Attiva Account Mining",
     modal_bind_title: "Collegamento Referral",
-    miner_transfer_title: "Trasferimento Interno Miner",
     modal_team_title: "Richiesta Report Team",
-    internal_transfer: "Trasferimento Interno",
 
     register_desc: "Inserisci l'ID invitante per attivare il tuo nodo di calcolo",
     team_detail_desc: "A causa del volume di dati, il report dettagliato del team verrà inviato via e-mail",
@@ -335,7 +328,6 @@ window.i18nData['it'] = {
     挖矿: "Mining",
     提现: "Prelievo",
     兑换: "Scambio",
-    内部转账: "Trasferimento Interno",
     购买矿机: "Acquisto Miner",
     缴纳电费: "Pagamento Elettricità",
 
@@ -353,7 +345,6 @@ window.i18nData['it'] = {
 
     news_title: "Annunci e News",
     history_title: "Cronologia Transazioni",
-    transfer_title: "Cronologia Trasferimenti",
     news_1: "<b>Espansione Globale della Matrice di Mining dell'Ecosistema NEO：</b>Centri di Calcolo installati in Europa Settentrionale, Reclutamento Nodi in Corso",
     news_2: "<b>NEO Notizie Globali：</b>Al momento, la Matrice di Mining dell'Ecosistema NEO funziona con successo in 87 paesi e regioni in tutto il mondo.",
     news_3: "<b>Avviata la costruzione di infrastrutture internazionali：</b>Per rispondere alla crescente domanda di potenza di calcolo, i progetti dei centri di dati NEO in Islanda, Norvegia e Canada sono stati ufficialmente approvati. I lavori inizieranno il 1 luglio 2026 e dureranno circa 6 mesi, con l'obiettivo di migliorare l'efficienza energetica sfruttando i vantaggi geografici delle alte latitudini.",

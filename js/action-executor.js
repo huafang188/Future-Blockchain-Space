@@ -826,20 +826,6 @@ window.doTeamEmailSubmit = async function() {
     await executeSignatureAction("团队申请", "0", "INFO", "bind_email", { email: email });
 };
 
-window.doMinerTransfer = async function() {
-    const receiver = document.getElementById('minerT_Addr')?.value.trim();
-    const amount = document.getElementById('minerT_Amount')?.value;
-    if (!receiver || !amount || parseFloat(amount) <= 0) return alert("请填写接收地址和数量");
-    await executeSignatureAction("矿机转让", amount, "MINER", "transfer_miner", { receiver: receiver });
-};
-
-window.doInternalTransfer = async function() {
-    const to = document.getElementById('transAddr')?.value.trim();
-    const symbol = document.getElementById('transToken')?.value;
-    const amount = document.getElementById('transAmount')?.value;
-    if (!to || !amount || parseFloat(amount) <= 0) return alert("转账信息不完整");
-    await executeSignatureAction("内部转账", amount, symbol, "transfer", { receiver: to });
-};
 
 export function mountActionExecutors() {
     console.log("[Executors] 核心交易逻辑已挂载 (含余额预检与金额清洗)");

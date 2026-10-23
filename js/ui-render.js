@@ -478,47 +478,7 @@ export function renderHistory(history = []) {
 }
 
 /**
- * 5. 渲染团队转账/内部流水
- */
-export function renderTransfers(transfers = []) {
-    const container = document.getElementById('transferList');
-    if (!container) return;
 
-    if (!Array.isArray(transfers) || transfers.length === 0) {
-        container.innerHTML = `<div class="p-10 text-center opacity-30 text-[9px] text-slate-400 uppercase font-black">Streaming Empty</div>`;
-        return;
-    }
-
-    container.innerHTML = transfers.map(tx => {
-        const rawAddr = tx['接收者'] || tx.address || tx.receiver || 'Unknown';
-        const addr = escapeHtml(rawAddr.length > 12 ? (rawAddr.substring(0, 6) + '...' + rawAddr.slice(-4)) : rawAddr);
-        const amount = escapeHtml(tx['接收数量'] || tx.amount || '0');
-        const symbol = escapeHtml(tx['接收类型'] || tx.symbol || '');
-        const time = escapeHtml(tx['转账时间'] || tx.time || '--');
-
-        return `
-        <div class="flex justify-between items-center p-4 rounded-2xl hover:bg-slate-50/50 transition-colors border-b border-slate-50/50 last:border-none">
-            <div class="flex flex-col gap-1">
-                <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
-                    <span class="text-[10px] font-black text-slate-700 tracking-tighter">
-                        ${addr}
-                    </span>
-                </div>
-                <span class="text-[9px] text-slate-400 uppercase font-black pl-3.5">${time}</span>
-            </div>
-            <div class="text-right">
-                <span class="text-xs font-black text-blue-600">${amount} ${symbol}</span>
-                <div class="flex items-center justify-end gap-1 mt-0.5">
-                    <i class="fa-solid fa-circle-check text-[8px] text-emerald-400"></i>
-                    <p class="text-[8px] text-slate-300 font-bold uppercase tracking-tighter">Confirmed</p>
-                </div>
-            </div>
-        </div>`;
-    }).join('');
-}
-
-/**
  * 解析日期字符串（处理飞书格式 DD/MM/YYYY）
  */
 function parseDate(dateStr) {
@@ -733,6 +693,6 @@ window.renderNews = renderNews;
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
 window.renderHistory = renderHistory;
-window.renderTransfers = renderTransfers;
+
 window.renderPriceCharts = renderPriceCharts;
 window.updateNeoPriceDisplay = updateNeoPriceDisplay;
