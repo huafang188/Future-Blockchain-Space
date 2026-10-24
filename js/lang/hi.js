@@ -247,7 +247,7 @@ window.i18nData['hi'] = {
     expected_receive: "अनुमानित प्राप्ति",
     swap_slippage: "स्लिपेज/शुल्क",
     swap_from: "एक्सचेंज संपत्ति",
-    withdraw_fee: "शुल्क: 0.5USDT",
+    withdraw_fee: "शुल्क: 5%",
     withdraw_warning: "निकासी 2 घंटे के भीतर आ जाती है। चेन पर भीड़ से देरी से बचने के लिए कृपया बार-बार सबमिट न करें।",
     stake: "स्टेकिंग",
     stake_token: "स्टेकिंग टोकन",

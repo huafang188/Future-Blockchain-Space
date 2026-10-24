@@ -266,7 +266,7 @@ window.i18nData['en'] = {
     expected_receive: "Estimated Receive",
     swap_slippage: "Slippage/Fee",
     swap_from: "Swap From",
-    withdraw_fee: "Fee: 0.5USDT",
+    withdraw_fee: "Fee: 5%",
     withdraw_warning: "Withdrawals arrive within 2 hours. Please do not submit repeatedly to avoid on-chain congestion delays.",
     stake: "Stake",
     stake_token: "Stake Token",

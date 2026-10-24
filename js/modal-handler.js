@@ -232,7 +232,7 @@ export function mountModalHandlers() {
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
                 </div>
                 <div class="px-1 -mb-2">
-                    <span class="text-[11px] font-bold text-amber-600" data-i18n="withdraw_fee">手续费：0.5USDT</span>
+                    <span class="text-[11px] font-bold text-amber-600" data-i18n="withdraw_fee">手续费：5%</span>
                 </div>
                 <div class="px-1">
                     <span id="witBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.000000 USDT</span>

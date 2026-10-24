@@ -266,7 +266,7 @@ window.i18nData['zh-CN'] = {
     expected_receive: "预计兑入",
     swap_slippage: "滑点/买卖税",
     swap_from: "兑出资产",
-    withdraw_fee: "手续费：0.5USDT",
+    withdraw_fee: "手续费：5%",
     withdraw_warning: "提现到账时间为两小时以内，请勿重复提交，避免链上拥堵延迟到账",
     stake: "质押",
     stake_token: "质押代币",

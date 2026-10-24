@@ -246,7 +246,7 @@ window.i18nData['de'] = {
     available: "Verfügbares Guthaben",
     swap_slippage: "Schlupf/Gebühr",
     swap_from: "Tausch von",
-    withdraw_fee: "Gebühr: 0.5USDT",
+    withdraw_fee: "Gebühr: 5%",
     withdraw_warning: "Auszahlungen treffen innerhalb von 2 Stunden ein. Bitte nicht mehrfach senden, um Verzögerungen durch Netzwerküberlastung zu vermeiden.",
     stake: "Staking",
     stake_token: "Staking-Token",

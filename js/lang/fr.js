@@ -246,7 +246,7 @@ window.i18nData['fr'] = {
     available: "Solde disponible",
     swap_slippage: "Glissement/Frais",
     swap_from: "Échanger de",
-    withdraw_fee: "Frais: 0.5USDT",
+    withdraw_fee: "Frais: 5%",
     withdraw_warning: "Les retraits arrivent sous 2 heures. Veuillez ne pas soumettre plusieurs fois pour éviter les retards dus à la congestion de la chaîne.",
     stake: "Staking",
     stake_token: "Jeton de staking",

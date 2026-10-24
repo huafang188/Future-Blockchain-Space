@@ -246,7 +246,7 @@ window.i18nData['ja'] = {
     available: "利用可能残高",
     swap_slippage: "スリッページ/手数料",
     swap_from: ".swap From",
-    withdraw_fee: "手数料：0.5USDT",
+    withdraw_fee: "手数料：5%",
     withdraw_warning: "出金は2時間以内に到着します。チェーン上の混雑による遅延を避けるため、重複送信しないでください。",
     stake: "ステーキング",
     stake_token: "ステーキングトークン",

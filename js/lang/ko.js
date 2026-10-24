@@ -246,7 +246,7 @@ window.i18nData['ko'] = {
     available: "사용 가능 잔액",
     swap_slippage: "슬리피지/수수료",
     swap_from: "스왑 출처",
-    withdraw_fee: "수수료: 0.5USDT",
+    withdraw_fee: "수수료: 5%",
     withdraw_warning: "출금은 2시간 이내에 도착합니다. 체인 혼잡으로 인한 지연을 피하려면 중복 제출하지 마세요.",
     stake: "스테이킹",
     stake_token: "스테이킹 토큰",

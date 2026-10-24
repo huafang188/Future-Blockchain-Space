@@ -247,7 +247,7 @@ window.i18nData['el'] = {
     expected_receive: "Αναμενόμενη Παραλαβή",
     swap_slippage: "Ολίσθηση/Προμήθεια",
     swap_from: "Περιουσία Ανταλλαγής",
-    withdraw_fee: "Προμήθεια: 0.5USDT",
+    withdraw_fee: "Προμήθεια: 5%",
     withdraw_warning: "Οι αναλήψεις φτάνουν εντός 2 ωρών. Μην υποβάλλετε επανειλημμένα αιτήματα για να αποφύγετε καθυστερήσεις λόγω συμφόρησης της αλυσίδας.",
     stake: "Staking",
     stake_token: "Token staking",

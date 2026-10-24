@@ -183,7 +183,7 @@ window.i18nData['es'] = {
     exchange: "Canje (Swap)",
     swap_slippage: "Deslizamiento/Comisión",
     swap_from: "Canje de",
-    withdraw_fee: "Comisión: 0.5USDT",
+    withdraw_fee: "Comisión: 5%",
     withdraw_warning: "Los retiros llegan en menos de 2 horas. No envíe solicitudes repetidas para evitar retrasos por congestión de la cadena.",
     stake: "Staking",
     stake_token: "Token de staking",

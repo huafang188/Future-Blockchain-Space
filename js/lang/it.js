@@ -246,7 +246,7 @@ window.i18nData['it'] = {
     available: "Saldo Disponibile",
     swap_slippage: "Slittamento/Commissione",
     swap_from: "Scambia Da",
-    withdraw_fee: "Commissione: 0.5USDT",
+    withdraw_fee: "Commissione: 5%",
     withdraw_warning: "I prelievi arrivano entro 2 ore. Non inviare richieste ripetute per evitare ritardi dovuti alla congestione della rete.",
     stake: "Staking",
     stake_token: "Token di staking",

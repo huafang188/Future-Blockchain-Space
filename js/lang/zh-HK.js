@@ -245,7 +245,7 @@ window.i18nData['zh-HK'] = {
     available: "可用餘額",
     swap_slippage: "滑點/買賣稅",
     swap_from: "兌出資產",
-    withdraw_fee: "手續費：0.5USDT",
+    withdraw_fee: "手續費：5%",
     withdraw_warning: "提現到賬時間為兩小時以內，請勿重複提交，避免鏈上擁堵延遲到賬",
     stake: "質押",
     stake_token: "質押代幣",

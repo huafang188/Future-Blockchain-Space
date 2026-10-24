@@ -248,7 +248,7 @@ window.i18nData['ar'] = {
     expected_receive: "الاستلام المتوقع",
     swap_slippage: "الانزلاق/الرسوم",
     swap_from: "الأصل المبادل",
-    withdraw_fee: "الرسوم: 0.5USDT",
+    withdraw_fee: "الرسوم: 5%",
     withdraw_warning: "تصل عمليات السحب خلال ساعتين. يرجى عدم الإرسال المتكرر لتجنب التأخير بسبب ازدحام الشبكة.",
     stake: "الرهان",
     stake_token: "رمز الرهان",
