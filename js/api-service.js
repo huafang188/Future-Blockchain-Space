@@ -264,7 +264,7 @@ export async function fetchUserData(address, options = {}) {
 
             if (window.renderTokenList) window.renderTokenList({});
 
-            renderMinerLevel(data);
+
             renderIdentityWeight(data);
 
             return;
@@ -366,7 +366,6 @@ export async function fetchUserData(address, options = {}) {
                 updateText('miner_locked', data.miner["锁仓数量"]);
             }
 
-            renderMinerLevel(data);
 
             renderIdentityWeight(data);
 
@@ -522,47 +521,6 @@ function extractMinerLevel(data) {
                   data.team?.["矿工等级"] || data.team?.["等级"] || '').trim();
 }
 
-function renderMinerLevel(data) {
-    const levelEl = document.getElementById('minerLevel');
-
-    if (data && typeof data === 'object' && (data.info || data.team)) {
-        window.currentMinerLevelData = data;
-    }
-
-    data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
-
-    const minerLevel = extractMinerLevel(data);
-
-    if (!levelEl) {
-        console.log("[MinerLevel] 未找到 minerLevel 元素");
-        return;
-    }
-
-    if (!data) {
-        console.log("[MinerLevel] 没有可用的数据");
-        levelEl.className = 'miner-level-badge opacity-0';
-        return;
-    }
-
-    console.log("[MinerLevel] 数据对象结构:", {
-        info: data.info ? Object.keys(data.info) : null,
-        team: data.team ? Object.keys(data.team) : null
-    });
-    console.log("[MinerLevel] 读取到的矿工等级:", minerLevel);
-
-    if (minerLevel && LEVEL_STYLES[minerLevel]) {
-        const style = LEVEL_STYLES[minerLevel];
-
-        const translatedLevel = getMinerLevelTranslation(minerLevel);
-        levelEl.innerText = translatedLevel;
-        levelEl.className = `miner-level-badge bg-gradient-to-r ${style.color} ${style.textColor} px-3 py-1 rounded-full text-[9px] font-bold border ${style.borderColor} mb-2 inline-block opacity-100 shadow-md`;
-        console.log("[MinerLevel] 成功显示矿工等级:", minerLevel, "(翻译后:", translatedLevel, ")");
-    } else {
-
-        levelEl.className = 'miner-level-badge opacity-0';
-        console.log("[MinerLevel] 矿工等级数据为空或不匹配，隐藏徽章");
-    }
-}
 
 function renderIdentityWeight(data) {
     const identityEl = document.getElementById('identity_level');
@@ -632,7 +590,7 @@ window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
-window.renderMinerLevel = renderMinerLevel;
+
 window.renderIdentityWeight = renderIdentityWeight;
 
 export async function refreshBalances() {
