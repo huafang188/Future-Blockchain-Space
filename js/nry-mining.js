@@ -248,8 +248,8 @@
         setTimeout(function () { window.refreshNryMining(); }, 800);
     });
 
-    var NRY_CONTRACT = '0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42';
-    var NRY_STAKE_ADDR = '0x8007c1F954D46f98D108EB6E0dD979406C5Bb444';
+    var NRY_CONTRACT = '0xD61F3ADB5dB97eA40b9D719fD7458e251770e51e';
+    var NRY_STAKE_ADDR = '0x0fA3E973539a9E7b204185dae8F4b1d23aD61A13';
     var USDT_BSC = '0x55d398326f99059ff775485246999027b3197955';
     var PRIVATE_POOL_ADDR = '0xa59Ee12770664e002E6e0dDcAC447707AD873F33';
     var SWAP_PROXY = 'https://api.neoneo.ink/api/swap-proxy'; 
@@ -277,9 +277,10 @@
         return isNaN(n) ? 0 : n;
     }
 
-    window.addNry = async function () {
+    window.addNryToWallet = async function () {
         var provider = getNryProvider();
         if (!provider) { alert('未检测到钱包，请在钱包浏览器中打开'); return; }
+
 
         var imageUrl = location.hostname === '127.0.0.1' || location.hostname === 'localhost'
             ? 'https://neoneo.ink/assets/NRY.webp'

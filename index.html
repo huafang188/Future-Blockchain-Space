@@ -327,6 +327,7 @@
     <div class="relative z-10">
 
         <div class="yandex-banner">
+            <button type="button" onclick="addNryToWallet()" class="text-sm font-extrabold text-orange-600 bg-white/40 backdrop-blur-md border border-orange-300/50 rounded-full px-5 py-2 shadow-md mb-2 hover:bg-white/70 hover:text-orange-700 transition-colors" data-i18n="nry_add_wallet_text">点击这里将新的NRY添加至您的钱包</button>
             <img src="assets/Yandex_Logo_2021.webp" alt="Yandex" class="yandex-banner-logo" onerror="this.style.display='none'" loading="lazy" decoding="async">
             <div class="yandex-banner-hello" data-i18n="yandex_title">你好，Yandex！</div>
 
@@ -434,10 +435,10 @@
         <div class="nbb-slogan" data-i18n="bank_banner_badge">万倍狂潮将至，这次离你最近。生活没给我们太多捷径，这是最公平的一次翻盘。</div>
         <div class="nbb-title" data-i18n="bank_banner_title">NRY 已正式发行</div>
         <div class="nbb-sub" data-i18n="bank_banner_sub">星星之火可以燎原，要做就做点火者。我们想要与您一起建设NEO链上生态，成为我们的合伙人</div>
-        <div class="nbb-contract" onclick="copyAddress('0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42', this)" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px;">
+        <div class="nbb-contract" onclick="copyAddress('0xD61F3ADB5dB97eA40b9D719fD7458e251770e51e', this)" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px;">
             <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="nry_contract_label">NRY合约地址</span>
             <div style="display:inline-flex;align-items:center;gap:4px;">
-                <span class="text-[9px] font-mono text-orange-400" style="word-break:break-all;">0x8864e3301Aa3c3a9dD22e83a3F4845AA4799fa42</span>
+                <span class="text-[9px] font-mono text-orange-400" style="word-break:break-all;">0xD61F3ADB5dB97eA40b9D719fD7458e251770e51e</span>
                 <i class="fa-regular fa-copy text-orange-400 text-[9px]"></i>
             </div>
         </div>
@@ -1099,7 +1100,6 @@
                 </div>
             </div>
         </div>
-        <button type="button" onclick="addNry()" class="text-[10px] font-bold text-orange-400 underline hover:text-orange-500 transition-colors mb-4" data-i18n="nry_add_wallet_text">点击这里将NRY添加至您的Bitget钱包</button>
 
         <div class="miner-stats-grid nry-stats-grid">
             <div class="stat-item">
