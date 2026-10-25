@@ -131,6 +131,7 @@ window.i18nData['ja'] = {
     nry_addr_stake: "ステーク",
     nry_addr_private: "流動性",
     nry_add_wallet_text: "ここをクリックして新しいNRYをウォレットに追加",
+    nry_migrate_notice: "ユーザーの皆様へ、NRYの最新コントラクトは新しいアドレスに移行し、旧コントラクトは廃止されました。上のボタンをクリックして新しいNRYをウォレットに追加し、旧NRY（交換不可）を削除してください。今後の出金・ステーキング等の操作はすべて新しいコントラクトで行われます。新しいNRYは順次保有者のウォレットへマッピングされています。ご不便をおかけして申し訳ございません。",
     nry_distribution_title: "トークン分配と配当プール",
     nry_dist_mining: "マイニングプール",
     nry_dist_bottom: "流動性プール",

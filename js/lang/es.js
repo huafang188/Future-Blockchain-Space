@@ -131,6 +131,7 @@ window.i18nData['es'] = {
     nry_addr_stake: "Stake",
     nry_addr_private: "Liquidez",
     nry_add_wallet_text: "Haga clic aquí para agregar el nuevo NRY a su billetera",
+    nry_migrate_notice: "Estimados usuarios, hemos migrado NRY a una nueva dirección de contrato y el contrato anterior ha quedado obsoleto. Haga clic en el botón de arriba para añadir el nuevo NRY a su billetera y elimine el NRY antiguo (que ya no se puede canjear). Todas las futuras operaciones de retiro y staking se realizarán con el nuevo contrato. Estamos migrando gradualmente el nuevo NRY a las billeteras de los titulares. Lamentamos las molestias.",
     nry_distribution_title: "Distribución de tokens y pool de dividendos",
     nry_dist_mining: "Pool de minería",
     nry_dist_bottom: "Pool de liquidez",

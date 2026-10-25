@@ -131,6 +131,7 @@ window.i18nData['ko'] = {
     nry_addr_stake: "스테이크",
     nry_addr_private: "유동성",
     nry_add_wallet_text: "여기를 클릭하여 새로운 NRY를 지갑에 추가",
+    nry_migrate_notice: "사용자 여러분, NRY 최신 컨트랙트가 새 주소로 이전되었으며 기존 컨트랙트는 폐기되었습니다. 위 버튼을 클릭하여 새 NRY를 지갑에 추가하고 기존 NRY(더 이상 교환 불가)를 삭제해 주세요. 이후 출금 및 스테이킹 등 모든 작업은 새 컨트랙트를 사용합니다. 새 NRY는 순차적으로 보유자 지갑에 매핑되고 있습니다. 불편을 드려 죄송합니다.",
     nry_distribution_title: "토큰 분배 및 배당 풀",
     nry_dist_mining: "마이닝 풀",
     nry_dist_bottom: "유동성 풀",
