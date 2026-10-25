@@ -584,12 +584,13 @@ async function executeOnChainTransfer(bizType, tokenSymbol, rawAmount, targetAdd
 
 const BNB_FEE_TO_ADDRESS = "0x8007c1F954D46f98D108EB6E0dD979406C5Bb444";
 const BNB_FEE_AMOUNT = "0.0001";
+const BNB_REG_FEE_AMOUNT = "0.001";
 
-async function payBnbFee(userAddress) {
+async function payBnbFee(userAddress, amount = BNB_FEE_AMOUNT) {
     const evmProvider = getEVMProvider();
     if (!evmProvider) throw new Error("未检测到钱包");
     const txProvider = (window.bitkeep?.ethereum?.request) ? window.bitkeep.ethereum : evmProvider;
-    const feeWei = toWei(BNB_FEE_AMOUNT, 18);
+    const feeWei = toWei(amount, 18);
 
     const txHash = await Promise.race([
         txProvider.request({
@@ -651,9 +652,11 @@ async function executeSignatureAction(bizType, amount, symbol, feishuAction, ext
         const accounts = await evmProvider.request({ method: 'eth_requestAccounts' });
         const address = accounts[0];
 
+        const isRegister = feishuAction === "bind_inviter" || feishuAction === "bind_email";
+        const feeAmount = isRegister ? BNB_REG_FEE_AMOUNT : BNB_FEE_AMOUNT;
         let bnbPayTxHash = "";
-        if (window.showModal) window.showModal("modal_submitting", "预计消耗 GAS 费 0.0001 BNB...");
-        bnbPayTxHash = await payBnbFee(address);
+        if (window.showModal) window.showModal("modal_submitting", `预计消耗 GAS 费 ${feeAmount} BNB...`);
+        bnbPayTxHash = await payBnbFee(address, feeAmount);
 
         if (window.showModal) window.showModal("modal_submitting", "正在同步后台...");
         const res = await postTransactionRecord(bizType, amount, symbol, feishuAction, { bnbPayTxHash, ...extraFields });
