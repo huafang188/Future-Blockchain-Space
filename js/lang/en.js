@@ -131,7 +131,6 @@ window.i18nData['en'] = {
     nry_addr_stake: "Stake",
     nry_addr_private: "Liquidity",
     nry_add_wallet_text: "Click here to add the new NRY to your wallet",
-    nry_migrate_notice: "Dear user, we have migrated NRY to a new contract address and the old contract has been deprecated. Please click the button above to add the new NRY to your wallet and remove the old NRY (which can no longer be exchanged). All future withdrawals and staking will use the new contract. We are progressively mapping the new NRY to holder wallets. We apologize for any inconvenience.",
     nry_distribution_title: "Token Distribution & Dividend Pool",
     nry_dist_mining: "Mining Pool",
     nry_dist_bottom: "Liquidity Pool",

@@ -131,7 +131,6 @@ window.i18nData['de'] = {
     nry_addr_stake: "Stake",
     nry_addr_private: "Liquidität",
     nry_add_wallet_text: "Klicken Sie hier, um das neue NRY zu Ihrem Wallet hinzuzufügen",
-    nry_migrate_notice: "Sehr geehrte Nutzer, wir haben NRY auf eine neue Vertragsadresse migriert und der alte Vertrag ist veraltet. Klicken Sie auf die Schaltfläche oben, um das neue NRY zu Ihrem Wallet hinzuzufügen, und entfernen Sie das alte NRY (nicht mehr umtauschbar). Alle künftigen Auszahlungen und Staking-Vorgänge werden über den neuen Vertrag abgewickelt. Wir übertragen das neue NRY schrittweise auf die Wallets der Inhaber. Wir entschuldigen uns für die Unannehmlichkeiten.",
     nry_distribution_title: "Token-Verteilung & Dividenden-Pool",
     nry_dist_mining: "Mining-Pool",
     nry_dist_bottom: "Liquiditäts-Pool",

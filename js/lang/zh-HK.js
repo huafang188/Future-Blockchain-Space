@@ -130,7 +130,6 @@ window.i18nData['zh-HK'] = {
     nry_addr_stake: "質押",
     nry_addr_private: "流動性",
     nry_add_wallet_text: "點擊這裡將新的NRY添加至您的錢包",
-    nry_migrate_notice: "尊敬的用戶您好，我們已將NRY的最新合約更換為新地址，舊的合約已棄用，您可以點擊上方按鈕將新的NRY添加至您的錢包，並同時刪除舊的NRY（舊的已無法兌換），後續您的提幣及質押等操作都使用新的合約來執行，我們已逐步將新的NRY映射至持有者錢包，給您帶來的不便敬請諒解。",
     nry_distribution_title: "代幣分配與分紅池",
     nry_dist_mining: "礦池",
     nry_dist_bottom: "底池",
