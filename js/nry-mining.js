@@ -3,6 +3,7 @@
     'use strict';
 
     var NRY_MINING_API = 'https://api.neoneo.ink/api/nry-mining';
+    var NRY_SHAREHOLDER_API = 'https://api.neoneo.ink/api/nry-shareholder';
 
     window.copyAddress = function (addr, el) {
         try {
@@ -139,10 +140,7 @@
             set('nry_indirect_volume', '$--');
             set('nry_direct_count', '--');
             set('nry_team_volume', '$--');
-            set('nry_my_nry', '--');
-            set('nry_my_usdt', '--');
-            set('nry_my_lp', '--');
-            set('nry_my_dividend', '--');
+
             return;
         }
         var u = data.user || {};
@@ -164,10 +162,7 @@
         animateValue('nry_indirect_volume', u.indirectVolume, fmtUSD);
         animateValue('nry_direct_count', u.directCount, fmtInt);
         animateValue('nry_team_volume', u.teamVolume, fmtUSD);
-        set('nry_my_nry', fmtUnit(u.myNry, 'NRY'));
-        set('nry_my_usdt', fmtUnit(u.myUsdt, 'USDT'));
-        set('nry_my_lp', fmtUnit(u.myLp, 'LP'));
-        set('nry_my_dividend', fmtUnit(u.pendingDividend, 'NRY'));
+
 
         renderDistribution(data.distribution);
     };
@@ -221,6 +216,42 @@
         window.renderNryMining(data);
     };
 
+    window.fetchNryShareholderInfo = async function (address) {
+        if (!address) return null;
+        var url = NRY_SHAREHOLDER_API + '?address=' + encodeURIComponent(address) + '&t=' + Date.now();
+        try {
+            var res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            var data = await res.json();
+            if (!data || data.success === false) return null;
+            return data;
+        } catch (e) {
+            console.error('[NRY股东] 查询数据失败:', e.message);
+            return null;
+        }
+    };
+
+    window.renderNryShareholder = function (data) {
+        var set = function (id, v) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = v;
+        };
+        var u = (data && data.user) || {};
+        set('nry_my_nry', fmtUnit(u.myNry, 'NRY'));
+        set('nry_my_usdt', fmtUnit(u.myUsdt, 'USDT'));
+        set('nry_daily_dividend', fmtUnit(u.dailyDividend, 'NRY'));
+        set('nry_last_month_dividend', fmtUnit(u.lastMonthDividend, 'NRY'));
+        set('nry_released_dividend', fmtUnit(u.releasedDividend, 'NRY'));
+        set('nry_my_dividend', fmtUnit(u.pendingDividend, 'NRY'));
+    };
+
+    window.refreshNryShareholder = async function (address) {
+        var addr = address || localStorage.getItem('fbs_address') || '';
+        if (!addr) { window.renderNryShareholder(null); return; }
+        var data = await window.fetchNryShareholderInfo(addr);
+        window.renderNryShareholder(data);
+    };
+
     window.forceRefreshNry = async function () {
         var addr = localStorage.getItem('fbs_address') || '';
         if (!addr) { alert('请先连接钱包'); return; }
@@ -229,6 +260,7 @@
             var data = await window.fetchNryMiningInfo(addr);
             window.renderNryMining(data);
             if (window.refreshLPStake) await window.refreshLPStake(addr);
+            if (window.refreshNryShareholder) await window.refreshNryShareholder(addr);
         } catch (e) {
             console.error('[NRY算力挖矿] 强制刷新失败:', e.message);
         }
@@ -240,12 +272,16 @@
         if (refreshTimer) clearTimeout(refreshTimer);
         refreshTimer = setTimeout(function () {
             window.refreshNryMining();
+            if (window.refreshNryShareholder) window.refreshNryShareholder();
             refreshTimer = null;
         }, 600);
     });
 
     window.addEventListener('load', function () {
-        setTimeout(function () { window.refreshNryMining(); }, 800);
+        setTimeout(function () {
+            window.refreshNryMining();
+            if (window.refreshNryShareholder) window.refreshNryShareholder();
+        }, 800);
     });
 
     var NRY_CONTRACT = '0xD61F3ADB5dB97eA40b9D719fD7458e251770e51e';
