@@ -49,7 +49,7 @@ window.i18nRender = function(lang) {
         }
     });
 
-    const dynamicRenders = ['renderNews', 'renderStatsPage', 'renderIdentityWeight'];
+    const dynamicRenders = ['renderStatsPage', 'renderIdentityWeight'];
 
     dynamicRenders.forEach(fnName => {
         if (typeof window[fnName] === 'function') {

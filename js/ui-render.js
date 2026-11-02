@@ -160,41 +160,7 @@ function getI18nLabels(lang) {
 }
 
 /**
- * 1. 渲染公告/新闻列表
- */
-export function renderNews(lang) {
-    const container = document.getElementById('news-container');
-    if (!container) return;
 
-    const labels = getI18nLabels(lang);
-    if (!labels) {
-        return;
-    }
-
-    const newsList = labels.news_list || [];
-    if (newsList.length === 0) {
-        return;
-    }
-
-    const announcementPanel = container.querySelector('#announcement-panel');
-    const newsPanel = container.querySelector('#news-panel');
-
-    if (announcementPanel && newsPanel) {
-        const newsHtml = newsList.map(newsText => `
-            <div class="bg-slate-50/50 p-3 rounded-lg">
-                <p class="text-xs font-bold text-slate-800 leading-relaxed">${newsText}</p>
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="w-1 h-1 bg-blue-400 rounded-full"></span>
-                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-tighter">Official Update</p>
-                </div>
-            </div>
-        `).join('');
-
-        newsPanel.innerHTML = newsHtml;
-    }
-}
-
-/**
  * 2. 渲染行情详情页 (包含嵌入式 K 线图表)
  */
 export function renderStatsPage(lang) {
@@ -689,7 +655,7 @@ function renderPriceCharts() {
 }
 
 // 全局挂载，方便外部调用
-window.renderNews = renderNews;
+
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
 window.renderHistory = renderHistory;

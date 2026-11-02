@@ -18,8 +18,7 @@ import {
     renderTokenList, 
     renderHistory, 
 
-    renderStatsPage, 
-    renderNews 
+    renderStatsPage
 } from './ui-render.js';
 
 import { mountModalHandlers } from './modal-handler.js';
@@ -70,7 +69,7 @@ function mountAllGlobals() {
     window.renderHistory = renderHistory;
 
     window.renderStatsPage = renderStatsPage;
-    window.renderNews = renderNews;
+
 
     mountWalletClickHandler();        
     mountAccountChangeListener();     
@@ -190,7 +189,7 @@ function initApp() {
             window.i18nRender(savedLang);
         }
 
-        if (window.renderNews) renderNews(savedLang);
+
         if (window.renderStatsPage) renderStatsPage(savedLang);
 
         console.log('[App] 清除登录状态，等待用户手动连接钱包');
