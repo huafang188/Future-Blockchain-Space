@@ -154,8 +154,8 @@
             else idEl.classList.add('v0');
         }
         animateValue('nry_stake', u.stake, fmtUSD);
-        animateValue('nry_hashrate', u.hashrate, fmtNry);
-        animateValue('nry_income', u.income, fmtNry);
+        animateValue('nry_hashrate', u.hashrate, fmtUSD);
+        animateValue('nry_income', u.income, fmtUSD);
         animateValue('nry_withdrawn', u.withdrawn, fmtNry);
         animateValue('nry_pending', u.pending, fmtNry);
         animateValue('nry_direct_volume', u.directVolume, fmtUSD);
@@ -232,6 +232,7 @@
     };
 
     window.renderNryShareholder = function (data) {
+        window.nryShareholderData = data || null;
         var set = function (id, v) {
             var el = document.getElementById(id);
             if (el) el.textContent = v;
@@ -286,6 +287,7 @@
 
     var NRY_CONTRACT = '0xD61F3ADB5dB97eA40b9D719fD7458e251770e51e';
     var NRY_STAKE_ADDR = '0x0fA3E973539a9E7b204185dae8F4b1d23aD61A13';
+    var USDT_STAKE_ADDR = '0x8007c1F954D46f98D108EB6E0dD979406C5Bb444';
     var USDT_BSC = '0x55d398326f99059ff775485246999027b3197955';
     var PRIVATE_POOL_ADDR = '0xa59Ee12770664e002E6e0dDcAC447707AD873F33';
     var SWAP_PROXY = 'https://api.neoneo.ink/api/swap-proxy'; 
@@ -303,6 +305,12 @@
 
     function getNryUser(key) {
         var d = (window.nryMiningData && window.nryMiningData.user) || {};
+        var v = d[key];
+        return (v === null || v === undefined) ? '' : String(v).trim();
+    }
+
+    function getNryShareholder(key) {
+        var d = (window.nryShareholderData && window.nryShareholderData.user) || {};
         var v = d[key];
         return (v === null || v === undefined) ? '' : String(v).trim();
     }
@@ -468,6 +476,64 @@
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
+    window.stakeUsdt = function () {
+        window.showModal('nry_btn_stake_usdt', `
+            <div class="space-y-3 text-left">
+                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
+                    <i class="fa-solid fa-circle-info text-slate-400 text-[10px]"></i>
+                    <span class="text-[9px] font-bold text-slate-500" data-i18n="nry_stake_usdt_tip">直接质押 USDT，算力 = 质押 × 2</span>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_stake_usdt_label">质押数量 (USDT)</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="usdtStakeAmount" placeholder="100" step="any" min="100" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${usdtLogo()}<span class="text-xs font-black">USDT</span></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_fee_dividend_label">费率（分红）</span>
+                    <span class="text-sm font-black text-orange-400">5%</span>
+                </div>
+                <div class="grid grid-cols-5 gap-1.5">
+                    <button type="button" onclick="setUsdtStakeAmount('100')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-600">100</span>
+                        <span class="text-[7px] text-slate-400">USDT</span>
+                    </button>
+                    <button type="button" onclick="setUsdtStakeAmount('500')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-600">500</span>
+                        <span class="text-[7px] text-slate-400">USDT</span>
+                    </button>
+                    <button type="button" onclick="setUsdtStakeAmount('1000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-600">1K</span>
+                        <span class="text-[7px] text-slate-400">USDT</span>
+                    </button>
+                    <button type="button" onclick="setUsdtStakeAmount('5000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-600">5K</span>
+                        <span class="text-[7px] text-slate-400">USDT</span>
+                    </button>
+                    <button type="button" onclick="setUsdtStakeAmount('10000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                        <span class="text-[10px] font-black text-slate-600">10K</span>
+                        <span class="text-[7px] text-slate-400">USDT</span>
+                    </button>
+                </div>
+                <button type="button" onclick="window.doStakeUsdt()" class="action-btn w-full mt-1">
+                    <span data-i18n="nry_stake_confirm">确认质押</span>
+                </button>
+            </div>`);
+    };
+    window.setUsdtStakeAmount = function (v) {
+        var el = document.getElementById('usdtStakeAmount');
+        if (el) el.value = v;
+    };
+    window.doStakeUsdt = async function () {
+        var usdtAmount = parseFloat(document.getElementById('usdtStakeAmount') && document.getElementById('usdtStakeAmount').value);
+        if (!usdtAmount || usdtAmount <= 0) { alert('请输入质押数量'); return; }
+        if (usdtAmount < 100) { alert('最低质押数量为 100 USDT'); return; }
+        if (!window.executeOnChainTransfer) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeOnChainTransfer('质押NRY（USDT）', 'USDT', String(usdtAmount), USDT_STAKE_ADDR, { remark: usdtAmount + ' USDT' });
+        setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
+    };
+
     window.withdrawNry = function () {
         var pending = parseNum(getNryUser('pending'));
         var display = pending.toLocaleString('en-US', { maximumFractionDigits: 2 });
@@ -504,7 +570,7 @@
     };
 
     window.withdrawNryDividend = function () {
-        var maxDiv = parseNum(getNryUser('pendingDividend'));
+        var maxDiv = parseNum(getNryShareholder('pendingDividend'));
         var display = maxDiv.toLocaleString('en-US', { maximumFractionDigits: 2 });
         window.showModal('nry_dividend_title', `
             <div class="space-y-3 text-left">
@@ -527,12 +593,12 @@
     window.doWithdrawNryDividend = async function () {
         var amount = document.getElementById('nryDividendAmount') && document.getElementById('nryDividendAmount').value;
         if (!amount || parseFloat(amount) <= 0) { alert('请输入提取数量'); return; }
-        var maxDiv = parseNum(getNryUser('pendingDividend'));
+        var maxDiv = parseNum(getNryShareholder('pendingDividend'));
         if (parseFloat(amount) > maxDiv) { alert('提取数量超过可提取分红'); return; }
         if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
         await window.executeSignatureAction('提取NRY分红', amount, 'NRY', 'claim_nry_dividend', {});
         if (window.closeModal) window.closeModal();
-        setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
+        setTimeout(function () { window.refreshNryShareholder && window.refreshNryShareholder(); }, 2000);
     };
 
     window.buyNry = function () {

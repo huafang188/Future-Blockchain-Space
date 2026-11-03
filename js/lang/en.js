@@ -88,6 +88,7 @@ window.i18nData['en'] = {
     nry_btn_add: "Add NRY",
     nry_btn_buy: "Buy NRY",
     nry_btn_stake: "Stake NRY",
+    nry_btn_stake_usdt: "Stake USDT",
     nry_stake_3x_badge: "3x Limited",
     nry_btn_withdraw: "Withdraw NRY",
     nry_my_nry: "My NRY",

@@ -87,6 +87,7 @@ window.i18nData['hi'] = {
     nry_btn_add: "NRY जोड़ें",
     nry_btn_buy: "NRY खरीदें",
     nry_btn_stake: "NRY स्टेक करें",
+    nry_btn_stake_usdt: "USDT स्टेक करें",
     nry_stake_3x_badge: "सीमित 3x",
     nry_btn_withdraw: "NRY निकालें",
     nry_my_nry: "मेरा NRY",

@@ -88,6 +88,7 @@ window.i18nData['ru'] = {
     nry_btn_add: "Добавить NRY",
     nry_btn_buy: "Купить NRY",
     nry_btn_stake: "Стейкинг NRY",
+    nry_btn_stake_usdt: "Стейкинг USDT",
     nry_stake_3x_badge: "Ограничено 3x",
     nry_btn_withdraw: "Вывести NRY",
     nry_my_nry: "Мой NRY",

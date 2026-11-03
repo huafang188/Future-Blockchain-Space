@@ -88,6 +88,7 @@ window.i18nData['ko'] = {
     nry_btn_add: "NRY 추가",
     nry_btn_buy: "NRY 구매",
     nry_btn_stake: "NRY 스테이킹",
+    nry_btn_stake_usdt: "USDT 스테이킹",
     nry_stake_3x_badge: "한정 3배",
     nry_btn_withdraw: "NRY 출금",
     nry_my_nry: "내 NRY",

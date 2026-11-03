@@ -88,6 +88,7 @@ window.i18nData['ug'] = {
     nry_btn_add: "NRY قوشۇش",
     nry_btn_buy: "NRY سېتىۋېلىش",
     nry_btn_stake: "NRY گۆرۈك قىلىش",
+    nry_btn_stake_usdt: "USDT گۆرۈك قىلىش",
     nry_stake_3x_badge: "چەكلىك 3x",
     nry_btn_withdraw: "NRY ئېلىش",
     nry_my_nry: "مېنىڭ NRY",

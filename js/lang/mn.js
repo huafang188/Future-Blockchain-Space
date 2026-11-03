@@ -87,6 +87,7 @@ window.i18nData['mn'] = {
     nry_btn_add: "NRY нэмэх",
     nry_btn_buy: "NRY худалдаж авах",
     nry_btn_stake: "NRY стейкинг",
+    nry_btn_stake_usdt: "USDT стейкинг",
     nry_stake_3x_badge: "Хязгаарлагдмал 3x",
     nry_btn_withdraw: "NRY татах",
     nry_my_nry: "Миний NRY",
