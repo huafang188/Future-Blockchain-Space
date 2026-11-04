@@ -90,6 +90,22 @@
         return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
     }
 
+    var LOGO_CLS = 'inline w-4 h-4 object-contain rounded-full align-middle mr-1';
+    function fmtUsdtLogo(val) {
+        var s = (val === null || val === undefined) ? '' : String(val).trim();
+        if (!s) return usdtLogo(LOGO_CLS) + '--';
+        var n = parseFloat(s.replace(/[^0-9.\-]/g, ''));
+        if (isNaN(n)) return usdtLogo(LOGO_CLS) + '--';
+        return usdtLogo(LOGO_CLS) + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
+    function fmtNryLogo(val) {
+        var s = (val === null || val === undefined) ? '' : String(val).trim();
+        if (!s) return nryLogo(LOGO_CLS) + '--';
+        var n = parseFloat(s.replace(/[^0-9.\-]/g, ''));
+        if (isNaN(n)) return nryLogo(LOGO_CLS) + '--';
+        return nryLogo(LOGO_CLS) + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
+
     function fmtInt(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return '--';
@@ -109,7 +125,7 @@
         if (!el) return;
         var num = parseFloat(String(targetStr).replace(/[^0-9.\-]/g, '')) || 0;
         var finalText = formatter(String(num));
-        el.textContent = finalText;
+        el.innerHTML = finalText;
         if (num === 0) return;
         var start = 0, t0 = null, dur = duration || 800;
         function step(ts) {
@@ -117,7 +133,7 @@
             var p = Math.min((ts - t0) / dur, 1);
             var eased = 1 - Math.pow(1 - p, 3);
             var cur = start + (num - start) * eased;
-            el.textContent = formatter(String(cur));
+            el.innerHTML = formatter(String(cur));
             if (p < 1) requestAnimationFrame(step);
         }
         requestAnimationFrame(step);
@@ -126,20 +142,20 @@
     window.renderNryMining = function (data) {
         var set = function (id, v) {
             var el = document.getElementById(id);
-            if (el) el.textContent = v;
+            if (el) el.innerHTML = v;
         };
         window.nryMiningData = data || null;
         if (!data || !data.user) {
             set('nry_identity', '--');
-            set('nry_stake', '$--');
-            set('nry_hashrate', '--');
-            set('nry_income', '--');
-            set('nry_withdrawn', '--');
-            set('nry_pending', '--');
-            set('nry_direct_volume', '$--');
-            set('nry_indirect_volume', '$--');
+            set('nry_stake', fmtUsdtLogo(null));
+            set('nry_hashrate', fmtUsdtLogo(null));
+            set('nry_income', fmtUsdtLogo(null));
+            set('nry_withdrawn', fmtNryLogo(null));
+            set('nry_pending', fmtNryLogo(null));
+            set('nry_direct_volume', fmtUsdtLogo(null));
+            set('nry_indirect_volume', fmtUsdtLogo(null));
             set('nry_direct_count', '--');
-            set('nry_team_volume', '$--');
+            set('nry_team_volume', fmtUsdtLogo(null));
 
             return;
         }
@@ -153,15 +169,15 @@
             if (vMatch) idEl.classList.add('v' + vMatch[1].toLowerCase());
             else idEl.classList.add('v0');
         }
-        animateValue('nry_stake', u.stake, fmtUSD);
-        animateValue('nry_hashrate', u.hashrate, fmtUSD);
-        animateValue('nry_income', u.income, fmtUSD);
-        animateValue('nry_withdrawn', u.withdrawn, fmtNry);
-        animateValue('nry_pending', u.pending, fmtNry);
-        animateValue('nry_direct_volume', u.directVolume, fmtUSD);
-        animateValue('nry_indirect_volume', u.indirectVolume, fmtUSD);
+        animateValue('nry_stake', u.stake, fmtUsdtLogo);
+        animateValue('nry_hashrate', u.hashrate, fmtUsdtLogo);
+        animateValue('nry_income', u.income, fmtUsdtLogo);
+        animateValue('nry_withdrawn', u.withdrawn, fmtNryLogo);
+        animateValue('nry_pending', u.pending, fmtNryLogo);
+        animateValue('nry_direct_volume', u.directVolume, fmtUsdtLogo);
+        animateValue('nry_indirect_volume', u.indirectVolume, fmtUsdtLogo);
         animateValue('nry_direct_count', u.directCount, fmtInt);
-        animateValue('nry_team_volume', u.teamVolume, fmtUSD);
+        animateValue('nry_team_volume', u.teamVolume, fmtUsdtLogo);
 
 
         renderDistribution(data.distribution);
@@ -235,15 +251,15 @@
         window.nryShareholderData = data || null;
         var set = function (id, v) {
             var el = document.getElementById(id);
-            if (el) el.textContent = v;
+            if (el) el.innerHTML = v;
         };
         var u = (data && data.user) || {};
-        set('nry_my_nry', fmtUnit(u.myNry, 'NRY'));
-        set('nry_my_usdt', fmtUnit(u.myUsdt, 'USDT'));
-        set('nry_daily_dividend', fmtUnit(u.dailyDividend, 'NRY'));
-        set('nry_last_month_dividend', fmtUnit(u.lastMonthDividend, 'NRY'));
-        set('nry_released_dividend', fmtUnit(u.releasedDividend, 'NRY'));
-        set('nry_my_dividend', fmtUnit(u.pendingDividend, 'NRY'));
+        set('nry_my_nry', fmtNryLogo(u.myNry));
+        set('nry_my_usdt', fmtUsdtLogo(u.myUsdt));
+        set('nry_daily_dividend', fmtNryLogo(u.dailyDividend));
+        set('nry_last_month_dividend', fmtNryLogo(u.lastMonthDividend));
+        set('nry_released_dividend', fmtNryLogo(u.releasedDividend));
+        set('nry_my_dividend', fmtNryLogo(u.pendingDividend));
     };
 
     window.refreshNryShareholder = async function (address) {
@@ -713,54 +729,34 @@
         }
     };
 
-    window.addLiquidity = function () {
+    window.withdrawLiquidity = function () {
         if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
-        var amounts = [1000, 3000, 5000, 8000, 10000, 15000, 30000, 50000, 80000, 100000];
-        var btns = amounts.map(function (v) {
-            var label = v >= 1000 ? (v / 1000) + 'K' : String(v);
-            return '<button type="button" onclick="window.setNryLiquidityAmount(\'' + v + '\')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">' +
-                '<span class="text-[10px] font-black text-slate-600">' + label + '</span>' +
-                '<span class="text-[7px] text-slate-400">USDT</span></button>';
-        }).join('');
-        window.showModal('nry_add_liquidity_title', `
+        var available = (document.getElementById('nry_my_usdt') && document.getElementById('nry_my_usdt').innerText) || '0';
+        var display = String(available).replace(/[^\d.]/g, '') || '0';
+        window.showModal('nry_btn_withdraw_liquidity', `
             <div class="space-y-3 text-left">
-                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
-                    <i class="fa-solid fa-circle-info text-slate-400 text-[10px]"></i>
-                    <span class="text-[9px] font-bold text-slate-500">USDT → ${PRIVATE_POOL_ADDR.slice(0, 8)}...${PRIVATE_POOL_ADDR.slice(-4)}</span>
+                <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
+                    <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_my_usdt">我的USDT</span>
+                    <div class="flex items-center gap-1.5">${usdtLogo()}<span class="text-sm font-black text-purple-600">${display} USDT</span></div>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_add_liquidity_label">选择 USDT 数量</p>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_withdraw_liquidity_label">提取数量 (USDT)</p>
                     <div class="flex items-center gap-2">
-                        <input type="number" id="liquidityAmount" placeholder="1000" step="any" min="1000" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
-                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0"><span class="text-xs font-black">USDT</span></div>
+                        <input type="number" id="liquidityWithdrawAmount" placeholder="0" step="any" min="0" max="${display}" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${usdtLogo()}<span class="text-xs font-black">USDT</span></div>
                     </div>
                 </div>
-                <div class="grid grid-cols-5 gap-1.5">${btns}</div>
-                <button type="button" onclick="window.doAddNryLiquidity()" class="action-btn w-full mt-1">
-                    <span data-i18n="nry_add_liquidity_confirm">确认添加</span>
+                <button type="button" onclick="window.doWithdrawLiquidity()" class="action-btn w-full mt-1">
+                    <span data-i18n="nry_withdraw_confirm">确认提取</span>
                 </button>
             </div>`);
     };
-    window.setNryLiquidityAmount = function (v) {
-        var el = document.getElementById('liquidityAmount');
-        if (el) el.value = v;
-    };
-    window.doAddNryLiquidity = async function () {
-        var amount = document.getElementById('liquidityAmount') && document.getElementById('liquidityAmount').value;
-        if (!amount || parseFloat(amount) <= 0) { alert('请输入 USDT 数量'); return; }
-        if (parseFloat(amount) < 1000) { alert('最低数量为 1000 USDT'); return; }
-        if (!window.executeOnChainTransfer) { alert('提交模块未加载，请刷新页面重试'); return; }
-        await window.executeOnChainTransfer('添加流动性', 'USDT', String(amount), PRIVATE_POOL_ADDR);
+    window.doWithdrawLiquidity = async function () {
+        var amount = document.getElementById('liquidityWithdrawAmount') && document.getElementById('liquidityWithdrawAmount').value;
+        if (!amount || parseFloat(amount) <= 0) { alert('请输入提取数量'); return; }
+        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeSignatureAction('提取流动性', String(amount), 'USDT', 'record_transaction', {});
         if (window.closeModal) window.closeModal();
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
-    };
-
-    window.withdrawLiquidity = function () {
-        if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
-        window.showModal("nry_btn_withdraw_liquidity", `
-            <div class="space-y-3 text-center py-4">
-                <i class="fa-solid fa-lock text-slate-300 text-2xl"></i>
-                <p class="text-[11px] font-bold text-slate-400 leading-relaxed" data-i18n="nry_liquidity_coming_soon">即将开放</p>
-            </div>`);
     };
 })();
