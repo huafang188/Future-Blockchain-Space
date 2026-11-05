@@ -350,7 +350,9 @@ export function logout(showConfirm) {
     const weightValue = document.getElementById('weight_value');
     if (weightValue) weightValue.innerText = '0%';
     const holdingValue = document.getElementById('holding_value');
-    if (holdingValue) holdingValue.innerText = '0.000000 NEO';
+    if (holdingValue) holdingValue.innerText = '0.000000 NRY';
+    const dividendRatioEl = document.getElementById('dividend_ratio_value');
+    if (dividendRatioEl) dividendRatioEl.innerText = '--%';
 
     const provider = getEVMProvider();
     if (provider) {

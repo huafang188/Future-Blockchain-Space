@@ -334,29 +334,7 @@ export async function fetchUserData(address, options = {}) {
                 }
             }
 
-            let teamData = {
-                directCount: 0,
-                directSales: 0,
-                totalCount: 0,
-                totalSales: 0,
-                totalReward: 0
-            };
-
-            if (data.team) {
-                teamData = {
-                    directCount: data.team["直推人数"] || 0,
-                    directSales: data.team["直推业绩"] || 0,
-                    totalCount: data.team["团队人数"] || 0,
-                    totalSales: data.team["团队业绩"] || 0,
-                    totalReward: data.team["累计奖励"] || 0
-                };
-            }
-
-            updateText('team_directCount', teamData.directCount);
-            updateText('team_directSales', Math.round(teamData.directSales));
-            updateText('team_totalCount', teamData.totalCount);
-            updateText('team_totalSales', Math.round(teamData.totalSales));
-            updateText('team_totalReward', Math.round(teamData.totalReward));
+            renderTeamOverview();
 
             if (data.miner) {
                 updateText('miner_count', data.miner["矿机数量"]);
@@ -367,7 +345,6 @@ export async function fetchUserData(address, options = {}) {
             }
 
 
-            renderIdentityWeight(data);
 
             if (window.renderHistory) window.renderHistory(data.history || []);
 
@@ -495,95 +472,72 @@ function applyClampBehavior(el, rawValue) {
     });
 }
 
-function getMinerLevelTranslation(level) {
-    const lang = localStorage.getItem('fbs_lang') || 'zh-CN';
-    const dict = window.i18nData?.[lang] || window.i18nData?.['zh-CN'] || {};
-    return dict[level] || level;
+const IDENTITY_DIVIDEND_RATIO = { 'N1': 10, 'N2': 20, 'N3': 30, 'N4': 40 };
+
+function getHoldingNry() {
+    const balNry = parseFloat(window.userBalances?.NRY) || 0;
+    const nryMyNry = parseFloat(window.nryShareholderData?.user?.myNry) || 0;
+    const nryPending = parseFloat(window.nryMiningData?.user?.pending) || 0;
+    const nryMyDividend = parseFloat(window.nryShareholderData?.user?.pendingDividend) || 0;
+    const lpReward = parseFloat(window.lpStakeData?.user?.reward) || 0;
+    return balNry + nryMyNry + nryPending + nryMyDividend + lpReward;
 }
 
-const LEVEL_STYLES = {
-    '未激活': { color: 'from-gray-400 to-gray-500', textColor: 'text-white', borderColor: 'border-gray-300' },
-    '白银矿工': { color: 'from-slate-300 to-slate-400', textColor: 'text-white', borderColor: 'border-slate-300' },
-    '白银节点': { color: 'from-slate-400 to-blue-300', textColor: 'text-white', borderColor: 'border-blue-200' },
-    '黄金矿工': { color: 'from-amber-400 to-yellow-500', textColor: 'text-white', borderColor: 'border-amber-300' },
-    '黄金节点': { color: 'from-amber-500 to-orange-500', textColor: 'text-white', borderColor: 'border-orange-300' },
-    '钻石矿工': { color: 'from-cyan-400 to-blue-500', textColor: 'text-white', borderColor: 'border-cyan-300' },
-    '钻石节点': { color: 'from-blue-500 to-purple-500', textColor: 'text-white', borderColor: 'border-purple-300' },
-    '钻石大师': { color: 'from-purple-500 to-pink-500', textColor: 'text-white', borderColor: 'border-pink-300' },
-    '系统维护': { color: 'from-red-500 to-red-600', textColor: 'text-white', borderColor: 'border-red-300' },
-    '账户锁定': { color: 'from-red-600 to-red-700', textColor: 'text-white', borderColor: 'border-red-400' },
-    '账户异常': { color: 'from-red-700 to-red-800', textColor: 'text-white', borderColor: 'border-red-500' }
-};
-
-function extractMinerLevel(data) {
-    if (!data) return '';
-    return String(data.info?.["矿工等级"] || data.info?.["等级"] ||
-                  data.team?.["矿工等级"] || data.team?.["等级"] || '').trim();
+function updateHoldingValue() {
+    const holdingEl = document.getElementById('holding_value');
+    if (!holdingEl) return 0;
+    const total = getHoldingNry();
+    holdingEl.textContent = total.toLocaleString('en-US', {
+        minimumFractionDigits: 6,
+        maximumFractionDigits: 6
+    }) + ' NRY';
+    return total;
 }
 
-
-function renderIdentityWeight(data) {
+function renderIdentityWeight() {
     const identityEl = document.getElementById('identity_level');
     const weightBar = document.getElementById('weight_bar');
     const weightValue = document.getElementById('weight_value');
+    const dividendRatioEl = document.getElementById('dividend_ratio_value');
     if (!identityEl || !weightBar || !weightValue) return;
 
-    if (data && typeof data === 'object' && (data.info || data.team)) {
-        window.currentMinerLevelData = data;
-    }
+    const nryUser = (window.nryMiningData && window.nryMiningData.user) || {};
+    const identity = String(nryUser.identity || '').trim();
+    const idMatch = identity.match(/N([1-4])/i);
+    const idKey = idMatch ? ('N' + idMatch[1]) : '';
 
-    data = (data && typeof data === 'object' && (data.info || data.team)) ? data : window.currentMinerLevelData;
-
-    const minerLevel = extractMinerLevel(data);
-    console.log("[IdentityWeight] 渲染身份与权重, 等级:", minerLevel, "元素存在:", !!identityEl, !!weightBar, !!weightValue);
-
-    updateHoldingValue(data);
-
-    const levelWeightMap = {
-        '未激活': 0,
-        '白银矿工': 20,
-        '白银节点': 40,
-        '黄金矿工': 40,
-        '黄金节点': 50,
-        '钻石矿工': 60,
-        '钻石节点': 70,
-        '钻石大师': 80,
-        '系统维护': 0,
-        '账户锁定': 0,
-        '账户异常': 0
-    };
-
-    if (minerLevel && LEVEL_STYLES[minerLevel]) {
-        const style = LEVEL_STYLES[minerLevel];
-        const translatedLevel = getMinerLevelTranslation(minerLevel);
-        identityEl.innerText = translatedLevel;
-
-        identityEl.className = `text-[10px] font-black px-3 py-1 rounded-full bg-gradient-to-r ${style.color} ${style.textColor} shadow-sm`;
-
-        const weight = levelWeightMap[minerLevel] ?? 0;
-        weightValue.innerText = weight + '%';
-
-        const opacity = 0.15 + (weight / 100) * 0.85;
-        weightBar.style.width = weight + '%';
-        weightBar.style.background = `rgba(124, 58, 237, ${opacity})`;
+    if (idKey) {
+        identityEl.innerText = idKey;
+        identityEl.className = 'text-[10px] font-black px-3 py-1 rounded-full bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-sm';
     } else {
         identityEl.innerText = '--';
         identityEl.className = 'text-[10px] font-black px-3 py-1 rounded-full bg-slate-100 text-slate-400';
-        weightValue.innerText = '0%';
-        weightBar.style.width = '0%';
+    }
+
+    if (dividendRatioEl) {
+        const ratio = IDENTITY_DIVIDEND_RATIO[idKey];
+        dividendRatioEl.innerText = (ratio != null ? ratio : '--') + '%';
+    }
+
+    const holding = updateHoldingValue();
+    const weightPct = holding <= 0 ? 0 : Math.min((holding / 1000000) * 100, 100);
+    weightValue.innerText = weightPct.toFixed(2) + '%';
+    weightBar.style.width = Math.min(weightPct, 100) + '%';
+    if (weightPct > 0) {
+        const opacity = 0.15 + (Math.min(weightPct, 100) / 100) * 0.85;
+        weightBar.style.background = `rgba(124, 58, 237, ${opacity})`;
+    } else {
         weightBar.style.background = '#e2e8f0';
     }
 }
 
-function updateHoldingValue(data) {
-    const holdingEl = document.getElementById('holding_value');
-    if (!holdingEl) return;
-    const neoBal = parseFloat(data?.balances?.['NEO'] ?? 0) || 0;
-
-    holdingEl.textContent = neoBal.toLocaleString(undefined, {
-        minimumFractionDigits: 6,
-        maximumFractionDigits: 6
-    }) + ' NEO';
+function renderTeamOverview() {
+    const nryUser = (window.nryMiningData && window.nryMiningData.user) || {};
+    updateText('team_directCount', nryUser.directCount || 0);
+    updateText('team_directSales', Math.round(nryUser.directVolume || 0));
+    updateText('team_totalCount', Math.round(nryUser.indirectVolume || 0));
+    updateText('team_totalSales', Math.round(nryUser.teamVolume || 0));
+    renderIdentityWeight();
 }
 
 window.fetchUserData = fetchUserData;
@@ -592,6 +546,7 @@ window.submitBindInviter = submitBindInviter;
 window.updateText = updateText;
 
 window.renderIdentityWeight = renderIdentityWeight;
+window.renderTeamOverview = renderTeamOverview;
 
 export async function refreshBalances() {
     const address = window.currentAddress || localStorage.getItem('fbs_address');

@@ -152,11 +152,9 @@
             set('nry_income', fmtUsdtLogo(null));
             set('nry_withdrawn', fmtNryLogo(null));
             set('nry_pending', fmtNryLogo(null));
-            set('nry_direct_volume', fmtUsdtLogo(null));
-            set('nry_indirect_volume', fmtUsdtLogo(null));
-            set('nry_direct_count', '--');
-            set('nry_team_volume', fmtUsdtLogo(null));
 
+
+            if (window.renderTeamOverview) window.renderTeamOverview();
             return;
         }
         var u = data.user || {};
@@ -174,13 +172,11 @@
         animateValue('nry_income', u.income, fmtUsdtLogo);
         animateValue('nry_withdrawn', u.withdrawn, fmtNryLogo);
         animateValue('nry_pending', u.pending, fmtNryLogo);
-        animateValue('nry_direct_volume', u.directVolume, fmtUsdtLogo);
-        animateValue('nry_indirect_volume', u.indirectVolume, fmtUsdtLogo);
-        animateValue('nry_direct_count', u.directCount, fmtInt);
-        animateValue('nry_team_volume', u.teamVolume, fmtUsdtLogo);
+
 
 
         renderDistribution(data.distribution);
+        if (window.renderTeamOverview) window.renderTeamOverview();
     };
 
     function renderDistribution(dist) {
@@ -260,6 +256,7 @@
         set('nry_last_month_dividend', fmtNryLogo(u.lastMonthDividend));
         set('nry_released_dividend', fmtNryLogo(u.releasedDividend));
         set('nry_my_dividend', fmtNryLogo(u.pendingDividend));
+        if (window.renderTeamOverview) window.renderTeamOverview();
     };
 
     window.refreshNryShareholder = async function (address) {
@@ -735,6 +732,7 @@
         var display = String(available).replace(/[^\d.]/g, '') || '0';
         window.showModal('nry_btn_withdraw_liquidity', `
             <div class="space-y-3 text-left">
+                <p class="text-center text-[9px] text-slate-400 font-bold">退股周期T+5</p>
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_my_usdt">我的USDT</span>
                     <div class="flex items-center gap-1.5">${usdtLogo()}<span class="text-sm font-black text-purple-600">${display} USDT</span></div>

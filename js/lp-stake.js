@@ -59,6 +59,7 @@
         set('lp_stake_my_neo', fmtNum(user.myNeo));
         set('lp_stake_my_usdt', fmtNum(user.myUsdt));
         set('lp_stake_locked', fmt(user.lockedLP, ' LP', { empty: '0.00 LP' }));
+        if (window.renderTeamOverview) window.renderTeamOverview();
     };
 
     window.refreshLPStake = async function (address) {
