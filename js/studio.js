@@ -37,6 +37,7 @@
             var el = document.getElementById(id);
             if (el) el.textContent = v;
         };
+        set('studio_id', u.studioId || '--');
         set('studio_name', u.name || '--');
         set('studio_age', u.age != null ? u.age : '--');
         set('studio_subsidy', fmtNum(u.subsidy));
