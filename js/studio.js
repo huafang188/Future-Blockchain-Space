@@ -2,14 +2,7 @@
 (function () {
     'use strict';
 
-    var STUDIO_API = (function () {
-        var base = '';
-        try {
-            var cfg = window.API_BASE || '';
-            if (cfg && cfg.indexOf('/api/user') !== -1) base = cfg.replace(/\/api\/user.*$/, '');
-        } catch (e) {}
-        return base + '/api/studio';
-    })();
+    var STUDIO_API = 'https://api.neoneo.ink/api/studio';
 
     function fmtNum(val) {
         var n = parseFloat(String(val || "0").replace(/,/g, ""));
