@@ -249,6 +249,11 @@
             var el = document.getElementById(id);
             if (el) el.innerHTML = v;
         };
+        var section = document.getElementById('nry_shareholder_section');
+        if (section) {
+            if (data && data.user) section.classList.remove('hidden');
+            else section.classList.add('hidden');
+        }
         var u = (data && data.user) || {};
         set('nry_my_nry', fmtNryLogo(u.myNry));
         set('nry_my_usdt', fmtUsdtLogo(u.myUsdt));
