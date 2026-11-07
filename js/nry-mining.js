@@ -732,7 +732,7 @@
         var display = String(available).replace(/[^\d.]/g, '') || '0';
         window.showModal('nry_btn_withdraw_liquidity', `
             <div class="space-y-3 text-left">
-                <p class="text-center text-[9px] text-slate-400 font-bold">退股周期T+5</p>
+                <p class="text-left text-[9px] text-slate-400 font-bold">退股周期T+30</p>
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
                     <span class="text-[10px] font-black text-slate-500 uppercase" data-i18n="nry_my_usdt">我的USDT</span>
                     <div class="flex items-center gap-1.5">${usdtLogo()}<span class="text-sm font-black text-purple-600">${display} USDT</span></div>
