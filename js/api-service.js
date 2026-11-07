@@ -353,6 +353,12 @@ export async function fetchUserData(address, options = {}) {
                 if (window.renderPriceCharts) window.renderPriceCharts();
 
             }, 100);
+
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => { if (window.refreshStudio) window.refreshStudio(); }, { timeout: 500 });
+            } else {
+                setTimeout(() => { if (window.refreshStudio) window.refreshStudio(); }, 300);
+            }
         };
 
         if ('requestIdleCallback' in window) {
