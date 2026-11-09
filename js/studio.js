@@ -55,6 +55,45 @@
         window.renderStudio(data);
     };
 
+    window.showStudioRules = function () {
+        if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
+        window.showModal('studio_rules_title', `
+            <div class="max-h-[70vh] overflow-y-auto space-y-4 text-left pr-1">
+                <div>
+                    <p class="text-xs font-black text-purple-600 mb-1.5">一、工作室要求</p>
+                    <ol class="list-decimal list-inside space-y-1 text-[11px] font-bold text-slate-700 leading-relaxed">
+                        <li>必须有办公场地，可以服务会员；</li>
+                        <li>同一个办公室，只可以申请一位；</li>
+                        <li>工作室负责人，必须定期学习 NEO 生态相关知识，接受公司定期培训；</li>
+                        <li>办公室只能做 NEO 相关生态；</li>
+                        <li>如果隐瞒事实，不予补助；</li>
+                        <li>工作室需提交申请，提供工作室负责人信息及地址，用来接收公司宣传物料的发放。</li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="text-xs font-black text-purple-600 mb-1.5">二、工作室补助细则</p>
+                    <ol class="list-decimal list-inside space-y-1 text-[11px] font-bold text-slate-700 leading-relaxed">
+                        <li>当月团队累计业绩：$10000，补助业绩的 5%</li>
+                        <li>当月团队累计业绩：$30000，补助业绩的 7%</li>
+                        <li>当月团队累计业绩：$50000，补助业绩的 10%</li>
+                        <li>当月团队累计业绩：$100000，补助业绩的 12%</li>
+                        <li>当月团队累计业绩：$300000，补助业绩的 15%</li>
+                        <li>当月团队累计业绩：$500000，补助业绩的 20%</li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="text-xs font-black text-purple-600 mb-1.5">三、伞下业绩计算规则</p>
+                    <ol class="list-decimal list-inside space-y-1 text-[11px] font-bold text-slate-700 leading-relaxed">
+                        <li>工作室用户 A 的「当月新增业绩」= A 伞下所有人当月质押 USDT 或 BNB USDC 或 BUSD 金额之和。</li>
+                        <li>如果另一个工作室用户 B 也在 A 的伞下，则剥离 B 的伞下业绩（避免重复计算）。即 A 只算"独占"部分：A 伞下不被任何其他工作室用户伞下覆盖的用户质押之和。</li>
+                    </ol>
+                </div>
+            </div>
+        `);
+        var titleEl = document.getElementById('modalTitle');
+        if (titleEl) titleEl.textContent = '工作室补助细则';
+    };
+
     window.withdrawStudioSubsidy = function () {
         if (typeof window.showModal !== 'function') return alert('页面正在加载中，请稍后重试');
         var available = (window.studioData && window.studioData.user && window.studioData.user.subsidy) || 0;
