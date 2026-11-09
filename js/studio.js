@@ -40,6 +40,8 @@
         set('studio_id', u.studioId || '--');
         set('studio_name', u.name || '--');
         set('studio_age', u.age != null ? u.age : '--');
+        set('studio_phone', u.phone || '--');
+        set('studio_address', u.address || '--');
         set('studio_subsidy', fmtNum(u.subsidy));
         set('studio_monthly', fmtNum(u.monthlyVolume));
         section.classList.remove('hidden');
