@@ -801,4 +801,8 @@ window.i18nData['zh-CN'] = {
     studio_submitting: "提交中...",
     studio_err_fail: "提取失败：",
     studio_err_unknown: "未知错误",
+    binance_title: "推荐您使用币安交易所",
+    binance_desc1: "币安是全球领先的加密货币交易平台，提供现货、合约、期权等多种交易服务，日交易量位居全球前列。支持数百种数字资产交易，为全球超过 2 亿用户提供服务。",
+    binance_desc2: "币安交易所拥有行业领先的安全防护体系，SAFU 用户保护基金超 10 亿美元，保障用户资产安全。同时提供理财、杠杆、流动性挖币等丰富的金融产品，满足不同用户的投资需求。",
+    binance_download: "下载币安交易所",
 };

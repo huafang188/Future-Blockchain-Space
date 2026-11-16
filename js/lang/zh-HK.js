@@ -788,4 +788,8 @@ window.i18nData['zh-HK'] = {
     studio_submitting: "提交中...",
     studio_err_fail: "提取失敗：",
     studio_err_unknown: "未知錯誤",
+    binance_title: "推薦您使用幣安交易所",
+    binance_desc1: "幣安是全球領先的加密貨幣交易平台，提供現貨、合約、期權等多種交易服務，日交易量位居全球前列。支持數百種數字資產交易，為全球超過 2 億用戶提供服務。",
+    binance_desc2: "幣安交易所擁有行業領先的安全防護體系，SAFU 用戶保護基金超 10 億美元，保障用戶資產安全。同時提供理財、槓桿、流動性挖幣等豐富的金融產品，滿足不同用戶的投資需求。",
+    binance_download: "下載幣安交易所",
 };

@@ -675,4 +675,8 @@ window.i18nData['el'] = {
     studio_submitting: "Submitting...",
     studio_err_fail: "Withdraw failed: ",
     studio_err_unknown: "Unknown error",
+    binance_title: "Recommended: Binance Exchange",
+    binance_desc1: "Binance is the world's leading cryptocurrency exchange, offering spot, futures, and options trading with top daily trading volume globally. It supports hundreds of digital assets and serves over 200 million users worldwide.",
+    binance_desc2: "Binance features industry-leading security with a SAFU user protection fund exceeding $1 billion. It also offers wealth management, margin trading, liquidity mining, and other financial products to meet diverse investment needs.",
+    binance_download: "Download Binance",
 };
