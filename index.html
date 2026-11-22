@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20260928n">
+    <link rel="stylesheet" href="style.css?v=20260928o">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -1556,16 +1556,153 @@
                     <span data-i18n="assets_list">资产列表</span>
                 </div>
 
-    <div id="page-academy" class="page-view hidden">
-        <section class="glass-card p-6 text-center">
-            <button onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-6 transition-transform active:scale-95">
-                <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
-            </button>
-            <i class="fas fa-graduation-cap text-4xl text-orange-400 mb-4 block"></i>
-            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
-            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
-        </section>
-    </div>
+            <div id="page-academy" class="page-view hidden academy-scope">
+            <div class="px-4 pt-2">
+                <button type="button" onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full transition-transform active:scale-95">
+                    <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+                </button>
+            </div>
+            <div class="academy-hero">
+                <p class="academy-hero-eyebrow">ARTIFICIAL INTELLIGENCE · COMPUTING POWER</p>
+                <h1 class="academy-hero-title">AI 算力全景知识手册</h1>
+                <p class="academy-hero-sub">从概念到产业，从机房到 CaaS —— 一份系统梳理人工智能算力公开知识的参考手册</p>
+                <div class="academy-hero-meta">概念 · 场景 · 建设 · 商业 · CaaS　|　知识整理类参考资料　|　2026 年版 · V1.0</div>
+            </div>
+<p class="academy-p">ARTIFICIAL INTELLIGENCE · COMPUTING POWER</p>
+<h1 class="academy-h1">AI算力全景知识手册</h1>
+<p class="academy-p">从概念到产业，从机房到 CaaS一份系统梳理人工智能算力公开知识的参考手册</p>
+<p class="academy-p">概念 · 场景 · 建设 · 商业 · CaaS</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>文档信息</strong></td></tr><tr><td>知识整理类参考资料</td></tr><tr><td>2026  年版  · V1.0</td></tr></tbody></table>
+<p class="academy-p">目录</p>
+<ol class="academy-ol"><li>前言</li><li>第一章　AI算力的概念</li><li>第二章　AI算力的使用场景</li><li>第三章　机房建设及成本</li><li>第四章　商业机会</li><li>第五章　CaaS 算力即服务</li><li>第六章　总结与展望</li><li>附录</li></ol>
+<p class="academy-p">执行摘要</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>概念</strong></td><td><strong>场景</strong></td><td><strong>建设</strong></td><td><strong>商业</strong></td><td><strong>CaaS</strong></td></tr><tr><td>训练 / 推理专用算力</td><td>从训练主导转向推理主导</td><td>GPU  占投资  60%–70%</td><td>供需缺口扩大、量价齐升</td><td>OPEX  替代  CAPEX</td></tr></tbody></table>
+<p class="academy-p">AI 算力是人工智能时代的底层基础设施与核心生产力。本手册系统梳理其概念与度量、训练与推理两大使用场景、智算中心机房建设与成本结构、产业链商业机会与竞争格局，以及算力即服务（CaaS）的模式演进，为技术、商业与决策读者提供一份全面的公开知识参考。</p>
+<h2 class="academy-h2">前言</h2>
+<p class="academy-p">2022 年底 ChatGPT 问世以来，一场以大模型为核心的人工智能浪潮席卷全球。Gemini、文心一言、通义千问、Kimi、Sora 等大模型相继涌现，AI 从实验室走向千行百业。在这场变革中，算力被称为人工智能的"发动机"与核心生产力——没有算力，再先进的算法也只能停留在论文里；有了算力，人工智能才能真正落地。</p>
+<p class="academy-p">算力已被提升到与水利、电网、铁路同等重要的国家战略基础设施地位。理解 AI 算力，已不只是技术人员的事，而是创业者、投资者、政企决策者都需要掌握的基础认知。</p>
+<p class="academy-p">本手册围绕五个核心维度展开：<strong>概念、使用场景、机房建设及成本、商业机会、CaaS（算力即服务）</strong>，力求全面、系统、可读。</p>
+<div class="academy-note">说明：文中数据均来自公开渠道（政府主管部门、研究机构、行业报告、企业公告等），不同口径之间存在差异，仅作趋势参考，不构成投资或决策建议。</div>
+<h2 class="academy-h2">第一章　AI算力的概念</h2>
+<figure class="academy-fig"><img src="assets/academy_image1.jpg" alt="AI算力示意图" loading="lazy">
+<figcaption>图 1　AI算力核心概念示意图</figcaption>
+</figure>
+<p class="academy-p">理解 AI 算力，需要先从"算力"这一基础概念出发，逐步厘清它的度量方式、分类体系、硬件载体与产业链结构。本章为后续所有章节的讨论奠定基础。</p>
+<h3 class="academy-h3">1.1 什么是算力，什么是 AI 算力</h3>
+<p class="academy-p"><strong>算力（Computing Power）</strong>，通俗讲就是设备或系统"处理数据、完成计算任务的能力"。手机、电脑、服务器、数据中心，本质上都是不同形态的"算力机器"。</p>
+<ul class="academy-ul"><li><strong>广义算力</strong>：集信息计算力、网络运载力、数据存储力于一体，包含硬件、网络、存储、调度系统，是完整的数据处理服务能力。</li><li><strong>狭义算力</strong>：通常指 CPU、GPU 等芯片的计算能力。</li></ul>
+<p class="academy-p"><strong>AI 算力（智能算力）</strong> 是专门面向人工智能任务（训练与推理）的高性能计算能力，核心由 GPU、NPU、TPU、ASIC 等 AI 芯片提供。它强调<strong>高并行、高吞吐、低延迟</strong>，区别于以串行逻辑处理见长的通用 CPU 算力。</p>
+<div class="academy-note">形象类比：把大模型比作"工厂"，数据是"原料"，算法是"生产工艺"，那么算力就是驱动整座工厂运转的"电力"。电力不足，再好的工艺也无法生产。</div>
+<h3 class="academy-h3">1.2 算力如何衡量：核心单位</h3>
+<p class="academy-p">算力最通用的度量指标是 <strong>FLOPS（每秒浮点运算次数）</strong>。由于 AI 计算多在低精度下进行，推理场景也常用 <strong>TOPS（每秒万亿次整数/定点运算）</strong>。</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>单位</strong></td><td><strong>含义</strong></td><td><strong>量级</strong></td><td><strong>典型适用对象</strong></td></tr><tr><td>FLOPS</td><td>每秒  1  次浮点运算</td><td>10⁰</td><td>基础单位</td></tr><tr><td>MFLOPS</td><td>每秒百万次</td><td>10⁶</td><td>早期设备</td></tr><tr><td>GFLOPS</td><td>每秒十亿次</td><td>10⁹</td><td>老式显卡</td></tr><tr><td>TFLOPS</td><td>每秒万亿次</td><td>10¹²</td><td>显卡、 AI  芯片常用</td></tr><tr><td>PFLOPS</td><td>每秒千万亿次</td><td>10¹⁵</td><td>智算集群、超算</td></tr><tr><td>EFLOPS</td><td>每秒百亿亿次</td><td>10¹⁸</td><td>国家算力中心、超大集群</td></tr></tbody></table>
+<p class="academy-p">几个直观参照：普通手机约为几至几十 TFLOPS；高端游戏显卡约 80–200 TFLOPS；国家级超算峰值可超 1 EFLOPS。需要注意的是，<strong>峰值算力不等于有效算力</strong>——实际性能还受内存带宽、I/O、互联延迟等因素制约。</p>
+<h3 class="academy-h3">1.3 三大算力类型</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>类型</strong></td><td><strong>主要硬件</strong></td><td><strong>典型用途</strong></td><td><strong>特点</strong></td></tr><tr><td>基础算力（通用算力）</td><td>CPU</td><td>日常办公、网页、企业通用业务</td><td>通用性强，擅长逻辑处理， AI  运算效率低</td></tr><tr><td>智能算力（ AI  算力）</td><td>GPU 、 NPU 、 TPU 、 ASIC</td><td>大模型训练 / 推理、人脸识别、自动驾驶、推荐系统</td><td>擅长并行计算，专为  AI  算法优化，当前最热门</td></tr><tr><td>超算算力（高性能算力）</td><td>大规模  CPU+ 加速卡集群、超级计算机</td><td>气象预报、航天航空、核模拟、生物医药、尖端科研</td><td>算力极致，专用于国家级高精尖科学计算</td></tr></tbody></table>
+<p class="academy-p">对应的数据中心形态分别是：通用数据中心、<strong>智算中心（AIDC）</strong>、超算中心。按服务部署形态，算力还可分为：公有云算力、私有云算力、混合云算力、边缘算力。</p>
+<h3 class="academy-h3">1.4 AI 算力的硬件载体：芯片"铁三角"</h3>
+<ol class="academy-ol"><li><strong>GPU（图形处理器）——训练主力。</strong>拥有数千核心，擅长大规模并行矩阵运算。代表：英伟达 A100/H100/B200、AMD MI300X。CUDA 生态是英伟达最深的护城河。</li><li><strong>NPU / TPU / ASIC——推理能效之王。</strong>专为神经网络优化。代表：华为昇腾、寒武纪思元、谷歌 TPU、亚马逊 Trainium。</li><li><strong>CPU——通用控制与串行计算。</strong>承担任务调度与辅助工作。</li></ol>
+<p class="academy-p">配套的关键硬件还包括：<strong>HBM 高带宽存储</strong>（AI 芯片性能的关键瓶颈，主要由 SK 海力士、三星、美光供应）、高速光模块（800G/1.6T 是集群互联核心，中际旭创、新易盛等中国厂商地位突出）、高速互联（NVLink、InfiniBand）等。</p>
+<h3 class="academy-h3">1.5 AI 三要素：算力、算法、数据</h3>
+<ul class="academy-ul"><li><strong>数据</strong>是原料——需要被处理的海量信息；</li><li><strong>算力</strong>是动力——处理数据的能力；</li><li><strong>算法</strong>是方法——处理数据的规则逻辑。</li></ul>
+<p class="academy-p">三者缺一不可。算法效率提升（如 MoE 稀疏架构、模型蒸馏、低精度量化）也会反过来降低单位任务的算力需求。</p>
+<h3 class="academy-h3">1.6 AI 算力产业链结构</h3>
+<p class="academy-p">上游：芯片与硬件  ├─ AI芯片（GPU/ASIC/NPU）、HBM存储、光模块  ├─ 服务器整机、交换机、网络设备  └─ 供配电、制冷（风冷/液冷）等配套        ↓中游：智算集群与云服务  ├─ 智算中心（AIDC）建设与运营  ├─ 算力互联互通平台、算力调度  └─ GPU 云 / AI IaaS 算力租赁服务        ↓下游：行业应用  ├─ 大模型训练与推理  └─ 智能制造、自动驾驶、金融科技、医疗AI、政务、科研等</p>
+<p class="academy-p"><strong>一个关键规律</strong>：利润沿着"芯片—算力基础设施—大模型—行业应用"逐级递减。芯片成本在 Token 成本中占比达 40%–55%，基础设施投入占 15%–20%——这决定了产业链利润池的大头天然沉淀在上游。</p>
+<h3 class="academy-h3">1.7 发展历程简述</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>阶段</strong></td><td><strong>时期</strong></td><td><strong>核心特征</strong></td></tr><tr><td>CPU  起步</td><td>2000  年以前</td><td>以  CPU  为主，算力服务于科研与重大工程</td></tr><tr><td>GPU  加速</td><td>2000  年代中期 –2010  年代</td><td>2012  年  AlexNet  借  GPU  突破，深度学习爆发</td></tr><tr><td>异构计算与密度</td><td>2020  年代初</td><td>从 " 摩尔定律 " 转向 " 密度法则 " ， CPU+GPU+XPU  异构架构</td></tr><tr><td>超节点与集群</td><td>2023  年至今</td><td>从千卡向万卡、十万卡集群演进，云 - 边 - 端协同</td></tr><tr><td>推理主导与绿色算力</td><td>2025  年及以后</td><td>从训练主导转向推理主导，液冷与绿色低碳成为重点</td></tr></tbody></table>
+<h2 class="academy-h2">第二章　AI算力的使用场景</h2>
+<figure class="academy-fig"><img src="assets/academy_image2.jpg" alt="AI算力示意图" loading="lazy">
+<figcaption>图 2　AI算力使用场景示意图</figcaption>
+</figure>
+<p class="academy-p">AI 算力的应用可归为<strong>训练</strong>与<strong>推理</strong>两大基本场景，并由此延伸到千行百业。</p>
+<h3 class="academy-h3">2.1 两大基本场景：训练与推理</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>维度</strong></td><td><strong>训练算力（重算力）</strong></td><td><strong>推理算力（轻算力、高并发）</strong></td></tr><tr><td>任务</td><td>大模型预训练、微调、参数迭代</td><td>模型部署后的实时调用、内容生成</td></tr><tr><td>规模</td><td>千卡 / 万卡级集群，单体规模大</td><td>分布式、碎片化， 7×24  持续调用</td></tr><tr><td>要求</td><td>高算力密度、高带宽互联</td><td>低延迟、高吞吐、高能效</td></tr><tr><td>主导硬件</td><td>高端  GPU （ H100/B200  等）</td><td>NPU 、低功耗  GPU 、推理专用芯片</td></tr><tr><td>趋势</td><td>占比下降但单体需求刚性</td><td>占比快速上升，成为增长核心</td></tr></tbody></table>
+<p class="academy-p"><strong>结构性变化</strong>：2025 年中国 AI 服务器市场中，推理服务器占比已达 67%，训练占 33%；IDC 预测到 2029 年推理算力占比将接近八成。2026 年全球推理算力占 AI 总负载的 70%–80%，中国推理需求约为训练的 8 倍。行业重心正从"训练主导"转向"推理主导"。</p>
+<h3 class="academy-h3">2.2 大模型训练与推理</h3>
+<p class="academy-p">这是当前 AI 算力最核心的需求来源。GPT-4 的训练算力约为 GPT-3 的 10 倍，需数万张高端 GPU、兆瓦级功耗。随着 DeepSeek 等开源模型凭借"开源、成本低、性能高"出圈，推理算力需求出现结构性爆发——国内日均大模型 Token 调用量突破 140 万亿，对比 2024 年初实现千倍级增长。</p>
+<h3 class="academy-h3">2.3 重点行业应用</h3>
+<ul class="academy-ul"><li><strong>自动驾驶</strong>：感知模型训练与海量路况仿真。小鹏与阿里云在乌兰察布合建"扶摇"智算中心算力达 600 PFLOPS；华为为理想汽车定制专属智算集群。</li><li><strong>医疗健康</strong>：医学影像辅助诊断、药物研发、中医药大模型。消化内镜 AI 辅助诊断使微小病灶检出率提升 10%–30%。</li><li><strong>金融科技</strong>：智能风控、反欺诈、量化交易与投顾。银行用 GPU 集群做蒙特卡洛模拟与风险评级。</li><li><strong>智能制造</strong>：工业质检、预测性维护、数字孪生。工厂用视觉模型检测产线缺陷。</li><li><strong>科研与科学计算</strong>：气象预报、新药研发、材料科学、宇宙模拟。"巢湖明月"支撑 EAST 人造太阳仿真，累计支撑 3000 余个科研项目。</li><li><strong>智慧政务与城市治理</strong>：城市大脑、政务大模型、隐患排查。河北人工智能计算中心已孵化 170 多个场景解决方案。</li><li><strong>互联网与内容</strong>：推荐系统、AIGC 内容生成、影视渲染。</li></ul>
+<h3 class="academy-h3">2.4 需求侧信号</h3>
+<ul class="academy-ul"><li>2026 年一季度国内 AI 算力需求同比大增 417%，而有效供给增速仅 128%，供需缺口持续扩大。</li><li>中国大模型周调用量已连续多周超过美国，OpenRouter 数据显示中国模型全球份额约 63.5%。</li><li>字节、腾讯、阿里等四大云厂商 2026 年资本开支合计预计同比增长超 80%。</li></ul>
+<h2 class="academy-h2">第三章　机房建设及成本</h2>
+<figure class="academy-fig"><img src="assets/academy_image3.jpg" alt="AI算力示意图" loading="lazy">
+<figcaption>图 3　现代化智算中心机房示意图</figcaption>
+</figure>
+<p class="academy-p">智算中心（AIDC）是承载 AI 算力的物理底座。与传统数据中心相比，它"不是堆设备，而是堆冗余；最终拼的是运维体系"。</p>
+<h3 class="academy-h3">3.1 智算中心 vs 传统 IDC</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>维度</strong></td><td><strong>传统</strong><strong> </strong><strong> IDC</strong></td><td><strong>智算中心（</strong><strong> </strong><strong>AIDC</strong><strong> </strong><strong>）</strong></td></tr><tr><td>核心定位</td><td>机柜、物理服务器托管</td><td>高性能算力交付</td></tr><tr><td>单机柜功率</td><td>4–10 kW</td><td>25–80 kW （训练机柜可达  58.8 kW ）</td></tr><tr><td>计算密度</td><td>低</td><td>极高，机柜区域功率密度  3000–8000 W/㎡</td></tr><tr><td>制冷方式</td><td>风冷为主</td><td>液冷成为新建标配</td></tr><tr><td>投资构成</td><td>土建 + 机电为主</td><td>GPU  服务器占大头</td></tr></tbody></table>
+<h3 class="academy-h3">3.2 机房建设的核心构成</h3>
+<ol class="academy-ol"><li><strong>IT 硬件</strong>：GPU/AI 服务器、存储、网络设备（交换机、光模块）。</li><li><strong>供配电系统</strong>：高压配电、变压器、UPS、蓄电池、备用发电机、巴拿马电源。</li><li><strong>制冷系统</strong>：冷水机组、冷却塔、精密空调，以及冷板/浸没液冷系统。</li><li><strong>土建与配套</strong>：机房楼、机柜、防静电地板、消防、监控与动环系统。</li><li><strong>软件与调度</strong>：集群管理、算力调度平台、AI 框架与开发环境。</li></ol>
+<p class="academy-p">设计与验收遵循 GB 50174-2017（A/B/C 三级）、GB 51195-2016 等标准，可选用 Uptime Tier、CQC A 级、等保 2.0 三级等认证。</p>
+<h3 class="academy-h3">3.3 液冷：从可选项到必选项</h3>
+<p class="academy-p">随着单机柜功率突破 20kW，传统风冷已难以为继，液冷成为新建智算集群的标配。</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>对比维度</strong></td><td><strong>冷板式液冷</strong></td><td><strong>浸没式液冷</strong></td></tr><tr><td>散热原理</td><td>冷板接触  CPU/GPU  间接换热</td><td>服务器全浸没于绝缘冷却液直接换热</td></tr><tr><td>PUE  范围</td><td>1.15–1.25</td><td>1.03–1.10</td></tr><tr><td>功率密度</td><td>最高约  50 kW/ 机柜</td><td>最高  200 kW+/ 机柜</td></tr><tr><td>兼容性</td><td>兼容现有服务器，改造量小</td><td>需定制硬件</td></tr><tr><td>市场成熟度</td><td>约  90%  份额，主流路线</td><td>规模化应用初期</td></tr><tr><td>单机柜投入</td><td>8–12  万元</td><td>30–40  万元（ 3–4  倍）</td></tr></tbody></table>
+<p class="academy-p">政策层面，新建大型/超大型数据中心 PUE 红线普遍要求 ≤1.25（国家枢纽节点 ≤1.2），绿电占比超 80%，"东数西算"枢纽节点液冷渗透率要求不低于 60%。</p>
+<h3 class="academy-h3">3.4 核心指标</h3>
+<ul class="academy-ul"><li><strong>PUE（电源使用效率）</strong>：总能耗 / IT 设备能耗，越接近 1 越节能。全国平均已降至约 1.42，先进项目可低至 1.1–1.15。</li><li><strong>上架率</strong>：已投入使用机柜占比。全国平均约 71%，但部分智算中心实际利用率偏低。</li><li><strong>利用率</strong>：GPU 平均利用率约 30%–40%，存在明显的"算力孤岛"与资源闲置。</li><li><strong>盈亏平衡上架率</strong>：约 40%。低于此线，项目容易亏损。</li></ul>
+<h3 class="academy-h3">3.5 成本结构拆解</h3>
+<p class="academy-p">智算中心的投资结构与普通建筑项目正好"倒挂"：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>成本项</strong></td><td><strong>占比</strong></td></tr><tr><td>GPU  服务器（含加速卡）</td><td>60%–70% （部分口径  60%–80% ）</td></tr><tr><td>供配电  +  制冷</td><td>20%–25%</td></tr><tr><td>土建  +  其他</td><td>5%–10%</td></tr></tbody></table>
+<p class="academy-p">几个建设成本参考（不同口径差异较大，仅作量级参考）：</p>
+<ul class="academy-ul"><li>单机柜平均投资成本约 20 万元（通用口径）；含高端 GPU 的智算单柜可达 300 万–500 万元。</li><li>基础设施单位成本约 1 万–1.5 万元/kW；通用机房每 kW 造价约 5 万元。</li><li>一个 100 机柜、6kW/柜的项目总投资约 1500 万元；500 机柜、8kW/柜约 6000 万元。一线城市成本上浮 20%–30%。</li><li>1GW 级数据中心端到端建设成本，海外估算约 346 亿–395 亿美元。</li></ul>
+<p class="academy-p">业内经验：数据中心建设不是堆设备，是堆冗余；不是堆冗余，是堆可维护性；最终拼的是运维体系。</p>
+<h3 class="academy-h3">3.6 选址与"东数西算"</h3>
+<p class="academy-p">能源约束正刚性化：大型数据中心需要靠近 110kV 以上、冗余度高的电源点。"东数西算"工程把集群布局在西部枢纽，本质是用绿电资源与气候条件框定选址。截至 2026 年，全国形成"8 大国家算力枢纽 + 10 个国家算力集群 + 3 个算电协同区域"的空间布局；东部、中部、西部、东北智算规模占比约为 55.9%、10.6%、32.6%、0.9%。</p>
+<h2 class="academy-h2">第四章　商业机会</h2>
+<figure class="academy-fig"><img src="assets/academy_image4.jpg" alt="AI算力示意图" loading="lazy">
+<figcaption>图 4　算力商业机会示意图</figcaption>
+</figure>
+<p class="academy-p">AI 算力正处于爆发式增长期，从芯片到应用，各环节都孕育着商业机会。</p>
+<h3 class="academy-h3">4.1 市场规模与增长</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>细分市场</strong></td><td><strong>规模数据</strong></td></tr><tr><td>中国智能算力规模</td><td>2024  年  725.3 EFLOPS → 2028  年  2781.9 EFLOPS （ CAGR 46.2% ）</td></tr><tr><td>中国  AI  服务器市场</td><td>2024  年  1606.55  亿元  → 2026  年预计  3500  亿元</td></tr><tr><td>中国智算云基础设施 (AI IaaS)</td><td>2025  年  486.7  亿元，同比  +128%</td></tr><tr><td>中国  AIDC  市场</td><td>2026  年预计  1778  亿元， 2030  年近  4000  亿元</td></tr><tr><td>中国算力租赁市场</td><td>2026 Q1  达  680  亿元，全年预计突破  2600  亿元</td></tr><tr><td>全球算力市场</td><td>2025  年超  4200  亿美元， 2030  年  1.2  万亿美元</td></tr><tr><td>全球  AI  资本开支</td><td>瑞银预计  2026  年约  9980  亿美元，同比近翻倍</td></tr></tbody></table>
+<p class="academy-p">"十五五"时期，全国一体化算力网建设预计新增直接投资 4 万亿元，算力新基建成为确定性最强的投资主线之一。</p>
+<h3 class="academy-h3">4.2 产业链利润分布与机会方向</h3>
+<p class="academy-p">由于利润沿产业链逐级递减，商业机会呈现差异化特征：</p>
+<ol class="academy-ol"><li><strong>上游芯片与硬件</strong>——技术壁垒与附加值最高。AI 芯片、HBM 存储、高速光模块、液冷方案是价值高地；国产替代是主线。</li><li><strong>中游算力基础设施与云服务</strong>——国产替代最活跃。智算中心建设、算力调度平台、GPU 云、AI IaaS 增长迅猛。</li><li><strong>下游行业应用</strong>——从"训练"走向"用"，商业化刚刚起步，空间广阔。</li></ol>
+<h3 class="academy-h3">4.3 值得关注的具体机会</h3>
+<ul class="academy-ul"><li><strong>算力租赁 / CaaS</strong>：供需缺口扩大，量价齐升，高端训练算力"一卡难求"。</li><li><strong>国产算力替代</strong>：英伟达中国份额从 2022 年约 95% 降至 2026 年约 8%，华为昇腾以约 50% 领跑，国产厂商合计份额首破 45%。</li><li><strong>液冷与绿色节能</strong>：PUE 硬约束下，冷板/浸没液冷、余热回收、绿电交易成为刚需。</li><li><strong>算力调度与互联互通</strong>：工信部"1+M+N"算力互联互通体系、算力超市、算力银行等集约化运营模式。</li><li><strong>行业大模型与推理服务</strong>：开源模型降低门槛，中小企业轻量化用算需求爆发，多地发放"算力券"补贴。</li><li><strong>数据合规与信创适配</strong>：《数据安全法》《网络安全法》要求下，数据本地化、等保三级、国产化适配成为核心壁垒。</li></ul>
+<h3 class="academy-h3">4.4 竞争格局</h3>
+<p class="academy-p"><strong>海外</strong>：英伟达在训练芯片领域占绝对优势（约 68% 全球份额），CUDA 生态构成护城河；CoreWeave、Nebius、Lambda Labs 等新型 AI 云崛起——CoreWeave 2026 Q2 收入 25.8 亿美元（同比 +112%），长期合同储备达 1040 亿美元。</p>
+<p class="academy-p"><strong>国内算力租赁四大阵营</strong>：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>阵营</strong></td><td><strong>代表</strong></td><td><strong>特点</strong></td></tr><tr><td>公有云巨头</td><td>阿里云、腾讯云、火山引擎</td><td>占约  65%  收入份额，自有万卡集群</td></tr><tr><td>三大运营商</td><td>电信、移动、联通</td><td>依托东数西算节点，政企订单稳定，占  25%–30%</td></tr><tr><td>专业上市公司</td><td>利通电子、协创数据、行云科技、宏景科技等</td><td>绑定大厂长协，业绩快速兑现</td></tr><tr><td>第三方  IDC  厂商</td><td>各类机房服务商</td><td>提供机柜托管，多与专业算力企业合作</td></tr></tbody></table>
+<p class="academy-p">四大阵营合计市占约 90%–95%。头部企业毛利率约 45%–53%（高毛利）或 25%–35%（中等），核心差异在卡源资质、长协能力与液冷降本能力。</p>
+<h3 class="academy-h3">4.5 风险与挑战</h3>
+<ul class="academy-ul"><li><strong>供应链风险</strong>：高端 GPU 依赖海外供给，出口管制与断供可能冲击产能扩张。</li><li><strong>技术迭代贬值</strong>：GPU 更新周期缩短，旧卡租金与资产价值面临减值压力。</li><li><strong>利用率风险</strong>：大量智算中心利用率偏低（约 20%–37%），存在空置与亏损风险。</li><li><strong>合规风险</strong>：跨境数据、模型训练、等保要求带来的业务约束。</li><li><strong>需求替代风险</strong>：ASIC 专用芯片、高效算法（MoE、蒸馏、量化）可能削弱长期算力需求增速。</li></ul>
+<h2 class="academy-h2">第五章　CaaS 算力即服务</h2>
+<figure class="academy-fig"><img src="assets/academy_image5.jpg" alt="AI算力示意图" loading="lazy">
+<figcaption>图 5　CaaS 算力即服务架构示意图</figcaption>
+</figure>
+<h3 class="academy-h3">5.1 什么是 CaaS</h3>
+<p class="academy-p"><strong>CaaS（Compute/Computing as a Service，算力即服务）</strong> 是一种以"算力即服务"为核心的模式：拥有算力基础设施的服务商，将搭载 GPU、CPU 等高性能芯片的服务器资源通过云化方式，以<strong>按需付费、弹性租用</strong>的形式出租给有 AI 训练、推理或高性能计算需求的客户。</p>
+<p class="academy-p">其本质是<strong>以运营支出（OPEX）替代资本支出（CAPEX）</strong>——客户无需自建机房、一次性大额采购硬件，即可弹性获取算力。算力租赁行业因此被称为 <strong>AI 时代的"算力电厂"</strong>，是连接上游硬件与下游 AI 应用的核心桥梁。</p>
+<h3 class="academy-h3">5.2 服务形态与交付模式</h3>
+<p class="academy-p">按硬件类型：CPU 通用算力、GPU 主流 AI 算力、DCU/NPU 国产自主算力、ASIC 专用芯片。按交付形态：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>形态</strong></td><td><strong>说明</strong></td><td><strong>适用场景</strong></td></tr><tr><td>整机独占租赁</td><td>服务器资源完全独享，无争抢</td><td>长期大模型训练</td></tr><tr><td>裸金属算力服务</td><td>去除虚拟化层，物理算力直接交付</td><td>低延迟、高稳定性需求</td></tr><tr><td>云算力弹性实例</td><td>虚拟化资源池，秒级启停扩缩</td><td>短期实验、临时推理</td></tr><tr><td>机房托管运维</td><td>客户自有硬件，服务商提供机柜、电力、运维</td><td>有自研硬件的客户</td></tr></tbody></table>
+<h3 class="academy-h3">5.3 计费模式的演进</h3>
+<p class="academy-p">行业商业模式正经历从"卖资源"到"卖价值"的升级：</p>
+<ol class="academy-ol"><li><strong>按时长出租裸算力</strong>——单一租金收益（早期）。</li><li><strong>长协包年/包月</strong>——3–5 年大额框架长协，锁定稳定现金流（当前主流）。</li><li><strong>Token 收益分成 / 峰谷阶梯定价 / 算力融资租赁</strong>——按模型 Token 调用量收费，甚至项目收益分成，实现风险共担（行业变革方向）。</li></ol>
+<p class="academy-p">里程碑式转变：产业逻辑从"售卖硬件资源"转向"共享业务价值"。例如 CoreWeave 联合 AI 应用公司采用 Token 按量计费；国内百度智能云联合文旅 AI 企业试点按变现营收分成。</p>
+<h3 class="academy-h3">5.4 平台技术架构</h3>
+<ul class="academy-ul"><li><strong>异构高密硬件层</strong>：GPU、DCU、NPU 多类型芯片协同；</li><li><strong>全域智能调度层</strong>：跨地域、跨品牌算力统一管理与动态分配；</li><li><strong>高速低时延网络</strong>：高带宽算力专网，保障海量数据传输；</li><li><strong>绿色能效管控</strong>：液冷散热、智能温控，持续降低 PUE；</li><li><strong>云边协同架构</strong>：算力向边缘下沉，满足实时推理需求。</li></ul>
+<p class="academy-p">全球算力平均利用率仅 30%–40%，智能调度的价值正在于"在不增加硬件采购的前提下提升利用率、降低单位算力综合成本"。</p>
+<h3 class="academy-h3">5.5 代表玩家</h3>
+<ul class="academy-ul"><li><strong>公有云/AI 云</strong>：阿里云、华为云、百度智能云、火山引擎、AWS、Google Cloud、CoreWeave、Lambda Labs。</li><li><strong>专业算力服务商</strong>：并行科技、呼呼智算（自研 CaaS 弹性调度平台）、数商云等。</li><li><strong>国产算力生态</strong>：适配昇腾、寒武纪、燧原、海光等国产芯片，服务政务、金融等信创场景。</li></ul>
+<h3 class="academy-h3">5.6 选择平台的考量因素</h3>
+<ol class="academy-ol"><li><strong>性能匹配</strong>：训练选 H100/H200 等高端卡，推理可选 T4/国产 NPU；</li><li><strong>成本模型</strong>：长期项目优先包年折扣，短期实验采用竞价/弹性实例；</li><li><strong>服务稳定性</strong>：关注 SLA（建议 ≥99.9%）与 7×24 运维能力；</li><li><strong>技术支持</strong>：AI 框架预装、故障响应速度；</li><li><strong>合规性</strong>：数据存储位置、加密方案、信创适配是否符合行业法规。</li></ol>
+<h3 class="academy-h3">5.7 未来趋势</h3>
+<ul class="academy-ul"><li><strong>计费革新</strong>：从"售卖算力时长"全面转向"按 Token 业务价值计费"；</li><li><strong>国产替代</strong>：形成"高端训练用英伟达 + 推理用国产"的异构格局；</li><li><strong>算网协同</strong>：算力调度与高速专网一体化成为核心竞争力；</li><li><strong>生态化运营</strong>：从单一租赁走向"算力平台 + 行业应用"完整生态；</li><li><strong>绿色低碳</strong>：液冷机房、可再生能源成为新建智算中心硬性要求；</li><li><strong>边缘租赁兴起</strong>：低时延边缘算力支撑自动驾驶、本地实时推理。</li></ul>
+<h2 class="academy-h2">第六章　总结与展望</h2>
+<p class="academy-p">AI 算力是人工智能时代的底层基础设施与核心生产力。回顾全文，可归纳为六点核心认知：</p>
+<ol class="academy-ol"><li><strong>概念层面</strong>：AI 算力是面向训练/推理的专用计算能力，以 FLOPS/TOPS 度量，由 GPU/NPU/TPU 等芯片提供，与数据、算法共同构成 AI 三要素。</li><li><strong>应用层面</strong>：需求正从"训练主导"转向"推理主导"，并向自动驾驶、医疗、金融、制造、科研等行业深度渗透。</li><li><strong>建设层面</strong>：智算中心投资高度集中于 GPU 服务器（60%–70%），液冷与绿色节能成为新标配，PUE 与利用率是关键运营指标。</li><li><strong>商业层面</strong>：市场规模高速增长、供需缺口扩大，利润池集中在产业链上游，国产替代与 CaaS 是最确定的机会主线。</li><li><strong>模式层面</strong>：CaaS 以 OPEX 替代 CAPEX，计费从按时长走向按 Token/价值分成，是算力普惠化的关键路径。</li><li><strong>风险层面</strong>：供应链管制、技术迭代贬值、利用率偏低与合规要求，是需要持续关注的挑战。</li></ol>
+<p class="academy-p">放眼未来，随着全国一体化算力网的推进、国产算力的成熟与推理需求的爆发，算力将像水电一样成为随处可得的基础资源。能够提供<strong>高效、弹性、安全可信的一体化算力服务</strong>的企业，将牢牢掌握 AI 时代的产业主动权。</p>
+<h2 class="academy-h2">附录</h2>
+<h3 class="academy-h3">附录 A　关键数据速查表</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>指标</strong></td><td><strong>数值</strong></td><td><strong>口径</strong><strong> </strong><strong>/</strong><strong> </strong><strong>时点</strong></td></tr><tr><td>中国智能算力规模</td><td>2185 EFLOPS (FP16)</td><td>工信部， 2026-06</td></tr><tr><td>中国  AI  服务器市场</td><td>约  3500  亿元</td><td>2026  预测</td></tr><tr><td>中国算力租赁市场</td><td>突破  2600  亿元</td><td>2026  预测</td></tr><tr><td>中国  AIDC  市场</td><td>1778  亿元</td><td>2026  预测</td></tr><tr><td>推理算力占比</td><td>67% （服务器） /  近  80% （ 2029  预测）</td><td>IDC</td></tr><tr><td>智算中心  GPU  服务器成本占比</td><td>60%–70%</td><td>行业拆解</td></tr><tr><td>新建大型数据中心  PUE  红线</td><td>≤1.25</td><td>政策要求</td></tr><tr><td>H100  一年期租赁价</td><td>约  2.35  美元 / 卡时</td><td>2026-03</td></tr><tr><td>英伟达中国市场份额</td><td>由约  95%  降至约  8%</td><td>2022→2026</td></tr><tr><td>国产算力芯片合计份额</td><td>首破  45%</td><td>2026</td></tr></tbody></table>
+<h3 class="academy-h3">附录 B　术语表</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>术语</strong></td><td><strong>全称</strong><strong> </strong><strong> / </strong><strong> </strong><strong>含义</strong></td></tr><tr><td>FLOPS</td><td>每秒浮点运算次数，算力核心度量单位</td></tr><tr><td>TOPS</td><td>每秒万亿次（定点 / 整数）运算，常用于推理</td></tr><tr><td>EFLOPS / PFLOPS</td><td>每秒百亿亿次  /  千万亿次浮点运算</td></tr><tr><td>GPU / NPU / TPU / ASIC</td><td>图形 / 神经网络 / 张量处理器 / 专用集成电路</td></tr><tr><td>HBM</td><td>高带宽存储器， AI  芯片关键配套</td></tr><tr><td>AIDC</td><td>人工智能数据中心（智算中心）</td></tr><tr><td>PUE</td><td>电源使用效率，衡量数据中心能效</td></tr><tr><td>AI IaaS</td><td>AI  基础设施即服务</td></tr><tr><td>CaaS</td><td>算力即服务（ Compute as a Service ）</td></tr><tr><td>Token</td><td>大模型处理文本的基本单位，新型计费基准</td></tr><tr><td>东数西算</td><td>将东部算力需求引导到西部枢纽的国家工程</td></tr><tr><td>液冷（冷板 / 浸没）</td><td>通过液体为服务器散热的技术路线</td></tr><tr><td>SLA</td><td>服务等级协议，衡量服务稳定性</td></tr></tbody></table>
+<p class="academy-p">免责声明：本手册内容整理自公开资料，旨在提供系统性的知识参考。文中数据因来源与统计口径不同可能存在差异，请以官方最新发布为准。本手册不构成任何投资、采购或决策建议。</p>
+        </div>
 
     <div id="page-device" class="page-view hidden">
         <div id="cfgApp" class="relative">
