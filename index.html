@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20260928m">
+    <link rel="stylesheet" href="style.css?v=20260928n">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -718,12 +718,69 @@
             <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
         </section>
         </div>
-        <div id="tab-org" class="home-tab-panel hidden">
-        <section class="glass-card p-6 text-center">
-            <i class="fas fa-sitemap text-4xl text-orange-400 mb-4 block"></i>
-            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
-            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
-        </section>
+        <div id="tab-org" class="home-tab-panel hidden org-scope">
+        <div class="glass-card p-4 text-center mb-4">
+            <p class="text-[11px] font-black text-orange-500"><i class="fas fa-circle-info mr-1.5"></i><span data-i18n="org_updating">内容正在补充中</span></p>
+        </div>
+        <div class="org-header">
+            <span class="org-eyebrow">ORGANIZATION &amp; GOVERNANCE</span>
+            <div class="org-title" data-i18n="org_title">核心团队与<span>生态协作架构</span></div>
+            <p class="org-desc" data-i18n="org_desc"></p>
+        </div>
+        <div class="org-filter-bar">
+            <button type="button" class="org-filter-btn active" onclick="orgFilterView('all', this)"><span data-i18n="org_filter_all">全景双轨视图</span> (16)</button>
+            <button type="button" class="org-filter-btn" onclick="orgFilterView('corp', this)"><span data-i18n="org_filter_corp">核心研发企业</span> (8)</button>
+            <button type="button" class="org-filter-btn" onclick="orgFilterView('comm', this)"><span data-i18n="org_filter_comm">社区与生态治理</span> (8)</button>
+        </div>
+        <div class="org-wrapper" id="orgWrapper">
+            <div class="org-col" id="orgColCorp">
+                <div class="org-top-bar">
+                    <span class="org-badge org-badge-corp">CORE LABS · <span data-i18n="org_corp_badge">核心研发实体</span></span>
+                    <span class="org-count" data-i18n="org_corp_count">8 位核心成员</span>
+                </div>
+                <h3 class="org-col-title" data-i18n="org_corp_title">技术攻坚、产品与商业执行</h3>
+                <p class="org-col-desc" data-i18n="org_corp_desc"></p>
+                <div class="org-grid" id="orgCorpGrid"></div>
+            </div>
+            <div class="org-bridge">
+                <div class="org-bridge-line"></div>
+                <div class="org-bridge-pill" data-i18n="org_bridge">协议交付 ↔ 生态治理</div>
+            </div>
+            <div class="org-col" id="orgColComm">
+                <div class="org-top-bar">
+                    <span class="org-badge org-badge-comm">ECOSYSTEM &amp; DAO · <span data-i18n="org_comm_badge">社区与生态</span></span>
+                    <span class="org-count" data-i18n="org_comm_count">8 位生态骨干</span>
+                </div>
+                <h3 class="org-col-title" data-i18n="org_comm_title">治理、增长与全球大使网络</h3>
+                <p class="org-col-desc" data-i18n="org_comm_desc"></p>
+                <div class="org-grid" id="orgCommGrid"></div>
+            </div>
+        </div>
+        <div class="org-base">
+            <strong class="org-base-title" data-i18n="org_base_title">开放生态共建网络</strong>
+            <span class="org-base-desc" data-i18n="org_base_desc"></span>
+            <div class="org-nodes">
+                <span class="org-tag">🛡️ <span data-i18n="org_node1">独立安全审计伙伴</span></span>
+                <span class="org-tag">💻 <span data-i18n="org_node2">生态 DApp 开发者</span></span>
+                <span class="org-tag">🌐 <span data-i18n="org_node3">全球区域大使节点</span></span>
+                <span class="org-tag">⚡ <span data-i18n="org_node4">验证者与算力节点</span></span>
+            </div>
+        </div>
+
+        <div class="org-backdrop" id="orgModal" onclick="orgCloseModal()">
+            <div class="org-box" onclick="event.stopPropagation()">
+                <button type="button" class="org-close" onclick="orgCloseModal()">&times;</button>
+                <div class="org-header-in">
+                    <div class="org-avatar-lg" id="orgMAvatar"></div>
+                    <div>
+                        <div class="org-box-name" id="orgMName"></div>
+                        <div class="org-box-role" id="orgMRole"></div>
+                    </div>
+                </div>
+                <p class="org-box-bio" id="orgMBio"></p>
+                <div class="org-tags" id="orgMTags"></div>
+            </div>
+        </div>
         </div>
         <div id="tab-about" class="home-tab-panel hidden">
         <section class="glass-card p-6 text-center">
@@ -1746,7 +1803,7 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20261224"></script>
+<script src="js/lang/zh-CN.js?v=20261225"></script>
 <script src="js/i18n-core.js?v=20260928k"></script>
 <script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
@@ -1778,7 +1835,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261224';
+    window.APP_JS_VERSION = '20261225';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
@@ -1851,60 +1908,8 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-<script>
-window.switchHomeTab = function(tab) {
-    document.querySelectorAll('#homeTabs .home-tab-panel').forEach(function(el){ el.classList.add('hidden'); });
-    var target = document.getElementById('tab-' + tab);
-    if (target) target.classList.remove('hidden');
-    document.querySelectorAll('#homeTabBar .home-tab-btn').forEach(function(el){
-        var active = el.getAttribute('data-tab') === tab;
-        el.classList.toggle('bg-orange-500', active);
-        el.classList.toggle('text-white', active);
-        el.classList.toggle('text-slate-600', !active);
-    });
-};
-(function () {
-    var bar = document.getElementById('homeTabBar');
-    if (!bar) return;
-    var isDown = false, startX = 0, startScroll = 0, moved = 0;
-    bar.addEventListener('mousedown', function (e) {
-        isDown = true; moved = 0;
-        startX = e.pageX; startScroll = bar.scrollLeft;
-        bar.style.cursor = 'grabbing';
-        e.preventDefault();
-    });
-    bar.addEventListener('mousemove', function (e) {
-        if (!isDown) return;
-        var dx = e.pageX - startX;
-        moved = Math.max(moved, Math.abs(dx));
-        bar.scrollLeft = startScroll - dx;
-    });
-    function endDrag() { isDown = false; bar.style.cursor = ''; }
-    bar.addEventListener('mouseup', endDrag);
-    bar.addEventListener('mouseleave', endDrag);
-    bar.addEventListener('click', function (e) {
-        if (moved > 5) { e.stopPropagation(); e.preventDefault(); }
-    }, true);
-})();
-function toggleWp() {
-    var c = document.getElementById('wpContent');
-    var i = document.getElementById('wpToggleIcon');
-    c.classList.toggle('hidden');
-    i.style.transform = c.classList.contains('hidden') ? '' : 'rotate(180deg)';
-}
-
-function toggleNewsSection() {
-    var c = document.getElementById('news-content');
-    var i = document.getElementById('news-toggle-icon');
-    var hint = document.getElementById('news-expand-hint');
-    c.classList.toggle('hidden');
-    var isOpen = !c.classList.contains('hidden');
-    i.style.transform = isOpen ? 'rotate(180deg)' : '';
-    if (hint) {
-        hint.textContent = isOpen ? (window.i18nData?.['click_to_collapse'] || '点击收起') : (window.i18nData?.['click_to_expand'] || '点击展开');
-    }
-}
-</script>
+    <script src="js/home-tabs.js?v=20261225"></script>
+    <script src="js/org-structure.js?v=20261225"></script>
 
     <footer class="max-w-xl mx-auto px-4 py-6 pb-24 text-center">
         <div class="text-[10px] text-slate-500 font-bold">
