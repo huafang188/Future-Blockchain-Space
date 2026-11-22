@@ -3315,3 +3315,22 @@ body.agent-active .bottom-nav-pill {
 
 
 
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ===== Device Configurator 科技感渐变方图 ===== */
+.cfg-thumb {
+    background-image:
+        repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,255,255,.08) 7px 8px),
+        repeating-linear-gradient(90deg, transparent 0 7px, rgba(255,255,255,.08) 7px 8px),
+        linear-gradient(135deg, var(--cfg-c1), var(--cfg-c2));
+    box-shadow: inset 0 0 24px rgba(0,0,0,.25), 0 4px 12px -2px rgba(0,0,0,.2);
+}
+.cfg-thumb-gpu { --cfg-c1: #8b5cf6; --cfg-c2: #312e81; }
+.cfg-thumb-mb  { --cfg-c1: #3b82f6; --cfg-c2: #1e3a8a; }
+.cfg-thumb-cpu { --cfg-c1: #06b6d4; --cfg-c2: #164e63; }
+.cfg-thumb-ram { --cfg-c1: #10b981; --cfg-c2: #064e3b; }
+.cfg-thumb-net { --cfg-c1: #f97316; --cfg-c2: #7c2d12; }
+.cfg-thumb-stg { --cfg-c1: #ec4899; --cfg-c2: #831843; }
+.cfg-thumb-pwr { --cfg-c1: #f59e0b; --cfg-c2: #78350f; }

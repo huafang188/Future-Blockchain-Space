@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20260928k">
+    <link rel="stylesheet" href="style.css?v=20260928m">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -223,10 +223,10 @@
     <img src="assets/NRY.webp" alt="Logo" class="w-10 h-10 bg-white rounded-full shadow-md border border-slate-100 object-contain p-1 logo-bounce">
 
     <div>
-        <h1 class="text-[15px] font-black tracking-tighter title-gradient" data-i18n="title">
+        <h1 id="headerTitle" class="text-[15px] font-black tracking-tighter title-gradient" data-i18n="title">
             NEO AI算力矩阵
         </h1>
-        <p class="text-[10px] text-slate-400 tracking-wider">New Energy Ore AI computing power matrix</p>
+        <p id="headerSubtitle" class="text-[10px] text-slate-400 tracking-wider">New Energy Ore AI computing power matrix</p>
     </div>
 </div>
             <div class="flex gap-2">
@@ -323,6 +323,39 @@
 
           <div id="page-home" class="page-view space-y-6">
 
+    <nav class="max-w-xl mx-auto px-4 mt-2 mb-2 relative z-10">
+        <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="switchPage('academy')" class="flex flex-col items-center justify-center gap-1.5 aspect-square rounded-full transition-transform active:scale-95">
+                <i class="fas fa-graduation-cap text-lg text-orange-400"></i>
+                <span class="text-[10px] font-black text-slate-700" data-i18n="nav_academy">学院</span>
+            </button>
+            <button type="button" onclick="switchPage('market')" class="flex flex-col items-center justify-center gap-1.5 aspect-square rounded-full transition-transform active:scale-95">
+                <i class="fas fa-store text-lg text-orange-400"></i>
+                <span class="text-[10px] font-black text-slate-700" data-i18n="nav_market">市场</span>
+            </button>
+            <button type="button" onclick="switchPage('device')" class="flex flex-col items-center justify-center gap-1.5 aspect-square rounded-full transition-transform active:scale-95">
+                <i class="fas fa-server text-lg text-orange-400"></i>
+                <span class="text-[10px] font-black text-slate-700" data-i18n="nav_device">设备</span>
+            </button>
+            <button type="button" onclick="switchPage('chain')" class="flex flex-col items-center justify-center gap-1.5 aspect-square rounded-full transition-transform active:scale-95">
+                <i class="fas fa-link text-lg text-orange-400"></i>
+                <span class="text-[10px] font-black text-slate-700" data-i18n="nav_chain">公链</span>
+            </button>
+        </div>
+        <div id="homeTabBar" class="flex gap-1 overflow-x-auto mt-3 p-1 no-scrollbar bg-white/70 backdrop-blur-md rounded-full shadow-sm">
+            <button type="button" data-tab="plaza" onclick="switchHomeTab('plaza')" data-i18n="tab_plaza" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full bg-orange-500 text-white text-[11px] font-black whitespace-nowrap transition-colors">NEO广场</button>
+            <button type="button" data-tab="foundation" onclick="switchHomeTab('foundation')" data-i18n="tab_foundation" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">生态基金会</button>
+            <button type="button" data-tab="council" onclick="switchHomeTab('council')" data-i18n="tab_council" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">项目理事会</button>
+            <button type="button" data-tab="org" onclick="switchHomeTab('org')" data-i18n="tab_org" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">社区组织架构</button>
+            <button type="button" data-tab="about" onclick="switchHomeTab('about')" data-i18n="tab_about" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">关于我们</button>
+            <button type="button" data-tab="whitepaper" onclick="switchHomeTab('whitepaper')" data-i18n="tab_whitepaper" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">白皮书</button>
+            <button type="button" data-tab="partners" onclick="switchHomeTab('partners')" data-i18n="tab_partners" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">合作伙伴</button>
+            <button type="button" data-tab="download" onclick="switchHomeTab('download')" data-i18n="tab_download" class="home-tab-btn flex-shrink-0 px-4 py-1.5 rounded-full text-slate-600 text-[11px] font-black whitespace-nowrap transition-colors">下载内容</button>
+        </div>
+    </nav>
+
+    <div id="homeTabs" class="space-y-6">
+        <div id="tab-plaza" class="home-tab-panel">
 <section class="yandex-section">
     <div class="relative z-10">
 
@@ -423,7 +456,6 @@
         </div>
     </div>
 </section>
-
 <section class="neo-bank-banner">
     <div class="nbb-grid"></div>
     <div class="nbb-shine"></div>
@@ -450,50 +482,6 @@
         </div>
     </div>
 </section>
-
-    <div class="flex justify-between items-center mb-4 cursor-pointer" onclick="toggleWp()">
-        <h3 class="font-black text-slate-800 uppercase italic tracking-wider flex items-center gap-2">
-            <span class="w-2 h-2 bg-orange-400 rounded-full"></span>
-            <span data-i18n="wp_title">白皮书概要</span>
-        </h3>
-        <span class="text-[10px] bg-orange-100 text-orange-400 px-2 py-0.5 rounded-full font-bold">v1.0</span>
-        <i id="wpToggleIcon" class="fas fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-    </div>
-
-    <div id="wpContent" class="space-y-4">
-<div class="text-[10px] text-slate-500 leading-relaxed border-l-2 border-orange-300 pl-3 py-1" data-i18n="wp_subtitle">（此白皮书为社区共同维护，著作权与最终解释权归社区成员所有）</div>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-blue-500 rounded-full shrink-0"></span><span data-i18n="wp_ch0_title">摘要</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 text-xs text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch0_p1">本项目立足于全球区块链产业结构转型与能源革命双重历史机遇，构建一套以清洁能源为核心驱动、以分布式算力为价值载体、以区块链技术为信任底座的新一代算力挖矿生态系统。</p><p data-i18n="wp_ch0_p2">当前全球算力需求呈现指数级增长态势，人工智能大模型训练、分布式存储网络、Web3 基础设施、元宇宙实时渲染、链上交易清算等场景共同推动算力成为数字经济时代的核心生产要素。</p><p data-i18n="wp_ch0_p3">然而，传统算力生产模式普遍存在高能耗、高污染、算力垄断、资产固化、收益分配不均、监管压力持续加大等系统性问题，严重制约行业长期可持续发展。</p><p data-i18n="wp_ch0_p4">为系统性解决上述痛点，本项目创新性提出多通证协同治理架构，通过发行六种功能解耦型数字通证，实现核心价值流通、算力增益激励、网络燃料消耗、实体资产映射、生态收益分红与跨链价值流转的全链路闭环。</p><p data-i18n="wp_ch0_p5">项目以分布式清洁能源节点网络为物理基础，以混合共识机制为技术保障，以链上算力核验系统为信任纽带，推动水电、光伏、风电、生物质能等绿色能源与区块链算力生产深度融合。</p></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-emerald-500 rounded-full shrink-0"></span><span data-i18n="wp_ch1_title">1 项目概述</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.1</span> <span data-i18n="wp_ch1_s1_title">项目名称</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s1_p1">新一代清洁能源算力挖矿生态系统（Neo Energy Mining Ecosystem，简称 NEO 生态）。</p><p data-i18n="wp_ch1_s1_p2">项目名称以 "Neo" 代表新生、革新与下一代技术范式，以 "Energy" 突出清洁能源核心驱动属性，以 "Mining Ecosystem" 强调生态化、系统化、平台化的整体定位，区别于传统单一矿机、单一矿池类项目。</p><p data-i18n="wp_ch1_s1_p3">项目并非简单的挖矿工具或代币发行项目，而是一套覆盖能源端、算力端、交易端、应用端与治理端的完整分布式价值网络。名称体系简洁统一，便于全球社区传播、品牌建设与生态拓展。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.2</span> <span data-i18n="wp_ch1_s2_title">项目愿景</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s2_p1">成为全球领先的去中心化清洁能源算力基础设施运营商，构建绿色、高效、开放、共享、共治的数字算力生产与价值分配体系。</p><p data-i18n="wp_ch1_s2_p2">推动全球区块链行业从高耗能粗放式增长向低碳集约式可持续发展转型，最终实现算力价值民主化、能源利用高效化、数字资产普惠化。</p><p data-i18n="wp_ch1_s2_p3">愿景的核心逻辑在于重新定义 "算力生产关系"。传统挖矿体系中，资本、矿场、电力资源与技术门槛形成天然壁垒，导致普通参与者难以分享行业增长红利。</p><p data-i18n="wp_ch1_s2_p4">本项目希望通过去中心化架构打破壁垒，让个体节点、家庭储能、小型清洁能源站点均可接入算力网络，共同分享数字经济增长收益，推动算力从 "机构垄断" 走向 "全民共享"。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.3</span> <span data-i18n="wp_ch1_s3_title">项目使命</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s3_p1">通过区块链智能合约、分布式账本技术与物联网能源监测系统，重构算力生产、分配、交易与质押全流程；降低用户参与挖矿的硬件门槛、资金门槛与技术门槛。</p><p data-i18n="wp_ch1_s3_p2">提升可再生能源在区块链行业中的使用比例；建立链上可核验、数据可追溯、收益可分配的透明算力价值体系。</p><p data-i18n="wp_ch1_s3_p3">使命落地分为三个层次：技术层实现可信算力上链，经济层实现多维度激励闭环，社会层实现绿色低碳价值输出。</p><p data-i18n="wp_ch1_s3_p4">项目不仅追求商业可持续性，更强调环境责任与社会责任，通过技术创新降低单位算力能耗，为全球数字经济低碳化发展提供可复制、可推广的行业解决方案。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.4</span> <span data-i18n="wp_ch1_s4_title">核心定位</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s4_p1"><b data-i18n="wp_ch1_s4_pos1">绿色算力挖矿基础设施：</b><span data-i18n="wp_ch1_s4_pos1_desc">定位为底层算力基础设施提供商，专注于清洁能源驱动的分布式节点网络，构建覆盖电力监测、算力调度、收益清算、节点管理的一体化系统。</span></p><p data-i18n="wp_ch1_s4_p2"><b data-i18n="wp_ch1_s4_pos2">实体算力链上资产化平台：</b><span data-i18n="wp_ch1_s4_pos2_desc">通过 NEA 通证实现实体矿机、算力份额、电力合约、矿场产权等线下资产的链上映射、拆分、流转与融资，使传统低流动性资产具备高流通性与金融属性。</span></p><p data-i18n="wp_ch1_s4_p3"><b data-i18n="wp_ch1_s4_pos3">多代币协同激励生态：</b><span data-i18n="wp_ch1_s4_pos3_desc">以六种通证功能解耦为核心，构建 "价值锚定 — 加速激励 — 燃料消耗 — 资产映射 — 收益分红 — 跨链流转" 的完整经济循环。</span></p><p data-i18n="wp_ch1_s4_p4"><b data-i18n="wp_ch1_s4_pos4">跨链互通算力价值网络：</b><span data-i18n="wp_ch1_s4_pos4_desc">以 NCL 通证为跨链枢纽，打通比特币、以太坊、BSC、Solana 等主流公链生态，实现算力价值的跨链迁移。</span></p></div></details></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-orange-400 rounded-full shrink-0"></span><span data-i18n="wp_ch2_title">2 行业背景与市场痛点</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">2.1</span> <span data-i18n="wp_ch2_s1_title">行业发展现状</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch2_s1_p1">近年来，区块链技术从小众技术实验逐步走向规模化商业应用，加密资产市值规模、链上交易笔数、智能合约调用量持续攀升。</p><p data-i18n="wp_ch2_s1_p2">与此同时，人工智能大模型进入爆发期，GPT 系列、多模态大模型、自动驾驶训练、科学计算等场景对算力需求呈指数级增长，算力已经成为继土地、劳动力、资本、技术之后的第五大生产要素。</p><p data-i18n="wp_ch2_s1_p3">全球算力市场规模以年均超 40% 的速度增长，算力供给端呈现明显缺口。传统 PoW 挖矿通过算力竞争保障区块链去中心化安全，但随着全网算力规模扩大，硬件不断迭代，ASIC 矿机、大规模矿场成为行业主流，导致挖矿产业逐渐走向集中化与重资产化。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">2.2</span> <span data-i18n="wp_ch2_s2_title">传统挖矿核心痛点</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch2_s2_p1"><b data-i18n="wp_ch2_s2_t1">能源消耗过高：</b><span data-i18n="wp_ch2_s2_d1">传统 PoW 挖矿以高算力换取高收益，硬件功耗持续攀升。大量矿场依赖火电等传统能源，单位算力碳排放强度高，电价波动直接影响收益稳定性。</span></p><p data-i18n="wp_ch2_s2_p2"><b data-i18n="wp_ch2_s2_t2">算力高度垄断：</b><span data-i18n="wp_ch2_s2_d2">大型矿池掌握全网 50% 以上算力，头部机构通过资金优势、电力优势与矿机渠道优势形成壁垒，普通用户无法获得低成本电力与低价矿机。</span></p><p data-i18n="wp_ch2_s2_p3"><b data-i18n="wp_ch2_s2_t3">挖矿门槛高、成本不透明：</b><span data-i18n="wp_ch2_s2_d3">个人参与需购置专业矿机、支付高昂电费、承担场地租赁、运维管理等成本。同时云算力平台普遍存在暗箱操作、超售算力等问题，资金安全缺乏保障。</span></p><p data-i18n="wp_ch2_s2_p4"><b data-i18n="wp_ch2_s2_t4">算力资产无法流动：</b><span data-i18n="wp_ch2_s2_d4">实体矿机属于重资产、专用资产，难以拆分、转让、抵押或租赁。算力合同非标化，交易依赖线下信任，流动性极差。</span></p><p data-i18n="wp_ch2_s2_p5"><b data-i18n="wp_ch2_s2_t5">生态割裂、价值孤岛：</b><span data-i18n="wp_ch2_s2_d5">绝大多数项目采用单一代币模型，代币同时承担支付、质押、治理、燃料、分红等功能，导致经济模型混乱，代币价格承压严重。</span></p><p data-i18n="wp_ch2_s2_p6"><b data-i18n="wp_ch2_s2_t6">缺乏合规与可持续模式：</b><span data-i18n="wp_ch2_s2_d6">大量项目无明确合规框架，通证模型设计简单粗暴，缺乏真实资产支撑，完全依赖二级市场炒作。</span></p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">2.3</span> <span data-i18n="wp_ch2_s3_title">市场机遇</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch2_s3_p1">全球 AI 算力需求年均增速超过 50%，分布式存储、Web3 节点、元宇宙实时计算进一步推高算力价格。</p><p data-i18n="wp_ch2_s3_p2">同时，全球能源结构向清洁能源转型，光伏、风电成本持续下降，绿色电力具备规模化替代传统电力的基础。</p><p data-i18n="wp_ch2_s3_p3">政策层面，多国推出支持绿色数据中心、低碳区块链、零碳算力园区的扶持政策，绿色挖矿具备显著合规优势。</p><p data-i18n="wp_ch2_s3_p4">本项目恰好契合能源革命、数字经济、区块链合规化三大趋势，具备长期结构性增长机遇。</p></div></details></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-pink-500 rounded-full shrink-0"></span><span data-i18n="wp_ch3_title">3 项目解决方案与创新价值</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">3.1</span> <span data-i18n="wp_ch3_s1_title">整体解决方案</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch3_s1_p1">项目构建 "能源层 — 算力层 — 链上层 — 应用层 — 治理层" 五层架构体系：</p><ul class="list-disc list-inside space-y-1 text-slate-500"><li data-i18n="wp_ch3_s1_l1"><b>能源层：</b>接入水电、光伏、风电等清洁能源，部署智能电表与物联网监测设备</li><li data-i18n="wp_ch3_s1_l2"><b>算力层：</b>分布式矿机节点、轻节点、云算力节点共同构成算力网络</li><li data-i18n="wp_ch3_s1_l3"><b>链上层：</b>区块链底层、智能合约、跨链桥、算力核验系统</li><li data-i18n="wp_ch3_s1_l4"><b>应用层：</b>钱包、浏览器、矿池、交易市场、借贷理财、NEA 资产平台</li><li data-i18n="wp_ch3_s1_l5"><b>治理层：</b>社区投票、理事会、技术委员会、节点共治体系</li></ul><p data-i18n="wp_ch3_s1_p2">通过五层结构实现：清洁能源可信上链 → 算力标准化封装 → 资产通证化映射 → 多通证激励循环 → 跨链价值互通 → 社区自治治理，形成完整商业闭环。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">3.2</span> <span data-i18n="wp_ch3_s2_title">核心创新</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch3_s2_p1"><b data-i18n="wp_ch3_s2_i1">清洁能源挖矿标准：</b><span data-i18n="wp_ch3_s2_i1_desc">建立清洁能源接入认证体系，通过物联网设备实时采集电力来源、碳排放数据、能耗强度等指标，上链存证不可篡改。满足绿色标准的节点可获得额外收益加成。</span></p><p data-i18n="wp_ch3_s2_p2"><b data-i18n="wp_ch3_s2_i2">六维通证经济模型：</b><span data-i18n="wp_ch3_s2_i2_desc">六种通证各司其职：NEO 为价值核心与流通媒介；NEX 为算力加速与增益；NET 为 Gas 燃料与燃烧通缩；NEA 为实体算力资产映射；NRY 为生态利润分红；NCL 为跨链枢纽。功能解耦避免单一代币承压。</span></p><p data-i18n="wp_ch3_s2_p3"><b data-i18n="wp_ch3_s2_i3">实体算力链上资产化 NEA：</b><span data-i18n="wp_ch3_s2_i3_desc">将矿机、算力、电站、电力合约转化为 NEA 通证，支持碎片化拆分、链上转让交易、质押借贷、租赁收益、抵押清算、证券化融资，大幅提升资产流动性与金融属性。</span></p><p data-i18n="wp_ch3_s2_p4"><b data-i18n="wp_ch3_s2_i4">低门槛全民挖矿机制：</b><span data-i18n="wp_ch3_s2_i4_desc">支持手机轻节点挖矿、家庭算力共享、质押挖矿、云算力挖矿、节点托管挖矿。用户无需专业知识即可参与，真正实现全民算力共享。</span></p><p data-i18n="wp_ch3_s2_p5"><b data-i18n="wp_ch3_s2_i5">跨链生态互通 NCL：</b><span data-i18n="wp_ch3_s2_i5_desc">NCL 承担跨链验证、中继节点激励、资产兑换路由等功能，实现多链资产自由流动，提升生态外部价值支撑。</span></p><p data-i18n="wp_ch3_s2_p6"><b data-i18n="wp_ch3_s2_i6">通缩型经济模型：</b><span data-i18n="wp_ch3_s2_i6_desc">通过 NET 燃料燃烧、交易手续费燃烧、生态回购销毁、质押锁仓等机制控制代币流通量，提升长期价值稳定性。通缩机制与真实算力收益相结合，形成价值支撑双引擎。</span></p></div></details></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-teal-500 rounded-full shrink-0"></span><span data-i18n="wp_ch4_title">4 技术架构</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.1</span> <span data-i18n="wp_ch4_s1_title">底层区块链架构</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s1_p1">项目采用自主研发模块化底层公链，核心模块包括 P2P 网络模块、分布式账本模块、加密签名模块、智能合约虚拟机、交易内存池、区块打包与同步模块、数据分片存储模块、跨链协议适配模块。</p><p data-i18n="wp_ch4_s1_p2">底层支持 10000+ TPS，交易确认延迟控制在 3–5 秒，支持智能合约图灵完备，兼容 EVM 生态，降低开发者迁移成本。</p><p data-i18n="wp_ch4_s1_p3">底层采用账户模型与 UTXO 模型混合架构，兼顾交易效率与安全性。账本结构采用多级分片存储，提升数据处理能力与节点同步速度。</p><p data-i18n="wp_ch4_s1_p4">加密算法采用国密算法与国际通用加密算法双重支持，满足不同地区合规要求。底层代码完全开源，接受社区审计与监督，保障技术透明可信。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.2</span> <span data-i18n="wp_ch4_s2_title">网络层级</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s2_1_title" class="font-black text-slate-800 text-xs mb-1">4.2.1 核心层</p><p data-i18n="wp_ch4_s2_1_p1">核心层由超级节点与共识节点构成，负责区块生成、账本同步、交易验证、跨链验证。节点采用硬件加密与多重签名防护，确保网络安全。</p><p data-i18n="wp_ch4_s2_1_p2">核心节点需通过社区投票选举产生，具备高算力、高在线率、清洁能源认证等条件，节点作恶将面临惩罚与剔除机制。</p><p data-i18n="wp_ch4_s2_2_title" class="font-black text-slate-800 text-xs mt-2 mb-1">4.2.2 服务层</p><p data-i18n="wp_ch4_s2_2_p1">服务层包括算力核验服务、矿机状态监测服务、能源数据采集服务、智能合约调度服务、收益自动分发服务、链上数据审计服务。</p><p data-i18n="wp_ch4_s2_2_p2">所有服务 API 化、标准化，支持第三方接入。服务层采用微服务架构，可独立升级、独立扩容，不影响整体系统运行。</p><p data-i18n="wp_ch4_s2_3_title" class="font-black text-slate-800 text-xs mt-2 mb-1">4.2.3 应用层</p><p data-i18n="wp_ch4_s2_3_p1">应用层面向用户，包括多链钱包、区块链浏览器、挖矿客户端、矿池管理后台、NEA 资产交易市场、质押理财平台、跨链兑换工具。</p><p data-i18n="wp_ch4_s2_3_p2">界面简洁易用，支持移动端与 PC 端，支持多语言切换，满足全球用户使用需求。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.3</span> <span data-i18n="wp_ch4_s3_title">安全体系</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s3_p1">项目构建全维度安全体系，包括多重签名账户体系、节点权限分级管理、异常算力监测预警、防 DDOS 与 CC 攻击、智能合约形式化验证、链上行为审计、应急冻结与熔断机制、隐私数据加密存储。</p><p data-i18n="wp_ch4_s3_p2">所有合约均通过第三方专业安全审计，核心代码经过多轮测试与漏洞修复。</p><p data-i18n="wp_ch4_s3_p3">系统设置安全理事会，对异常交易、恶意节点、攻击行为进行实时监控与处置。用户资产采用多签托管与链上隔离机制，即使单点出现风险也不会导致全局资产损失。</p><p data-i18n="wp_ch4_s3_p4">跨链模块采用多重验证机制，避免跨链桥漏洞带来的资产风险。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.4</span> <span data-i18n="wp_ch4_s4_title">数据透明机制</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s4_p1">算力数据、能耗数据、区块高度、交易记录、通证分配、销毁记录、质押量、挖矿产出量全部上链，任何人可通过区块链浏览器实时查询，实现完全公开、透明、可追溯。</p><p data-i18n="wp_ch4_s4_p2">所有规则调整、参数修改、合约升级均需公示并上链执行，杜绝暗箱操作。数据透明机制是生态信任的基础，也是社区治理的重要依据。</p></div></details></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-cyan-500 rounded-full shrink-0"></span><span data-i18n="wp_ch5_title">5 共识机制与挖矿原理</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">5.1</span> <span data-i18n="wp_ch5_s1_title">共识机制：PoE + PoS + DPoS 混合共识</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch5_s1_1_title" class="font-black text-slate-800 text-xs mb-1">5.1.1 PoE（Proof of Energy）能源算力证明</p><p data-i18n="wp_ch5_s1_1_p1" class="mb-2">核心逻辑：算力收益与有效算力、清洁能源占比、在线稳定时长正相关，与全网挖矿难度负相关。</p><p data-i18n="wp_ch5_s1_1_formula" class="bg-slate-50 p-2 rounded-lg font-mono text-[10px] text-blue-600 mb-2">公式：R = (P × E × T) / D</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch5_s1_1_p">P：节点有效算力</li><li data-i18n="wp_ch5_s1_1_e">E：清洁能源系数（0.8–1.5）</li><li data-i18n="wp_ch5_s1_1_t">T：在线稳定时长</li><li data-i18n="wp_ch5_s1_1_d">D：全网难度</li><li data-i18n="wp_ch5_s1_1_r">R：区块奖励权重</li></ul><p data-i18n="wp_ch5_s1_2_title" class="font-black text-slate-800 text-xs mt-3 mb-1">5.1.2 PoS（Proof of Stake）权益质押证明</p><p data-i18n="wp_ch5_s1_2_p1" class="mb-2">质押 NEO 可提升节点信用等级，获得收益加成。加成公式：<span class="font-mono text-blue-600">B = 1 + min(S/10000, 0.5)</span></p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch5_s1_2_s">S：质押数量</li><li data-i18n="wp_ch5_s1_2_b">B：收益加成系数</li></ul><p data-i18n="wp_ch5_s1_3_title" class="font-black text-slate-800 text-xs mt-3 mb-1">5.1.3 DPoS（Delegated Proof of Stake）社区节点治理</p><p data-i18n="wp_ch5_s1_3_p1">社区投票选出 21 个超级节点，负责出块与治理，获得额外节点奖励。超级节点定期轮换，确保去中心化程度。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">5.2</span> <span data-i18n="wp_ch5_s2_title">挖矿类型</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><ul class="list-disc list-inside space-y-1"><li data-i18n="wp_ch5_s2_i1">节点挖矿：运行全节点贡献算力与带宽获取奖励</li><li data-i18n="wp_ch5_s2_i2">质押挖矿：质押 NEO 获得算力增益与收益分红</li><li data-i18n="wp_ch5_s2_i3">清洁能源挖矿：接入绿色能源节点获得额外奖励</li><li data-i18n="wp_ch5_s2_i4">矿机映射挖矿：实体矿机绑定链上资产参与挖矿</li><li data-i18n="wp_ch5_s2_i5">跨链挖矿：通过 NCL 实现跨链算力互通奖励</li><li data-i18n="wp_ch5_s2_i6">生态贡献挖矿：社区建设、开发者贡献、推广奖励</li></ul></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">5.3</span> <span data-i18n="wp_ch5_s3_title">挖矿收益规则</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><ul class="list-disc list-inside space-y-1"><li data-i18n="wp_ch5_s3_r1">算力越高，收益权重越高</li><li data-i18n="wp_ch5_s3_r2">清洁能源节点享受 20% 额外加成</li><li data-i18n="wp_ch5_s3_r3">长期质押（≥180 天）享受 15% 额外增益</li><li data-i18n="wp_ch5_s3_r4">社区治理超级节点获得 10% 额外奖励</li><li data-i18n="wp_ch5_s3_r5">早期参与者（第一年内）享受 1.8 倍早期红利系数</li><li data-i18n="wp_ch5_s3_r6">邀请奖励：下级收益的 5% 奖励给邀请人，上限 10 级</li></ul></div></details></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-amber-500 rounded-full shrink-0"></span><span data-i18n="wp_ch6_title">6 通证经济体系</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.1</span> <span data-i18n="wp_ch6_s1_title">通证体系总览</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s1_p1">本项目通证经济体系采用 "六维协同模型"，区别于行业内普遍采用的单一代币或双代币模型，通过功能解耦实现生态内部价值流动的精细化分工。六种通证分别承担价值锚定、算力增益、网络燃料、资产映射、收益分红、跨链枢纽职能，形成相互支撑、相互约束、相互促进的闭环经济系统。</p><p data-i18n="wp_ch6_s1_p2">单一通证的波动不会对整个生态造成系统性冲击，不同通证之间通过智能合约实现自动兑换、自动燃烧、自动质押与自动分配，提升整体经济韧性。</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.2</span> <span data-i18n="wp_ch6_s2_title">NEO 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s2_p1">NEO（New Energy Ore）是整个清洁能源算力生态的核心通证，承担价值锚定、基础支付、质押抵押、治理投票等核心职能。</p><p data-i18n="wp_ch6_s2_total" class="bg-blue-50 p-2 rounded-lg font-bold text-blue-700 text-[10px]">NEO 发行总量：1,000,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s2_mining">挖矿产出：30%（300,000,000 枚），8 年线性衰减释放</li><li data-i18n="wp_ch6_s2_eco">生态建设：20%（200,000,000 枚），按季度解锁</li><li data-i18n="wp_ch6_s2_team">团队激励：15%（150,000,000 枚），锁仓 2 年，分 12 季度解锁</li><li data-i18n="wp_ch6_s2_invest">机构投资：15%（150,000,000 枚），锁仓 1 年，分 8 季度解锁</li><li data-i18n="wp_ch6_s2_airdrop">社区空投：10%（100,000,000 枚），分阶段发放</li><li data-i18n="wp_ch6_s2_liquidity">流动性：10%（100,000,000 枚），锁仓 6 个月后逐步投放</li></ul></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.3</span> <span data-i18n="wp_ch6_s3_title">NEX 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s3_p1">NEX（Neo Energy Xtreme）定位算力加速通证，仅通过质押与高性能节点产出，不可直接法币购买。总量：500,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s3_mining">高性能节点挖矿：40%</li><li data-i18n="wp_ch6_s3_stake">质押 NEO 产出：25%</li><li data-i18n="wp_ch6_s3_partner">生态合作：15%</li><li data-i18n="wp_ch6_s3_team">团队运营：10%</li><li data-i18n="wp_ch6_s3_community">社区激励：10%</li></ul></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.4</span> <span data-i18n="wp_ch6_s4_title">NET 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s4_p1">NET（Neo Energy Token）为生态燃料，所有链上操作必须消耗 NET。总量：200,000,000 枚，燃烧永不增发</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s4_node">节点奖励：35%</li><li data-i18n="wp_ch6_s4_dev">开发者：30%</li><li data-i18n="wp_ch6_s4_liquidity">流动性：20%</li><li data-i18n="wp_ch6_s4_community">社区：15%</li></ul><p class="text-red-600 text-[10px] mt-2">转账燃烧 10%，发行 NEA 燃烧 15%，跨链燃烧 20%，强通缩模型</p></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.5</span> <span data-i18n="wp_ch6_s5_title">NEA 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s5_p1">NEA（Neo Energy Asset）为算力资产映射通证，动态发行，资产销毁则通证销毁。</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s5_mining">实体矿机映射：60%</li><li data-i18n="wp_ch6_s5_stake">算力质押生成：25%</li><li data-i18n="wp_ch6_s5_partner">合作机构：10%</li><li data-i18n="wp_ch6_s5_team">团队：5%</li></ul></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.6</span> <span data-i18n="wp_ch6_s6_title">NRY 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s6_p1">NRY（Neo Resource Yield）为生态分红通证，持有者每日分发生态全部利润。总量：300,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s6_pool">利润分红池：50%</li><li data-i18n="wp_ch6_s6_hold">长期持仓奖励：25%</li><li data-i18n="wp_ch6_s6_node">节点贡献：15%</li><li data-i18n="wp_ch6_s6_team">团队：10%</li></ul></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.7</span> <span data-i18n="wp_ch6_s7_title">NCL 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s7_p1">NCL（Neo Core Link）为跨链枢纽通证。总量：400,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s7_cross">跨链节点：40%</li><li data-i18n="wp_ch6_s7_partner">生态合作：30%</li><li data-i18n="wp_ch6_s7_governance">社区治理：15%</li><li data-i18n="wp_ch6_s7_dev">开发团队：15%</li></ul></div></details><details class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.8</span> <span data-i18n="wp_ch6_s8_title">通证流转闭环</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch6_s8_flow" class="bg-gradient-to-r from-blue-50 to-orange-50 p-3 rounded-lg text-[10px] font-medium">用户挖矿 → 获得 NEO → 质押获取 NEX/NRY → 支付 NET 手续费 → 发行/交易 NEA → 持有 NRY 分红 → NCL 跨链互通 → 全场景燃烧通缩 → 价值回流 NEO</p></div></details></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-green-500 rounded-full shrink-0"></span><span data-i18n="wp_ch7_title">7 生态应用场景</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch7_s1_title" class="font-black text-slate-800 text-xs mt-2">7.1 个人挖矿</p><p data-i18n="wp_ch7_s1_p1">普通用户通过手机、电脑轻节点参与挖矿，无需专业矿机，低功耗、低门槛、易操作。</p><p data-i18n="wp_ch7_s2_title" class="font-black text-slate-800 text-xs mt-2">7.2 机构算力服务</p><p data-i18n="wp_ch7_s2_p1">矿场、电站、IDC 机房可将算力接入生态，发行 NEA 实现资产证券化与融资。</p><p data-i18n="wp_ch7_s3_title" class="font-black text-slate-800 text-xs mt-2">7.3 质押与理财</p><p data-i18n="wp_ch7_s3_p1">质押 NEO 可获得三重收益：基础产出 + NEX 加速 + NRY 分红。</p><p data-i18n="wp_ch7_s4_title" class="font-black text-slate-800 text-xs mt-2">7.4 算力交易市场</p><p data-i18n="wp_ch7_s4_p1">NEA 可在链上自由交易、拆分、租赁、抵押，实现算力资产市场化流动。</p><p data-i18n="wp_ch7_s5_title" class="font-black text-slate-800 text-xs mt-2">7.5 跨链资产互通</p><p data-i18n="wp_ch7_s5_p1">NCL 跨链桥实现与 BTC、ETH、BSC、Solana 等资产互通。</p><p data-i18n="wp_ch7_s6_title" class="font-black text-slate-800 text-xs mt-2">7.6 生态支付与结算</p><p data-i18n="wp_ch7_s6_p1">NEO 作为统一支付工具，用于算力购买、矿机租赁、节点服务等场景。</p><p data-i18n="wp_ch7_s7_title" class="font-black text-slate-800 text-xs mt-2">7.7 去中心化治理</p><p data-i18n="wp_ch7_s7_p1">社区投票决定参数调整、挖矿规则、燃烧比例等重大事项。</p></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-orange-400 rounded-full shrink-0"></span><span data-i18n="wp_ch8_title">8 项目治理与社区自治</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch8_s1_title" class="font-black text-slate-800 text-xs">8.1 治理架构</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch8_s1_i1">核心理事会：战略、合规、风险</li><li data-i18n="wp_ch8_s1_i2">技术委员会：代码、安全、升级</li><li data-i18n="wp_ch8_s1_i3">社区节点代表：社区意见反馈</li><li data-i18n="wp_ch8_s1_i4">普通持币者：链上投票</li></ul><p data-i18n="wp_ch8_s2_title" class="font-black text-slate-800 text-xs mt-2">8.2 投票机制</p><p class="font-mono text-blue-600 text-[10px]" data-i18n="wp_ch8_s2_formula">权重公式：W = A × T × K</p><p data-i18n="wp_ch8_s3_title" class="font-black text-slate-800 text-xs mt-2">8.3 治理内容</p><p data-i18n="wp_ch8_s3_content">通证发行、挖矿收益、燃烧机制、跨链接入、生态预算、节点奖惩、系统升级等。</p></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-orange-400 rounded-full shrink-0"></span><span data-i18n="wp_ch9_title">9 发展路线图</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch9_s1_title" class="font-black text-emerald-600 text-xs">阶段一：基础搭建（Q1–Q2）</p><p data-i18n="wp_ch9_s1_p1">底层公链开发、测试网上线、钱包/浏览器开发、六类通证合约部署、安全审计、早期节点招募。</p><p data-i18n="wp_ch9_s2_title" class="font-black text-blue-600 text-xs mt-2">阶段二：挖矿生态上线（Q3）</p><p data-i18n="wp_ch9_s2_p1">主网上线、挖矿功能开放、质押系统上线、矿池系统运行、社区启动、基础支付功能上线。</p><p data-i18n="wp_ch9_s3_title" class="font-black text-orange-400 text-xs mt-2">阶段三：生态扩张（Q4）</p><p data-i18n="wp_ch9_s3_p1">NEA 算力映射上线、跨链桥 NCL 上线、交易所合作、算力交易市场上线、全球社区推广。</p><p data-i18n="wp_ch9_s4_title" class="font-black text-red-600 text-xs mt-2">阶段四：生态成熟（次年）</p><p data-i18n="wp_ch9_s4_p1">AI 算力接入、元宇宙算力合作、全球清洁能源节点布局、完全去中心化自治。</p></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-red-500 rounded-full shrink-0"></span><span data-i18n="wp_ch10_title">10 团队与合作机构</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch10_s1_p1">核心团队由区块链底层开发工程师、矿场运营专家、清洁能源行业资深人士、通证经济设计师、安全审计专家、法务合规顾问组成，具备多年行业经验。</p><p data-i18n="wp_ch10_s2_p1">合作机构包括：清洁能源电站、算力硬件厂商、区块链安全公司、第三方审计机构、分布式算力平台、行业协会、绿色能源研究机构。</p></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-rose-500 rounded-full shrink-0"></span><span data-i18n="wp_ch11_title">11 风险提示</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch11_s1_title" class="font-black text-slate-800 text-xs">11.1 政策监管风险</p><p data-i18n="wp_ch11_s1_p1">全球各国对区块链、挖矿、数字资产政策存在不确定性，可能导致项目在部分地区无法正常运营。</p><p data-i18n="wp_ch11_s2_title" class="font-black text-slate-800 text-xs mt-2">11.2 市场波动风险</p><p data-i18n="wp_ch11_s2_title" class="hidden">11.2 市场波动风险</p><p data-i18n="wp_ch11_s2_p1">通证价格受大盘行情、流动性、市场情绪影响较大，存在大幅下跌可能。</p><p data-i18n="wp_ch11_s3_title" class="font-black text-slate-800 text-xs mt-2">11.3 技术安全风险</p><p data-i18n="wp_ch11_s3_p1">智能合约漏洞、网络攻击、跨链风险、节点作恶可能导致资产损失。</p><p data-i18n="wp_ch11_s4_title" class="font-black text-slate-800 text-xs mt-2">11.4 挖矿算力波动风险</p><p data-i18n="wp_ch11_s4_p1">全网难度上升、矿机迭代、电力成本上涨可能导致收益下降。</p><p data-i18n="wp_ch11_s5_title" class="font-black text-slate-800 text-xs mt-2">11.5 通证价格下跌风险</p><p data-i18n="wp_ch11_s5_p1">早期代币解锁、市场抛压、生态进展不及预期可能导致价格下行。</p><p data-i18n="wp_ch11_s6_title" class="font-black text-slate-800 text-xs mt-2">11.6 流动性风险</p><p data-i18n="wp_ch11_s6_p1">上线初期可能存在流动性不足、滑点较大、交易深度不够等问题。</p><p data-i18n="wp_ch11_s7_title" class="font-black text-slate-800 text-xs mt-2">11.7 合作与运营风险</p><p data-i18n="wp_ch11_s7_p1">矿场接入不及预期、清洁能源合作推进缓慢、市场推广未达目标可能影响生态发展。</p></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-slate-500 rounded-full shrink-0"></span><span data-i18n="wp_ch12_title">12 合规声明</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-1.5 text-[10px] text-slate-600 leading-relaxed"><ol class="list-decimal list-inside space-y-1"><li data-i18n="wp_ch12_i1">本项目严格遵守运营所在地法律法规，不面向受制裁国家、地区及不合格投资者提供服务。</li><li data-i18n="wp_ch12_i2">生态内所有通证均为功能型通证，不构成证券、股票、股权、期货、基金或任何形式的理财产品。</li><li data-i18n="wp_ch12_i3">参与者自愿参与生态，充分了解数字资产市场风险，自行承担投资、技术、政策等全部风险。</li><li data-i18n="wp_ch12_i4">项目不承诺任何收益，不保证通证价格，所有文案不构成投资建议。</li><li data-i18n="wp_ch12_i5">项目实行 KYC/AML 合规审查，对异常账户、洗钱、诈骗行为采取限制措施并上报相关机构。</li><li data-i18n="wp_ch12_i6">团队有权根据政策法规调整生态机制、通证规则、功能模块，调整前将进行社区公示。</li><li data-i18n="wp_ch12_i7">严禁利用本系统从事非法金融活动、洗钱、诈骗、恐怖主义融资等行为，违者永久封禁。</li></ol></div></details>
-
-<details class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-gray-400 rounded-full shrink-0"></span><span data-i18n="wp_ch13_title">13 附录</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch13_s1_title" class="font-black text-slate-800 text-xs">13.1 术语表</p><p data-i18n="wp_ch13_s1_content">PoE、PoS、DPoS、NEO、NEX、NET、NEA、NRY、NCL、算力映射、燃烧通缩、跨链桥、链上核验、清洁能源系数等。</p><p data-i18n="wp_ch13_s2_title" class="font-black text-slate-800 text-xs mt-2">13.2 通证分配明细表</p><p data-i18n="wp_ch13_s2_content">六种通证总量、分配比例、锁仓周期、释放曲线、燃烧机制汇总表。</p><p data-i18n="wp_ch13_s3_title" class="font-black text-slate-800 text-xs mt-2">13.3 挖矿计算公式汇总</p><p data-i18n="wp_ch13_s3_content">收益公式、难度调整公式、质押加成公式、清洁能源系数公式、分红公式。</p><p data-i18n="wp_ch13_s4_title" class="font-black text-slate-800 text-xs mt-2">13.4 智能合约地址</p><p data-i18n="wp_ch13_s4_content">主网合约地址、多签地址、国库地址、燃烧地址（正式上线后公布）。</p><p data-i18n="wp_ch13_s5_title" class="font-black text-slate-800 text-xs mt-2">13.5 版本更新记录</p><p data-i18n="wp_ch13_s5_content">V1.0：初始完整版白皮书，后续升级以社区投票公示为准。</p></div></details>
-
-    </div>
-</section>
-
 <section class="glass-card rounded-[2rem] p-6 overflow-hidden mt-6">
     <div class="flex justify-between items-center mb-6">
         <h3 class="font-black text-slate-800 uppercase italic tracking-wider flex items-center gap-2">
@@ -597,7 +585,315 @@
         </div>
     </div>
 </section>
+        </div>
+        <div id="tab-foundation" class="home-tab-panel hidden space-y-6">
+        <section class="glass-card p-6 text-center">
+            <h3 class="text-base font-black text-slate-900 leading-snug" data-i18n="fdn_title"></h3>
+            <p class="text-[11px] font-black text-orange-400 uppercase tracking-widest mt-1 mb-3" data-i18n="fdn_subtitle"></p>
+            <p class="text-[11px] text-slate-600 leading-relaxed text-left" data-i18n="fdn_intro"></p>
+        </section>
 
+        <section class="glass-card p-6">
+            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 text-center" data-i18n="fdn_logo_wall"></h4>
+            <div class="grid grid-cols-2 gap-3">
+                <a href="https://cyber.fund" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-2 p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md active:scale-95">
+                    <img src="assets/fdn_cyber.png" alt="cyber•Fund" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                    <span class="text-[10px] font-black text-slate-700">cyber•Fund</span>
+                </a>
+                <a href="https://www.gsr.io" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-2 p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md active:scale-95">
+                    <span class="h-11 w-11 flex items-center justify-center text-lg font-black tracking-widest text-slate-800">GSR</span>
+                    <span class="text-[10px] font-black text-slate-700">GSR</span>
+                </a>
+                <a href="https://www.wintermute.com" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-2 p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md active:scale-95">
+                    <img src="assets/fdn_wintermute.png" alt="Wintermute" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                    <span class="text-[10px] font-black text-slate-700">Wintermute</span>
+                </a>
+                <a href="https://runacap.com" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-2 p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md active:scale-95">
+                    <img src="assets/fdn_runa.png" alt="Runa Capital" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                    <span class="text-[10px] font-black text-slate-700">Runa Capital</span>
+                </a>
+                <a href="https://waves.tech" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-2 p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md active:scale-95 col-span-2">
+                    <img src="assets/fdn_waves.png" alt="Waves Association" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                    <span class="text-[10px] font-black text-slate-700">Waves Association</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="glass-card p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="assets/fdn_cyber.png" alt="cyber•Fund" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                <div class="min-w-0">
+                    <h4 class="font-black text-slate-900 text-sm">cyber•Fund</h4>
+                    <span class="inline-block mt-0.5 text-[9px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100" data-i18n="fdn_cyber_tag"></span>
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed mb-3" data-i18n="fdn_cyber_intro"></p>
+            <div class="p-3 bg-orange-50 border border-orange-100 rounded-xl">
+                <p class="text-[10px] font-black text-orange-500 mb-1" data-i18n="fdn_synergy_title"></p>
+                <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="fdn_cyber_synergy"></p>
+            </div>
+            <a href="https://cyber.fund" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black text-blue-500 underline underline-offset-2">
+                <i class="fas fa-external-link-alt text-[8px]"></i><span data-i18n="fdn_visit">访问官网</span>
+            </a>
+        </section>
+
+        <section class="glass-card p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <span class="w-11 h-11 rounded-xl bg-white p-1 shadow-sm border border-slate-100 shrink-0 flex items-center justify-center text-base font-black tracking-widest text-slate-800">GSR</span>
+                <div class="min-w-0">
+                    <h4 class="font-black text-slate-900 text-sm">GSR</h4>
+                    <span class="inline-block mt-0.5 text-[9px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100" data-i18n="fdn_gsr_tag"></span>
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed mb-3" data-i18n="fdn_gsr_intro"></p>
+            <div class="p-3 bg-orange-50 border border-orange-100 rounded-xl">
+                <p class="text-[10px] font-black text-orange-500 mb-1" data-i18n="fdn_synergy_title"></p>
+                <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="fdn_gsr_synergy"></p>
+            </div>
+            <a href="https://www.gsr.io" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black text-blue-500 underline underline-offset-2">
+                <i class="fas fa-external-link-alt text-[8px]"></i><span data-i18n="fdn_visit">访问官网</span>
+            </a>
+        </section>
+
+        <section class="glass-card p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="assets/fdn_wintermute.png" alt="Wintermute" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                <div class="min-w-0">
+                    <h4 class="font-black text-slate-900 text-sm">Wintermute</h4>
+                    <span class="inline-block mt-0.5 text-[9px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100" data-i18n="fdn_wintermute_tag"></span>
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed mb-3" data-i18n="fdn_wintermute_intro"></p>
+            <div class="p-3 bg-orange-50 border border-orange-100 rounded-xl">
+                <p class="text-[10px] font-black text-orange-500 mb-1" data-i18n="fdn_synergy_title"></p>
+                <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="fdn_wintermute_synergy"></p>
+            </div>
+            <a href="https://www.wintermute.com" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black text-blue-500 underline underline-offset-2">
+                <i class="fas fa-external-link-alt text-[8px]"></i><span data-i18n="fdn_visit">访问官网</span>
+            </a>
+        </section>
+
+        <section class="glass-card p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="assets/fdn_runa.png" alt="Runa Capital" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                <div class="min-w-0">
+                    <h4 class="font-black text-slate-900 text-sm">Runa Capital</h4>
+                    <span class="inline-block mt-0.5 text-[9px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100" data-i18n="fdn_runa_tag"></span>
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed mb-3" data-i18n="fdn_runa_intro"></p>
+            <div class="p-3 bg-orange-50 border border-orange-100 rounded-xl">
+                <p class="text-[10px] font-black text-orange-500 mb-1" data-i18n="fdn_synergy_title"></p>
+                <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="fdn_runa_synergy"></p>
+            </div>
+            <a href="https://runacap.com" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black text-blue-500 underline underline-offset-2">
+                <i class="fas fa-external-link-alt text-[8px]"></i><span data-i18n="fdn_visit">访问官网</span>
+            </a>
+        </section>
+
+        <section class="glass-card p-6">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="assets/fdn_waves.png" alt="Waves Association" class="w-11 h-11 rounded-xl object-contain bg-white p-1 shadow-sm border border-slate-100 shrink-0" loading="lazy">
+                <div class="min-w-0">
+                    <h4 class="font-black text-slate-900 text-sm">Waves Association</h4>
+                    <span class="inline-block mt-0.5 text-[9px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100" data-i18n="fdn_waves_tag"></span>
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed mb-3" data-i18n="fdn_waves_intro"></p>
+            <div class="p-3 bg-orange-50 border border-orange-100 rounded-xl">
+                <p class="text-[10px] font-black text-orange-500 mb-1" data-i18n="fdn_synergy_title"></p>
+                <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="fdn_waves_synergy"></p>
+            </div>
+            <a href="https://waves.tech" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 mt-3 text-[10px] font-black text-blue-500 underline underline-offset-2">
+                <i class="fas fa-external-link-alt text-[8px]"></i><span data-i18n="fdn_visit">访问官网</span>
+            </a>
+        </section>
+
+        <p class="text-[9px] text-slate-400 leading-relaxed px-4 text-center" data-i18n="fdn_disclaimer"></p>
+        </div>
+        <div id="tab-council" class="home-tab-panel hidden">
+        <section class="glass-card p-6 text-center">
+            <i class="fas fa-users text-4xl text-orange-400 mb-4 block"></i>
+            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
+            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        </section>
+        </div>
+        <div id="tab-org" class="home-tab-panel hidden">
+        <section class="glass-card p-6 text-center">
+            <i class="fas fa-sitemap text-4xl text-orange-400 mb-4 block"></i>
+            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
+            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        </section>
+        </div>
+        <div id="tab-about" class="home-tab-panel hidden">
+        <section class="glass-card p-6 text-center">
+            <i class="fas fa-circle-info text-4xl text-orange-400 mb-4 block"></i>
+            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
+            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        </section>
+        </div>
+        <div id="tab-whitepaper" class="home-tab-panel hidden">
+            <section class="glass-card rounded-[2rem] p-6">
+    <div class="flex justify-between items-center mb-4 cursor-pointer">
+        <h3 class="font-black text-slate-800 uppercase italic tracking-wider flex items-center gap-2">
+            <span class="w-2 h-2 bg-orange-400 rounded-full"></span>
+            <span data-i18n="wp_title">白皮书概要</span>
+        </h3>
+        <span class="text-[10px] bg-orange-100 text-orange-400 px-2 py-0.5 rounded-full font-bold">v1.0</span>
+    </div>
+    <div id="wpContent" class="space-y-4">
+<div class="text-[10px] text-slate-500 leading-relaxed border-l-2 border-orange-300 pl-3 py-1" data-i18n="wp_subtitle">（此白皮书为社区共同维护，著作权与最终解释权归社区成员所有）</div>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-blue-500 rounded-full shrink-0"></span><span data-i18n="wp_ch0_title">摘要</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 text-xs text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch0_p1">本项目立足于全球区块链产业结构转型与能源革命双重历史机遇，构建一套以清洁能源为核心驱动、以分布式算力为价值载体、以区块链技术为信任底座的新一代算力挖矿生态系统。</p><p data-i18n="wp_ch0_p2">当前全球算力需求呈现指数级增长态势，人工智能大模型训练、分布式存储网络、Web3 基础设施、元宇宙实时渲染、链上交易清算等场景共同推动算力成为数字经济时代的核心生产要素。</p><p data-i18n="wp_ch0_p3">然而，传统算力生产模式普遍存在高能耗、高污染、算力垄断、资产固化、收益分配不均、监管压力持续加大等系统性问题，严重制约行业长期可持续发展。</p><p data-i18n="wp_ch0_p4">为系统性解决上述痛点，本项目创新性提出多通证协同治理架构，通过发行六种功能解耦型数字通证，实现核心价值流通、算力增益激励、网络燃料消耗、实体资产映射、生态收益分红与跨链价值流转的全链路闭环。</p><p data-i18n="wp_ch0_p5">项目以分布式清洁能源节点网络为物理基础，以混合共识机制为技术保障，以链上算力核验系统为信任纽带，推动水电、光伏、风电、生物质能等绿色能源与区块链算力生产深度融合。</p></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-emerald-500 rounded-full shrink-0"></span><span data-i18n="wp_ch1_title">1 项目概述</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.1</span> <span data-i18n="wp_ch1_s1_title">项目名称</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s1_p1">新一代清洁能源算力挖矿生态系统（Neo Energy Mining Ecosystem，简称 NEO 生态）。</p><p data-i18n="wp_ch1_s1_p2">项目名称以 "Neo" 代表新生、革新与下一代技术范式，以 "Energy" 突出清洁能源核心驱动属性，以 "Mining Ecosystem" 强调生态化、系统化、平台化的整体定位，区别于传统单一矿机、单一矿池类项目。</p><p data-i18n="wp_ch1_s1_p3">项目并非简单的挖矿工具或代币发行项目，而是一套覆盖能源端、算力端、交易端、应用端与治理端的完整分布式价值网络。名称体系简洁统一，便于全球社区传播、品牌建设与生态拓展。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.2</span> <span data-i18n="wp_ch1_s2_title">项目愿景</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s2_p1">成为全球领先的去中心化清洁能源算力基础设施运营商，构建绿色、高效、开放、共享、共治的数字算力生产与价值分配体系。</p><p data-i18n="wp_ch1_s2_p2">推动全球区块链行业从高耗能粗放式增长向低碳集约式可持续发展转型，最终实现算力价值民主化、能源利用高效化、数字资产普惠化。</p><p data-i18n="wp_ch1_s2_p3">愿景的核心逻辑在于重新定义 "算力生产关系"。传统挖矿体系中，资本、矿场、电力资源与技术门槛形成天然壁垒，导致普通参与者难以分享行业增长红利。</p><p data-i18n="wp_ch1_s2_p4">本项目希望通过去中心化架构打破壁垒，让个体节点、家庭储能、小型清洁能源站点均可接入算力网络，共同分享数字经济增长收益，推动算力从 "机构垄断" 走向 "全民共享"。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.3</span> <span data-i18n="wp_ch1_s3_title">项目使命</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s3_p1">通过区块链智能合约、分布式账本技术与物联网能源监测系统，重构算力生产、分配、交易与质押全流程；降低用户参与挖矿的硬件门槛、资金门槛与技术门槛。</p><p data-i18n="wp_ch1_s3_p2">提升可再生能源在区块链行业中的使用比例；建立链上可核验、数据可追溯、收益可分配的透明算力价值体系。</p><p data-i18n="wp_ch1_s3_p3">使命落地分为三个层次：技术层实现可信算力上链，经济层实现多维度激励闭环，社会层实现绿色低碳价值输出。</p><p data-i18n="wp_ch1_s3_p4">项目不仅追求商业可持续性，更强调环境责任与社会责任，通过技术创新降低单位算力能耗，为全球数字经济低碳化发展提供可复制、可推广的行业解决方案。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">1.4</span> <span data-i18n="wp_ch1_s4_title">核心定位</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch1_s4_p1"><b data-i18n="wp_ch1_s4_pos1">绿色算力挖矿基础设施：</b><span data-i18n="wp_ch1_s4_pos1_desc">定位为底层算力基础设施提供商，专注于清洁能源驱动的分布式节点网络，构建覆盖电力监测、算力调度、收益清算、节点管理的一体化系统。</span></p><p data-i18n="wp_ch1_s4_p2"><b data-i18n="wp_ch1_s4_pos2">实体算力链上资产化平台：</b><span data-i18n="wp_ch1_s4_pos2_desc">通过 NEA 通证实现实体矿机、算力份额、电力合约、矿场产权等线下资产的链上映射、拆分、流转与融资，使传统低流动性资产具备高流通性与金融属性。</span></p><p data-i18n="wp_ch1_s4_p3"><b data-i18n="wp_ch1_s4_pos3">多代币协同激励生态：</b><span data-i18n="wp_ch1_s4_pos3_desc">以六种通证功能解耦为核心，构建 "价值锚定 — 加速激励 — 燃料消耗 — 资产映射 — 收益分红 — 跨链流转" 的完整经济循环。</span></p><p data-i18n="wp_ch1_s4_p4"><b data-i18n="wp_ch1_s4_pos4">跨链互通算力价值网络：</b><span data-i18n="wp_ch1_s4_pos4_desc">以 NCL 通证为跨链枢纽，打通比特币、以太坊、BSC、Solana 等主流公链生态，实现算力价值的跨链迁移。</span></p></div></details></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-orange-400 rounded-full shrink-0"></span><span data-i18n="wp_ch2_title">2 行业背景与市场痛点</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">2.1</span> <span data-i18n="wp_ch2_s1_title">行业发展现状</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch2_s1_p1">近年来，区块链技术从小众技术实验逐步走向规模化商业应用，加密资产市值规模、链上交易笔数、智能合约调用量持续攀升。</p><p data-i18n="wp_ch2_s1_p2">与此同时，人工智能大模型进入爆发期，GPT 系列、多模态大模型、自动驾驶训练、科学计算等场景对算力需求呈指数级增长，算力已经成为继土地、劳动力、资本、技术之后的第五大生产要素。</p><p data-i18n="wp_ch2_s1_p3">全球算力市场规模以年均超 40% 的速度增长，算力供给端呈现明显缺口。传统 PoW 挖矿通过算力竞争保障区块链去中心化安全，但随着全网算力规模扩大，硬件不断迭代，ASIC 矿机、大规模矿场成为行业主流，导致挖矿产业逐渐走向集中化与重资产化。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">2.2</span> <span data-i18n="wp_ch2_s2_title">传统挖矿核心痛点</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch2_s2_p1"><b data-i18n="wp_ch2_s2_t1">能源消耗过高：</b><span data-i18n="wp_ch2_s2_d1">传统 PoW 挖矿以高算力换取高收益，硬件功耗持续攀升。大量矿场依赖火电等传统能源，单位算力碳排放强度高，电价波动直接影响收益稳定性。</span></p><p data-i18n="wp_ch2_s2_p2"><b data-i18n="wp_ch2_s2_t2">算力高度垄断：</b><span data-i18n="wp_ch2_s2_d2">大型矿池掌握全网 50% 以上算力，头部机构通过资金优势、电力优势与矿机渠道优势形成壁垒，普通用户无法获得低成本电力与低价矿机。</span></p><p data-i18n="wp_ch2_s2_p3"><b data-i18n="wp_ch2_s2_t3">挖矿门槛高、成本不透明：</b><span data-i18n="wp_ch2_s2_d3">个人参与需购置专业矿机、支付高昂电费、承担场地租赁、运维管理等成本。同时云算力平台普遍存在暗箱操作、超售算力等问题，资金安全缺乏保障。</span></p><p data-i18n="wp_ch2_s2_p4"><b data-i18n="wp_ch2_s2_t4">算力资产无法流动：</b><span data-i18n="wp_ch2_s2_d4">实体矿机属于重资产、专用资产，难以拆分、转让、抵押或租赁。算力合同非标化，交易依赖线下信任，流动性极差。</span></p><p data-i18n="wp_ch2_s2_p5"><b data-i18n="wp_ch2_s2_t5">生态割裂、价值孤岛：</b><span data-i18n="wp_ch2_s2_d5">绝大多数项目采用单一代币模型，代币同时承担支付、质押、治理、燃料、分红等功能，导致经济模型混乱，代币价格承压严重。</span></p><p data-i18n="wp_ch2_s2_p6"><b data-i18n="wp_ch2_s2_t6">缺乏合规与可持续模式：</b><span data-i18n="wp_ch2_s2_d6">大量项目无明确合规框架，通证模型设计简单粗暴，缺乏真实资产支撑，完全依赖二级市场炒作。</span></p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">2.3</span> <span data-i18n="wp_ch2_s3_title">市场机遇</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch2_s3_p1">全球 AI 算力需求年均增速超过 50%，分布式存储、Web3 节点、元宇宙实时计算进一步推高算力价格。</p><p data-i18n="wp_ch2_s3_p2">同时，全球能源结构向清洁能源转型，光伏、风电成本持续下降，绿色电力具备规模化替代传统电力的基础。</p><p data-i18n="wp_ch2_s3_p3">政策层面，多国推出支持绿色数据中心、低碳区块链、零碳算力园区的扶持政策，绿色挖矿具备显著合规优势。</p><p data-i18n="wp_ch2_s3_p4">本项目恰好契合能源革命、数字经济、区块链合规化三大趋势，具备长期结构性增长机遇。</p></div></details></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-pink-500 rounded-full shrink-0"></span><span data-i18n="wp_ch3_title">3 项目解决方案与创新价值</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">3.1</span> <span data-i18n="wp_ch3_s1_title">整体解决方案</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch3_s1_p1">项目构建 "能源层 — 算力层 — 链上层 — 应用层 — 治理层" 五层架构体系：</p><ul class="list-disc list-inside space-y-1 text-slate-500"><li data-i18n="wp_ch3_s1_l1"><b>能源层：</b>接入水电、光伏、风电等清洁能源，部署智能电表与物联网监测设备</li><li data-i18n="wp_ch3_s1_l2"><b>算力层：</b>分布式矿机节点、轻节点、云算力节点共同构成算力网络</li><li data-i18n="wp_ch3_s1_l3"><b>链上层：</b>区块链底层、智能合约、跨链桥、算力核验系统</li><li data-i18n="wp_ch3_s1_l4"><b>应用层：</b>钱包、浏览器、矿池、交易市场、借贷理财、NEA 资产平台</li><li data-i18n="wp_ch3_s1_l5"><b>治理层：</b>社区投票、理事会、技术委员会、节点共治体系</li></ul><p data-i18n="wp_ch3_s1_p2">通过五层结构实现：清洁能源可信上链 → 算力标准化封装 → 资产通证化映射 → 多通证激励循环 → 跨链价值互通 → 社区自治治理，形成完整商业闭环。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">3.2</span> <span data-i18n="wp_ch3_s2_title">核心创新</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><p data-i18n="wp_ch3_s2_p1"><b data-i18n="wp_ch3_s2_i1">清洁能源挖矿标准：</b><span data-i18n="wp_ch3_s2_i1_desc">建立清洁能源接入认证体系，通过物联网设备实时采集电力来源、碳排放数据、能耗强度等指标，上链存证不可篡改。满足绿色标准的节点可获得额外收益加成。</span></p><p data-i18n="wp_ch3_s2_p2"><b data-i18n="wp_ch3_s2_i2">六维通证经济模型：</b><span data-i18n="wp_ch3_s2_i2_desc">六种通证各司其职：NEO 为价值核心与流通媒介；NEX 为算力加速与增益；NET 为 Gas 燃料与燃烧通缩；NEA 为实体算力资产映射；NRY 为生态利润分红；NCL 为跨链枢纽。功能解耦避免单一代币承压。</span></p><p data-i18n="wp_ch3_s2_p3"><b data-i18n="wp_ch3_s2_i3">实体算力链上资产化 NEA：</b><span data-i18n="wp_ch3_s2_i3_desc">将矿机、算力、电站、电力合约转化为 NEA 通证，支持碎片化拆分、链上转让交易、质押借贷、租赁收益、抵押清算、证券化融资，大幅提升资产流动性与金融属性。</span></p><p data-i18n="wp_ch3_s2_p4"><b data-i18n="wp_ch3_s2_i4">低门槛全民挖矿机制：</b><span data-i18n="wp_ch3_s2_i4_desc">支持手机轻节点挖矿、家庭算力共享、质押挖矿、云算力挖矿、节点托管挖矿。用户无需专业知识即可参与，真正实现全民算力共享。</span></p><p data-i18n="wp_ch3_s2_p5"><b data-i18n="wp_ch3_s2_i5">跨链生态互通 NCL：</b><span data-i18n="wp_ch3_s2_i5_desc">NCL 承担跨链验证、中继节点激励、资产兑换路由等功能，实现多链资产自由流动，提升生态外部价值支撑。</span></p><p data-i18n="wp_ch3_s2_p6"><b data-i18n="wp_ch3_s2_i6">通缩型经济模型：</b><span data-i18n="wp_ch3_s2_i6_desc">通过 NET 燃料燃烧、交易手续费燃烧、生态回购销毁、质押锁仓等机制控制代币流通量，提升长期价值稳定性。通缩机制与真实算力收益相结合，形成价值支撑双引擎。</span></p></div></details></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-teal-500 rounded-full shrink-0"></span><span data-i18n="wp_ch4_title">4 技术架构</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.1</span> <span data-i18n="wp_ch4_s1_title">底层区块链架构</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s1_p1">项目采用自主研发模块化底层公链，核心模块包括 P2P 网络模块、分布式账本模块、加密签名模块、智能合约虚拟机、交易内存池、区块打包与同步模块、数据分片存储模块、跨链协议适配模块。</p><p data-i18n="wp_ch4_s1_p2">底层支持 10000+ TPS，交易确认延迟控制在 3–5 秒，支持智能合约图灵完备，兼容 EVM 生态，降低开发者迁移成本。</p><p data-i18n="wp_ch4_s1_p3">底层采用账户模型与 UTXO 模型混合架构，兼顾交易效率与安全性。账本结构采用多级分片存储，提升数据处理能力与节点同步速度。</p><p data-i18n="wp_ch4_s1_p4">加密算法采用国密算法与国际通用加密算法双重支持，满足不同地区合规要求。底层代码完全开源，接受社区审计与监督，保障技术透明可信。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.2</span> <span data-i18n="wp_ch4_s2_title">网络层级</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s2_1_title" class="font-black text-slate-800 text-xs mb-1">4.2.1 核心层</p><p data-i18n="wp_ch4_s2_1_p1">核心层由超级节点与共识节点构成，负责区块生成、账本同步、交易验证、跨链验证。节点采用硬件加密与多重签名防护，确保网络安全。</p><p data-i18n="wp_ch4_s2_1_p2">核心节点需通过社区投票选举产生，具备高算力、高在线率、清洁能源认证等条件，节点作恶将面临惩罚与剔除机制。</p><p data-i18n="wp_ch4_s2_2_title" class="font-black text-slate-800 text-xs mt-2 mb-1">4.2.2 服务层</p><p data-i18n="wp_ch4_s2_2_p1">服务层包括算力核验服务、矿机状态监测服务、能源数据采集服务、智能合约调度服务、收益自动分发服务、链上数据审计服务。</p><p data-i18n="wp_ch4_s2_2_p2">所有服务 API 化、标准化，支持第三方接入。服务层采用微服务架构，可独立升级、独立扩容，不影响整体系统运行。</p><p data-i18n="wp_ch4_s2_3_title" class="font-black text-slate-800 text-xs mt-2 mb-1">4.2.3 应用层</p><p data-i18n="wp_ch4_s2_3_p1">应用层面向用户，包括多链钱包、区块链浏览器、挖矿客户端、矿池管理后台、NEA 资产交易市场、质押理财平台、跨链兑换工具。</p><p data-i18n="wp_ch4_s2_3_p2">界面简洁易用，支持移动端与 PC 端，支持多语言切换，满足全球用户使用需求。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.3</span> <span data-i18n="wp_ch4_s3_title">安全体系</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s3_p1">项目构建全维度安全体系，包括多重签名账户体系、节点权限分级管理、异常算力监测预警、防 DDOS 与 CC 攻击、智能合约形式化验证、链上行为审计、应急冻结与熔断机制、隐私数据加密存储。</p><p data-i18n="wp_ch4_s3_p2">所有合约均通过第三方专业安全审计，核心代码经过多轮测试与漏洞修复。</p><p data-i18n="wp_ch4_s3_p3">系统设置安全理事会，对异常交易、恶意节点、攻击行为进行实时监控与处置。用户资产采用多签托管与链上隔离机制，即使单点出现风险也不会导致全局资产损失。</p><p data-i18n="wp_ch4_s3_p4">跨链模块采用多重验证机制，避免跨链桥漏洞带来的资产风险。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">4.4</span> <span data-i18n="wp_ch4_s4_title">数据透明机制</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch4_s4_p1">算力数据、能耗数据、区块高度、交易记录、通证分配、销毁记录、质押量、挖矿产出量全部上链，任何人可通过区块链浏览器实时查询，实现完全公开、透明、可追溯。</p><p data-i18n="wp_ch4_s4_p2">所有规则调整、参数修改、合约升级均需公示并上链执行，杜绝暗箱操作。数据透明机制是生态信任的基础，也是社区治理的重要依据。</p></div></details></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-cyan-500 rounded-full shrink-0"></span><span data-i18n="wp_ch5_title">5 共识机制与挖矿原理</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">5.1</span> <span data-i18n="wp_ch5_s1_title">共识机制：PoE + PoS + DPoS 混合共识</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch5_s1_1_title" class="font-black text-slate-800 text-xs mb-1">5.1.1 PoE（Proof of Energy）能源算力证明</p><p data-i18n="wp_ch5_s1_1_p1" class="mb-2">核心逻辑：算力收益与有效算力、清洁能源占比、在线稳定时长正相关，与全网挖矿难度负相关。</p><p data-i18n="wp_ch5_s1_1_formula" class="bg-slate-50 p-2 rounded-lg font-mono text-[10px] text-blue-600 mb-2">公式：R = (P × E × T) / D</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch5_s1_1_p">P：节点有效算力</li><li data-i18n="wp_ch5_s1_1_e">E：清洁能源系数（0.8–1.5）</li><li data-i18n="wp_ch5_s1_1_t">T：在线稳定时长</li><li data-i18n="wp_ch5_s1_1_d">D：全网难度</li><li data-i18n="wp_ch5_s1_1_r">R：区块奖励权重</li></ul><p data-i18n="wp_ch5_s1_2_title" class="font-black text-slate-800 text-xs mt-3 mb-1">5.1.2 PoS（Proof of Stake）权益质押证明</p><p data-i18n="wp_ch5_s1_2_p1" class="mb-2">质押 NEO 可提升节点信用等级，获得收益加成。加成公式：<span class="font-mono text-blue-600">B = 1 + min(S/10000, 0.5)</span></p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch5_s1_2_s">S：质押数量</li><li data-i18n="wp_ch5_s1_2_b">B：收益加成系数</li></ul><p data-i18n="wp_ch5_s1_3_title" class="font-black text-slate-800 text-xs mt-3 mb-1">5.1.3 DPoS（Delegated Proof of Stake）社区节点治理</p><p data-i18n="wp_ch5_s1_3_p1">社区投票选出 21 个超级节点，负责出块与治理，获得额外节点奖励。超级节点定期轮换，确保去中心化程度。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">5.2</span> <span data-i18n="wp_ch5_s2_title">挖矿类型</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><ul class="list-disc list-inside space-y-1"><li data-i18n="wp_ch5_s2_i1">节点挖矿：运行全节点贡献算力与带宽获取奖励</li><li data-i18n="wp_ch5_s2_i2">质押挖矿：质押 NEO 获得算力增益与收益分红</li><li data-i18n="wp_ch5_s2_i3">清洁能源挖矿：接入绿色能源节点获得额外奖励</li><li data-i18n="wp_ch5_s2_i4">矿机映射挖矿：实体矿机绑定链上资产参与挖矿</li><li data-i18n="wp_ch5_s2_i5">跨链挖矿：通过 NCL 实现跨链算力互通奖励</li><li data-i18n="wp_ch5_s2_i6">生态贡献挖矿：社区建设、开发者贡献、推广奖励</li></ul></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">5.3</span> <span data-i18n="wp_ch5_s3_title">挖矿收益规则</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-1.5"><ul class="list-disc list-inside space-y-1"><li data-i18n="wp_ch5_s3_r1">算力越高，收益权重越高</li><li data-i18n="wp_ch5_s3_r2">清洁能源节点享受 20% 额外加成</li><li data-i18n="wp_ch5_s3_r3">长期质押（≥180 天）享受 15% 额外增益</li><li data-i18n="wp_ch5_s3_r4">社区治理超级节点获得 10% 额外奖励</li><li data-i18n="wp_ch5_s3_r5">早期参与者（第一年内）享受 1.8 倍早期红利系数</li><li data-i18n="wp_ch5_s3_r6">邀请奖励：下级收益的 5% 奖励给邀请人，上限 10 级</li></ul></div></details></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-amber-500 rounded-full shrink-0"></span><span data-i18n="wp_ch6_title">6 通证经济体系</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-3"><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.1</span> <span data-i18n="wp_ch6_s1_title">通证体系总览</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s1_p1">本项目通证经济体系采用 "六维协同模型"，区别于行业内普遍采用的单一代币或双代币模型，通过功能解耦实现生态内部价值流动的精细化分工。六种通证分别承担价值锚定、算力增益、网络燃料、资产映射、收益分红、跨链枢纽职能，形成相互支撑、相互约束、相互促进的闭环经济系统。</p><p data-i18n="wp_ch6_s1_p2">单一通证的波动不会对整个生态造成系统性冲击，不同通证之间通过智能合约实现自动兑换、自动燃烧、自动质押与自动分配，提升整体经济韧性。</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.2</span> <span data-i18n="wp_ch6_s2_title">NEO 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s2_p1">NEO（New Energy Ore）是整个清洁能源算力生态的核心通证，承担价值锚定、基础支付、质押抵押、治理投票等核心职能。</p><p data-i18n="wp_ch6_s2_total" class="bg-blue-50 p-2 rounded-lg font-bold text-blue-700 text-[10px]">NEO 发行总量：1,000,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s2_mining">挖矿产出：30%（300,000,000 枚），8 年线性衰减释放</li><li data-i18n="wp_ch6_s2_eco">生态建设：20%（200,000,000 枚），按季度解锁</li><li data-i18n="wp_ch6_s2_team">团队激励：15%（150,000,000 枚），锁仓 2 年，分 12 季度解锁</li><li data-i18n="wp_ch6_s2_invest">机构投资：15%（150,000,000 枚），锁仓 1 年，分 8 季度解锁</li><li data-i18n="wp_ch6_s2_airdrop">社区空投：10%（100,000,000 枚），分阶段发放</li><li data-i18n="wp_ch6_s2_liquidity">流动性：10%（100,000,000 枚），锁仓 6 个月后逐步投放</li></ul></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.3</span> <span data-i18n="wp_ch6_s3_title">NEX 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s3_p1">NEX（Neo Energy Xtreme）定位算力加速通证，仅通过质押与高性能节点产出，不可直接法币购买。总量：500,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s3_mining">高性能节点挖矿：40%</li><li data-i18n="wp_ch6_s3_stake">质押 NEO 产出：25%</li><li data-i18n="wp_ch6_s3_partner">生态合作：15%</li><li data-i18n="wp_ch6_s3_team">团队运营：10%</li><li data-i18n="wp_ch6_s3_community">社区激励：10%</li></ul></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.4</span> <span data-i18n="wp_ch6_s4_title">NET 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s4_p1">NET（Neo Energy Token）为生态燃料，所有链上操作必须消耗 NET。总量：200,000,000 枚，燃烧永不增发</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s4_node">节点奖励：35%</li><li data-i18n="wp_ch6_s4_dev">开发者：30%</li><li data-i18n="wp_ch6_s4_liquidity">流动性：20%</li><li data-i18n="wp_ch6_s4_community">社区：15%</li></ul><p class="text-red-600 text-[10px] mt-2">转账燃烧 10%，发行 NEA 燃烧 15%，跨链燃烧 20%，强通缩模型</p></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.5</span> <span data-i18n="wp_ch6_s5_title">NEA 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s5_p1">NEA（Neo Energy Asset）为算力资产映射通证，动态发行，资产销毁则通证销毁。</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s5_mining">实体矿机映射：60%</li><li data-i18n="wp_ch6_s5_stake">算力质押生成：25%</li><li data-i18n="wp_ch6_s5_partner">合作机构：10%</li><li data-i18n="wp_ch6_s5_team">团队：5%</li></ul></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.6</span> <span data-i18n="wp_ch6_s6_title">NRY 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s6_p1">NRY（Neo Resource Yield）为生态分红通证，持有者每日分发生态全部利润。总量：300,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s6_pool">利润分红池：50%</li><li data-i18n="wp_ch6_s6_hold">长期持仓奖励：25%</li><li data-i18n="wp_ch6_s6_node">节点贡献：15%</li><li data-i18n="wp_ch6_s6_team">团队：10%</li></ul></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.7</span> <span data-i18n="wp_ch6_s7_title">NCL 详细设计</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed space-y-2"><p data-i18n="wp_ch6_s7_p1">NCL（Neo Core Link）为跨链枢纽通证。总量：400,000,000 枚</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch6_s7_cross">跨链节点：40%</li><li data-i18n="wp_ch6_s7_partner">生态合作：30%</li><li data-i18n="wp_ch6_s7_governance">社区治理：15%</li><li data-i18n="wp_ch6_s7_dev">开发团队：15%</li></ul></div></details><details open class="group wp-sub"><summary class="cursor-pointer font-bold text-xs text-slate-700 py-1.5 select-none flex items-center gap-1.5"><span class="text-orange-400">6.8</span> <span data-i18n="wp_ch6_s8_title">通证流转闭环</span><i class="fas fa-angle-down text-slate-300 text-[10px] ml-auto transition-transform group-open:rotate-180"></i></summary><div class="pl-4 pt-1.5 pb-1 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch6_s8_flow" class="bg-gradient-to-r from-blue-50 to-orange-50 p-3 rounded-lg text-[10px] font-medium">用户挖矿 → 获得 NEO → 质押获取 NEX/NRY → 支付 NET 手续费 → 发行/交易 NEA → 持有 NRY 分红 → NCL 跨链互通 → 全场景燃烧通缩 → 价值回流 NEO</p></div></details></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-green-500 rounded-full shrink-0"></span><span data-i18n="wp_ch7_title">7 生态应用场景</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch7_s1_title" class="font-black text-slate-800 text-xs mt-2">7.1 个人挖矿</p><p data-i18n="wp_ch7_s1_p1">普通用户通过手机、电脑轻节点参与挖矿，无需专业矿机，低功耗、低门槛、易操作。</p><p data-i18n="wp_ch7_s2_title" class="font-black text-slate-800 text-xs mt-2">7.2 机构算力服务</p><p data-i18n="wp_ch7_s2_p1">矿场、电站、IDC 机房可将算力接入生态，发行 NEA 实现资产证券化与融资。</p><p data-i18n="wp_ch7_s3_title" class="font-black text-slate-800 text-xs mt-2">7.3 质押与理财</p><p data-i18n="wp_ch7_s3_p1">质押 NEO 可获得三重收益：基础产出 + NEX 加速 + NRY 分红。</p><p data-i18n="wp_ch7_s4_title" class="font-black text-slate-800 text-xs mt-2">7.4 算力交易市场</p><p data-i18n="wp_ch7_s4_p1">NEA 可在链上自由交易、拆分、租赁、抵押，实现算力资产市场化流动。</p><p data-i18n="wp_ch7_s5_title" class="font-black text-slate-800 text-xs mt-2">7.5 跨链资产互通</p><p data-i18n="wp_ch7_s5_p1">NCL 跨链桥实现与 BTC、ETH、BSC、Solana 等资产互通。</p><p data-i18n="wp_ch7_s6_title" class="font-black text-slate-800 text-xs mt-2">7.6 生态支付与结算</p><p data-i18n="wp_ch7_s6_p1">NEO 作为统一支付工具，用于算力购买、矿机租赁、节点服务等场景。</p><p data-i18n="wp_ch7_s7_title" class="font-black text-slate-800 text-xs mt-2">7.7 去中心化治理</p><p data-i18n="wp_ch7_s7_p1">社区投票决定参数调整、挖矿规则、燃烧比例等重大事项。</p></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-orange-400 rounded-full shrink-0"></span><span data-i18n="wp_ch8_title">8 项目治理与社区自治</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch8_s1_title" class="font-black text-slate-800 text-xs">8.1 治理架构</p><ul class="list-disc list-inside space-y-1 text-slate-500 text-[10px]"><li data-i18n="wp_ch8_s1_i1">核心理事会：战略、合规、风险</li><li data-i18n="wp_ch8_s1_i2">技术委员会：代码、安全、升级</li><li data-i18n="wp_ch8_s1_i3">社区节点代表：社区意见反馈</li><li data-i18n="wp_ch8_s1_i4">普通持币者：链上投票</li></ul><p data-i18n="wp_ch8_s2_title" class="font-black text-slate-800 text-xs mt-2">8.2 投票机制</p><p class="font-mono text-blue-600 text-[10px]" data-i18n="wp_ch8_s2_formula">权重公式：W = A × T × K</p><p data-i18n="wp_ch8_s3_title" class="font-black text-slate-800 text-xs mt-2">8.3 治理内容</p><p data-i18n="wp_ch8_s3_content">通证发行、挖矿收益、燃烧机制、跨链接入、生态预算、节点奖惩、系统升级等。</p></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-orange-400 rounded-full shrink-0"></span><span data-i18n="wp_ch9_title">9 发展路线图</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch9_s1_title" class="font-black text-emerald-600 text-xs">阶段一：基础搭建（Q1–Q2）</p><p data-i18n="wp_ch9_s1_p1">底层公链开发、测试网上线、钱包/浏览器开发、六类通证合约部署、安全审计、早期节点招募。</p><p data-i18n="wp_ch9_s2_title" class="font-black text-blue-600 text-xs mt-2">阶段二：挖矿生态上线（Q3）</p><p data-i18n="wp_ch9_s2_p1">主网上线、挖矿功能开放、质押系统上线、矿池系统运行、社区启动、基础支付功能上线。</p><p data-i18n="wp_ch9_s3_title" class="font-black text-orange-400 text-xs mt-2">阶段三：生态扩张（Q4）</p><p data-i18n="wp_ch9_s3_p1">NEA 算力映射上线、跨链桥 NCL 上线、交易所合作、算力交易市场上线、全球社区推广。</p><p data-i18n="wp_ch9_s4_title" class="font-black text-red-600 text-xs mt-2">阶段四：生态成熟（次年）</p><p data-i18n="wp_ch9_s4_p1">AI 算力接入、元宇宙算力合作、全球清洁能源节点布局、完全去中心化自治。</p></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-red-500 rounded-full shrink-0"></span><span data-i18n="wp_ch10_title">10 团队与合作机构</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch10_s1_p1">核心团队由区块链底层开发工程师、矿场运营专家、清洁能源行业资深人士、通证经济设计师、安全审计专家、法务合规顾问组成，具备多年行业经验。</p><p data-i18n="wp_ch10_s2_p1">合作机构包括：清洁能源电站、算力硬件厂商、区块链安全公司、第三方审计机构、分布式算力平台、行业协会、绿色能源研究机构。</p></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-rose-500 rounded-full shrink-0"></span><span data-i18n="wp_ch11_title">11 风险提示</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch11_s1_title" class="font-black text-slate-800 text-xs">11.1 政策监管风险</p><p data-i18n="wp_ch11_s1_p1">全球各国对区块链、挖矿、数字资产政策存在不确定性，可能导致项目在部分地区无法正常运营。</p><p data-i18n="wp_ch11_s2_title" class="font-black text-slate-800 text-xs mt-2">11.2 市场波动风险</p><p data-i18n="wp_ch11_s2_title" class="hidden">11.2 市场波动风险</p><p data-i18n="wp_ch11_s2_p1">通证价格受大盘行情、流动性、市场情绪影响较大，存在大幅下跌可能。</p><p data-i18n="wp_ch11_s3_title" class="font-black text-slate-800 text-xs mt-2">11.3 技术安全风险</p><p data-i18n="wp_ch11_s3_p1">智能合约漏洞、网络攻击、跨链风险、节点作恶可能导致资产损失。</p><p data-i18n="wp_ch11_s4_title" class="font-black text-slate-800 text-xs mt-2">11.4 挖矿算力波动风险</p><p data-i18n="wp_ch11_s4_p1">全网难度上升、矿机迭代、电力成本上涨可能导致收益下降。</p><p data-i18n="wp_ch11_s5_title" class="font-black text-slate-800 text-xs mt-2">11.5 通证价格下跌风险</p><p data-i18n="wp_ch11_s5_p1">早期代币解锁、市场抛压、生态进展不及预期可能导致价格下行。</p><p data-i18n="wp_ch11_s6_title" class="font-black text-slate-800 text-xs mt-2">11.6 流动性风险</p><p data-i18n="wp_ch11_s6_p1">上线初期可能存在流动性不足、滑点较大、交易深度不够等问题。</p><p data-i18n="wp_ch11_s7_title" class="font-black text-slate-800 text-xs mt-2">11.7 合作与运营风险</p><p data-i18n="wp_ch11_s7_p1">矿场接入不及预期、清洁能源合作推进缓慢、市场推广未达目标可能影响生态发展。</p></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-slate-500 rounded-full shrink-0"></span><span data-i18n="wp_ch12_title">12 合规声明</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-1.5 text-[10px] text-slate-600 leading-relaxed"><ol class="list-decimal list-inside space-y-1"><li data-i18n="wp_ch12_i1">本项目严格遵守运营所在地法律法规，不面向受制裁国家、地区及不合格投资者提供服务。</li><li data-i18n="wp_ch12_i2">生态内所有通证均为功能型通证，不构成证券、股票、股权、期货、基金或任何形式的理财产品。</li><li data-i18n="wp_ch12_i3">参与者自愿参与生态，充分了解数字资产市场风险，自行承担投资、技术、政策等全部风险。</li><li data-i18n="wp_ch12_i4">项目不承诺任何收益，不保证通证价格，所有文案不构成投资建议。</li><li data-i18n="wp_ch12_i5">项目实行 KYC/AML 合规审查，对异常账户、洗钱、诈骗行为采取限制措施并上报相关机构。</li><li data-i18n="wp_ch12_i6">团队有权根据政策法规调整生态机制、通证规则、功能模块，调整前将进行社区公示。</li><li data-i18n="wp_ch12_i7">严禁利用本系统从事非法金融活动、洗钱、诈骗、恐怖主义融资等行为，违者永久封禁。</li></ol></div></details>
+
+<details open class="group wp-chapter"><summary class="flex items-center gap-2 cursor-pointer font-black text-sm text-slate-800 py-2 select-none"><span class="w-1.5 h-4 bg-gray-400 rounded-full shrink-0"></span><span data-i18n="wp_ch13_title">13 附录</span><i class="fas fa-chevron-right text-slate-300 text-xs ml-auto transition-transform group-open:rotate-90"></i></summary><div class="pl-4 pr-1 pt-2 pb-1 space-y-2 text-[11px] text-slate-600 leading-relaxed"><p data-i18n="wp_ch13_s1_title" class="font-black text-slate-800 text-xs">13.1 术语表</p><p data-i18n="wp_ch13_s1_content">PoE、PoS、DPoS、NEO、NEX、NET、NEA、NRY、NCL、算力映射、燃烧通缩、跨链桥、链上核验、清洁能源系数等。</p><p data-i18n="wp_ch13_s2_title" class="font-black text-slate-800 text-xs mt-2">13.2 通证分配明细表</p><p data-i18n="wp_ch13_s2_content">六种通证总量、分配比例、锁仓周期、释放曲线、燃烧机制汇总表。</p><p data-i18n="wp_ch13_s3_title" class="font-black text-slate-800 text-xs mt-2">13.3 挖矿计算公式汇总</p><p data-i18n="wp_ch13_s3_content">收益公式、难度调整公式、质押加成公式、清洁能源系数公式、分红公式。</p><p data-i18n="wp_ch13_s4_title" class="font-black text-slate-800 text-xs mt-2">13.4 智能合约地址</p><p data-i18n="wp_ch13_s4_content">主网合约地址、多签地址、国库地址、燃烧地址（正式上线后公布）。</p><p data-i18n="wp_ch13_s5_title" class="font-black text-slate-800 text-xs mt-2">13.5 版本更新记录</p><p data-i18n="wp_ch13_s5_content">V1.0：初始完整版白皮书，后续升级以社区投票公示为准。</p></div></details>
+
+    </div>
+            </section>
+        </div>
+        <div id="tab-partners" class="home-tab-panel hidden">
+<section class="space-y-4">
+    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2" data-i18n="partners_title">Partners & Wallet</h4>
+
+</section>
+<section class="glass-card p-6">
+    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 text-center" data-i18n="ptr_intro_title">机构介绍</h4>
+    <div class="grid grid-cols-2 gap-3">
+                <div class="p-4 bg-orange-50/60 rounded-2xl border border-orange-200 transition-all hover:border-orange-300 hover:shadow-md col-span-2">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/Yandex_Logo_2021.webp" alt="Yandex" class="h-8 w-auto object-contain rounded-lg bg-white p-1 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Yandex</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-orange-500 bg-orange-100 px-2 py-0.5 rounded-full border border-orange-200 mb-2" data-i18n="ptr_yandex_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_yandex_intro"></p>
+                </div>
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/bitget.png" alt="Bitget" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Bitget</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_bitget_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_bitget_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/bajys.png" alt="Binance" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Binance</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_binance_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_binance_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/ouyi.webp" alt="OKX" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">OKX</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_okx_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_okx_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/tp.png" alt="TokenPocket" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">TokenPocket</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_tokenpocket_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_tokenpocket_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/google.png" alt="Google" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Google</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_google_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_google_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/intel.png" alt="Intel" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Intel</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_intel_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_intel_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/terawulf.png" alt="TeraWulf" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">TeraWulf</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_terawulf_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_terawulf_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/bitmain.png" alt="Bitmain" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Bitmain</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_bitmain_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_bitmain_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/canaan.png" alt="Canaan" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">Canaan</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_canaan_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_canaan_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/openai.png" alt="OpenAI" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">OpenAI</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_openai_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_openai_intro"></p>
+                </div>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-slate-100 transition-all hover:border-orange-200 hover:shadow-md">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <img src="assets/GitHub.png" alt="GitHub" class="w-8 h-8 object-contain rounded-lg bg-white p-0.5 border border-slate-100 shrink-0" loading="lazy">
+                        <span class="text-xs font-black text-slate-800">GitHub</span>
+                    </div>
+                    <span class="inline-block text-[8px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 mb-2" data-i18n="ptr_github_tag"></span>
+                    <p class="text-[10px] text-slate-600 leading-relaxed" data-i18n="ptr_github_intro"></p>
+                </div>
+    </div>
+</section>
+
+        </div>
+        <div id="tab-download" class="home-tab-panel hidden space-y-6">
 <section class="bitget-section rounded-[2rem] p-6 mb-12">
     <div class="flex flex-col items-center text-center gap-4">
         <img src="assets/Bitget Wallet-Logo-Black@2x.svg" alt="Bitget Wallet" class="h-8 w-auto" loading="lazy" decoding="async">
@@ -647,69 +943,11 @@
         </div>
     </div>
 </section>
-
-<section class="space-y-4">
-    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2" data-i18n="partners_title">Partners & Wallet</h4>
-    <div class="partner-scroll-container overflow-hidden" id="partnerScrollContainer">
-        <div class="partner-scroll-track">
-            <a href="https://web3.bitget.cloud/wallet-download?source=0t5c0o67" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/bitget.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">Bitget</span>
-            </a>
-
-            <a href="https://www.binance.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/bajys.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">Binance</span>
-            </a>
-
-            <a href="https://www.okx.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/ouyi.webp" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">OKX</span>
-            </a>
-
-            <a href="https://www.tokenpocket.pro" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/tp.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" onerror="this.src='https://tokenpocket.pro/static/favicon.ico'" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">TokenPocket</span>
-            </a>
-
-            <a href="https://www.google.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/google.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">Google</span>
-            </a>
-
-            <a href="https://www.intel.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/intel.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">Intel</span>
-            </a>
-
-            <a href="https://www.terawulf.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/terawulf.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">TeraWulf</span>
-            </a>
-
-            <a href="https://www.bitmain.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/bitmain.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">Bitmain</span>
-            </a>
-
-            <a href="https://www.canaan.io" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/canaan.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">Canaan</span>
-            </a>
-
-            <a href="https://openai.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/openai.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">OpenAI</span>
-            </a>
-
-            <a href="https://github.com" target="_blank" class="partner-link group flex flex-col items-center flex-shrink-0">
-                <img src="assets/GitHub.png" class="max-h-10 max-w-16 object-contain rounded-lg transition-all duration-300 transform" loading="lazy" decoding="async">
-                <span class="text-[9px] font-bold text-black mt-2 group-hover:text-orange-400 transition-colors">GitHub</span>
-            </a>
-
         </div>
     </div>
-</section>
+
+
+
 
     </div>
 
@@ -968,6 +1206,8 @@
 </section>
 
 </div>
+
+
 
 <div id="page-mine" class="page-view hidden space-y-6">
 
@@ -1258,6 +1498,71 @@
                 <div class="p-5 font-black text-xl text-slate-900 uppercase tracking-widest">
                     <span data-i18n="assets_list">资产列表</span>
                 </div>
+
+    <div id="page-academy" class="page-view hidden">
+        <section class="glass-card p-6 text-center">
+            <button onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-6 transition-transform active:scale-95">
+                <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+            </button>
+            <i class="fas fa-graduation-cap text-4xl text-orange-400 mb-4 block"></i>
+            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
+            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        </section>
+    </div>
+
+    <div id="page-device" class="page-view hidden">
+        <div id="cfgApp" class="relative">
+            <div class="px-4 pt-2">
+                <h2 class="text-lg font-black text-slate-900 tracking-tight" data-i18n="cfg_title">AI 算力整机配置器</h2>
+            </div>
+            <div class="sticky top-0 z-30 px-4 py-2">
+                <div id="cfgTabs" class="flex gap-1 overflow-x-auto no-scrollbar bg-white/70 backdrop-blur-md rounded-full p-1 shadow-sm"></div>
+            </div>
+            <div id="cfgList" class="px-4 pt-2 pb-36 space-y-3"></div>
+        </div>
+
+        <div id="cfgBottomBar" class="fixed left-0 right-0 z-40 pointer-events-none" style="bottom:calc(90px + env(safe-area-inset-bottom))">
+            <div class="w-[92%] max-w-[400px] mx-auto bg-white/85 backdrop-blur-xl rounded-full border border-slate-200/70 shadow-lg px-3 py-2 flex items-center gap-2 pointer-events-auto">
+                <div id="cfgBottomInfo" class="flex-1 min-w-0"></div>
+                <button type="button" onclick="cfgToggleSheet()" class="relative shrink-0 min-w-[44px] h-9 px-3 rounded-full bg-slate-100 text-[10px] font-black text-slate-600 transition-transform active:scale-95">
+                    <i class="fas fa-list-ul mr-1"></i><span data-i18n="cfg_details">已选明细</span>
+                    <span id="cfgDetailBadge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-orange-500 text-white text-[9px] font-black flex items-center justify-center" style="display:none">0</span>
+                </button>
+                <button type="button" onclick="cfgOrderNow()" class="shrink-0 h-9 px-4 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white text-[11px] font-black tracking-wide shadow-md transition-transform active:scale-95">
+                    <i class="fas fa-bolt mr-1"></i><span data-i18n="cfg_order_now">立即下单</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="cfgSheet" class="hidden fixed inset-0 z-[60]">
+            <div class="absolute inset-0 bg-slate-900/40" onclick="cfgSheetClose()"></div>
+            <div id="cfgSheetPanel" class="absolute inset-x-0 bottom-0 max-h-[62vh] bg-white rounded-t-3xl transition-transform duration-300" style="transform:translateY(100%); padding-bottom:calc(16px+env(safe-area-inset-bottom))">
+                <div class="flex justify-between items-center px-5 pt-4 pb-2">
+                    <p class="text-sm font-black text-slate-900" data-i18n="cfg_details">已选明细</p>
+                    <button type="button" onclick="cfgExport()" class="text-[10px] font-black text-blue-500 underline"><i class="fas fa-file-export mr-1"></i><span data-i18n="cfg_export">导出配置单</span></button>
+                </div>
+                <div id="cfgSheetBody" class="overflow-y-auto px-5" style="max-height:calc(62vh - 90px)"></div>
+            </div>
+        </div>
+
+        <div id="cfgPreview" class="hidden fixed inset-0 z-[60]">
+            <div class="absolute inset-0 bg-slate-900/40" onclick="cfgSheetClose()"></div>
+            <div id="cfgPreviewPanel" class="absolute inset-x-0 bottom-0 max-h-[75vh] bg-white rounded-t-3xl overflow-y-auto transition-transform duration-300" style="transform:translateY(100%); padding:20px 20px calc(20px + env(safe-area-inset-bottom))">
+                <div id="cfgPreviewBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-chain" class="page-view hidden">
+        <section class="glass-card p-6 text-center">
+            <button onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-6 transition-transform active:scale-95">
+                <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+            </button>
+            <i class="fas fa-link text-4xl text-orange-400 mb-4 block"></i>
+            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
+            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        </section>
+    </div>
                 <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
             </section>
 
@@ -1415,6 +1720,8 @@
 
             </section>
 
+
+
     </main>
 
     <div class="nav-wrapper">
@@ -1427,10 +1734,7 @@
                 <i class="fas fa-robot"></i>
                 <span data-i18n="nav_agent">Agent</span>
             </button>
-            <button onclick="switchPage('market')" id="nav-market" class="nav-item">
-                <i class="fas fa-store nav-market-icon"></i>
-                <span data-i18n="nav_market">市场</span>
-            </button>
+
             <button onclick="switchPage('mine')" id="nav-mine" class="nav-item">
                 <i class="fas fa-microchip"></i>
                 <span data-i18n="nav_mine">生态</span>
@@ -1442,14 +1746,15 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20260928m"></script>
+<script src="js/lang/zh-CN.js?v=20261224"></script>
 <script src="js/i18n-core.js?v=20260928k"></script>
-<script src="js/navigation.js?v=20260928k"></script>
+<script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
 <script src="js/lp-stake.js?v=20260928k"></script>
 <script src="js/bank.js?v=20260928k"></script>
 <script src="js/nry-mining.js?v=20260928k"></script>
 <script src="js/studio.js?v=20260928n"></script>
+    <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
 
 <script type="module">
@@ -1473,7 +1778,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20260928k';
+    window.APP_JS_VERSION = '20261224';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
@@ -1547,6 +1852,40 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 <script>
+window.switchHomeTab = function(tab) {
+    document.querySelectorAll('#homeTabs .home-tab-panel').forEach(function(el){ el.classList.add('hidden'); });
+    var target = document.getElementById('tab-' + tab);
+    if (target) target.classList.remove('hidden');
+    document.querySelectorAll('#homeTabBar .home-tab-btn').forEach(function(el){
+        var active = el.getAttribute('data-tab') === tab;
+        el.classList.toggle('bg-orange-500', active);
+        el.classList.toggle('text-white', active);
+        el.classList.toggle('text-slate-600', !active);
+    });
+};
+(function () {
+    var bar = document.getElementById('homeTabBar');
+    if (!bar) return;
+    var isDown = false, startX = 0, startScroll = 0, moved = 0;
+    bar.addEventListener('mousedown', function (e) {
+        isDown = true; moved = 0;
+        startX = e.pageX; startScroll = bar.scrollLeft;
+        bar.style.cursor = 'grabbing';
+        e.preventDefault();
+    });
+    bar.addEventListener('mousemove', function (e) {
+        if (!isDown) return;
+        var dx = e.pageX - startX;
+        moved = Math.max(moved, Math.abs(dx));
+        bar.scrollLeft = startScroll - dx;
+    });
+    function endDrag() { isDown = false; bar.style.cursor = ''; }
+    bar.addEventListener('mouseup', endDrag);
+    bar.addEventListener('mouseleave', endDrag);
+    bar.addEventListener('click', function (e) {
+        if (moved > 5) { e.stopPropagation(); e.preventDefault(); }
+    }, true);
+})();
 function toggleWp() {
     var c = document.getElementById('wpContent');
     var i = document.getElementById('wpToggleIcon');
