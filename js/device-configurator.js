@@ -73,6 +73,26 @@
         return '$' + n.toLocaleString('en-US');
     }
 
+    function getNryUsd() {
+        var prices = window.currentPrices || {};
+        return parseFloat(prices['NRY']) || 0;
+    }
+    function abbrNum(n) {
+        if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+        if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+        if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+        if (n >= 1) return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        return n.toLocaleString('en-US', { maximumFractionDigits: 6 });
+    }
+    function fmtNry(usd) {
+        var price = getNryUsd();
+        if (!(price > 0) || !(usd > 0)) return '\u2248 -- NRY';
+        return '\u2248 ' + abbrNum(usd / price) + ' NRY';
+    }
+    function nryLine(usd, extraCls) {
+        return '<span class="cfg-nry block text-[9px] font-bold text-slate-400 ' + (extraCls || '') + '" data-usd="' + usd + '">' + fmtNry(usd) + '</span>';
+    }
+
     function skuTag(sku) {
         return t('sku_' + sku.id + '_tag');
     }
@@ -122,7 +142,7 @@
                 '<p class="text-[12px] font-black text-slate-900 leading-snug break-words">' + sku.name + '</p>' +
                 '<span class="inline-block mt-1 w-fit text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">' + skuTag(sku) + '</span>' +
                 '<div class="mt-auto flex items-end justify-between gap-2 pt-2">' +
-                '<span class="text-base font-black text-slate-900 font-mono leading-none">' + fmt(sku.price) + '</span>' +
+                '<div class="min-w-0"><span class="block text-base font-black text-slate-900 font-mono leading-none">' + fmt(sku.price) + '</span>' + nryLine(sku.price, 'mt-0.5') + '</div>' +
                 qtyControl(sku) +
                 '</div></div></div>';
         }).join('');
@@ -143,13 +163,25 @@
         var s = summary();
         el.innerHTML =
             '<p class="text-base font-black text-orange-500 font-mono leading-none">' + fmt(s.total) + '</p>' +
-            '<p class="text-[9px] font-bold text-slate-500 mt-0.5">' + t('cfg_vram') + ' ' + (s.vram > 0 ? s.vram + 'GB' : '--') + ' · ' + s.count + ' ' + t('cfg_items') + '</p>';
+            '<p class="text-[9px] font-bold text-slate-500 mt-0.5 truncate"><span class="cfg-nry text-slate-400" data-usd="' + s.total + '">' + fmtNry(s.total) + '</span> · ' + t('cfg_vram') + ' ' + (s.vram > 0 ? s.vram + 'GB' : '--') + ' · ' + s.count + ' ' + t('cfg_items') + '</p>';
         var badge = document.getElementById('cfgDetailBadge');
         if (badge) {
             badge.textContent = s.count;
             badge.style.display = s.count > 0 ? '' : 'none';
         }
     }
+
+    function updateNryLabels() {
+        var nodes = document.querySelectorAll('#cfgApp .cfg-nry');
+        for (var i = 0; i < nodes.length; i++) {
+            var usd = parseFloat(nodes[i].getAttribute('data-usd'));
+            if (!isNaN(usd)) nodes[i].textContent = fmtNry(usd);
+        }
+    }
+    setInterval(function () {
+        var app = document.getElementById('cfgApp');
+        if (app && !app.closest('.hidden')) updateNryLabels();
+    }, 15000);
 
     function renderAll() {
         renderTabs();
@@ -220,7 +252,9 @@
             setTimeout(function () { p.classList.add('hidden'); }, 250);
         }
         if (s && !s.classList.contains('hidden')) {
-            document.getElementById('cfgSheetPanel').style.transform = 'translateY(100%)';
+            var panel = document.getElementById('cfgSheetPanel');
+            panel.style.transform = 'translate(-50%, 16px) scale(0.96)';
+            panel.style.opacity = '0';
             setTimeout(function () { s.classList.add('hidden'); }, 250);
         }
     };
@@ -231,7 +265,10 @@
         if (s.classList.contains('hidden')) {
             renderSheet();
             s.classList.remove('hidden');
-            requestAnimationFrame(function () { document.getElementById('cfgSheetPanel').style.transform = 'translateY(0)'; });
+            requestAnimationFrame(function () { var panel = document.getElementById('cfgSheetPanel');
+                panel.style.transform = 'translate(-50%, 0) scale(1)';
+                panel.style.opacity = '1';
+            });
         } else {
             cfgSheetClose();
         }
@@ -251,25 +288,31 @@
             return '<div class="flex items-center gap-2 py-2 border-b border-slate-100 last:border-0">' +
                 thumbHTML(sku, 'w-12 h-12 rounded-lg shrink-0') +
                 '<div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-800 truncate">' + sku.name + '</p>' +
-                '<p class="text-[9px] font-mono text-slate-500">' + fmt(sku.price) + ' × ' + n + ' = ' + fmt(sku.price * n) + '</p></div>' +
+                '<p class="text-[9px] font-mono text-slate-500">' + fmt(sku.price) + ' × ' + n + ' = ' + fmt(sku.price * n) + '</p>' + nryLine(sku.price * n) + '</div>' +
                 '<div class="flex items-center gap-1 shrink-0">' +
                 '<button type="button" onclick="cfgDec(\'' + id + '\');renderSheet();renderTabs();renderBottom();renderList();" class="w-9 h-9 rounded-full bg-slate-100 text-slate-600"><i class="fas fa-minus text-[10px]"></i></button>' +
                 '<span class="min-w-[28px] text-center text-xs font-black font-mono">' + n + '</span>' +
                 '<button type="button" onclick="cfgInc(\'' + id + '\');renderSheet();renderTabs();renderBottom();renderList();" class="w-9 h-9 rounded-full bg-slate-900 text-white"><i class="fas fa-plus text-[10px]"></i></button>' +
-                '<button type="button" onclick="delete sel[\'' + id + '\'];renderSheet();renderTabs();renderBottom();renderList();" class="w-9 h-9 rounded-full bg-red-50 text-red-400"><i class="fas fa-trash text-[10px]"></i></button>' +
+                '<button type="button" onclick="cfgRemove(\'' + id + '\')" class="w-9 h-9 rounded-full bg-red-50 text-red-400"><i class="fas fa-trash text-[10px]"></i></button>' +
                 '</div></div>';
         }).join('');
         var s = summary();
         body.innerHTML = rows +
             '<div class="flex items-center justify-between pt-3 pb-1">' +
             '<button type="button" onclick="cfgClearAll()" class="text-[10px] font-black text-red-400 underline">' + t('cfg_clear') + '</button>' +
-            '<span class="text-sm font-black font-mono text-slate-900">' + fmt(s.total) + '</span></div>';
+            '<div class="text-right"><span class="block text-sm font-black font-mono text-slate-900">' + fmt(s.total) + '</span>' + nryLine(s.total) + '</div></div>';
     }
 
     window.renderSheet = renderSheet;
     window.renderTabs = renderTabs;
     window.renderBottom = renderBottom;
     window.renderList = renderList;
+
+    window.cfgRemove = function (id) {
+        if (sel[id] === undefined) return;
+        delete sel[id];
+        renderAll();
+    };
 
     window.cfgClearAll = function () {
         sel = {};
