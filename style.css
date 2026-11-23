@@ -3443,18 +3443,19 @@ body.agent-active .bottom-nav-pill {
 /* ===== 学院知识手册（橙色主题） ===== */
 .academy-scope { --ac-or: #f97316; --ac-or-dark: #ea580c; --ac-or-light: #fff7ed; --ac-border: #fed7aa; }
 .academy-hero {
-    margin: 12px 16px 20px; padding: 28px 20px; text-align: center;
-    background: linear-gradient(150deg, #7c2d12 0%, #ea580c 55%, #f97316 100%);
-    border-radius: 24px; box-shadow: 0 14px 34px -8px rgba(234,88,12,0.4);
+    margin: 12px 16px 20px; padding: 26px 20px; text-align: center;
+    background: linear-gradient(150deg, #fff7ed 0%, #ffedd5 55%, #fed7aa 100%);
+    border: 1px solid #fdba74; border-radius: 24px;
+    box-shadow: 0 8px 24px -8px rgba(249,115,22,0.18);
 }
 .academy-hero-eyebrow {
-    color: rgba(255,255,255,0.75); font-size: 9px; font-weight: 800; letter-spacing: 0.22em; margin-bottom: 10px;
+    color: #ea580c; font-size: 9px; font-weight: 800; letter-spacing: 0.22em; margin-bottom: 10px; opacity: 0.85;
 }
-.academy-hero-title { color: #ffffff; font-size: 1.6rem; font-weight: 900; line-height: 1.25; margin-bottom: 10px; }
-.academy-hero-sub { color: rgba(255,255,255,0.92); font-size: 11px; line-height: 1.6; margin-bottom: 14px; }
+.academy-hero-title { color: #7c2d12; font-size: 1.5rem; font-weight: 900; line-height: 1.25; margin-bottom: 10px; }
+.academy-hero-sub { color: #9a3412; font-size: 11px; line-height: 1.6; margin-bottom: 14px; }
 .academy-hero-meta {
-    color: rgba(255,255,255,0.7); font-size: 9px; font-weight: 700;
-    border-top: 1px solid rgba(255,255,255,0.25); padding-top: 10px; display: inline-block;
+    color: #b45309; font-size: 9px; font-weight: 700;
+    border-top: 1px solid rgba(234,88,12,0.22); padding-top: 10px; display: inline-block;
 }
 .academy-h2 {
     margin: 26px 0 12px; padding: 12px 16px; font-size: 1.15rem; font-weight: 900; color: var(--ac-or-dark);
@@ -3491,3 +3492,74 @@ body.agent-active .bottom-nav-pill {
 .academy-ol li::marker { color: var(--ac-or); font-weight: 800; }
 .academy-ul li::marker { color: var(--ac-or); }
 .academy-ul li strong, .academy-ol li strong { color: #1e293b; }
+
+/* ===== 项目理事会（council- 作用域，复用 org-scope 变量） ===== */
+.council-section { margin-top: 18px; }
+.council-sec-head { text-align: center; margin-bottom: 12px; }
+.council-sec-eyebrow {
+    display: inline-block; background: var(--org-orange-light); color: var(--org-orange-dark);
+    font-size: 8.5px; font-weight: 800; letter-spacing: 0.16em; padding: 3px 10px; border-radius: 999px; margin-bottom: 6px;
+}
+.council-sec-title { font-size: 15px; font-weight: 900; color: var(--org-text); line-height: 1.35; }
+.council-sec-note { font-size: 10px; color: var(--org-sub); line-height: 1.6; margin-top: 5px; }
+.council-mandate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.council-mandate-card {
+    background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 13px 12px;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+}
+.council-mandate-icon {
+    width: 34px; height: 34px; border-radius: 10px; margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+    background: var(--org-orange-light); color: var(--org-orange-dark);
+}
+.council-mandate-card h4 { font-size: 11px; font-weight: 800; color: var(--org-text); line-height: 1.35; margin-bottom: 5px; }
+.council-mandate-card p { font-size: 10px; color: var(--org-sub); line-height: 1.55; }
+.council-seat-card {
+    margin-top: 18px; padding: 18px 16px; text-align: center;
+    background: linear-gradient(150deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%);
+    border: 1px solid #fdba74; border-radius: 20px; box-shadow: 0 8px 22px -10px rgba(249,115,22,0.22);
+}
+.council-seat-card .council-sec-eyebrow { background: rgba(255,255,255,0.65); }
+.council-seat-term { display: inline-block; margin-top: 4px; font-size: 9.5px; font-weight: 800; color: var(--org-orange-dark); background: rgba(255,255,255,0.7); border: 1px solid #fed7aa; padding: 3px 10px; border-radius: 999px; }
+.council-seat-desc { font-size: 11px; color: #7c2d12; line-height: 1.65; margin: 10px 0 12px; }
+.council-seat-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+.council-seat-tag { background: #ffffff; border: 1px solid #fed7aa; color: #9a3412; font-size: 9.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
+.council-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.council-grid .org-avatar { font-size: 20px; }
+.council-flow { display: flex; flex-direction: column; gap: 10px; }
+.council-flow-step { display: flex; gap: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 13px 14px; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+.council-flow-num {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+}
+.council-flow-body h4 { font-size: 11px; font-weight: 800; color: var(--org-text); line-height: 1.35; margin-bottom: 4px; }
+.council-flow-body p { font-size: 10px; color: var(--org-sub); line-height: 1.55; }
+.council-trans-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.council-trans-card { display: flex; align-items: flex-start; gap: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 13px 14px; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+.council-trans-icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: var(--org-orange-light); color: var(--org-orange-dark); }
+.council-trans-card h4 { font-size: 11px; font-weight: 800; color: var(--org-text); margin-bottom: 3px; }
+.council-trans-card p { font-size: 10px; color: var(--org-sub); line-height: 1.55; }
+.council-disclaimer { margin-top: 18px; padding: 14px 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 14px; }
+.council-disclaimer-title { font-size: 11px; font-weight: 800; color: var(--org-text); margin-bottom: 5px; }
+.council-disclaimer-body { font-size: 10px; color: var(--org-sub); line-height: 1.6; }
+.council-meta { display: flex; align-items: center; gap: 8px; margin: 4px 0 12px; padding: 8px 10px; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; }
+.council-meta-label { font-size: 9px; font-weight: 800; color: var(--org-orange-dark); }
+.council-meta-addr { font-size: 10px; color: #7c2d12; font-weight: 700; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
+@media (max-width: 420px) { .council-mandate-grid { grid-template-columns: 1fr; } }
+
+/* ===== 关于我们（about- 作用域，复用 org-scope 变量） ===== */
+.about-intro-card { margin-top: 16px; padding: 15px 16px; background: linear-gradient(150deg,#fff7ed,#ffedd5 70%,#fed7aa); border: 1px solid #fdba74; border-radius: 18px; box-shadow: 0 8px 22px -12px rgba(249,115,22,0.22); }
+.about-intro-card p { font-size: 11px; color: #7c2d12; line-height: 1.72; }
+.about-timeline { position: relative; margin-top: 18px; padding-left: 2px; }
+.about-timeline::before { content: ""; position: absolute; left: 12px; top: 10px; bottom: 10px; width: 2px; background: linear-gradient(180deg,#fdba74,#f97316 12%,#f97316 88%,#fdba74); }
+.about-phase { display: flex; gap: 14px; margin-bottom: 14px; position: relative; }
+.about-phase-rail { width: 24px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 6px; position: relative; z-index: 1; }
+.about-phase-dot { width: 14px; height: 14px; border-radius: 50%; background: #ffffff; border: 3px solid #f97316; box-shadow: 0 0 0 4px #fff7ed; }
+.about-phase-main { flex: 1; min-width: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px 15px; box-shadow: 0 2px 10px rgba(15,23,42,0.04); }
+.about-phase-year { display: inline-block; font-size: 10px; font-weight: 800; color: #ea580c; background: #fff7ed; border: 1px solid #fed7aa; padding: 2px 9px; border-radius: 999px; margin-bottom: 6px; }
+.about-phase-title { font-size: 13px; font-weight: 800; color: var(--org-text); line-height: 1.4; margin-bottom: 8px; }
+.about-phase-lead { font-size: 10.5px; color: var(--org-sub); line-height: 1.65; margin-bottom: 8px; }
+.about-points { display: flex; flex-direction: column; gap: 8px; }
+.about-points li { position: relative; padding-left: 14px; font-size: 10.5px; color: var(--org-sub); line-height: 1.68; }
+.about-points li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 2px; background: #f97316; }

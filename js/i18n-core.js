@@ -72,6 +72,7 @@ window.i18nRender = function(lang) {
             'ru': '🇷🇺 RU',
             'de': '🇩🇪 DE',
             'fr': '🇫🇷 FR',
+            'es': '🇪🇸 ES',
             'it': '🇮🇹 IT',
             'ar': '🇸🇦 AR',
             'mn': '🇲🇳 MN',

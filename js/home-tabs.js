@@ -1,3 +1,17 @@
+window.academySwitchTab = function (pane) {
+    document.querySelectorAll('.academy-pane').forEach(function (el) { el.classList.add('hidden'); });
+    var target = document.getElementById('academyPane' + pane.charAt(0).toUpperCase() + pane.slice(1));
+    if (target) target.classList.remove('hidden');
+    var btns = document.querySelectorAll('#academyTabBar button');
+    btns.forEach(function (b) {
+        var active = b.getAttribute('onclick').indexOf("'" + pane + "'") !== -1;
+        b.classList.toggle('bg-orange-500', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('shadow-md', active);
+        b.classList.toggle('text-slate-600', !active);
+    });
+};
+
 window.switchHomeTab = function(tab) {
     document.querySelectorAll('#homeTabs .home-tab-panel').forEach(function(el){ el.classList.add('hidden'); });
     var target = document.getElementById('tab-' + tab);

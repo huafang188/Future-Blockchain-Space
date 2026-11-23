@@ -88,3 +88,56 @@ window.i18nRender = function (lang) {
     orgRenderAll();
 };
 orgRenderAll();
+
+/* ===== 项目理事会（council） ===== */
+var COUNCIL_DATA = [
+    { name: "Alex Chen", addr: "0x71C...89A2" },
+    { name: "Dr. Lin Wei", addr: "0x39B...41D0" },
+    { name: "Prof. David Miller", addr: "0x94E...12F7" },
+    { name: "Victor Hale", addr: "0x52A...77C4" },
+    { name: "Claire Fontaine", addr: "0x18D...63B9" },
+    { name: "Kenji Sato", addr: "0x66F...05E8" },
+    { name: "0xBuilder_Neo", addr: "0x83C...91A4" }
+];
+
+function councilT(key) {
+    var lang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    var dict = (window.i18nData && window.i18nData[lang]) || {};
+    return dict[key] !== undefined ? dict[key] : '';
+}
+
+function councilRenderCards() {
+    var el = document.getElementById('councilGrid');
+    if (!el) return;
+    el.innerHTML = COUNCIL_DATA.map(function (item, idx) {
+        var role = councilT('council_s' + (idx + 1) + '_role');
+        return '<div class="org-card" onclick="councilOpenModal(' + idx + ')">' +
+            '<div class="org-avatar"><i class="fas fa-user"></i></div>' +
+            '<div class="org-name">' + item.name + '</div>' +
+            '<div class="org-role">' + role + '</div>' +
+            '</div>';
+    }).join('');
+}
+
+window.councilOpenModal = function (index) {
+    var item = COUNCIL_DATA[index];
+    if (!item) return;
+    var n = index + 1;
+    document.getElementById('councilMName').innerText = item.name;
+    document.getElementById('councilMRole').innerText = councilT('council_s' + n + '_seat');
+    document.getElementById('councilMAddr').textContent = item.addr;
+    document.getElementById('councilMBio').innerText = councilT('council_s' + n + '_bio');
+    document.getElementById('councilModal').classList.add('active');
+};
+
+window.councilCloseModal = function () {
+    document.getElementById('councilModal').classList.remove('active');
+};
+
+var _origI18nRenderCouncil = window.i18nRender;
+window.i18nRender = function (lang) {
+    if (_origI18nRenderCouncil) _origI18nRenderCouncil(lang);
+    councilRenderCards();
+};
+
+if (document.getElementById('councilGrid')) councilRenderCards();

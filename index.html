@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20260928o">
+    <link rel="stylesheet" href="style.css?v=20261123c">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -218,7 +218,7 @@
     </div>
 
     <header class="relative z-50 bg-white/20 backdrop-blur-xl border-b border-slate-100/20 px-4 py-3">
-        <div class="max-w-xl mx-auto flex justify-between items-center">
+        <div class="max-w-xl mx-auto flex justify-start items-center gap-4">
 <div class="flex items-center gap-3">
     <img src="assets/NRY.webp" alt="Logo" class="w-10 h-10 bg-white rounded-full shadow-md border border-slate-100 object-contain p-1 logo-bounce">
 
@@ -245,6 +245,7 @@
                         <div class="custom-select-option" data-lang="ru" onclick="selectLang('ru')"><span>🇷🇺 Русский</span></div>
                         <div class="custom-select-option" data-lang="de" onclick="selectLang('de')"><span>🇩🇪 Deutsch</span></div>
                         <div class="custom-select-option" data-lang="fr" onclick="selectLang('fr')"><span>🇫🇷 Français</span></div>
+                        <div class="custom-select-option" data-lang="es" onclick="selectLang('es')"><span>🇪🇸 Español</span></div>
                         <div class="custom-select-option" data-lang="it" onclick="selectLang('it')"><span>🇮🇹 Italiano</span></div>
                         <div class="custom-select-option" data-lang="ar" onclick="selectLang('ar')"><span>🇸🇦 العربية</span></div>
                         <div class="custom-select-option" data-lang="mn" onclick="selectLang('mn')"><span>🇲🇳 Монгол</span></div>
@@ -253,6 +254,7 @@
                         <div class="custom-select-option" data-lang="ug" onclick="selectLang('ug')"><span>🇨🇳 ئۇيغۇرچە</span></div>
                     </div>
                 </div>
+        </div>
         </div>
     </header>
 
@@ -711,12 +713,151 @@
 
         <p class="text-[9px] text-slate-400 leading-relaxed px-4 text-center" data-i18n="fdn_disclaimer"></p>
         </div>
-        <div id="tab-council" class="home-tab-panel hidden">
-        <section class="glass-card p-6 text-center">
-            <i class="fas fa-users text-4xl text-orange-400 mb-4 block"></i>
-            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
-            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        <div id="tab-council" class="home-tab-panel hidden org-scope">
+        <div class="glass-card p-4 text-center mb-4">
+            <p class="text-[11px] font-black text-orange-500"><i class="fas fa-circle-info mr-1.5"></i><span data-i18n="org_updating">内容正在补充中</span></p>
+        </div>
+        <div class="org-header">
+            <span class="org-eyebrow" data-i18n="council_eyebrow">NEO PROJECT COUNCIL · 项目理事会</span>
+            <div class="org-title" data-i18n="council_title">NEO AI 算力矩阵<span>生态理事会</span></div>
+            <p class="org-desc" data-i18n="council_mission">NEO 项目理事会是 NEO AI 算力矩阵与 NRY 生态公共利益的最高监督与战略协调机构。理事会独立于日常商业开发执行，由核心协议研发代表、独立安全专家、AI 算力基础设施顾问及社区选举代表共同组成，致力于守护生态国库安全、规范算力资源激励分配，并推动协议向完全去中心化的 AI 算力交易网络平稳演进。</p>
+        </div>
+
+        <section class="council-section">
+            <div class="council-sec-head">
+                <span class="council-sec-eyebrow" data-i18n="council_mandate_eyebrow">CORE MANDATE</span>
+                <h3 class="council-sec-title" data-i18n="council_mandate_title">理事会四大核心职权</h3>
+            </div>
+            <div class="council-mandate-grid">
+                <div class="council-mandate-card">
+                    <div class="council-mandate-icon"><i class="fas fa-vault"></i></div>
+                    <h4 data-i18n="council_mandate_1_title">NRY 生态国库与算力激励审批</h4>
+                    <p data-i18n="council_mandate_1_desc">监督生态国库多签账户资金安全，审批季度生态发展预算、AI 算力节点补贴池调整及战略级开发者 Grants 资助，确保每一笔 NRY 生态激励流向真实算力与生态建设。</p>
+                </div>
+                <div class="council-mandate-card">
+                    <div class="council-mandate-icon"><i class="fas fa-shield-halved"></i></div>
+                    <h4 data-i18n="council_mandate_2_title">核心协议升级与安全审查</h4>
+                    <p data-i18n="council_mandate_2_desc">对底层算力调度协议、智能合约重大版本升级及跨链扩展方案进行最终技术与安全复核，拥有针对恶意治理攻击与极端风险的紧急安全否决权。</p>
+                </div>
+                <div class="council-mandate-card">
+                    <div class="council-mandate-icon"><i class="fas fa-key"></i></div>
+                    <h4 data-i18n="council_mandate_3_title">5/7 链上多签与利益回避制度</h4>
+                    <p data-i18n="council_mandate_3_desc">理事会所有重大决议均通过链上 5/7 多签机制执行；当任何理事成员与申请生态资助或算力合作的项目存在关联时，必须强制公开披露并回避表决。</p>
+                </div>
+                <div class="council-mandate-card">
+                    <div class="council-mandate-icon"><i class="fas fa-rotate"></i></div>
+                    <h4 data-i18n="council_mandate_4_title">12 个月任期轮换与社区共治</h4>
+                    <p data-i18n="council_mandate_4_desc">每届理事任期 12 个月，实行定期评估与席位轮换机制。其中社区与节点代表席位由生态参与者公开提名并投票产生，保障一线算力提供者与持币用户的治理话语权。</p>
+                </div>
+            </div>
         </section>
+
+        <section class="council-seat-card">
+            <span class="council-sec-eyebrow" data-i18n="council_seat_eyebrow">SEAT ARCHITECTURE</span>
+            <h3 class="council-sec-title" data-i18n="council_seat_title">7 席多方制衡治理架构</h3>
+            <p class="council-seat-term" data-i18n="council_seat_term">当前届期：2026 Q4 — 2027 Q4</p>
+            <p class="council-seat-desc" data-i18n="council_seat_desc">为兼顾 AI 算力网络的技术演进效率与生态去中心化制衡，首届 NEO 项目理事会设立 7 个席位，覆盖“协议研发（2 席）+ 独立安全与合规（2 席）+ 生态机构与算力节点（1 席）+ 社区与开发者直选（2 席）”。</p>
+            <div class="council-seat-tags">
+                <span class="council-seat-tag" data-i18n="council_seat_tag1">协议研发 · 2 席</span>
+                <span class="council-seat-tag" data-i18n="council_seat_tag2">独立安全与合规 · 2 席</span>
+                <span class="council-seat-tag" data-i18n="council_seat_tag3">生态机构与算力节点 · 1 席</span>
+                <span class="council-seat-tag" data-i18n="council_seat_tag4">社区与开发者直选 · 2 席</span>
+            </div>
+        </section>
+
+        <section class="council-section">
+            <div class="council-sec-head">
+                <span class="council-sec-eyebrow" data-i18n="council_members_eyebrow">THE FIRST COUNCIL</span>
+                <h3 class="council-sec-title" data-i18n="council_members_title">首届理事会成员名单</h3>
+                <p class="council-sec-note" data-i18n="council_members_note">7 席示例文案，可直接替换实名/代号</p>
+            </div>
+            <div class="council-grid" id="councilGrid"></div>
+        </section>
+
+        <section class="council-section">
+            <div class="council-sec-head">
+                <span class="council-sec-eyebrow" data-i18n="council_flow_eyebrow">DECISION WORKFLOW</span>
+                <h3 class="council-sec-title" data-i18n="council_flow_title">治理决策流程</h3>
+            </div>
+            <div class="council-flow">
+                <div class="council-flow-step">
+                    <div class="council-flow-num">1</div>
+                    <div class="council-flow-body">
+                        <h4 data-i18n="council_flow_1_title">阶段一：社区温度检查（RFC 草案）</h4>
+                        <p data-i18n="council_flow_1_desc">任何社区成员、算力节点或核心开发组均可在治理论坛发布提案草案（RFC），进行为期 5–7 天的公开讨论与修订。</p>
+                    </div>
+                </div>
+                <div class="council-flow-step">
+                    <div class="council-flow-num">2</div>
+                    <div class="council-flow-body">
+                        <h4 data-i18n="council_flow_2_title">阶段二：理事会合规与安全初审</h4>
+                        <p data-i18n="council_flow_2_desc">理事会安全与合规席位对正式提案进行技术安全性与国库预算合理性评估，确保不存在合约漏洞或资金滥用风险。</p>
+                    </div>
+                </div>
+                <div class="council-flow-step">
+                    <div class="council-flow-num">3</div>
+                    <div class="council-flow-body">
+                        <h4 data-i18n="council_flow_3_title">阶段三：社区共识投票与理事会终审</h4>
+                        <p data-i18n="council_flow_3_desc">提案经社区快照表决通过后，由理事会召开例会审议，需获得至少 5/7 超级多数同意方可执行。</p>
+                    </div>
+                </div>
+                <div class="council-flow-step">
+                    <div class="council-flow-num">4</div>
+                    <div class="council-flow-body">
+                        <h4 data-i18n="council_flow_4_title">阶段四：链上多签与时间锁执行（Timelock）</h4>
+                        <p data-i18n="council_flow_4_desc">决议通过后触发 48 小时安全时间锁（紧急安全防御除外），由多签钱包在链上执行国库拨款或协议参数更新，并同步公开会议纪要。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="council-section">
+            <div class="council-sec-head">
+                <span class="council-sec-eyebrow" data-i18n="council_trans_eyebrow">TRANSPARENCY &amp; ARCHIVES</span>
+                <h3 class="council-sec-title" data-i18n="council_trans_title">公开透明与链上可验证</h3>
+                <p class="council-sec-note" data-i18n="council_trans_desc">NEO AI 算力矩阵坚持“代码开源、国库透明、决议可溯”，所有生态资金流向与理事会表决记录均向全网永久公开。</p>
+            </div>
+            <div class="council-trans-grid">
+                <div class="council-trans-card">
+                    <div class="council-trans-icon"><i class="fas fa-vault"></i></div>
+                    <h4 data-i18n="council_trans_1_title">国库多签金库</h4>
+                    <p data-i18n="council_trans_1_desc">实时查看 NRY 生态国库链上余额与每笔多签转出记录。</p>
+                </div>
+                <div class="council-trans-card">
+                    <div class="council-trans-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h4 data-i18n="council_trans_2_title">季度透明度与审计报告</h4>
+                    <p data-i18n="council_trans_2_desc">查阅季度算力生态补贴支出明细、合约安全审计报告及节点运行数据。</p>
+                </div>
+                <div class="council-trans-card">
+                    <div class="council-trans-icon"><i class="fas fa-book-open"></i></div>
+                    <h4 data-i18n="council_trans_3_title">理事会会议纪要与提案库</h4>
+                    <p data-i18n="council_trans_3_desc">浏览历史议题讨论摘要、各位理事表决立场及提案执行进度。</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="council-disclaimer">
+            <p class="council-disclaimer-title" data-i18n="council_disclaimer_title">合规与演进声明</p>
+            <p class="council-disclaimer-body" data-i18n="council_disclaimer">NEO 项目理事会章程将随生态发展阶段持续迭代。随着 AI 算力交易市场与主网基础设施的逐步完善，理事会将分阶段把更多参数决策权与国库审批权移交至链上社区治理，最终实现生态的完全去中心化自治。</p>
+        </div>
+
+        <div class="org-backdrop" id="councilModal" onclick="councilCloseModal()">
+            <div class="org-box" onclick="event.stopPropagation()">
+                <button type="button" class="org-close" onclick="councilCloseModal()">&times;</button>
+                <div class="org-header-in">
+                    <div class="org-avatar-lg" id="councilMAvatar"><i class="fas fa-user"></i></div>
+                    <div>
+                        <div class="org-box-name" id="councilMName"></div>
+                        <div class="org-box-role" id="councilMRole"></div>
+                    </div>
+                </div>
+                <div class="council-meta">
+                    <span class="council-meta-label" data-i18n="council_label_multisig">多签地址</span>
+                    <code class="council-meta-addr" id="councilMAddr"></code>
+                </div>
+                <p class="org-box-bio" id="councilMBio"></p>
+            </div>
+        </div>
         </div>
         <div id="tab-org" class="home-tab-panel hidden org-scope">
         <div class="glass-card p-4 text-center mb-4">
@@ -782,12 +923,81 @@
             </div>
         </div>
         </div>
-        <div id="tab-about" class="home-tab-panel hidden">
-        <section class="glass-card p-6 text-center">
-            <i class="fas fa-circle-info text-4xl text-orange-400 mb-4 block"></i>
-            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
-            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        <div id="tab-about" class="home-tab-panel hidden org-scope">
+        <div class="glass-card p-4 text-center mb-4">
+            <p class="text-[11px] font-black text-orange-500"><i class="fas fa-circle-info mr-1.5"></i><span data-i18n="org_updating">内容正在补充中</span></p>
+        </div>
+        <div class="org-header">
+            <span class="org-eyebrow" data-i18n="about_eyebrow">ABOUT BITRIVER · 关于我们</span>
+            <div class="org-title" data-i18n="about_title">BitRiver 发展历程与<span> NEO 战略演进</span></div>
+            <p class="org-desc" data-i18n="about_subtitle">从绿色能源基建到下一代去中心化 AI 算力网络</p>
+        </div>
+
+        <section class="about-intro-card">
+            <p data-i18n="about_intro">BitRiver 是欧亚及独联体（CIS）地区规模最大的绿色算力数据中心运营商、能源基础设施服务商及高性能计算（HPC/AI）底座构建者。公司总部位于俄罗斯莫斯科，核心基因是“重资产能源算力地产 + 轻资产数字化运营”，通过整合低成本可再生能源与高寒自然冷却优势，为全球机构客户与人工智能生态提供标准化、合规化、高能效的底层算力支撑。随着全球人工智能浪潮的爆发，BitRiver 正将其积累多年的数百兆瓦级物理能源与数据中心底座全面注入旗下核心战略板块——NEO AI 算力矩阵（www.neoneo.ink），实现从传统区块链基建巨头向下一代去中心化 AI 算力网络的全面跃迁。</p>
         </section>
+
+        <div class="about-timeline">
+            <div class="about-phase">
+                <div class="about-phase-rail"><span class="about-phase-dot"></span></div>
+                <div class="about-phase-main">
+                    <span class="about-phase-year" data-i18n="about_p1_tag">2017 — 2018</span>
+                    <h3 class="about-phase-title" data-i18n="about_p1_title">创立初期与萌芽阶段</h3>
+                    <ul class="about-points">
+                        <li data-i18n="about_p1_i1">创始背景：2017年，具备多年企业管理、金融与 IT 基础设施背景的俄罗斯企业家伊戈尔·鲁内茨（Igor Runets）正式创立 BitRiver。面对当时全球算力中心普遍受困于高电价与高制冷能耗的痛点，团队确立了从底层能源端破局的战略方向。</li>
+                        <li data-i18n="about_p1_i2">选址逻辑与资源锁定：团队将核心基地锚定俄罗斯西伯利亚伊尔库茨克州的布拉茨克（Bratsk）。当地依托布拉茨克水电站等超大型水电基础设施，常年拥有充沛富余清洁电力；同时西伯利亚高寒气候每年有超过 8 至 9 个月可实现自然风冷散热，将数据中心电源使用效率（PUE）压低至 1.05—1.10 的世界顶尖水准，为日后承载高功耗 GPU 智算集群奠定了天然物理优势。</li>
+                        <li data-i18n="about_p1_i3">商业模式确立：确立了“重资产基础设施 + 标准化托管运营”的 B2B 架构，专注兆瓦（MW）级机构客户服务，积累了深厚的超大规模电力调度与园区管理经验。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about-phase">
+                <div class="about-phase-rail"><span class="about-phase-dot"></span></div>
+                <div class="about-phase-main">
+                    <span class="about-phase-year" data-i18n="about_p2_tag">2019 — 2021</span>
+                    <h3 class="about-phase-title" data-i18n="about_p2_title">旗舰基地落地与爆发式扩张</h3>
+                    <ul class="about-points">
+                        <li data-i18n="about_p2_i1">首座旗舰数据中心投产（2019年）：BitRiver 在布拉茨克正式投运首座 100 MW 级旗舰数据中心，凭借稳定的高压供电、24 小时全天候安保及自主研发的智能运维系统，迅速吸引全球头部算力机构入驻。</li>
+                        <li data-i18n="about_p2_i2">多点布局与产能跃升（2020年—2021年）：随全球算力格局重塑，BitRiver 陆续在布里亚特共和国、克拉斯诺亚尔斯克边疆区、秋明州等地建成及扩建 10 余个大型算力中心，总电力接入容量突破 300 MW 至 500 MW 区间，占据俄罗斯合法合规机构级算力托管市场 50% 以上份额，跻身全球前五大数字基础设施运营商之列。</li>
+                        <li data-i18n="about_p2_i3">绿色环保与零碳认证：凭借超过 90% 的电力来源于水力发电，BitRiver 获得了多项国际 ESG 与绿色算力认证，构建了兼具低成本与低碳排放的全球稀缺算力资产池。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about-phase">
+                <div class="about-phase-rail"><span class="about-phase-dot"></span></div>
+                <div class="about-phase-main">
+                    <span class="about-phase-year" data-i18n="about_p3_tag">2021 — 2023</span>
+                    <h3 class="about-phase-title" data-i18n="about_p3_title">能源多元化与工程能力纵深</h3>
+                    <ul class="about-points">
+                        <li data-i18n="about_p3_i1">携手能源巨头破解“伴生气”难题：BitRiver 与俄罗斯天然气工业石油公司（Gazprom Neft）等能源巨头达成战略合作，在偏远油田部署模块化移动数据中心，将原本只能火炬燃烧浪费的油田伴生气（APG）转化为廉价电力，开辟了不受传统电网限制的分布式离网能源通道。</li>
+                        <li data-i18n="about_p3_i2">工程设计与液冷模块自研：公司建立了专属工程设计中心与设备组装线，掌握了定制化高压变电站、高密度集装箱式液冷/风冷算力模块及自动化集群调度软件的核心能力，大幅缩短了新算力园区的交付周期。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about-phase">
+                <div class="about-phase-rail"><span class="about-phase-dot"></span></div>
+                <div class="about-phase-main">
+                    <span class="about-phase-year" data-i18n="about_p4_tag">2022 — 2024</span>
+                    <h3 class="about-phase-title" data-i18n="about_p4_title">合规化转型与国家战略级基建确立</h3>
+                    <ul class="about-points">
+                        <li data-i18n="about_p4_i1">市场重心重构与跨境布局（2022年—2023年）：面对地缘政治环境变化，BitRiver 迅速调整全球化路径，将核心业务全面转向俄罗斯本土大型企业、主权背景机构以及中东、亚洲、金砖国家（BRICS）的算力生态伙伴，推动跨国算力资源协作。</li>
+                        <li data-i18n="about_p4_i2">国家合规龙头地位确立（2024年）：深度参与俄罗斯数字资产与算力基础设施立法建言，并在 2024 年俄罗斯正式颁布相关合法化法案后，成为首批纳入俄罗斯联邦税务局（FTS）国家合规基础设施运营商名录的领军企业，正式确立了“国家战略级能源与数字基础设施”的核心地位。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about-phase">
+                <div class="about-phase-rail"><span class="about-phase-dot"></span></div>
+                <div class="about-phase-main">
+                    <span class="about-phase-year" data-i18n="about_p5_tag">2026 — 未来</span>
+                    <h3 class="about-phase-title" data-i18n="about_p5_title">全面聚焦并倾力打造 NEO AI 算力矩阵</h3>
+                    <p class="about-phase-lead" data-i18n="about_p5_intro">进入人工智能大模型与分布式计算时代，BitRiver 明确将 NEO AI 算力矩阵（www.neoneo.ink）作为公司未来最具成长性的核心战略引擎，推动集团从传统 PoW 算力托管向“绿色能源 + AI 智算集群 + Web3 算力调度网络”全面升级：</p>
+                    <ul class="about-points">
+                        <li data-i18n="about_p5_i1">物理算力底座向 NEO 全面赋能（Physical-to-Digital Bridge）：BitRiver 正将其手握的数百兆瓦已批复绿色电力指标、高寒自然冷却园区以及新一代高密度液冷 GPU 机柜集群，分阶段接入 NEO AI 算力矩阵。通过这一战略整合，BitRiver 负责底层重资产数据中心建设、低成本清洁能源供应与 7×24 小时工业级运维，而 NEO 则作为面向全球的数字化窗口与算力调度协议层，将实体算力转化为可随时调用、透明结算的标准化 AI 算力资产。</li>
+                        <li data-i18n="about_p5_i2">构建“协议交付 + 生态共治”的现代化组织体系：为推动 NEO 算力矩阵的全球化与去中心化发展，BitRiver 战略发起并确立了“核心技术研发实体 + 社区生态与项目理事会”的双轨治理架构。依托 NRY 经济模型与链上多签透明监督机制，NEO 打破了传统中心化云厂商的算力垄断与高昂溢价，让全球 AI 创业团队、科研机构与 Web3 开发者都能低门槛获取来自 BitRiver 绿色数据中心的澎湃算力。</li>
+                        <li data-i18n="about_p5_i3">打造 1 GW 级能源-智算超级园区与金砖跨境算力网络：未来几年，BitRiver 规划在西伯利亚及远东地区继续推进总容量超 1 GW（1000 兆瓦）级别的新一代能源算力综合体建设，承担国家电网削峰填谷的柔性负荷调节功能；同时依托金砖国家（BRICS）及中东、亚洲合作伙伴网络，将“绿色水电/伴生气 + 模块化智算中心”标准向全球输出。而 NEO AI 算力矩阵将作为这一庞大实体算力网络的统一交易市场、价值结算中枢与全球生态入口，引领 BitRiver 迈入“绿色能源驱动普惠 AI”的全新十年。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         </div>
         <div id="tab-whitepaper" class="home-tab-panel hidden">
             <section class="glass-card rounded-[2rem] p-6">
@@ -1047,7 +1257,11 @@
     </div>
 </div>
 
-<div id="page-market" class="page-view hidden space-y-6">
+ <div id="page-market" class="page-view hidden space-y-6">
+
+<button type="button" onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-2 transition-transform active:scale-95">
+    <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+</button>
 
 <section class="market-hero">
     <div class="market-hero-grid"></div>
@@ -1548,216 +1762,13 @@
 <section class="factory-section space-y-6 mt-6">
 </section>
 
-</div>
-
-        <div id="page-user" class="page-view hidden space-y-6">
+</div><div id="page-user" class="page-view hidden space-y-6">
             <section class="glass-card rounded-[2.5rem] overflow-hidden">
                 <div class="p-5 font-black text-xl text-slate-900 uppercase tracking-widest">
                     <span data-i18n="assets_list">资产列表</span>
                 </div>
 
-            <div id="page-academy" class="page-view hidden academy-scope">
-            <div class="px-4 pt-2">
-                <button type="button" onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full transition-transform active:scale-95">
-                    <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
-                </button>
-            </div>
-            <div class="academy-hero">
-                <p class="academy-hero-eyebrow">ARTIFICIAL INTELLIGENCE · COMPUTING POWER</p>
-                <h1 class="academy-hero-title">AI 算力全景知识手册</h1>
-                <p class="academy-hero-sub">从概念到产业，从机房到 CaaS —— 一份系统梳理人工智能算力公开知识的参考手册</p>
-                <div class="academy-hero-meta">概念 · 场景 · 建设 · 商业 · CaaS　|　知识整理类参考资料　|　2026 年版 · V1.0</div>
-            </div>
-<p class="academy-p">ARTIFICIAL INTELLIGENCE · COMPUTING POWER</p>
-<h1 class="academy-h1">AI算力全景知识手册</h1>
-<p class="academy-p">从概念到产业，从机房到 CaaS一份系统梳理人工智能算力公开知识的参考手册</p>
-<p class="academy-p">概念 · 场景 · 建设 · 商业 · CaaS</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>文档信息</strong></td></tr><tr><td>知识整理类参考资料</td></tr><tr><td>2026  年版  · V1.0</td></tr></tbody></table>
-<p class="academy-p">目录</p>
-<ol class="academy-ol"><li>前言</li><li>第一章　AI算力的概念</li><li>第二章　AI算力的使用场景</li><li>第三章　机房建设及成本</li><li>第四章　商业机会</li><li>第五章　CaaS 算力即服务</li><li>第六章　总结与展望</li><li>附录</li></ol>
-<p class="academy-p">执行摘要</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>概念</strong></td><td><strong>场景</strong></td><td><strong>建设</strong></td><td><strong>商业</strong></td><td><strong>CaaS</strong></td></tr><tr><td>训练 / 推理专用算力</td><td>从训练主导转向推理主导</td><td>GPU  占投资  60%–70%</td><td>供需缺口扩大、量价齐升</td><td>OPEX  替代  CAPEX</td></tr></tbody></table>
-<p class="academy-p">AI 算力是人工智能时代的底层基础设施与核心生产力。本手册系统梳理其概念与度量、训练与推理两大使用场景、智算中心机房建设与成本结构、产业链商业机会与竞争格局，以及算力即服务（CaaS）的模式演进，为技术、商业与决策读者提供一份全面的公开知识参考。</p>
-<h2 class="academy-h2">前言</h2>
-<p class="academy-p">2022 年底 ChatGPT 问世以来，一场以大模型为核心的人工智能浪潮席卷全球。Gemini、文心一言、通义千问、Kimi、Sora 等大模型相继涌现，AI 从实验室走向千行百业。在这场变革中，算力被称为人工智能的"发动机"与核心生产力——没有算力，再先进的算法也只能停留在论文里；有了算力，人工智能才能真正落地。</p>
-<p class="academy-p">算力已被提升到与水利、电网、铁路同等重要的国家战略基础设施地位。理解 AI 算力，已不只是技术人员的事，而是创业者、投资者、政企决策者都需要掌握的基础认知。</p>
-<p class="academy-p">本手册围绕五个核心维度展开：<strong>概念、使用场景、机房建设及成本、商业机会、CaaS（算力即服务）</strong>，力求全面、系统、可读。</p>
-<div class="academy-note">说明：文中数据均来自公开渠道（政府主管部门、研究机构、行业报告、企业公告等），不同口径之间存在差异，仅作趋势参考，不构成投资或决策建议。</div>
-<h2 class="academy-h2">第一章　AI算力的概念</h2>
-<figure class="academy-fig"><img src="assets/academy_image1.jpg" alt="AI算力示意图" loading="lazy">
-<figcaption>图 1　AI算力核心概念示意图</figcaption>
-</figure>
-<p class="academy-p">理解 AI 算力，需要先从"算力"这一基础概念出发，逐步厘清它的度量方式、分类体系、硬件载体与产业链结构。本章为后续所有章节的讨论奠定基础。</p>
-<h3 class="academy-h3">1.1 什么是算力，什么是 AI 算力</h3>
-<p class="academy-p"><strong>算力（Computing Power）</strong>，通俗讲就是设备或系统"处理数据、完成计算任务的能力"。手机、电脑、服务器、数据中心，本质上都是不同形态的"算力机器"。</p>
-<ul class="academy-ul"><li><strong>广义算力</strong>：集信息计算力、网络运载力、数据存储力于一体，包含硬件、网络、存储、调度系统，是完整的数据处理服务能力。</li><li><strong>狭义算力</strong>：通常指 CPU、GPU 等芯片的计算能力。</li></ul>
-<p class="academy-p"><strong>AI 算力（智能算力）</strong> 是专门面向人工智能任务（训练与推理）的高性能计算能力，核心由 GPU、NPU、TPU、ASIC 等 AI 芯片提供。它强调<strong>高并行、高吞吐、低延迟</strong>，区别于以串行逻辑处理见长的通用 CPU 算力。</p>
-<div class="academy-note">形象类比：把大模型比作"工厂"，数据是"原料"，算法是"生产工艺"，那么算力就是驱动整座工厂运转的"电力"。电力不足，再好的工艺也无法生产。</div>
-<h3 class="academy-h3">1.2 算力如何衡量：核心单位</h3>
-<p class="academy-p">算力最通用的度量指标是 <strong>FLOPS（每秒浮点运算次数）</strong>。由于 AI 计算多在低精度下进行，推理场景也常用 <strong>TOPS（每秒万亿次整数/定点运算）</strong>。</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>单位</strong></td><td><strong>含义</strong></td><td><strong>量级</strong></td><td><strong>典型适用对象</strong></td></tr><tr><td>FLOPS</td><td>每秒  1  次浮点运算</td><td>10⁰</td><td>基础单位</td></tr><tr><td>MFLOPS</td><td>每秒百万次</td><td>10⁶</td><td>早期设备</td></tr><tr><td>GFLOPS</td><td>每秒十亿次</td><td>10⁹</td><td>老式显卡</td></tr><tr><td>TFLOPS</td><td>每秒万亿次</td><td>10¹²</td><td>显卡、 AI  芯片常用</td></tr><tr><td>PFLOPS</td><td>每秒千万亿次</td><td>10¹⁵</td><td>智算集群、超算</td></tr><tr><td>EFLOPS</td><td>每秒百亿亿次</td><td>10¹⁸</td><td>国家算力中心、超大集群</td></tr></tbody></table>
-<p class="academy-p">几个直观参照：普通手机约为几至几十 TFLOPS；高端游戏显卡约 80–200 TFLOPS；国家级超算峰值可超 1 EFLOPS。需要注意的是，<strong>峰值算力不等于有效算力</strong>——实际性能还受内存带宽、I/O、互联延迟等因素制约。</p>
-<h3 class="academy-h3">1.3 三大算力类型</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>类型</strong></td><td><strong>主要硬件</strong></td><td><strong>典型用途</strong></td><td><strong>特点</strong></td></tr><tr><td>基础算力（通用算力）</td><td>CPU</td><td>日常办公、网页、企业通用业务</td><td>通用性强，擅长逻辑处理， AI  运算效率低</td></tr><tr><td>智能算力（ AI  算力）</td><td>GPU 、 NPU 、 TPU 、 ASIC</td><td>大模型训练 / 推理、人脸识别、自动驾驶、推荐系统</td><td>擅长并行计算，专为  AI  算法优化，当前最热门</td></tr><tr><td>超算算力（高性能算力）</td><td>大规模  CPU+ 加速卡集群、超级计算机</td><td>气象预报、航天航空、核模拟、生物医药、尖端科研</td><td>算力极致，专用于国家级高精尖科学计算</td></tr></tbody></table>
-<p class="academy-p">对应的数据中心形态分别是：通用数据中心、<strong>智算中心（AIDC）</strong>、超算中心。按服务部署形态，算力还可分为：公有云算力、私有云算力、混合云算力、边缘算力。</p>
-<h3 class="academy-h3">1.4 AI 算力的硬件载体：芯片"铁三角"</h3>
-<ol class="academy-ol"><li><strong>GPU（图形处理器）——训练主力。</strong>拥有数千核心，擅长大规模并行矩阵运算。代表：英伟达 A100/H100/B200、AMD MI300X。CUDA 生态是英伟达最深的护城河。</li><li><strong>NPU / TPU / ASIC——推理能效之王。</strong>专为神经网络优化。代表：华为昇腾、寒武纪思元、谷歌 TPU、亚马逊 Trainium。</li><li><strong>CPU——通用控制与串行计算。</strong>承担任务调度与辅助工作。</li></ol>
-<p class="academy-p">配套的关键硬件还包括：<strong>HBM 高带宽存储</strong>（AI 芯片性能的关键瓶颈，主要由 SK 海力士、三星、美光供应）、高速光模块（800G/1.6T 是集群互联核心，中际旭创、新易盛等中国厂商地位突出）、高速互联（NVLink、InfiniBand）等。</p>
-<h3 class="academy-h3">1.5 AI 三要素：算力、算法、数据</h3>
-<ul class="academy-ul"><li><strong>数据</strong>是原料——需要被处理的海量信息；</li><li><strong>算力</strong>是动力——处理数据的能力；</li><li><strong>算法</strong>是方法——处理数据的规则逻辑。</li></ul>
-<p class="academy-p">三者缺一不可。算法效率提升（如 MoE 稀疏架构、模型蒸馏、低精度量化）也会反过来降低单位任务的算力需求。</p>
-<h3 class="academy-h3">1.6 AI 算力产业链结构</h3>
-<p class="academy-p">上游：芯片与硬件  ├─ AI芯片（GPU/ASIC/NPU）、HBM存储、光模块  ├─ 服务器整机、交换机、网络设备  └─ 供配电、制冷（风冷/液冷）等配套        ↓中游：智算集群与云服务  ├─ 智算中心（AIDC）建设与运营  ├─ 算力互联互通平台、算力调度  └─ GPU 云 / AI IaaS 算力租赁服务        ↓下游：行业应用  ├─ 大模型训练与推理  └─ 智能制造、自动驾驶、金融科技、医疗AI、政务、科研等</p>
-<p class="academy-p"><strong>一个关键规律</strong>：利润沿着"芯片—算力基础设施—大模型—行业应用"逐级递减。芯片成本在 Token 成本中占比达 40%–55%，基础设施投入占 15%–20%——这决定了产业链利润池的大头天然沉淀在上游。</p>
-<h3 class="academy-h3">1.7 发展历程简述</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>阶段</strong></td><td><strong>时期</strong></td><td><strong>核心特征</strong></td></tr><tr><td>CPU  起步</td><td>2000  年以前</td><td>以  CPU  为主，算力服务于科研与重大工程</td></tr><tr><td>GPU  加速</td><td>2000  年代中期 –2010  年代</td><td>2012  年  AlexNet  借  GPU  突破，深度学习爆发</td></tr><tr><td>异构计算与密度</td><td>2020  年代初</td><td>从 " 摩尔定律 " 转向 " 密度法则 " ， CPU+GPU+XPU  异构架构</td></tr><tr><td>超节点与集群</td><td>2023  年至今</td><td>从千卡向万卡、十万卡集群演进，云 - 边 - 端协同</td></tr><tr><td>推理主导与绿色算力</td><td>2025  年及以后</td><td>从训练主导转向推理主导，液冷与绿色低碳成为重点</td></tr></tbody></table>
-<h2 class="academy-h2">第二章　AI算力的使用场景</h2>
-<figure class="academy-fig"><img src="assets/academy_image2.jpg" alt="AI算力示意图" loading="lazy">
-<figcaption>图 2　AI算力使用场景示意图</figcaption>
-</figure>
-<p class="academy-p">AI 算力的应用可归为<strong>训练</strong>与<strong>推理</strong>两大基本场景，并由此延伸到千行百业。</p>
-<h3 class="academy-h3">2.1 两大基本场景：训练与推理</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>维度</strong></td><td><strong>训练算力（重算力）</strong></td><td><strong>推理算力（轻算力、高并发）</strong></td></tr><tr><td>任务</td><td>大模型预训练、微调、参数迭代</td><td>模型部署后的实时调用、内容生成</td></tr><tr><td>规模</td><td>千卡 / 万卡级集群，单体规模大</td><td>分布式、碎片化， 7×24  持续调用</td></tr><tr><td>要求</td><td>高算力密度、高带宽互联</td><td>低延迟、高吞吐、高能效</td></tr><tr><td>主导硬件</td><td>高端  GPU （ H100/B200  等）</td><td>NPU 、低功耗  GPU 、推理专用芯片</td></tr><tr><td>趋势</td><td>占比下降但单体需求刚性</td><td>占比快速上升，成为增长核心</td></tr></tbody></table>
-<p class="academy-p"><strong>结构性变化</strong>：2025 年中国 AI 服务器市场中，推理服务器占比已达 67%，训练占 33%；IDC 预测到 2029 年推理算力占比将接近八成。2026 年全球推理算力占 AI 总负载的 70%–80%，中国推理需求约为训练的 8 倍。行业重心正从"训练主导"转向"推理主导"。</p>
-<h3 class="academy-h3">2.2 大模型训练与推理</h3>
-<p class="academy-p">这是当前 AI 算力最核心的需求来源。GPT-4 的训练算力约为 GPT-3 的 10 倍，需数万张高端 GPU、兆瓦级功耗。随着 DeepSeek 等开源模型凭借"开源、成本低、性能高"出圈，推理算力需求出现结构性爆发——国内日均大模型 Token 调用量突破 140 万亿，对比 2024 年初实现千倍级增长。</p>
-<h3 class="academy-h3">2.3 重点行业应用</h3>
-<ul class="academy-ul"><li><strong>自动驾驶</strong>：感知模型训练与海量路况仿真。小鹏与阿里云在乌兰察布合建"扶摇"智算中心算力达 600 PFLOPS；华为为理想汽车定制专属智算集群。</li><li><strong>医疗健康</strong>：医学影像辅助诊断、药物研发、中医药大模型。消化内镜 AI 辅助诊断使微小病灶检出率提升 10%–30%。</li><li><strong>金融科技</strong>：智能风控、反欺诈、量化交易与投顾。银行用 GPU 集群做蒙特卡洛模拟与风险评级。</li><li><strong>智能制造</strong>：工业质检、预测性维护、数字孪生。工厂用视觉模型检测产线缺陷。</li><li><strong>科研与科学计算</strong>：气象预报、新药研发、材料科学、宇宙模拟。"巢湖明月"支撑 EAST 人造太阳仿真，累计支撑 3000 余个科研项目。</li><li><strong>智慧政务与城市治理</strong>：城市大脑、政务大模型、隐患排查。河北人工智能计算中心已孵化 170 多个场景解决方案。</li><li><strong>互联网与内容</strong>：推荐系统、AIGC 内容生成、影视渲染。</li></ul>
-<h3 class="academy-h3">2.4 需求侧信号</h3>
-<ul class="academy-ul"><li>2026 年一季度国内 AI 算力需求同比大增 417%，而有效供给增速仅 128%，供需缺口持续扩大。</li><li>中国大模型周调用量已连续多周超过美国，OpenRouter 数据显示中国模型全球份额约 63.5%。</li><li>字节、腾讯、阿里等四大云厂商 2026 年资本开支合计预计同比增长超 80%。</li></ul>
-<h2 class="academy-h2">第三章　机房建设及成本</h2>
-<figure class="academy-fig"><img src="assets/academy_image3.jpg" alt="AI算力示意图" loading="lazy">
-<figcaption>图 3　现代化智算中心机房示意图</figcaption>
-</figure>
-<p class="academy-p">智算中心（AIDC）是承载 AI 算力的物理底座。与传统数据中心相比，它"不是堆设备，而是堆冗余；最终拼的是运维体系"。</p>
-<h3 class="academy-h3">3.1 智算中心 vs 传统 IDC</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>维度</strong></td><td><strong>传统</strong><strong> </strong><strong> IDC</strong></td><td><strong>智算中心（</strong><strong> </strong><strong>AIDC</strong><strong> </strong><strong>）</strong></td></tr><tr><td>核心定位</td><td>机柜、物理服务器托管</td><td>高性能算力交付</td></tr><tr><td>单机柜功率</td><td>4–10 kW</td><td>25–80 kW （训练机柜可达  58.8 kW ）</td></tr><tr><td>计算密度</td><td>低</td><td>极高，机柜区域功率密度  3000–8000 W/㎡</td></tr><tr><td>制冷方式</td><td>风冷为主</td><td>液冷成为新建标配</td></tr><tr><td>投资构成</td><td>土建 + 机电为主</td><td>GPU  服务器占大头</td></tr></tbody></table>
-<h3 class="academy-h3">3.2 机房建设的核心构成</h3>
-<ol class="academy-ol"><li><strong>IT 硬件</strong>：GPU/AI 服务器、存储、网络设备（交换机、光模块）。</li><li><strong>供配电系统</strong>：高压配电、变压器、UPS、蓄电池、备用发电机、巴拿马电源。</li><li><strong>制冷系统</strong>：冷水机组、冷却塔、精密空调，以及冷板/浸没液冷系统。</li><li><strong>土建与配套</strong>：机房楼、机柜、防静电地板、消防、监控与动环系统。</li><li><strong>软件与调度</strong>：集群管理、算力调度平台、AI 框架与开发环境。</li></ol>
-<p class="academy-p">设计与验收遵循 GB 50174-2017（A/B/C 三级）、GB 51195-2016 等标准，可选用 Uptime Tier、CQC A 级、等保 2.0 三级等认证。</p>
-<h3 class="academy-h3">3.3 液冷：从可选项到必选项</h3>
-<p class="academy-p">随着单机柜功率突破 20kW，传统风冷已难以为继，液冷成为新建智算集群的标配。</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>对比维度</strong></td><td><strong>冷板式液冷</strong></td><td><strong>浸没式液冷</strong></td></tr><tr><td>散热原理</td><td>冷板接触  CPU/GPU  间接换热</td><td>服务器全浸没于绝缘冷却液直接换热</td></tr><tr><td>PUE  范围</td><td>1.15–1.25</td><td>1.03–1.10</td></tr><tr><td>功率密度</td><td>最高约  50 kW/ 机柜</td><td>最高  200 kW+/ 机柜</td></tr><tr><td>兼容性</td><td>兼容现有服务器，改造量小</td><td>需定制硬件</td></tr><tr><td>市场成熟度</td><td>约  90%  份额，主流路线</td><td>规模化应用初期</td></tr><tr><td>单机柜投入</td><td>8–12  万元</td><td>30–40  万元（ 3–4  倍）</td></tr></tbody></table>
-<p class="academy-p">政策层面，新建大型/超大型数据中心 PUE 红线普遍要求 ≤1.25（国家枢纽节点 ≤1.2），绿电占比超 80%，"东数西算"枢纽节点液冷渗透率要求不低于 60%。</p>
-<h3 class="academy-h3">3.4 核心指标</h3>
-<ul class="academy-ul"><li><strong>PUE（电源使用效率）</strong>：总能耗 / IT 设备能耗，越接近 1 越节能。全国平均已降至约 1.42，先进项目可低至 1.1–1.15。</li><li><strong>上架率</strong>：已投入使用机柜占比。全国平均约 71%，但部分智算中心实际利用率偏低。</li><li><strong>利用率</strong>：GPU 平均利用率约 30%–40%，存在明显的"算力孤岛"与资源闲置。</li><li><strong>盈亏平衡上架率</strong>：约 40%。低于此线，项目容易亏损。</li></ul>
-<h3 class="academy-h3">3.5 成本结构拆解</h3>
-<p class="academy-p">智算中心的投资结构与普通建筑项目正好"倒挂"：</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>成本项</strong></td><td><strong>占比</strong></td></tr><tr><td>GPU  服务器（含加速卡）</td><td>60%–70% （部分口径  60%–80% ）</td></tr><tr><td>供配电  +  制冷</td><td>20%–25%</td></tr><tr><td>土建  +  其他</td><td>5%–10%</td></tr></tbody></table>
-<p class="academy-p">几个建设成本参考（不同口径差异较大，仅作量级参考）：</p>
-<ul class="academy-ul"><li>单机柜平均投资成本约 20 万元（通用口径）；含高端 GPU 的智算单柜可达 300 万–500 万元。</li><li>基础设施单位成本约 1 万–1.5 万元/kW；通用机房每 kW 造价约 5 万元。</li><li>一个 100 机柜、6kW/柜的项目总投资约 1500 万元；500 机柜、8kW/柜约 6000 万元。一线城市成本上浮 20%–30%。</li><li>1GW 级数据中心端到端建设成本，海外估算约 346 亿–395 亿美元。</li></ul>
-<p class="academy-p">业内经验：数据中心建设不是堆设备，是堆冗余；不是堆冗余，是堆可维护性；最终拼的是运维体系。</p>
-<h3 class="academy-h3">3.6 选址与"东数西算"</h3>
-<p class="academy-p">能源约束正刚性化：大型数据中心需要靠近 110kV 以上、冗余度高的电源点。"东数西算"工程把集群布局在西部枢纽，本质是用绿电资源与气候条件框定选址。截至 2026 年，全国形成"8 大国家算力枢纽 + 10 个国家算力集群 + 3 个算电协同区域"的空间布局；东部、中部、西部、东北智算规模占比约为 55.9%、10.6%、32.6%、0.9%。</p>
-<h2 class="academy-h2">第四章　商业机会</h2>
-<figure class="academy-fig"><img src="assets/academy_image4.jpg" alt="AI算力示意图" loading="lazy">
-<figcaption>图 4　算力商业机会示意图</figcaption>
-</figure>
-<p class="academy-p">AI 算力正处于爆发式增长期，从芯片到应用，各环节都孕育着商业机会。</p>
-<h3 class="academy-h3">4.1 市场规模与增长</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>细分市场</strong></td><td><strong>规模数据</strong></td></tr><tr><td>中国智能算力规模</td><td>2024  年  725.3 EFLOPS → 2028  年  2781.9 EFLOPS （ CAGR 46.2% ）</td></tr><tr><td>中国  AI  服务器市场</td><td>2024  年  1606.55  亿元  → 2026  年预计  3500  亿元</td></tr><tr><td>中国智算云基础设施 (AI IaaS)</td><td>2025  年  486.7  亿元，同比  +128%</td></tr><tr><td>中国  AIDC  市场</td><td>2026  年预计  1778  亿元， 2030  年近  4000  亿元</td></tr><tr><td>中国算力租赁市场</td><td>2026 Q1  达  680  亿元，全年预计突破  2600  亿元</td></tr><tr><td>全球算力市场</td><td>2025  年超  4200  亿美元， 2030  年  1.2  万亿美元</td></tr><tr><td>全球  AI  资本开支</td><td>瑞银预计  2026  年约  9980  亿美元，同比近翻倍</td></tr></tbody></table>
-<p class="academy-p">"十五五"时期，全国一体化算力网建设预计新增直接投资 4 万亿元，算力新基建成为确定性最强的投资主线之一。</p>
-<h3 class="academy-h3">4.2 产业链利润分布与机会方向</h3>
-<p class="academy-p">由于利润沿产业链逐级递减，商业机会呈现差异化特征：</p>
-<ol class="academy-ol"><li><strong>上游芯片与硬件</strong>——技术壁垒与附加值最高。AI 芯片、HBM 存储、高速光模块、液冷方案是价值高地；国产替代是主线。</li><li><strong>中游算力基础设施与云服务</strong>——国产替代最活跃。智算中心建设、算力调度平台、GPU 云、AI IaaS 增长迅猛。</li><li><strong>下游行业应用</strong>——从"训练"走向"用"，商业化刚刚起步，空间广阔。</li></ol>
-<h3 class="academy-h3">4.3 值得关注的具体机会</h3>
-<ul class="academy-ul"><li><strong>算力租赁 / CaaS</strong>：供需缺口扩大，量价齐升，高端训练算力"一卡难求"。</li><li><strong>国产算力替代</strong>：英伟达中国份额从 2022 年约 95% 降至 2026 年约 8%，华为昇腾以约 50% 领跑，国产厂商合计份额首破 45%。</li><li><strong>液冷与绿色节能</strong>：PUE 硬约束下，冷板/浸没液冷、余热回收、绿电交易成为刚需。</li><li><strong>算力调度与互联互通</strong>：工信部"1+M+N"算力互联互通体系、算力超市、算力银行等集约化运营模式。</li><li><strong>行业大模型与推理服务</strong>：开源模型降低门槛，中小企业轻量化用算需求爆发，多地发放"算力券"补贴。</li><li><strong>数据合规与信创适配</strong>：《数据安全法》《网络安全法》要求下，数据本地化、等保三级、国产化适配成为核心壁垒。</li></ul>
-<h3 class="academy-h3">4.4 竞争格局</h3>
-<p class="academy-p"><strong>海外</strong>：英伟达在训练芯片领域占绝对优势（约 68% 全球份额），CUDA 生态构成护城河；CoreWeave、Nebius、Lambda Labs 等新型 AI 云崛起——CoreWeave 2026 Q2 收入 25.8 亿美元（同比 +112%），长期合同储备达 1040 亿美元。</p>
-<p class="academy-p"><strong>国内算力租赁四大阵营</strong>：</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>阵营</strong></td><td><strong>代表</strong></td><td><strong>特点</strong></td></tr><tr><td>公有云巨头</td><td>阿里云、腾讯云、火山引擎</td><td>占约  65%  收入份额，自有万卡集群</td></tr><tr><td>三大运营商</td><td>电信、移动、联通</td><td>依托东数西算节点，政企订单稳定，占  25%–30%</td></tr><tr><td>专业上市公司</td><td>利通电子、协创数据、行云科技、宏景科技等</td><td>绑定大厂长协，业绩快速兑现</td></tr><tr><td>第三方  IDC  厂商</td><td>各类机房服务商</td><td>提供机柜托管，多与专业算力企业合作</td></tr></tbody></table>
-<p class="academy-p">四大阵营合计市占约 90%–95%。头部企业毛利率约 45%–53%（高毛利）或 25%–35%（中等），核心差异在卡源资质、长协能力与液冷降本能力。</p>
-<h3 class="academy-h3">4.5 风险与挑战</h3>
-<ul class="academy-ul"><li><strong>供应链风险</strong>：高端 GPU 依赖海外供给，出口管制与断供可能冲击产能扩张。</li><li><strong>技术迭代贬值</strong>：GPU 更新周期缩短，旧卡租金与资产价值面临减值压力。</li><li><strong>利用率风险</strong>：大量智算中心利用率偏低（约 20%–37%），存在空置与亏损风险。</li><li><strong>合规风险</strong>：跨境数据、模型训练、等保要求带来的业务约束。</li><li><strong>需求替代风险</strong>：ASIC 专用芯片、高效算法（MoE、蒸馏、量化）可能削弱长期算力需求增速。</li></ul>
-<h2 class="academy-h2">第五章　CaaS 算力即服务</h2>
-<figure class="academy-fig"><img src="assets/academy_image5.jpg" alt="AI算力示意图" loading="lazy">
-<figcaption>图 5　CaaS 算力即服务架构示意图</figcaption>
-</figure>
-<h3 class="academy-h3">5.1 什么是 CaaS</h3>
-<p class="academy-p"><strong>CaaS（Compute/Computing as a Service，算力即服务）</strong> 是一种以"算力即服务"为核心的模式：拥有算力基础设施的服务商，将搭载 GPU、CPU 等高性能芯片的服务器资源通过云化方式，以<strong>按需付费、弹性租用</strong>的形式出租给有 AI 训练、推理或高性能计算需求的客户。</p>
-<p class="academy-p">其本质是<strong>以运营支出（OPEX）替代资本支出（CAPEX）</strong>——客户无需自建机房、一次性大额采购硬件，即可弹性获取算力。算力租赁行业因此被称为 <strong>AI 时代的"算力电厂"</strong>，是连接上游硬件与下游 AI 应用的核心桥梁。</p>
-<h3 class="academy-h3">5.2 服务形态与交付模式</h3>
-<p class="academy-p">按硬件类型：CPU 通用算力、GPU 主流 AI 算力、DCU/NPU 国产自主算力、ASIC 专用芯片。按交付形态：</p>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>形态</strong></td><td><strong>说明</strong></td><td><strong>适用场景</strong></td></tr><tr><td>整机独占租赁</td><td>服务器资源完全独享，无争抢</td><td>长期大模型训练</td></tr><tr><td>裸金属算力服务</td><td>去除虚拟化层，物理算力直接交付</td><td>低延迟、高稳定性需求</td></tr><tr><td>云算力弹性实例</td><td>虚拟化资源池，秒级启停扩缩</td><td>短期实验、临时推理</td></tr><tr><td>机房托管运维</td><td>客户自有硬件，服务商提供机柜、电力、运维</td><td>有自研硬件的客户</td></tr></tbody></table>
-<h3 class="academy-h3">5.3 计费模式的演进</h3>
-<p class="academy-p">行业商业模式正经历从"卖资源"到"卖价值"的升级：</p>
-<ol class="academy-ol"><li><strong>按时长出租裸算力</strong>——单一租金收益（早期）。</li><li><strong>长协包年/包月</strong>——3–5 年大额框架长协，锁定稳定现金流（当前主流）。</li><li><strong>Token 收益分成 / 峰谷阶梯定价 / 算力融资租赁</strong>——按模型 Token 调用量收费，甚至项目收益分成，实现风险共担（行业变革方向）。</li></ol>
-<p class="academy-p">里程碑式转变：产业逻辑从"售卖硬件资源"转向"共享业务价值"。例如 CoreWeave 联合 AI 应用公司采用 Token 按量计费；国内百度智能云联合文旅 AI 企业试点按变现营收分成。</p>
-<h3 class="academy-h3">5.4 平台技术架构</h3>
-<ul class="academy-ul"><li><strong>异构高密硬件层</strong>：GPU、DCU、NPU 多类型芯片协同；</li><li><strong>全域智能调度层</strong>：跨地域、跨品牌算力统一管理与动态分配；</li><li><strong>高速低时延网络</strong>：高带宽算力专网，保障海量数据传输；</li><li><strong>绿色能效管控</strong>：液冷散热、智能温控，持续降低 PUE；</li><li><strong>云边协同架构</strong>：算力向边缘下沉，满足实时推理需求。</li></ul>
-<p class="academy-p">全球算力平均利用率仅 30%–40%，智能调度的价值正在于"在不增加硬件采购的前提下提升利用率、降低单位算力综合成本"。</p>
-<h3 class="academy-h3">5.5 代表玩家</h3>
-<ul class="academy-ul"><li><strong>公有云/AI 云</strong>：阿里云、华为云、百度智能云、火山引擎、AWS、Google Cloud、CoreWeave、Lambda Labs。</li><li><strong>专业算力服务商</strong>：并行科技、呼呼智算（自研 CaaS 弹性调度平台）、数商云等。</li><li><strong>国产算力生态</strong>：适配昇腾、寒武纪、燧原、海光等国产芯片，服务政务、金融等信创场景。</li></ul>
-<h3 class="academy-h3">5.6 选择平台的考量因素</h3>
-<ol class="academy-ol"><li><strong>性能匹配</strong>：训练选 H100/H200 等高端卡，推理可选 T4/国产 NPU；</li><li><strong>成本模型</strong>：长期项目优先包年折扣，短期实验采用竞价/弹性实例；</li><li><strong>服务稳定性</strong>：关注 SLA（建议 ≥99.9%）与 7×24 运维能力；</li><li><strong>技术支持</strong>：AI 框架预装、故障响应速度；</li><li><strong>合规性</strong>：数据存储位置、加密方案、信创适配是否符合行业法规。</li></ol>
-<h3 class="academy-h3">5.7 未来趋势</h3>
-<ul class="academy-ul"><li><strong>计费革新</strong>：从"售卖算力时长"全面转向"按 Token 业务价值计费"；</li><li><strong>国产替代</strong>：形成"高端训练用英伟达 + 推理用国产"的异构格局；</li><li><strong>算网协同</strong>：算力调度与高速专网一体化成为核心竞争力；</li><li><strong>生态化运营</strong>：从单一租赁走向"算力平台 + 行业应用"完整生态；</li><li><strong>绿色低碳</strong>：液冷机房、可再生能源成为新建智算中心硬性要求；</li><li><strong>边缘租赁兴起</strong>：低时延边缘算力支撑自动驾驶、本地实时推理。</li></ul>
-<h2 class="academy-h2">第六章　总结与展望</h2>
-<p class="academy-p">AI 算力是人工智能时代的底层基础设施与核心生产力。回顾全文，可归纳为六点核心认知：</p>
-<ol class="academy-ol"><li><strong>概念层面</strong>：AI 算力是面向训练/推理的专用计算能力，以 FLOPS/TOPS 度量，由 GPU/NPU/TPU 等芯片提供，与数据、算法共同构成 AI 三要素。</li><li><strong>应用层面</strong>：需求正从"训练主导"转向"推理主导"，并向自动驾驶、医疗、金融、制造、科研等行业深度渗透。</li><li><strong>建设层面</strong>：智算中心投资高度集中于 GPU 服务器（60%–70%），液冷与绿色节能成为新标配，PUE 与利用率是关键运营指标。</li><li><strong>商业层面</strong>：市场规模高速增长、供需缺口扩大，利润池集中在产业链上游，国产替代与 CaaS 是最确定的机会主线。</li><li><strong>模式层面</strong>：CaaS 以 OPEX 替代 CAPEX，计费从按时长走向按 Token/价值分成，是算力普惠化的关键路径。</li><li><strong>风险层面</strong>：供应链管制、技术迭代贬值、利用率偏低与合规要求，是需要持续关注的挑战。</li></ol>
-<p class="academy-p">放眼未来，随着全国一体化算力网的推进、国产算力的成熟与推理需求的爆发，算力将像水电一样成为随处可得的基础资源。能够提供<strong>高效、弹性、安全可信的一体化算力服务</strong>的企业，将牢牢掌握 AI 时代的产业主动权。</p>
-<h2 class="academy-h2">附录</h2>
-<h3 class="academy-h3">附录 A　关键数据速查表</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>指标</strong></td><td><strong>数值</strong></td><td><strong>口径</strong><strong> </strong><strong>/</strong><strong> </strong><strong>时点</strong></td></tr><tr><td>中国智能算力规模</td><td>2185 EFLOPS (FP16)</td><td>工信部， 2026-06</td></tr><tr><td>中国  AI  服务器市场</td><td>约  3500  亿元</td><td>2026  预测</td></tr><tr><td>中国算力租赁市场</td><td>突破  2600  亿元</td><td>2026  预测</td></tr><tr><td>中国  AIDC  市场</td><td>1778  亿元</td><td>2026  预测</td></tr><tr><td>推理算力占比</td><td>67% （服务器） /  近  80% （ 2029  预测）</td><td>IDC</td></tr><tr><td>智算中心  GPU  服务器成本占比</td><td>60%–70%</td><td>行业拆解</td></tr><tr><td>新建大型数据中心  PUE  红线</td><td>≤1.25</td><td>政策要求</td></tr><tr><td>H100  一年期租赁价</td><td>约  2.35  美元 / 卡时</td><td>2026-03</td></tr><tr><td>英伟达中国市场份额</td><td>由约  95%  降至约  8%</td><td>2022→2026</td></tr><tr><td>国产算力芯片合计份额</td><td>首破  45%</td><td>2026</td></tr></tbody></table>
-<h3 class="academy-h3">附录 B　术语表</h3>
-<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>术语</strong></td><td><strong>全称</strong><strong> </strong><strong> / </strong><strong> </strong><strong>含义</strong></td></tr><tr><td>FLOPS</td><td>每秒浮点运算次数，算力核心度量单位</td></tr><tr><td>TOPS</td><td>每秒万亿次（定点 / 整数）运算，常用于推理</td></tr><tr><td>EFLOPS / PFLOPS</td><td>每秒百亿亿次  /  千万亿次浮点运算</td></tr><tr><td>GPU / NPU / TPU / ASIC</td><td>图形 / 神经网络 / 张量处理器 / 专用集成电路</td></tr><tr><td>HBM</td><td>高带宽存储器， AI  芯片关键配套</td></tr><tr><td>AIDC</td><td>人工智能数据中心（智算中心）</td></tr><tr><td>PUE</td><td>电源使用效率，衡量数据中心能效</td></tr><tr><td>AI IaaS</td><td>AI  基础设施即服务</td></tr><tr><td>CaaS</td><td>算力即服务（ Compute as a Service ）</td></tr><tr><td>Token</td><td>大模型处理文本的基本单位，新型计费基准</td></tr><tr><td>东数西算</td><td>将东部算力需求引导到西部枢纽的国家工程</td></tr><tr><td>液冷（冷板 / 浸没）</td><td>通过液体为服务器散热的技术路线</td></tr><tr><td>SLA</td><td>服务等级协议，衡量服务稳定性</td></tr></tbody></table>
-<p class="academy-p">免责声明：本手册内容整理自公开资料，旨在提供系统性的知识参考。文中数据因来源与统计口径不同可能存在差异，请以官方最新发布为准。本手册不构成任何投资、采购或决策建议。</p>
-        </div>
-
-    <div id="page-device" class="page-view hidden">
-        <div id="cfgApp" class="relative">
-            <div class="px-4 pt-2">
-                <h2 class="text-lg font-black text-slate-900 tracking-tight" data-i18n="cfg_title">AI 算力整机配置器</h2>
-            </div>
-            <div class="sticky top-0 z-30 px-4 py-2">
-                <div id="cfgTabs" class="flex gap-1 overflow-x-auto no-scrollbar bg-white/70 backdrop-blur-md rounded-full p-1 shadow-sm"></div>
-            </div>
-            <div id="cfgList" class="px-4 pt-2 pb-36 space-y-3"></div>
-        </div>
-
-        <div id="cfgBottomBar" class="fixed left-0 right-0 z-40 pointer-events-none" style="bottom:calc(90px + env(safe-area-inset-bottom))">
-            <div class="w-[92%] max-w-[400px] mx-auto bg-white/85 backdrop-blur-xl rounded-full border border-slate-200/70 shadow-lg px-3 py-2 flex items-center gap-2 pointer-events-auto">
-                <div id="cfgBottomInfo" class="flex-1 min-w-0"></div>
-                <button type="button" onclick="cfgToggleSheet()" class="relative shrink-0 min-w-[44px] h-9 px-3 rounded-full bg-slate-100 text-[10px] font-black text-slate-600 transition-transform active:scale-95">
-                    <i class="fas fa-list-ul mr-1"></i><span data-i18n="cfg_details">已选明细</span>
-                    <span id="cfgDetailBadge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-orange-500 text-white text-[9px] font-black flex items-center justify-center" style="display:none">0</span>
-                </button>
-                <button type="button" onclick="cfgOrderNow()" class="shrink-0 h-9 px-4 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white text-[11px] font-black tracking-wide shadow-md transition-transform active:scale-95">
-                    <i class="fas fa-bolt mr-1"></i><span data-i18n="cfg_order_now">立即下单</span>
-                </button>
-            </div>
-        </div>
-
-        <div id="cfgSheet" class="hidden fixed inset-0 z-[60]">
-            <div class="absolute inset-0 bg-slate-900/40" onclick="cfgSheetClose()"></div>
-            <div id="cfgSheetPanel" class="absolute inset-x-0 bottom-0 max-h-[62vh] bg-white rounded-t-3xl transition-transform duration-300" style="transform:translateY(100%); padding-bottom:calc(16px+env(safe-area-inset-bottom))">
-                <div class="flex justify-between items-center px-5 pt-4 pb-2">
-                    <p class="text-sm font-black text-slate-900" data-i18n="cfg_details">已选明细</p>
-                    <button type="button" onclick="cfgExport()" class="text-[10px] font-black text-blue-500 underline"><i class="fas fa-file-export mr-1"></i><span data-i18n="cfg_export">导出配置单</span></button>
-                </div>
-                <div id="cfgSheetBody" class="overflow-y-auto px-5" style="max-height:calc(62vh - 90px)"></div>
-            </div>
-        </div>
-
-        <div id="cfgPreview" class="hidden fixed inset-0 z-[60]">
-            <div class="absolute inset-0 bg-slate-900/40" onclick="cfgSheetClose()"></div>
-            <div id="cfgPreviewPanel" class="absolute inset-x-0 bottom-0 max-h-[75vh] bg-white rounded-t-3xl overflow-y-auto transition-transform duration-300" style="transform:translateY(100%); padding:20px 20px calc(20px + env(safe-area-inset-bottom))">
-                <div id="cfgPreviewBody"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="page-chain" class="page-view hidden">
-        <section class="glass-card p-6 text-center">
-            <button onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-6 transition-transform active:scale-95">
-                <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
-            </button>
-            <i class="fas fa-link text-4xl text-orange-400 mb-4 block"></i>
-            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
-            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
-        </section>
-    </div>
-                <div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
+<div id="tokenRows" class="divide-y divide-slate-50 min-h-[40px]"></div>
             </section>
 
 <div class="grid grid-cols-1 gap-3 px-2">
@@ -1913,9 +1924,371 @@
                 </div>
 
             </section>
+    </div>
 
+        <div id="page-academy" class="page-view hidden academy-scope">
+        <div class="px-4 pt-2">
+                <button type="button" onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full transition-transform active:scale-95">
+                    <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+                </button>
+            </div>
+        <div class="px-4 mt-2">
+            <div id="academyTabBar" class="flex gap-1 bg-white/70 backdrop-blur-md rounded-full p-1 shadow-sm">
+                    <button type="button" onclick="academySwitchTab('compute')" id="academyTabCompute" class="flex-1 h-9 rounded-full text-[11px] font-black transition-all bg-orange-500 text-white shadow-md"><span data-i18n="academy_tab_compute">算力基础知识</span></button>
+                    <button type="button" onclick="academySwitchTab('chain')" id="academyTabChain" class="flex-1 h-9 rounded-full text-[11px] font-black transition-all text-slate-600"><span data-i18n="academy_tab_chain">区块链知识</span></button>
+            </div>
+        </div>
+        <div id="academyPaneCompute" class="academy-pane">
+            <div class="academy-hero">
+                <p class="academy-hero-eyebrow">ARTIFICIAL INTELLIGENCE · COMPUTING POWER</p>
+                <h1 class="academy-hero-title" data-i18n="academy_001">AI 算力全景知识手册</h1>
+                <p class="academy-hero-sub" data-i18n="academy_002">从概念到产业，从机房到 CaaS —— 一份系统梳理人工智能算力公开知识的参考手册</p>
+                <div class="academy-hero-meta">概念 · 场景 · 建设 · 商业 · CaaS　|　知识整理类参考资料　|　2026 年版 · V1.0</div>
+            </div>
+<p class="academy-p" data-i18n="academy_003">从概念到产业，从机房到 CaaS一份系统梳理人工智能算力公开知识的参考手册</p>
+<p class="academy-p" data-i18n="academy_004">概念 · 场景 · 建设 · 商业 · CaaS</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>文档信息</strong></td></tr><tr><td>知识整理类参考资料</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_005">目录</p>
+<ol class="academy-ol"><li data-i18n="academy_006">前言</li><li data-i18n="academy_007">第一章　AI算力的概念</li><li data-i18n="academy_008">第二章　AI算力的使用场景</li><li data-i18n="academy_009">第三章　机房建设及成本</li><li data-i18n="academy_010">第四章　商业机会</li><li data-i18n="academy_011">第五章　CaaS 算力即服务</li><li data-i18n="academy_012">第六章　总结与展望</li><li data-i18n="academy_013">附录</li></ol>
+<p class="academy-p" data-i18n="academy_014">执行摘要</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>概念</strong></td><td><strong>场景</strong></td><td><strong>建设</strong></td><td><strong>商业</strong></td><td><strong>CaaS</strong></td></tr><tr><td>训练 / 推理专用算力</td><td>从训练主导转向推理主导</td><td>GPU  占投资  60%–70%</td><td>供需缺口扩大、量价齐升</td><td>OPEX  替代  CAPEX</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_015">AI 算力是人工智能时代的底层基础设施与核心生产力。本手册系统梳理其概念与度量、训练与推理两大使用场景、智算中心机房建设与成本结构、产业链商业机会与竞争格局，以及算力即服务（CaaS）的模式演进，为技术、商业与决策读者提供一份全面的公开知识参考。</p>
+<p class="academy-p" data-i18n="academy_016">前言</p>
+<p class="academy-p" data-i18n="academy_017">2022 年底 ChatGPT 问世以来，一场以大模型为核心的人工智能浪潮席卷全球。Gemini、文心一言、通义千问、Kimi、Sora 等大模型相继涌现，AI 从实验室走向千行百业。在这场变革中，算力被称为人工智能的&amp;quot;发动机&amp;quot;与核心生产力——没有算力，再先进的算法也只能停留在论文里；有了算力，人工智能才能真正落地。</p>
+<p class="academy-p" data-i18n="academy_018">算力已被提升到与水利、电网、铁路同等重要的国家战略基础设施地位。理解 AI 算力，已不只是技术人员的事，而是创业者、投资者、政企决策者都需要掌握的基础认知。</p>
+<p class="academy-p" data-i18n="academy_019">本手册围绕五个核心维度展开：<strong>概念、使用场景、机房建设及成本、商业机会、CaaS（算力即服务）</strong>，力求全面、系统、可读。</p>
+<div class="academy-note">说明：文中数据均来自公开渠道（政府主管部门、研究机构、行业报告、企业公告等），不同口径之间存在差异，仅作趋势参考，不构成投资或决策建议。</div>
+<h2 class="academy-h2" data-i18n="academy_020">第一章　AI算力的概念</h2>
+<figure class="academy-fig"><img src="assets/academy_ai_1.jpg" alt="示意图" loading="lazy">
+</figure>
+<figcaption>图 1　AI算力核心概念示意图</figcaption>
+</figure>
+<p class="academy-p" data-i18n="academy_021">理解 AI 算力，需要先从&amp;quot;算力&amp;quot;这一基础概念出发，逐步厘清它的度量方式、分类体系、硬件载体与产业链结构。本章为后续所有章节的讨论奠定基础。</p>
+<h3 class="academy-h3" data-i18n="academy_022">1.1 什么是算力，什么是 AI 算力</h3>
+<p class="academy-p" data-i18n="academy_023"><strong>算力（Computing Power）</strong>，通俗讲就是设备或系统&amp;quot;处理数据、完成计算任务的能力&amp;quot;。手机、电脑、服务器、数据中心，本质上都是不同形态的&amp;quot;算力机器&amp;quot;。</p>
+<p class="academy-p" data-i18n="academy_024"><strong>广义算力</strong>：集信息计算力、网络运载力、数据存储力于一体，包含硬件、网络、存储、调度系统，是完整的数据处理服务能力。</p>
+<p class="academy-p" data-i18n="academy_025"><strong>狭义算力</strong>：通常指 CPU、GPU 等芯片的计算能力。</p>
+<p class="academy-p" data-i18n="academy_026"><strong>AI 算力（智能算力）</strong> 是专门面向人工智能任务（训练与推理）的高性能计算能力，核心由 GPU、NPU、TPU、ASIC 等 AI 芯片提供。它强调<strong>高并行、高吞吐、低延迟</strong>，区别于以串行逻辑处理见长的通用 CPU 算力。</p>
+<p class="academy-p" data-i18n="academy_027">形象类比：把大模型比作&amp;quot;工厂&amp;quot;，数据是&amp;quot;原料&amp;quot;，算法是&amp;quot;生产工艺&amp;quot;，那么算力就是驱动整座工厂运转的&amp;quot;电力&amp;quot;。电力不足，再好的工艺也无法生产。</p>
+<h3 class="academy-h3" data-i18n="academy_028">1.2 算力如何衡量：核心单位</h3>
+<p class="academy-p" data-i18n="academy_029">算力最通用的度量指标是 <strong>FLOPS（每秒浮点运算次数）</strong>。由于 AI 计算多在低精度下进行，推理场景也常用 <strong>TOPS（每秒万亿次整数/定点运算）</strong>。</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>单位</strong></td><td><strong>含义</strong></td><td><strong>量级</strong></td><td><strong>典型适用对象</strong></td></tr><tr><td>FLOPS</td><td>每秒  1  次浮点运算</td><td>10⁰</td><td>基础单位</td></tr><tr><td>MFLOPS</td><td>每秒百万次</td><td>10⁶</td><td>早期设备</td></tr><tr><td>GFLOPS</td><td>每秒十亿次</td><td>10⁹</td><td>老式显卡</td></tr><tr><td>TFLOPS</td><td>每秒万亿次</td><td>10¹²</td><td>显卡、 AI  芯片常用</td></tr><tr><td>PFLOPS</td><td>每秒千万亿次</td><td>10¹⁵</td><td>智算集群、超算</td></tr><tr><td>EFLOPS</td><td>每秒百亿亿次</td><td>10¹⁸</td><td>国家算力中心、超大集群</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_030">几个直观参照：普通手机约为几至几十 TFLOPS；高端游戏显卡约 80–200 TFLOPS；国家级超算峰值可超 1 EFLOPS。需要注意的是，<strong>峰值算力不等于有效算力</strong>——实际性能还受内存带宽、I/O、互联延迟等因素制约。</p>
+<h3 class="academy-h3" data-i18n="academy_031">1.3 三大算力类型</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>类型</strong></td><td><strong>主要硬件</strong></td><td><strong>典型用途</strong></td><td><strong>特点</strong></td></tr><tr><td>基础算力（通用算力）</td><td>CPU</td><td>日常办公、网页、企业通用业务</td><td>通用性强，擅长逻辑处理， AI  运算效率低</td></tr><tr><td>智能算力（ AI  算力）</td><td>GPU 、 NPU 、 TPU 、 ASIC</td><td>大模型训练 / 推理、人脸识别、自动驾驶、推荐系统</td><td>擅长并行计算，专为  AI  算法优化，当前最热门</td></tr><tr><td>超算算力（高性能算力）</td><td>大规模  CPU+ 加速卡集群、超级计算机</td><td>气象预报、航天航空、核模拟、生物医药、尖端科研</td><td>算力极致，专用于国家级高精尖科学计算</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_032">对应的数据中心形态分别是：通用数据中心、<strong>智算中心（AIDC）</strong>、超算中心。按服务部署形态，算力还可分为：公有云算力、私有云算力、混合云算力、边缘算力。</p>
+<h3 class="academy-h3" data-i18n="academy_033">1.4 AI 算力的硬件载体：芯片&amp;quot;铁三角&amp;quot;</h3>
+<ol class="academy-ol"><li data-i18n="academy_034"><strong>GPU（图形处理器）——训练主力。</strong>拥有数千核心，擅长大规模并行矩阵运算。代表：英伟达 A100/H100/B200、AMD MI300X。CUDA 生态是英伟达最深的护城河。</li><li data-i18n="academy_035"><strong>NPU / TPU / ASIC——推理能效之王。</strong>专为神经网络优化。代表：华为昇腾、寒武纪思元、谷歌 TPU、亚马逊 Trainium。</li><li data-i18n="academy_036"><strong>CPU——通用控制与串行计算。</strong>承担任务调度与辅助工作。</li></ol>
+<p class="academy-p" data-i18n="academy_037">配套的关键硬件还包括：<strong>HBM 高带宽存储</strong>（AI 芯片性能的关键瓶颈，主要由 SK 海力士、三星、美光供应）、高速光模块（800G/1.6T 是集群互联核心，中际旭创、新易盛等中国厂商地位突出）、高速互联（NVLink、InfiniBand）等。</p>
+<h3 class="academy-h3" data-i18n="academy_038">1.5 AI 三要素：算力、算法、数据</h3>
+<p class="academy-p" data-i18n="academy_039"><strong>数据</strong>是原料——需要被处理的海量信息；</p>
+<p class="academy-p" data-i18n="academy_040"><strong>算力</strong>是动力——处理数据的能力；</p>
+<p class="academy-p" data-i18n="academy_041"><strong>算法</strong>是方法——处理数据的规则逻辑。</p>
+<p class="academy-p" data-i18n="academy_042">三者缺一不可。算法效率提升（如 MoE 稀疏架构、模型蒸馏、低精度量化）也会反过来降低单位任务的算力需求。</p>
+<h3 class="academy-h3" data-i18n="academy_043">1.6 AI 算力产业链结构</h3>
+<p class="academy-p" data-i18n="academy_044">上游：芯片与硬件  ├─ AI芯片（GPU/ASIC/NPU）、HBM存储、光模块  ├─ 服务器整机、交换机、网络设备  └─ 供配电、制冷（风冷/液冷）等配套        ↓中游：智算集群与云服务  ├─ 智算中心（AIDC）建设与运营  ├─ 算力互联互通平台、算力调度  └─ GPU 云 / AI IaaS 算力租赁服务        ↓下游：行业应用  ├─ 大模型训练与推理  └─ 智能制造、自动驾驶、金融科技、医疗AI、政务、科研等</p>
+<p class="academy-p" data-i18n="academy_045"><strong>一个关键规律</strong>：利润沿着&amp;quot;芯片—算力基础设施—大模型—行业应用&amp;quot;逐级递减。芯片成本在 Token 成本中占比达 40%–55%，基础设施投入占 15%–20%——这决定了产业链利润池的大头天然沉淀在上游。</p>
+<h3 class="academy-h3" data-i18n="academy_046">1.7 发展历程简述</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>阶段</strong></td><td><strong>时期</strong></td><td><strong>核心特征</strong></td></tr><tr><td>CPU  起步</td><td>2000  年以前</td><td>以  CPU  为主，算力服务于科研与重大工程</td></tr><tr><td>GPU  加速</td><td>2000  年代中期 –2010  年代</td><td>2012  年  AlexNet  借  GPU  突破，深度学习爆发</td></tr><tr><td>异构计算与密度</td><td>2020  年代初</td><td>从 &amp;quot; 摩尔定律 &amp;quot; 转向 &amp;quot; 密度法则 &amp;quot; ， CPU+GPU+XPU  异构架构</td></tr><tr><td>超节点与集群</td><td>2023  年至今</td><td>从千卡向万卡、十万卡集群演进，云 - 边 - 端协同</td></tr><tr><td>推理主导与绿色算力</td><td>2025  年及以后</td><td>从训练主导转向推理主导，液冷与绿色低碳成为重点</td></tr></tbody></table>
+<h2 class="academy-h2" data-i18n="academy_047">第二章　AI算力的使用场景</h2>
+<figure class="academy-fig"><img src="assets/academy_ai_2.jpg" alt="示意图" loading="lazy">
+</figure>
+<figcaption>图 2　AI算力使用场景示意图</figcaption>
+</figure>
+<p class="academy-p" data-i18n="academy_048">AI 算力的应用可归为<strong>训练</strong>与<strong>推理</strong>两大基本场景，并由此延伸到千行百业。</p>
+<h3 class="academy-h3" data-i18n="academy_049">2.1 两大基本场景：训练与推理</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>维度</strong></td><td><strong>训练算力（重算力）</strong></td><td><strong>推理算力（轻算力、高并发）</strong></td></tr><tr><td>任务</td><td>大模型预训练、微调、参数迭代</td><td>模型部署后的实时调用、内容生成</td></tr><tr><td>规模</td><td>千卡 / 万卡级集群，单体规模大</td><td>分布式、碎片化， 7×24  持续调用</td></tr><tr><td>要求</td><td>高算力密度、高带宽互联</td><td>低延迟、高吞吐、高能效</td></tr><tr><td>主导硬件</td><td>高端  GPU （ H100/B200  等）</td><td>NPU 、低功耗  GPU 、推理专用芯片</td></tr><tr><td>趋势</td><td>占比下降但单体需求刚性</td><td>占比快速上升，成为增长核心</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_050"><strong>结构性变化</strong>：2025 年中国 AI 服务器市场中，推理服务器占比已达 67%，训练占 33%；IDC 预测到 2029 年推理算力占比将接近八成。2026 年全球推理算力占 AI 总负载的 70%–80%，中国推理需求约为训练的 8 倍。行业重心正从&amp;quot;训练主导&amp;quot;转向&amp;quot;推理主导&amp;quot;。</p>
+<h3 class="academy-h3" data-i18n="academy_051">2.2 大模型训练与推理</h3>
+<p class="academy-p" data-i18n="academy_052">这是当前 AI 算力最核心的需求来源。GPT-4 的训练算力约为 GPT-3 的 10 倍，需数万张高端 GPU、兆瓦级功耗。随着 DeepSeek 等开源模型凭借&amp;quot;开源、成本低、性能高&amp;quot;出圈，推理算力需求出现结构性爆发——国内日均大模型 Token 调用量突破 140 万亿，对比 2024 年初实现千倍级增长。</p>
+<h3 class="academy-h3" data-i18n="academy_053">2.3 重点行业应用</h3>
+<p class="academy-p" data-i18n="academy_054"><strong>自动驾驶</strong>：感知模型训练与海量路况仿真。小鹏与阿里云在乌兰察布合建&amp;quot;扶摇&amp;quot;智算中心算力达 600 PFLOPS；华为为理想汽车定制专属智算集群。</p>
+<p class="academy-p" data-i18n="academy_055"><strong>医疗健康</strong>：医学影像辅助诊断、药物研发、中医药大模型。消化内镜 AI 辅助诊断使微小病灶检出率提升 10%–30%。</p>
+<p class="academy-p" data-i18n="academy_056"><strong>金融科技</strong>：智能风控、反欺诈、量化交易与投顾。银行用 GPU 集群做蒙特卡洛模拟与风险评级。</p>
+<p class="academy-p" data-i18n="academy_057"><strong>智能制造</strong>：工业质检、预测性维护、数字孪生。工厂用视觉模型检测产线缺陷。</p>
+<p class="academy-p" data-i18n="academy_058"><strong>科研与科学计算</strong>：气象预报、新药研发、材料科学、宇宙模拟。&amp;quot;巢湖明月&amp;quot;支撑 EAST 人造太阳仿真，累计支撑 3000 余个科研项目。</p>
+<p class="academy-p" data-i18n="academy_059"><strong>智慧政务与城市治理</strong>：城市大脑、政务大模型、隐患排查。河北人工智能计算中心已孵化 170 多个场景解决方案。</p>
+<p class="academy-p" data-i18n="academy_060"><strong>互联网与内容</strong>：推荐系统、AIGC 内容生成、影视渲染。</p>
+<h3 class="academy-h3" data-i18n="academy_061">2.4 需求侧信号</h3>
+<p class="academy-p" data-i18n="academy_062">2026 年一季度国内 AI 算力需求同比大增 417%，而有效供给增速仅 128%，供需缺口持续扩大。</p>
+<p class="academy-p" data-i18n="academy_063">中国大模型周调用量已连续多周超过美国，OpenRouter 数据显示中国模型全球份额约 63.5%。</p>
+<p class="academy-p" data-i18n="academy_064">字节、腾讯、阿里等四大云厂商 2026 年资本开支合计预计同比增长超 80%。</p>
+<h2 class="academy-h2" data-i18n="academy_065">第三章　机房建设及成本</h2>
+<figure class="academy-fig"><img src="assets/academy_ai_3.jpg" alt="示意图" loading="lazy">
+</figure>
+<figcaption>图 3　现代化智算中心机房示意图</figcaption>
+</figure>
+<p class="academy-p" data-i18n="academy_066">智算中心（AIDC）是承载 AI 算力的物理底座。与传统数据中心相比，它&amp;quot;不是堆设备，而是堆冗余；最终拼的是运维体系&amp;quot;。</p>
+<h3 class="academy-h3" data-i18n="academy_067">3.1 智算中心 vs 传统 IDC</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>维度</strong></td><td><strong>传统  IDC</strong></td><td><strong>智算中心（ AIDC ）</strong></td></tr><tr><td>核心定位</td><td>机柜、物理服务器托管</td><td>高性能算力交付</td></tr><tr><td>单机柜功率</td><td>4–10 kW</td><td>25–80 kW （训练机柜可达  58.8 kW ）</td></tr><tr><td>计算密度</td><td>低</td><td>极高，机柜区域功率密度  3000–8000 W/㎡</td></tr><tr><td>制冷方式</td><td>风冷为主</td><td>液冷成为新建标配</td></tr><tr><td>投资构成</td><td>土建 + 机电为主</td><td>GPU  服务器占大头</td></tr></tbody></table>
+<h3 class="academy-h3" data-i18n="academy_068">3.2 机房建设的核心构成</h3>
+<ol class="academy-ol"><li data-i18n="academy_069"><strong>IT 硬件</strong>：GPU/AI 服务器、存储、网络设备（交换机、光模块）。</li><li data-i18n="academy_070"><strong>供配电系统</strong>：高压配电、变压器、UPS、蓄电池、备用发电机、巴拿马电源。</li><li data-i18n="academy_071"><strong>制冷系统</strong>：冷水机组、冷却塔、精密空调，以及冷板/浸没液冷系统。</li><li data-i18n="academy_072"><strong>土建与配套</strong>：机房楼、机柜、防静电地板、消防、监控与动环系统。</li><li data-i18n="academy_073"><strong>软件与调度</strong>：集群管理、算力调度平台、AI 框架与开发环境。</li></ol>
+<p class="academy-p" data-i18n="academy_074">设计与验收遵循 GB 50174-2017（A/B/C 三级）、GB 51195-2016 等标准，可选用 Uptime Tier、CQC A 级、等保 2.0 三级等认证。</p>
+<h3 class="academy-h3" data-i18n="academy_075">3.3 液冷：从可选项到必选项</h3>
+<p class="academy-p" data-i18n="academy_076">随着单机柜功率突破 20kW，传统风冷已难以为继，液冷成为新建智算集群的标配。</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>对比维度</strong></td><td><strong>冷板式液冷</strong></td><td><strong>浸没式液冷</strong></td></tr><tr><td>散热原理</td><td>冷板接触  CPU/GPU  间接换热</td><td>服务器全浸没于绝缘冷却液直接换热</td></tr><tr><td>PUE  范围</td><td>1.15–1.25</td><td>1.03–1.10</td></tr><tr><td>功率密度</td><td>最高约  50 kW/ 机柜</td><td>最高  200 kW+/ 机柜</td></tr><tr><td>兼容性</td><td>兼容现有服务器，改造量小</td><td>需定制硬件</td></tr><tr><td>市场成熟度</td><td>约  90%  份额，主流路线</td><td>规模化应用初期</td></tr><tr><td>单机柜投入</td><td>8–12  万元</td><td>30–40  万元（ 3–4  倍）</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_077">政策层面，新建大型/超大型数据中心 PUE 红线普遍要求 ≤1.25（国家枢纽节点 ≤1.2），绿电占比超 80%，&amp;quot;东数西算&amp;quot;枢纽节点液冷渗透率要求不低于 60%。</p>
+<h3 class="academy-h3" data-i18n="academy_078">3.4 核心指标</h3>
+<p class="academy-p" data-i18n="academy_079"><strong>PUE（电源使用效率）</strong>：总能耗 / IT 设备能耗，越接近 1 越节能。全国平均已降至约 1.42，先进项目可低至 1.1–1.15。</p>
+<p class="academy-p" data-i18n="academy_080"><strong>上架率</strong>：已投入使用机柜占比。全国平均约 71%，但部分智算中心实际利用率偏低。</p>
+<p class="academy-p" data-i18n="academy_081"><strong>利用率</strong>：GPU 平均利用率约 30%–40%，存在明显的&amp;quot;算力孤岛&amp;quot;与资源闲置。</p>
+<p class="academy-p" data-i18n="academy_082"><strong>盈亏平衡上架率</strong>：约 40%。低于此线，项目容易亏损。</p>
+<h3 class="academy-h3" data-i18n="academy_083">3.5 成本结构拆解</h3>
+<p class="academy-p" data-i18n="academy_084">智算中心的投资结构与普通建筑项目正好&amp;quot;倒挂&amp;quot;：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>成本项</strong></td><td><strong>占比</strong></td></tr><tr><td>GPU  服务器（含加速卡）</td><td>60%–70% （部分口径  60%–80% ）</td></tr><tr><td>供配电  +  制冷</td><td>20%–25%</td></tr><tr><td>土建  +  其他</td><td>5%–10%</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_085">几个建设成本参考（不同口径差异较大，仅作量级参考）：</p>
+<p class="academy-p" data-i18n="academy_086">单机柜平均投资成本约 20 万元（通用口径）；含高端 GPU 的智算单柜可达 300 万–500 万元。</p>
+<p class="academy-p" data-i18n="academy_087">基础设施单位成本约 1 万–1.5 万元/kW；通用机房每 kW 造价约 5 万元。</p>
+<p class="academy-p" data-i18n="academy_088">一个 100 机柜、6kW/柜的项目总投资约 1500 万元；500 机柜、8kW/柜约 6000 万元。一线城市成本上浮 20%–30%。</p>
+<p class="academy-p" data-i18n="academy_089">1GW 级数据中心端到端建设成本，海外估算约 346 亿–395 亿美元。</p>
+<p class="academy-p" data-i18n="academy_090">业内经验：数据中心建设不是堆设备，是堆冗余；不是堆冗余，是堆可维护性；最终拼的是运维体系。</p>
+<h3 class="academy-h3" data-i18n="academy_091">3.6 选址与&amp;quot;东数西算&amp;quot;</h3>
+<p class="academy-p" data-i18n="academy_092">能源约束正刚性化：大型数据中心需要靠近 110kV 以上、冗余度高的电源点。&amp;quot;东数西算&amp;quot;工程把集群布局在西部枢纽，本质是用绿电资源与气候条件框定选址。截至 2026 年，全国形成&amp;quot;8 大国家算力枢纽 + 10 个国家算力集群 + 3 个算电协同区域&amp;quot;的空间布局；东部、中部、西部、东北智算规模占比约为 55.9%、10.6%、32.6%、0.9%。</p>
+<h2 class="academy-h2" data-i18n="academy_093">第四章　商业机会</h2>
+<figure class="academy-fig"><img src="assets/academy_ai_4.jpg" alt="示意图" loading="lazy">
+</figure>
+<figcaption>图 4　算力商业机会示意图</figcaption>
+</figure>
+<p class="academy-p" data-i18n="academy_094">AI 算力正处于爆发式增长期，从芯片到应用，各环节都孕育着商业机会。</p>
+<h3 class="academy-h3" data-i18n="academy_095">4.1 市场规模与增长</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>细分市场</strong></td><td><strong>规模数据</strong></td></tr><tr><td>中国智能算力规模</td><td>2024  年  725.3 EFLOPS → 2028  年  2781.9 EFLOPS （ CAGR 46.2% ）</td></tr><tr><td>中国  AI  服务器市场</td><td>2024  年  1606.55  亿元  → 2026  年预计  3500  亿元</td></tr><tr><td>中国智算云基础设施 (AI IaaS)</td><td>2025  年  486.7  亿元，同比  +128%</td></tr><tr><td>中国  AIDC  市场</td><td>2026  年预计  1778  亿元， 2030  年近  4000  亿元</td></tr><tr><td>中国算力租赁市场</td><td>2026 Q1  达  680  亿元，全年预计突破  2600  亿元</td></tr><tr><td>全球算力市场</td><td>2025  年超  4200  亿美元， 2030  年  1.2  万亿美元</td></tr><tr><td>全球  AI  资本开支</td><td>瑞银预计  2026  年约  9980  亿美元，同比近翻倍</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_096">&amp;quot;十五五&amp;quot;时期，全国一体化算力网建设预计新增直接投资 4 万亿元，算力新基建成为确定性最强的投资主线之一。</p>
+<h3 class="academy-h3" data-i18n="academy_097">4.2 产业链利润分布与机会方向</h3>
+<p class="academy-p" data-i18n="academy_098">由于利润沿产业链逐级递减，商业机会呈现差异化特征：</p>
+<ol class="academy-ol"><li data-i18n="academy_099"><strong>上游芯片与硬件</strong>——技术壁垒与附加值最高。AI 芯片、HBM 存储、高速光模块、液冷方案是价值高地；国产替代是主线。</li><li data-i18n="academy_100"><strong>中游算力基础设施与云服务</strong>——国产替代最活跃。智算中心建设、算力调度平台、GPU 云、AI IaaS 增长迅猛。</li><li data-i18n="academy_101"><strong>下游行业应用</strong>——从&amp;quot;训练&amp;quot;走向&amp;quot;用&amp;quot;，商业化刚刚起步，空间广阔。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_102">4.3 值得关注的具体机会</h3>
+<p class="academy-p" data-i18n="academy_103"><strong>算力租赁 / CaaS</strong>：供需缺口扩大，量价齐升，高端训练算力&amp;quot;一卡难求&amp;quot;。</p>
+<p class="academy-p" data-i18n="academy_104"><strong>国产算力替代</strong>：英伟达中国份额从 2022 年约 95% 降至 2026 年约 8%，华为昇腾以约 50% 领跑，国产厂商合计份额首破 45%。</p>
+<p class="academy-p" data-i18n="academy_105"><strong>液冷与绿色节能</strong>：PUE 硬约束下，冷板/浸没液冷、余热回收、绿电交易成为刚需。</p>
+<p class="academy-p" data-i18n="academy_106"><strong>算力调度与互联互通</strong>：工信部&amp;quot;1+M+N&amp;quot;算力互联互通体系、算力超市、算力银行等集约化运营模式。</p>
+<p class="academy-p" data-i18n="academy_107"><strong>行业大模型与推理服务</strong>：开源模型降低门槛，中小企业轻量化用算需求爆发，多地发放&amp;quot;算力券&amp;quot;补贴。</p>
+<p class="academy-p" data-i18n="academy_108"><strong>数据合规与信创适配</strong>：《数据安全法》《网络安全法》要求下，数据本地化、等保三级、国产化适配成为核心壁垒。</p>
+<h3 class="academy-h3" data-i18n="academy_109">4.4 竞争格局</h3>
+<p class="academy-p" data-i18n="academy_110"><strong>海外</strong>：英伟达在训练芯片领域占绝对优势（约 68% 全球份额），CUDA 生态构成护城河；CoreWeave、Nebius、Lambda Labs 等新型 AI 云崛起——CoreWeave 2026 Q2 收入 25.8 亿美元（同比 +112%），长期合同储备达 1040 亿美元。</p>
+<p class="academy-p" data-i18n="academy_111"><strong>国内算力租赁四大阵营</strong>：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>阵营</strong></td><td><strong>代表</strong></td><td><strong>特点</strong></td></tr><tr><td>公有云巨头</td><td>阿里云、腾讯云、火山引擎</td><td>占约  65%  收入份额，自有万卡集群</td></tr><tr><td>三大运营商</td><td>电信、移动、联通</td><td>依托东数西算节点，政企订单稳定，占  25%–30%</td></tr><tr><td>专业上市公司</td><td>利通电子、协创数据、行云科技、宏景科技等</td><td>绑定大厂长协，业绩快速兑现</td></tr><tr><td>第三方  IDC  厂商</td><td>各类机房服务商</td><td>提供机柜托管，多与专业算力企业合作</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_112">四大阵营合计市占约 90%–95%。头部企业毛利率约 45%–53%（高毛利）或 25%–35%（中等），核心差异在卡源资质、长协能力与液冷降本能力。</p>
+<h3 class="academy-h3" data-i18n="academy_113">4.5 风险与挑战</h3>
+<p class="academy-p" data-i18n="academy_114"><strong>供应链风险</strong>：高端 GPU 依赖海外供给，出口管制与断供可能冲击产能扩张。</p>
+<p class="academy-p" data-i18n="academy_115"><strong>技术迭代贬值</strong>：GPU 更新周期缩短，旧卡租金与资产价值面临减值压力。</p>
+<p class="academy-p" data-i18n="academy_116"><strong>利用率风险</strong>：大量智算中心利用率偏低（约 20%–37%），存在空置与亏损风险。</p>
+<p class="academy-p" data-i18n="academy_117"><strong>合规风险</strong>：跨境数据、模型训练、等保要求带来的业务约束。</p>
+<p class="academy-p" data-i18n="academy_118"><strong>需求替代风险</strong>：ASIC 专用芯片、高效算法（MoE、蒸馏、量化）可能削弱长期算力需求增速。</p>
+<h2 class="academy-h2" data-i18n="academy_119">第五章　CaaS 算力即服务</h2>
+<figure class="academy-fig"><img src="assets/academy_ai_5.jpg" alt="示意图" loading="lazy">
+</figure>
+<figcaption>图 5　CaaS 算力即服务架构示意图</figcaption>
+</figure>
+<h3 class="academy-h3" data-i18n="academy_120">5.1 什么是 CaaS</h3>
+<p class="academy-p" data-i18n="academy_121"><strong>CaaS（Compute/Computing as a Service，算力即服务）</strong> 是一种以&amp;quot;算力即服务&amp;quot;为核心的模式：拥有算力基础设施的服务商，将搭载 GPU、CPU 等高性能芯片的服务器资源通过云化方式，以<strong>按需付费、弹性租用</strong>的形式出租给有 AI 训练、推理或高性能计算需求的客户。</p>
+<p class="academy-p" data-i18n="academy_122">其本质是<strong>以运营支出（OPEX）替代资本支出（CAPEX）</strong>——客户无需自建机房、一次性大额采购硬件，即可弹性获取算力。算力租赁行业因此被称为 <strong>AI 时代的&amp;quot;算力电厂&amp;quot;</strong>，是连接上游硬件与下游 AI 应用的核心桥梁。</p>
+<h3 class="academy-h3" data-i18n="academy_123">5.2 服务形态与交付模式</h3>
+<p class="academy-p" data-i18n="academy_124">按硬件类型：CPU 通用算力、GPU 主流 AI 算力、DCU/NPU 国产自主算力、ASIC 专用芯片。按交付形态：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>形态</strong></td><td><strong>说明</strong></td><td><strong>适用场景</strong></td></tr><tr><td>整机独占租赁</td><td>服务器资源完全独享，无争抢</td><td>长期大模型训练</td></tr><tr><td>裸金属算力服务</td><td>去除虚拟化层，物理算力直接交付</td><td>低延迟、高稳定性需求</td></tr><tr><td>云算力弹性实例</td><td>虚拟化资源池，秒级启停扩缩</td><td>短期实验、临时推理</td></tr><tr><td>机房托管运维</td><td>客户自有硬件，服务商提供机柜、电力、运维</td><td>有自研硬件的客户</td></tr></tbody></table>
+<h3 class="academy-h3" data-i18n="academy_125">5.3 计费模式的演进</h3>
+<p class="academy-p" data-i18n="academy_126">行业商业模式正经历从&amp;quot;卖资源&amp;quot;到&amp;quot;卖价值&amp;quot;的升级：</p>
+<ol class="academy-ol"><li data-i18n="academy_127"><strong>按时长出租裸算力</strong>——单一租金收益（早期）。</li><li data-i18n="academy_128"><strong>长协包年/包月</strong>——3–5 年大额框架长协，锁定稳定现金流（当前主流）。</li><li data-i18n="academy_129"><strong>Token 收益分成 / 峰谷阶梯定价 / 算力融资租赁</strong>——按模型 Token 调用量收费，甚至项目收益分成，实现风险共担（行业变革方向）。</li></ol>
+<p class="academy-p" data-i18n="academy_130">里程碑式转变：产业逻辑从&amp;quot;售卖硬件资源&amp;quot;转向&amp;quot;共享业务价值&amp;quot;。例如 CoreWeave 联合 AI 应用公司采用 Token 按量计费；国内百度智能云联合文旅 AI 企业试点按变现营收分成。</p>
+<h3 class="academy-h3" data-i18n="academy_131">5.4 平台技术架构</h3>
+<p class="academy-p" data-i18n="academy_132"><strong>异构高密硬件层</strong>：GPU、DCU、NPU 多类型芯片协同；</p>
+<p class="academy-p" data-i18n="academy_133"><strong>全域智能调度层</strong>：跨地域、跨品牌算力统一管理与动态分配；</p>
+<p class="academy-p" data-i18n="academy_134"><strong>高速低时延网络</strong>：高带宽算力专网，保障海量数据传输；</p>
+<p class="academy-p" data-i18n="academy_135"><strong>绿色能效管控</strong>：液冷散热、智能温控，持续降低 PUE；</p>
+<p class="academy-p" data-i18n="academy_136"><strong>云边协同架构</strong>：算力向边缘下沉，满足实时推理需求。</p>
+<p class="academy-p" data-i18n="academy_137">全球算力平均利用率仅 30%–40%，智能调度的价值正在于&amp;quot;在不增加硬件采购的前提下提升利用率、降低单位算力综合成本&amp;quot;。</p>
+<h3 class="academy-h3" data-i18n="academy_138">5.5 代表玩家</h3>
+<p class="academy-p" data-i18n="academy_139"><strong>公有云/AI 云</strong>：阿里云、华为云、百度智能云、火山引擎、AWS、Google Cloud、CoreWeave、Lambda Labs。</p>
+<p class="academy-p" data-i18n="academy_140"><strong>专业算力服务商</strong>：并行科技、呼呼智算（自研 CaaS 弹性调度平台）、数商云等。</p>
+<p class="academy-p" data-i18n="academy_141"><strong>国产算力生态</strong>：适配昇腾、寒武纪、燧原、海光等国产芯片，服务政务、金融等信创场景。</p>
+<h3 class="academy-h3" data-i18n="academy_142">5.6 选择平台的考量因素</h3>
+<ol class="academy-ol"><li data-i18n="academy_143"><strong>性能匹配</strong>：训练选 H100/H200 等高端卡，推理可选 T4/国产 NPU；</li><li data-i18n="academy_144"><strong>成本模型</strong>：长期项目优先包年折扣，短期实验采用竞价/弹性实例；</li><li data-i18n="academy_145"><strong>服务稳定性</strong>：关注 SLA（建议 ≥99.9%）与 7×24 运维能力；</li><li data-i18n="academy_146"><strong>技术支持</strong>：AI 框架预装、故障响应速度；</li><li data-i18n="academy_147"><strong>合规性</strong>：数据存储位置、加密方案、信创适配是否符合行业法规。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_148">5.7 未来趋势</h3>
+<p class="academy-p" data-i18n="academy_149"><strong>计费革新</strong>：从&amp;quot;售卖算力时长&amp;quot;全面转向&amp;quot;按 Token 业务价值计费&amp;quot;；</p>
+<p class="academy-p" data-i18n="academy_150"><strong>国产替代</strong>：形成&amp;quot;高端训练用英伟达 + 推理用国产&amp;quot;的异构格局；</p>
+<p class="academy-p" data-i18n="academy_151"><strong>算网协同</strong>：算力调度与高速专网一体化成为核心竞争力；</p>
+<p class="academy-p" data-i18n="academy_152"><strong>生态化运营</strong>：从单一租赁走向&amp;quot;算力平台 + 行业应用&amp;quot;完整生态；</p>
+<p class="academy-p" data-i18n="academy_153"><strong>绿色低碳</strong>：液冷机房、可再生能源成为新建智算中心硬性要求；</p>
+<p class="academy-p" data-i18n="academy_154"><strong>边缘租赁兴起</strong>：低时延边缘算力支撑自动驾驶、本地实时推理。</p>
+<h2 class="academy-h2" data-i18n="academy_155">第六章　总结与展望</h2>
+<p class="academy-p" data-i18n="academy_156">AI 算力是人工智能时代的底层基础设施与核心生产力。回顾全文，可归纳为六点核心认知：</p>
+<ol class="academy-ol"><li data-i18n="academy_157"><strong>概念层面</strong>：AI 算力是面向训练/推理的专用计算能力，以 FLOPS/TOPS 度量，由 GPU/NPU/TPU 等芯片提供，与数据、算法共同构成 AI 三要素。</li><li data-i18n="academy_158"><strong>应用层面</strong>：需求正从&amp;quot;训练主导&amp;quot;转向&amp;quot;推理主导&amp;quot;，并向自动驾驶、医疗、金融、制造、科研等行业深度渗透。</li><li data-i18n="academy_159"><strong>建设层面</strong>：智算中心投资高度集中于 GPU 服务器（60%–70%），液冷与绿色节能成为新标配，PUE 与利用率是关键运营指标。</li><li data-i18n="academy_160"><strong>商业层面</strong>：市场规模高速增长、供需缺口扩大，利润池集中在产业链上游，国产替代与 CaaS 是最确定的机会主线。</li><li data-i18n="academy_161"><strong>模式层面</strong>：CaaS 以 OPEX 替代 CAPEX，计费从按时长走向按 Token/价值分成，是算力普惠化的关键路径。</li><li data-i18n="academy_162"><strong>风险层面</strong>：供应链管制、技术迭代贬值、利用率偏低与合规要求，是需要持续关注的挑战。</li></ol>
+<p class="academy-p" data-i18n="academy_163">放眼未来，随着全国一体化算力网的推进、国产算力的成熟与推理需求的爆发，算力将像水电一样成为随处可得的基础资源。能够提供<strong>高效、弹性、安全可信的一体化算力服务</strong>的企业，将牢牢掌握 AI 时代的产业主动权。</p>
+<p class="academy-p" data-i18n="academy_164">附录</p>
+<h3 class="academy-h3" data-i18n="academy_165">附录 A　关键数据速查表</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>指标</strong></td><td><strong>数值</strong></td><td><strong>口径 / 时点</strong></td></tr><tr><td>中国智能算力规模</td><td>2185 EFLOPS (FP16)</td><td>工信部， 2026-06</td></tr><tr><td>中国  AI  服务器市场</td><td>约  3500  亿元</td><td>2026  预测</td></tr><tr><td>中国算力租赁市场</td><td>突破  2600  亿元</td><td>2026  预测</td></tr><tr><td>中国  AIDC  市场</td><td>1778  亿元</td><td>2026  预测</td></tr><tr><td>推理算力占比</td><td>67% （服务器） /  近  80% （ 2029  预测）</td><td>IDC</td></tr><tr><td>智算中心  GPU  服务器成本占比</td><td>60%–70%</td><td>行业拆解</td></tr><tr><td>新建大型数据中心  PUE  红线</td><td>≤1.25</td><td>政策要求</td></tr><tr><td>H100  一年期租赁价</td><td>约  2.35  美元 / 卡时</td><td>2026-03</td></tr><tr><td>英伟达中国市场份额</td><td>由约  95%  降至约  8%</td><td>2022→2026</td></tr><tr><td>国产算力芯片合计份额</td><td>首破  45%</td><td>2026</td></tr></tbody></table>
+<h3 class="academy-h3" data-i18n="academy_166">附录 B　术语表</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td><strong>术语</strong></td><td><strong>全称  /  含义</strong></td></tr><tr><td>FLOPS</td><td>每秒浮点运算次数，算力核心度量单位</td></tr><tr><td>TOPS</td><td>每秒万亿次（定点 / 整数）运算，常用于推理</td></tr><tr><td>EFLOPS / PFLOPS</td><td>每秒百亿亿次  /  千万亿次浮点运算</td></tr><tr><td>GPU / NPU / TPU / ASIC</td><td>图形 / 神经网络 / 张量处理器 / 专用集成电路</td></tr><tr><td>HBM</td><td>高带宽存储器， AI  芯片关键配套</td></tr><tr><td>AIDC</td><td>人工智能数据中心（智算中心）</td></tr><tr><td>PUE</td><td>电源使用效率，衡量数据中心能效</td></tr><tr><td>AI IaaS</td><td>AI  基础设施即服务</td></tr><tr><td>CaaS</td><td>算力即服务（ Compute as a Service ）</td></tr><tr><td>Token</td><td>大模型处理文本的基本单位，新型计费基准</td></tr><tr><td>东数西算</td><td>将东部算力需求引导到西部枢纽的国家工程</td></tr><tr><td>液冷（冷板 / 浸没）</td><td>通过液体为服务器散热的技术路线</td></tr><tr><td>SLA</td><td>服务等级协议，衡量服务稳定性</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_167">免责声明：本手册内容整理自公开资料，旨在提供系统性的知识参考。文中数据因来源与统计口径不同可能存在差异，请以官方最新发布为准。本手册不构成任何投资、采购或决策建议。</p>
+        </div>
+        <div id="academyPaneChain" class="academy-pane hidden">
+            <div class="academy-hero">
+                <p class="academy-hero-eyebrow">BLOCKCHAIN · TECHNOLOGY MAP</p>
+                <h1 class="academy-hero-title" data-i18n="academy_168">区块链核心知识手册</h1>
+                <p class="academy-hero-sub" data-i18n="academy_169">从概念到公链开发 —— 系统梳理概念 / 术语 / 共识 / 开发 / 生态</p>
+                <div class="academy-hero-meta">概念 · 术语 · 共识 · 开发 · 生态　|　知识整理类参考资料　|　V1.0</div>
+            </div>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td>TL;DR</td></tr><tr><td>      本手册系统梳理区块链的基础概念与常用术语，深入讲解哈希、挖矿算力单位、PoW/PoS 等共识机制，并介绍如何从零开发一条公链，以及 EVM 链与非 EVM 链的区别。面向希望建立完整区块链知识框架的初学者与开发者。    </td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_170">目录</p>
+<ol class="academy-ol"><li data-i18n="academy_171">1. 区块链基础概念</li><li data-i18n="academy_172">2. 常用术语速查</li><li data-i18n="academy_173">3. 哈希值与哈希函数</li><li data-i18n="academy_174">4. 挖矿与算力单位</li><li data-i18n="academy_175">5. 共识机制：PoW、PoS 及其他</li><li data-i18n="academy_176">6. 智能合约与虚拟机</li><li data-i18n="academy_177">7. EVM 链与非 EVM 链</li><li data-i18n="academy_178">8. 如何从零开发一条公链</li><li data-i18n="academy_179">9. 常见误区与总结</li><li data-i18n="academy_180">10. 延伸阅读与参考来源</li></ol>
+<figure class="academy-fig"><img src="assets/academy_chain_1.jpg" alt="示意图" loading="lazy">
+</figure>
+<p class="academy-p" data-i18n="academy_181">本章从最基础的定义出发，解释区块链是什么、它具备哪些核心特征，以及一个区块的内部结构，帮助读者建立整体认知框架。</p>
+<h3 class="academy-h3" data-i18n="academy_182">1.1 什么是区块链</h3>
+<p class="academy-p" data-i18n="academy_183">区块链（Blockchain）本质上是一种<strong>分布式账本技术（DLT）</strong>：数据被打包成一个个&amp;quot;区块&amp;quot;（Block），每个区块按时间顺序通过密码学方式链接成一条&amp;quot;链&amp;quot;（Chain），并由网络中众多节点共同维护，而非由某个中心化机构独占。</p>
+<p class="academy-p" data-i18n="academy_184">可以用一个通俗的比喻理解：传统记账像&amp;quot;村里只有村长一人记账&amp;quot;，账本集中在村长手里；区块链则像&amp;quot;全村每个人都记一份账&amp;quot;，任何一笔交易都要广播给所有人、经大家共同确认后才写入账本。因此 blockchain 常被称为<strong>&amp;quot;去中心化的公共账本&amp;quot;</strong>。</p>
+<p class="academy-p" data-i18n="academy_185">2008 年，化名&amp;quot;中本聪&amp;quot;的人发表比特币白皮书，区块链作为比特币的底层技术诞生。区块链与比特币的关系是：<strong>区块链是比特币的技术支撑，比特币是区块链的第一个应用</strong>。此后区块链经历了三个发展阶段：</p>
+<ol class="academy-ol"><li data-i18n="academy_186"><strong>第一阶段（2008—2013）</strong>：以比特币为代表的加密货币阶段；</li><li data-i18n="academy_187"><strong>第二阶段（2014—2017）</strong>：以以太坊诞生为标志的智能合约阶段；</li><li data-i18n="academy_188"><strong>第三阶段（2017 至今）</strong>：高性能公链、Layer 2、跨链、DeFi/NFT 等多元化生态阶段。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_189">1.2 核心特征</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td>特征</td><td>含义</td></tr><tr><td>去中心化</td><td>没有单一中心机构控制，数据由全网节点共同维护</td></tr><tr><td>不可篡改</td><td>数据一旦写入，修改需同时改写后续所有区块并控制多数节点，成本极高</td></tr><tr><td>可追溯</td><td>每笔交易带时间戳并按顺序链接，全过程留痕、可审计</td></tr><tr><td>公开透明</td><td>链上数据对参与者公开（公链场景），规则与结果可验证</td></tr><tr><td>集体维护</td><td>节点通过共识机制共同记账，无需信任单一第三方</td></tr><tr><td>高可靠</td><td>数据冗余存储在大量节点，个别节点故障不影响系统运行</td></tr></tbody></table>
+<h3 class="academy-h3" data-i18n="academy_190">1.3 区块的结构</h3>
+<p class="academy-p" data-i18n="academy_191">一个典型区块由两部分组成：</p>
+<ol class="academy-ol"><li data-i18n="academy_192"><strong>区块头（Block Header）</strong>：包含版本号、时间戳、前一区块哈希、默克尔根（Merkle Root）、随机数（Nonce）、难度目标等元数据；</li><li data-i18n="academy_193"><strong>区块体（Block Body）</strong>：包含该区块打包的具体交易列表。</li></ol>
+<p class="academy-p" data-i18n="academy_194">其中&amp;quot;前一区块哈希&amp;quot;写入区块头，是形成链式结构、保证不可篡改的关键：一旦某历史区块数据被改动，其后所有区块的哈希都会对不上，改动立即被网络发现。</p>
+<h2 class="academy-h2" data-i18n="academy_195">2. 常用术语速查</h2>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td>术语</td><td>英文/缩写</td><td>简要解释</td></tr><tr><td>节点</td><td>Node</td><td>运行区块链客户端、参与数据存储与验证的计算机</td></tr><tr><td>区块</td><td>Block</td><td>打包一批交易的数据结构，是账本的&amp;quot;一页&amp;quot;</td></tr><tr><td>创世区块</td><td>Genesis Block</td><td>链上第一个区块，所有区块的起点</td></tr><tr><td>共识机制</td><td>Consensus</td><td>节点之间就账本状态达成一致的规则（如 PoW、PoS）</td></tr><tr><td>矿工</td><td>Miner</td><td>在 PoW 网络中通过算力竞争出块并获得奖励的角色</td></tr><tr><td>验证者</td><td>Validator</td><td>在 PoS 网络中通过质押代币来验证并出块的角色</td></tr><tr><td>质押</td><td>Staking</td><td>锁定一定数量的代币作为担保以参与共识</td></tr><tr><td>双花</td><td>Double Spending</td><td>同一笔数字资产被重复花费的问题，共识机制要解决的核心难题</td></tr><tr><td>51% 攻击</td><td>51% Attack</td><td>攻击者掌握全网超过一半算力/权益，试图重写链历史</td></tr><tr><td>Gas</td><td>Gas</td><td>衡量链上操作计算工作量的单位，用于计价手续费</td></tr><tr><td>智能合约</td><td>Smart Contract</td><td>部署在链上、可自动执行的代码程序</td></tr><tr><td>代币</td><td>Token</td><td>基于区块链发行的代币，常见标准如 ERC-20、ERC-721</td></tr><tr><td>钱包</td><td>Wallet</td><td>管理私钥/公钥、签名交易的工具</td></tr><tr><td>私钥 / 公钥</td><td>Private / Public Key</td><td>非对称密钥对：私钥保密用于签名，公钥可公开用于验证与收款</td></tr><tr><td>地址</td><td>Address</td><td>由公钥推导出的收款标识，类似银行账号</td></tr><tr><td>DApp</td><td>Decentralized App</td><td>基于区块链的去中心化应用</td></tr><tr><td>分叉</td><td>Fork</td><td>协议规则变更导致链产生分叉，分硬分叉与软分叉</td></tr><tr><td>Layer 2</td><td>L2</td><td>建立在主链（L1）之上的扩容方案，如 Rollup、状态通道</td></tr><tr><td>跨链</td><td>Cross-chain</td><td>实现不同区块链之间资产与信息互通的技术</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_196">注：账户模型上，比特币采用 <strong>UTXO（未花费交易输出）模型</strong>，以太坊采用<strong>账户余额模型</strong>；二者是两类主流的状态记录方式。</p>
+<figure class="academy-fig"><img src="assets/academy_chain_2.jpg" alt="示意图" loading="lazy">
+</figure>
+<p class="academy-p" data-i18n="academy_197">哈希是区块链最底层的密码学基石。本章讲解哈希值的定义与特性，并说明它如何支撑区块链接、数据完整性验证与挖矿。</p>
+<h3 class="academy-h3" data-i18n="academy_198">3.1 什么是哈希值</h3>
+<p class="academy-p" data-i18n="academy_199">哈希值（Hash Value，又称散列值、数字指纹）是把<strong>任意长度的数据</strong>，通过公开的哈希算法（如 SHA-256、Keccak-256）计算后得到的<strong>固定长度字符串</strong>。可以把它理解为数据的&amp;quot;身份证号&amp;quot;或&amp;quot;指纹&amp;quot;：数据只要有一点点变化，哈希值就会完全不同。</p>
+<p class="academy-p" data-i18n="academy_200">例如，SHA-256 的输出固定为 256 位（64 个十六进制字符）：</p>
+<ol class="academy-ol"><li data-i18n="academy_201">输入 hello → 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</li><li data-i18n="academy_202">输入 Hello（仅首字母大小写不同）→ 得到完全不同的哈希值。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_203">3.2 密码学哈希函数的特性</h3>
+<p class="academy-p" data-i18n="academy_204">一个适合区块链使用的密码学哈希函数应具备：</p>
+<ol class="academy-ol"><li data-i18n="academy_205"><strong>确定性</strong>：相同输入永远得到相同输出；</li><li data-i18n="academy_206"><strong>单向性（不可逆）</strong>：由输入算哈希容易，由哈希反推输入在计算上不可行；</li><li data-i18n="academy_207"><strong>抗碰撞性</strong>：极难找到两个不同输入产生相同哈希值；</li><li data-i18n="academy_208"><strong>雪崩效应</strong>：输入微小改动会导致输出巨大差异；</li><li data-i18n="academy_209"><strong>快速计算</strong>：给定输入能迅速算出哈希。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_210">3.3 哈希在区块链中的作用</h3>
+<ol class="academy-ol"><li data-i18n="academy_211"><strong>标识与链接区块</strong>：区块 ID、交易 ID 都是哈希值；把前一区块哈希写入当前区块头，形成不可篡改的链式结构；</li><li data-i18n="academy_212"><strong>默克尔树（Merkle Tree）</strong>：把区块内交易两两哈希、层层汇总，最终得到一个&amp;quot;默克尔根&amp;quot;存入区块头。只要根哈希匹配，就可证明整批交易未被篡改，并支持轻节点高效验证；</li><li data-i18n="academy_213"><strong>挖矿</strong>：PoW 挖矿本质是不断变换随机数（Nonce）计算区块头哈希，直到结果满足难度目标（如前若干位为 0）；</li><li data-i18n="academy_214"><strong>地址与签名</strong>：钱包地址由公钥经哈希等运算生成，数字签名也依赖哈希。</li></ol>
+<p class="academy-p" data-i18n="academy_215">常见算法：比特币用 <strong>SHA-256</strong>（实际是双 SHA-256，SHA-256d）；以太坊用 <strong>Keccak-256</strong>（常被称为 SHA-3 风格）。MD5 已发现严重漏洞，不应用于安全场景。</p>
+<figure class="academy-fig"><img src="assets/academy_chain_3.jpg" alt="示意图" loading="lazy">
+</figure>
+<p class="academy-p" data-i18n="academy_216">挖矿是 PoW 网络中产生新区块与分配奖励的过程。本章介绍挖矿的本质、算力的计量单位，以及算力与网络安全、难度之间的关系。</p>
+<h3 class="academy-h3" data-i18n="academy_217">4.1 什么是挖矿</h3>
+<p class="academy-p" data-i18n="academy_218">在 PoW 网络中，&amp;quot;挖矿&amp;quot;指矿工用计算设备不断尝试随机数（Nonce），对区块头做哈希运算，寻找一个满足网络难度目标（哈希值小于某个阈值，如前导零个数达标）的合法哈希。谁先找到，谁就获得出块权与奖励（区块奖励 + 交易手续费）。这个过程没有捷径，只能靠大量随机&amp;quot;碰撞&amp;quot;尝试，因此比拼的是算力。</p>
+<h3 class="academy-h3" data-i18n="academy_219">4.2 算力（哈希率）的单位</h3>
+<p class="academy-p" data-i18n="academy_220">算力（Hashrate / Hash Rate），又称哈希率，指<strong>每秒可进行多少次哈希计算</strong>，单位为 H/s（hash per second）。由于数值极大，采用国际单位制词头逐级放大：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td>单位</td><td>全称</td><td>数值（次/秒）</td><td>典型场景</td></tr><tr><td>H/s</td><td>Hash/s</td><td>1</td><td>基准单位</td></tr><tr><td>kH/s（KH/s）</td><td>kilo</td><td>1,000（10³）</td><td>早期 CPU 挖矿</td></tr><tr><td>MH/s</td><td>mega</td><td>1,000,000（10⁶）</td><td>早期 GPU、部分小币种</td></tr><tr><td>GH/s</td><td>giga</td><td>10⁹</td><td>早期 ASIC 矿机</td></tr><tr><td>TH/s</td><td>tera</td><td>10¹²</td><td>现代 ASIC 矿机（如蚂蚁 S21 约 200 TH/s）</td></tr><tr><td>PH/s</td><td>peta</td><td>10¹⁵</td><td>大型矿场</td></tr><tr><td>EH/s</td><td>exa</td><td>10¹⁸</td><td>整个比特币网络算力（数百 EH/s 量级）</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_221">换算关系：1 P = 1024 T，1 T = 1024 G，1 G = 1024 M，1 M = 1024 k（工程上也常按 1000 近似）。</p>
+<h3 class="academy-h3" data-i18n="academy_222">4.3 算力、难度与安全</h3>
+<ol class="academy-ol"><li data-i18n="academy_223"><strong>难度调整</strong>：比特币每约 2016 个区块（约两周）根据全网算力自动调整挖矿难度，使平均出块时间稳定在约 10 分钟。算力增加不会让出块变快，只会抬高竞争门槛；</li><li data-i18n="academy_224"><strong>安全性</strong>：全网算力越高，攻击者想发动 51% 攻击、重写历史所需的硬件与电力成本就越高，网络越安全；</li><li data-i18n="academy_225"><strong>收益</strong>：矿工收益与其占全网算力的份额成正比，因此挖矿是持续的&amp;quot;军备竞赛&amp;quot;，也带来高能耗争议。</li></ol>
+<p class="academy-p" data-i18n="academy_226">注意：算力高不等于交易确认快。出块间隔由难度调整维持稳定；提升交易吞吐主要靠 Layer 2 与扩容方案。</p>
+<figure class="academy-fig"><img src="assets/academy_chain_4.jpg" alt="示意图" loading="lazy">
+</figure>
+<p class="academy-p" data-i18n="academy_227">共识机制决定&amp;quot;谁来出块、如何达成一致&amp;quot;，是区块链的核心。它要解决的本质问题是：在互不信任的分布式网络中，让所有节点对同一份账本状态达成共识，并让作恶在经济上不划算。</p>
+<h3 class="academy-h3" data-i18n="academy_228">5.1 PoW（工作量证明，Proof of Work）</h3>
+<p class="academy-p" data-i18n="academy_229"><strong>原理</strong>：矿工通过消耗算力求解数学难题（寻找满足难度目标的哈希），最先解出者获得出块权与奖励；若要篡改历史，必须重做相应区块及其后所有区块的工作量，成本极高。</p>
+<ol class="academy-ol"><li data-i18n="academy_230">代表项目：比特币、莱特币、狗狗币；</li><li data-i18n="academy_231">优点：安全性历经长期实战检验、抗攻击能力强、去中心化程度高、参与开放；</li><li data-i18n="academy_232">缺点：能耗巨大、依赖专用硬件（ASIC）、出块较慢、可扩展性有限。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_233">5.2 PoS（权益证明，Proof of Stake）</h3>
+<p class="academy-p" data-i18n="academy_234"><strong>原理</strong>：不再比拼算力，而是由用户<strong>质押（Stake）代币</strong>成为验证者，系统按质押量等因素随机选择验证者来出块与验证；诚实参与获得奖励，作恶则被<strong>罚没（Slashing）</strong>部分质押。安全性由经济激励与惩罚保障。</p>
+<ol class="academy-ol"><li data-i18n="academy_235">代表项目：以太坊（2022 年&amp;quot;合并&amp;quot;后转为 PoS）、Solana、Cardano；</li><li data-i18n="academy_236">优点：能耗极低、无需专用硬件、参与门槛低、最终确认更快、可扩展性更好；</li><li data-i18n="academy_237">缺点：可能导致财富集中与中心化、实战历史短于 PoW、机制更复杂。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_238">5.3 PoW 与 PoS 对比</h3>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td>维度</td><td>PoW</td><td>PoS</td></tr><tr><td>出块依据</td><td>算力竞争</td><td>质押代币 + 随机选择</td></tr><tr><td>能源消耗</td><td>高</td><td>低</td></tr><tr><td>硬件要求</td><td>专用矿机（ASIC/GPU）</td><td>普通服务器即可</td></tr><tr><td>参与门槛</td><td>高（设备 + 电力成本）</td><td>较低（持有并质押代币）</td></tr><tr><td>安全模型</td><td>物理算力/能源成本</td><td>经济质押 + 罚没机制</td></tr><tr><td>代表项目</td><td>比特币、莱特币</td><td>以太坊、Solana、Cardano</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_239">没有绝对的优劣：PoW 在追求极致安全与去中心化时更受青睐，PoS 在效率、能耗与可扩展性上更具优势，不同公链按自身目标做取舍。</p>
+<h3 class="academy-h3" data-i18n="academy_240">5.4 其他共识机制</h3>
+<ol class="academy-ol"><li data-i18n="academy_241"><strong>DPoS（委托权益证明）</strong>：持币者投票选出少量&amp;quot;超级节点&amp;quot;出块，性能高但牺牲部分去中心化，代表如 EOS、TRON；</li><li data-i18n="academy_242"><strong>PoA（权威证明）</strong>：由授权节点出块，常用于联盟链/测试网；</li><li data-i18n="academy_243"><strong>PoH（历史证明）</strong>：Solana 使用，为事件提供可验证的时间顺序，配合 PoS 实现高吞吐；</li><li data-i18n="academy_244"><strong>BFT 类（如 PBFT、Tendermint）</strong>：适合高性能、快速最终性的网络。</li></ol>
+<h2 class="academy-h2" data-i18n="academy_245">6. 智能合约与虚拟机</h2>
+<p class="academy-p" data-i18n="academy_246">智能合约让区块链从&amp;quot;账本&amp;quot;升级为&amp;quot;可编程平台&amp;quot;。本章介绍智能合约的概念与其运行环境——虚拟机，为后续理解 EVM 链与非 EVM 链做铺垫。</p>
+<h3 class="academy-h3" data-i18n="academy_247">6.1 智能合约</h3>
+<p class="academy-p" data-i18n="academy_248">智能合约（Smart Contract）是部署在区块链上、按预设规则自动执行的代码程序。它把&amp;quot;如果发生 X，则执行 Y&amp;quot;的逻辑写进链上，由网络节点共同执行，结果不可篡改、无需中介。它是 DeFi、NFT、DAO 等应用的基础。常见开发语言为 Solidity（EVM）、Rust（Solana）、Move（Aptos/Sui）等。</p>
+<h3 class="academy-h3" data-i18n="academy_249">6.2 虚拟机（VM）</h3>
+<p class="academy-p" data-i18n="academy_250">智能合约运行在一个隔离的执行环境——虚拟机中。虚拟机定义了指令集（opcode）、状态模型、计费方式（Gas），并沙箱化执行，防止合约影响底层网络。虚拟机的设计直接决定公链的开发语言、性能与生态兼容性，这也是区分 EVM 链与非 EVM 链的根本。</p>
+<figure class="academy-fig"><img src="assets/academy_chain_5.jpg" alt="示意图" loading="lazy">
+</figure>
+<p class="academy-p" data-i18n="academy_251">按&amp;quot;智能合约如何执行&amp;quot;这条主线，公链可分为 <strong>EVM 链</strong>与<strong>非 EVM 链</strong>两大类。可用一个比喻理解：虚拟机就像手机的操作系统，EVM 链都跑同一个&amp;quot;操作系统&amp;quot;，应用（合约）容易迁移；非 EVM 链各有各的&amp;quot;操作系统&amp;quot;，应用需重写，但往往更快或更安全。</p>
+<h3 class="academy-h3" data-i18n="academy_252">7.1 什么是 EVM 链</h3>
+<p class="academy-p" data-i18n="academy_253">EVM（Ethereum Virtual Machine，以太坊虚拟机）是以太坊执行智能合约的运行时环境，定义了标准指令集、沙箱执行模型和基于 Gas 的计费机制。</p>
+<p class="academy-p" data-i18n="academy_254"><strong>EVM 兼容链</strong>指实现了与 EVM 相同规范、可直接运行为以太坊编写的合约（Solidity/Vyper）的区块链。典型代表：BNB Smart Chain、Polygon PoS、Avalanche C-Chain、Arbitrum、Optimism 等。</p>
+<p class="academy-p" data-i18n="academy_255">优势：</p>
+<ol class="academy-ol"><li data-i18n="academy_256"><strong>生态成熟</strong>：可复用 Hardhat、Foundry、Remix、Etherscan、MetaMask 等工具与 OpenZeppelin 等审计过的合约库；</li><li data-i18n="academy_257"><strong>可移植性强</strong>：同一份 Solidity 合约几乎不改就能部署到多条 EVM 链；</li><li data-i18n="academy_258"><strong>人才与流动性集中</strong>：开发者多、代码经过大量实战检验。</li></ol>
+<p class="academy-p" data-i18n="academy_259">局限：串行执行导致吞吐受限、存储成本高、合约有大小上限，并留有重入等历史设计隐患。</p>
+<h3 class="academy-h3" data-i18n="academy_260">7.2 什么是非 EVM 链</h3>
+<p class="academy-p" data-i18n="academy_261">非 EVM 链指自建执行环境、使用自有虚拟机与编程语言的公链。代表：</p>
+<table class="academy-table"><tbody><tr class="academy-th-row"><td>链</td><td>虚拟机/语言</td><td>特点</td></tr><tr><td>Solana</td><td>SVM（Sealevel）/ Rust</td><td>交易声明所访问账户，支持并行执行，高吞吐、低延迟</td></tr><tr><td>Aptos / Sui</td><td>MoveVM / Move</td><td>面向资源的语言，资产不可被复制或误销毁，安全性强</td></tr><tr><td>Polkadot / NEAR</td><td>WASM / Rust 等</td><td>基于 WebAssembly，可用多种主流语言编写</td></tr><tr><td>Cardano</td><td>Plutus / eUTXO</td><td>受 Haskell 启发，扩展 UTXO 模型</td></tr></tbody></table>
+<p class="academy-p" data-i18n="academy_262">优势：并行执行带来更高性能、语言设计更安全（如 Move 的类型层防双花）、本地费用市场等创新；劣势：工具链与生态相对年轻、需学习新语言、跨链流动性需通过桥接且桥存在安全风险。</p>
+<h3 class="academy-h3" data-i18n="academy_263">7.3 如何选择</h3>
+<ol class="academy-ol"><li data-i18n="academy_264">看重<strong>生态、工具、人才与快速上线</strong> → 选 EVM 链；</li><li data-i18n="academy_265">看重<strong>高吞吐、低延迟或更强安全语言</strong>（如高频交易、游戏）→ 考虑非 EVM 链；</li><li data-i18n="academy_266">注意钱包与地址格式不通用：EVM 地址在 Solana、Sui 上不能直接使用；跨生态互通依赖跨链桥，而桥是历史上损失最惨重的攻击面之一。</li></ol>
+<figure class="academy-fig"><img src="assets/academy_chain_6.jpg" alt="示意图" loading="lazy">
+</figure>
+<p class="academy-p" data-i18n="academy_267">开发一条公链是一项系统工程，核心是&amp;quot;让多台互不信任的计算机通过代码达成一致&amp;quot;。下面按阶段给出路线图。</p>
+<h3 class="academy-h3" data-i18n="academy_268">8.1 第一阶段：定位与设计</h3>
+<ol class="academy-ol"><li data-i18n="academy_269"><strong>明确定位</strong>：通用智能合约平台，还是特定领域的高性能链？目标用户、行业痛点、差异化优势、预期 TPS 是什么？</li><li data-i18n="academy_270"><strong>选择共识机制</strong>：PoW / PoS / DPoS / BFT 类，权衡安全、去中心化、性能与激励；</li><li data-i18n="academy_271"><strong>设计代币经济（Tokenomics）</strong>：发行总量与分配、区块奖励、Gas 费机制、通胀/通缩模型、治理代币。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_272">8.2 第二阶段：技术架构</h3>
+<ol class="academy-ol"><li data-i18n="academy_273"><strong>网络层</strong>：P2P 架构（节点发现、消息广播、同步），常用 libp2p 等库，实现 Gossip 协议；</li><li data-i18n="academy_274"><strong>数据层</strong>：区块结构（区块头 + 交易列表）、默克尔树、账户模型（UTXO 或账户余额）、状态存储（如 Patricia Trie）、数据库选型（LevelDB / RocksDB）；</li><li data-i18n="academy_275"><strong>合约层</strong>：选择虚拟机（EVM / WASM / Move 或自研）、合约语言、Gas 计量、沙箱隔离；</li><li data-i18n="academy_276"><strong>扩展方案</strong>：分片、Layer 2（状态通道、侧链、Rollup）、跨链互操作。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_277">8.3 第三阶段：核心实现</h3>
+<ol class="academy-ol"><li data-i18n="academy_278"><strong>开发语言</strong>：Go（生态成熟、快速验证）、Rust（内存安全、高性能）、C++（比特币、EOS）等；</li><li data-i18n="academy_279"><strong>密码学基础</strong>：哈希（SHA-256、Keccak）、椭圆曲线签名（ECDSA / EdDSA）、零知识证明等；</li><li data-i18n="academy_280"><strong>共识实现</strong>：验证者选举、出块与投票、罚没（Slashing）条件、最终性确认、分叉时的最长链/规则选择；</li><li data-i18n="academy_281"><strong>P2P 网络</strong>：节点发现、安全连接、交易广播、区块传播、断线重连；</li><li data-i18n="academy_282"><strong>钱包与账户</strong>：密钥生成、交易签名、地址管理。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_283">8.4 第四阶段：配套组件</h3>
+<p class="academy-p" data-i18n="academy_284">一条可用的公链还需要：钱包、区块浏览器、RPC/API 层、SDK（JS/TS、Rust、Go）、治理系统、原生代币，以及开发者文档与工具链。</p>
+<div class="academy-note">提示：现代开发很少从零造轮子。可基于成熟框架快速起步：<strong>Cosmos SDK</strong>、<strong>Substrate</strong>、<strong>OP Stack</strong>、<strong>Polygon CDK</strong>、<strong>Avalanche 子链工具</strong>等，它们提供共识、网络、执行、治理等可复用组件。</div>
+<h3 class="academy-h3" data-i18n="academy_285">8.5 第五阶段：测试、上线与生态</h3>
+<ol class="academy-ol"><li data-i18n="academy_286"><strong>测试</strong>：单元测试、网络模拟、共识安全测试、TPS 压力测试、安全审计（含经济攻击模拟）；</li><li data-i18n="academy_287"><strong>部署环境</strong>：先 Devnet / Testnet 公开测试，再启动主网；</li><li data-i18n="academy_288"><strong>主网上线</strong>：创世区块配置、初始节点部署、代币分发、RPC/浏览器/钱包上线；</li><li data-i18n="academy_289"><strong>生态与治理</strong>：开发者激励、漏洞赏金、链上/链下治理、协议升级机制；</li><li data-i18n="academy_290"><strong>持续演进</strong>：性能优化、隐私保护、跨链、社区与 DAO 治理。</li></ol>
+<h3 class="academy-h3" data-i18n="academy_291">8.6 关键挑战</h3>
+<ol class="academy-ol"><li data-i18n="academy_292"><strong>区块链不可能三角</strong>：去中心化、安全性、可扩展性难以兼得，需权衡与分层；</li><li data-i18n="academy_293"><strong>安全</strong>：51% 攻击、智能合约漏洞、女巫攻击，需形式化验证等手段；</li><li data-i18n="academy_294"><strong>跨链互操作</strong>：跨链桥、IBC 等协议；</li><li data-i18n="academy_295"><strong>合规适配</strong>：按地区监管要求融入身份验证、交易监控等模块。</li></ol>
+<h2 class="academy-h2" data-i18n="academy_296">9. 常见误区与总结</h2>
+<ol class="academy-ol"><li data-i18n="academy_297"><strong>误区：区块链 = 比特币</strong>。区块链是底层技术，比特币只是其一个应用。</li><li data-i18n="academy_298"><strong>误区：算力越高交易越快</strong>。算力影响出块竞争，难度调整维持出块间隔稳定；吞吐提升靠扩容方案。</li><li data-i18n="academy_299"><strong>误区：哈希可反推原文</strong>。密码学哈希是单向的，无法由哈希值还原原始数据。</li><li data-i18n="academy_300"><strong>误区：PoS 一定不如 PoW 安全</strong>。二者只是安全模型不同（物理算力 vs 经济质押），各有取舍。</li><li data-i18n="academy_301"><strong>误区：EVM 地址到处通用</strong>。不同虚拟机生态的钱包与地址格式通常不兼容。</li></ol>
+<p class="academy-p" data-i18n="academy_302"><strong>一句话总结</strong>：区块链用&amp;quot;链式哈希结构 + 分布式共识&amp;quot;构建了一个多方无需互信即可共同维护的账本；哈希保证数据不可篡改，PoW/PoS 等共识解决谁来记账，智能合约与虚拟机让链具备可编程能力，而 EVM 与非 EVM 之争本质是生态兼容性与执行性能之间的取舍。</p>
+<h2 class="academy-h2" data-i18n="academy_303">10. 延伸阅读与参考来源</h2>
+<p class="academy-p" data-i18n="academy_304">本手册内容综合整理自全网公开资料，主要参考来源包括：</p>
+<ol class="academy-ol"><li data-i18n="academy_305">科普中国、人民网：区块链概念、特点、算力、哈希等科普条目；</li><li data-i18n="academy_306">Kryptex / LeedMiner / Cryptogloss 等：Hashrate 单位与挖矿安全机制；</li><li data-i18n="academy_307">Gate 学院（哈希释义）、BTCB、Bitara、CoinPaprika：PoW 与 PoS 原理及对比；</li><li data-i18n="academy_308">微信公众号技术文章、Medium / Chainscore Labs / KuCoin：公链开发流程与 EVM vs 非 EVM 分析；</li><li data-i18n="academy_309">Money Wiki / The Coin Course / Cryptoriaverse：EVM、非 EVM 与区块链分层模型。</li></ol>
+<div class="academy-note">说明：区块链技术迭代迅速，具体参数（如比特币全网算力、以太坊协议细节）请以权威实时数据源与官方文档为准。本文仅作知识框架梳理，不构成任何投资建议。</div>
+<p class="academy-p" data-i18n="academy_310">区块链核心知识手册 · 从概念到公链开发</p>
+        </div>
+    </div>
 
+    <div id="page-device" class="page-view hidden">
+        <div id="cfgApp" class="relative">
+            <div class="px-4 pt-2">
+                <button type="button" onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-2 transition-transform active:scale-95">
+                    <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+                </button>
+                <h2 class="text-lg font-black text-slate-900 tracking-tight" data-i18n="cfg_title">AI 算力整机配置器</h2>
+            </div>
+            <div class="sticky top-0 z-30 px-4 py-2">
+                <div id="cfgTabs" class="flex gap-1 overflow-x-auto no-scrollbar bg-white/70 backdrop-blur-md rounded-full p-1 shadow-sm"></div>
+            </div>
+            <div id="cfgList" class="px-4 pt-2 pb-36 space-y-3"></div>
+        </div>
 
+        <div id="cfgBottomBar" class="fixed left-0 right-0 z-40 pointer-events-none" style="bottom:calc(90px + env(safe-area-inset-bottom))">
+            <div class="w-[92%] max-w-[400px] mx-auto bg-white/85 backdrop-blur-xl rounded-full border border-slate-200/70 shadow-lg px-3 py-2 flex items-center gap-2 pointer-events-auto">
+                <div id="cfgBottomInfo" class="flex-1 min-w-0"></div>
+                <button type="button" onclick="cfgToggleSheet()" class="relative shrink-0 min-w-[44px] h-9 px-3 rounded-full bg-slate-100 text-[10px] font-black text-slate-600 transition-transform active:scale-95">
+                    <i class="fas fa-list-ul mr-1"></i><span data-i18n="cfg_details">已选明细</span>
+                    <span id="cfgDetailBadge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-orange-500 text-white text-[9px] font-black flex items-center justify-center" style="display:none">0</span>
+                </button>
+                <button type="button" onclick="cfgOrderNow()" class="shrink-0 h-9 px-4 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white text-[11px] font-black tracking-wide shadow-md transition-transform active:scale-95">
+                    <i class="fas fa-bolt mr-1"></i><span data-i18n="cfg_order_now">立即下单</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="cfgSheet" class="hidden fixed inset-0 z-[60]">
+            <div class="absolute inset-0 bg-slate-900/40" onclick="cfgSheetClose()"></div>
+            <div id="cfgSheetPanel" class="absolute inset-x-0 bottom-0 max-h-[62vh] bg-white rounded-t-3xl transition-transform duration-300" style="transform:translateY(100%); padding-bottom:calc(16px+env(safe-area-inset-bottom))">
+                <div class="flex justify-between items-center px-5 pt-4 pb-2">
+                    <p class="text-sm font-black text-slate-900" data-i18n="cfg_details">已选明细</p>
+                    <button type="button" onclick="cfgExport()" class="text-[10px] font-black text-blue-500 underline"><i class="fas fa-file-export mr-1"></i><span data-i18n="cfg_export">导出配置单</span></button>
+                </div>
+                <div id="cfgSheetBody" class="overflow-y-auto px-5" style="max-height:calc(62vh - 90px)"></div>
+            </div>
+        </div>
+
+        <div id="cfgPreview" class="hidden fixed inset-0 z-[60]">
+            <div class="absolute inset-0 bg-slate-900/40" onclick="cfgSheetClose()"></div>
+            <div id="cfgPreviewPanel" class="absolute inset-x-0 bottom-0 max-h-[75vh] bg-white rounded-t-3xl overflow-y-auto transition-transform duration-300" style="transform:translateY(100%); padding:20px 20px calc(20px + env(safe-area-inset-bottom))">
+                <div id="cfgPreviewBody"></div>
+            </div>
+        </div>
+    </div>
+    <div id="page-chain" class="page-view hidden">
+        <section class="glass-card p-6 text-center">
+            <button onclick="switchPage('home')" class="inline-flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-100 px-4 py-2 rounded-full mb-6 transition-transform active:scale-95">
+                <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
+            </button>
+            <i class="fas fa-link text-4xl text-orange-400 mb-4 block"></i>
+            <p class="text-base font-black text-slate-900 mb-1" data-i18n="building_title">页面正在建设中</p>
+            <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
+        </section>
+    </div>
     </main>
 
     <div class="nav-wrapper">
@@ -1940,8 +2313,8 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20261225"></script>
-<script src="js/i18n-core.js?v=20260928k"></script>
+<script src="js/lang/zh-CN.js?v=20261123c"></script>
+<script src="js/i18n-core.js?v=20261123a"></script>
 <script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
 <script src="js/lp-stake.js?v=20260928k"></script>
@@ -1972,7 +2345,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261225';
+    window.APP_JS_VERSION = '20261123c';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
@@ -2046,7 +2419,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
     <script src="js/home-tabs.js?v=20261225"></script>
-    <script src="js/org-structure.js?v=20261225"></script>
+    <script src="js/org-structure.js?v=20261123b"></script>
 
     <footer class="max-w-xl mx-auto px-4 py-6 pb-24 text-center">
         <div class="text-[10px] text-slate-500 font-bold">
