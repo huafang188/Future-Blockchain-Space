@@ -129,7 +129,6 @@ window.i18nData['en'] = {
     nry_addr_dev: "Developer",
     nry_addr_stake: "Stake",
     nry_addr_private: "Liquidity",
-    nry_add_wallet_text: "Click here to add the new NRY to your wallet",
     nry_distribution_title: "Token Distribution & Dividend Pool",
     nry_dist_mining: "Mining Pool",
     nry_dist_bottom: "Liquidity Pool",
@@ -1442,4 +1441,6 @@ window.i18nData['en'] = {
     about_p5_i1: "Physical-to-Digital Bridge empowering NEO: BitRiver is connecting its hundreds of megawatts of approved green power quotas, cold-climate natural-cooling campuses, and next-generation high-density liquid-cooled GPU racks to the NEO AI Computing Power Matrix in phases. Through this strategic integration, BitRiver handles asset-heavy data center construction, low-cost clean energy supply, and 24/7 industrial-grade operations, while NEO serves as the global digital window and computing scheduling protocol layer, converting physical computing power into standardized AI computing assets that can be called upon at any time and settled transparently.",
     about_p5_i2: "Building a modern organizational system of protocol delivery + ecosystem co-governance: To advance the globalization and decentralization of the NEO Computing Power Matrix, BitRiver strategically initiated and established a dual-track governance architecture of core technology R&D entity + community ecosystem and project council. Backed by the NRY economic model and on-chain multisig transparent oversight, NEO breaks the computing monopoly and high premiums of traditional centralized cloud providers, enabling global AI startup teams, research institutions, and Web3 developers to obtain abundant computing power from BitRiver's green data centers at a low threshold.",
     about_p5_i3: "Building a 1 GW-class energy-intelligent computing super campus and a BRICS cross-border computing network: In the coming years, BitRiver plans to continue advancing the construction of next-generation energy-computing complexes with a total capacity exceeding 1 GW (1,000 MW) in Siberia and the Far East, undertaking flexible load regulation for peak shaving and valley filling of the national grid; at the same time, relying on the BRICS countries and partner networks in the Middle East and Asia, it will export the green hydropower/associated gas + modular intelligent computing center standard globally. The NEO AI Computing Power Matrix will serve as the unified trading market, value settlement hub, and global ecosystem gateway of this vast physical computing network, leading BitRiver into a new decade of green-energy-driven inclusive AI.",
+    nav_chain_beta: "Beta",
+    chain_coming_soon: "NEOC (New Energy Ore Chain) public beta is coming soon",
 };

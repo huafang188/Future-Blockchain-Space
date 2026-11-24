@@ -129,7 +129,6 @@ window.i18nData['zh-CN'] = {
     nry_addr_dev: "开发者",
     nry_addr_stake: "质押",
     nry_addr_private: "流动性",
-    nry_add_wallet_text: "点击这里将新的NRY添加至您的钱包",
     nry_distribution_title: "代币分配与分红池",
     nry_dist_mining: "矿池",
     nry_dist_bottom: "底池",
@@ -1050,4 +1049,6 @@ window.i18nData['zh-CN'] = {
     about_p5_i1: "物理算力底座向 NEO 全面赋能（Physical-to-Digital Bridge）：BitRiver 正将其手握的数百兆瓦已批复绿色电力指标、高寒自然冷却园区以及新一代高密度液冷 GPU 机柜集群，分阶段接入 NEO AI 算力矩阵。通过这一战略整合，BitRiver 负责底层重资产数据中心建设、低成本清洁能源供应与 7×24 小时工业级运维，而 NEO 则作为面向全球的数字化窗口与算力调度协议层，将实体算力转化为可随时调用、透明结算的标准化 AI 算力资产。",
     about_p5_i2: "构建“协议交付 + 生态共治”的现代化组织体系：为推动 NEO 算力矩阵的全球化与去中心化发展，BitRiver 战略发起并确立了“核心技术研发实体 + 社区生态与项目理事会”的双轨治理架构。依托 NRY 经济模型与链上多签透明监督机制，NEO 打破了传统中心化云厂商的算力垄断与高昂溢价，让全球 AI 创业团队、科研机构与 Web3 开发者都能低门槛获取来自 BitRiver 绿色数据中心的澎湃算力。",
     about_p5_i3: "打造 1 GW 级能源-智算超级园区与金砖跨境算力网络：未来几年，BitRiver 规划在西伯利亚及远东地区继续推进总容量超 1 GW（1000 兆瓦）级别的新一代能源算力综合体建设，承担国家电网削峰填谷的柔性负荷调节功能；同时依托金砖国家（BRICS）及中东、亚洲合作伙伴网络，将“绿色水电/伴生气 + 模块化智算中心”标准向全球输出。而 NEO AI 算力矩阵将作为这一庞大实体算力网络的统一交易市场、价值结算中枢与全球生态入口，引领 BitRiver 迈入“绿色能源驱动普惠 AI”的全新十年。",
+    nav_chain_beta: "内测",
+    chain_coming_soon: "NEOC（New Energy Ore Chain）即将启动公测",
 };
