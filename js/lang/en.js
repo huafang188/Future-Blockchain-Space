@@ -1443,4 +1443,13 @@ window.i18nData['en'] = {
     about_p5_i3: "Building a 1 GW-class energy-intelligent computing super campus and a BRICS cross-border computing network: In the coming years, BitRiver plans to continue advancing the construction of next-generation energy-computing complexes with a total capacity exceeding 1 GW (1,000 MW) in Siberia and the Far East, undertaking flexible load regulation for peak shaving and valley filling of the national grid; at the same time, relying on the BRICS countries and partner networks in the Middle East and Asia, it will export the green hydropower/associated gas + modular intelligent computing center standard globally. The NEO AI Computing Power Matrix will serve as the unified trading market, value settlement hub, and global ecosystem gateway of this vast physical computing network, leading BitRiver into a new decade of green-energy-driven inclusive AI.",
     nav_chain_beta: "Beta",
     chain_coming_soon: "NEOC (New Energy Ore Chain) public beta is coming soon",
+    chain_tag_whitepaper: "NEOC Whitepaper",
+    chain_tag_explorer: "Block Explorer",
+    chain_tag_bridge: "Cross-Chain Bridge",
+    chain_tag_developer: "Developers",
+    chain_tag_token: "Token",
+    chain_tag_nft: "NFTs",
+    chain_tag_api: "API",
+    chain_tag_more: "More",
+    chain_tag_toast: "Coming soon",
 };

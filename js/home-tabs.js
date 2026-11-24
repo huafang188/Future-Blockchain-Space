@@ -65,3 +65,11 @@ function toggleNewsSection() {
         hint.textContent = isOpen ? (window.i18nData?.['click_to_collapse'] || '点击收起') : (window.i18nData?.['click_to_expand'] || '点击展开');
     }
 }
+
+window.chainTagSoon = function () {
+    var lang = localStorage.getItem('fbs_lang') || 'zh-CN';
+    var dict = (window.i18nData && window.i18nData[lang]) || {};
+    var msg = dict['chain_tag_toast'] || '敬请期待';
+    if (window.showToast) window.showToast(msg, 'info', 2000);
+    else alert(msg);
+};

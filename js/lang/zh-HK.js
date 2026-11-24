@@ -1365,4 +1365,13 @@ window.i18nData['zh-HK'] = {
     about_p5_i3: "打造 1 GW 級能源-智算超級園區與金磚跨境算力網絡：未來幾年，BitRiver 規劃在西伯利亞及遠東地區繼續推進總容量超 1 GW（1000 兆瓦）級別的新一代能源算力綜合體建設，承擔國家電網削峰填谷的柔性負荷調節功能；同時依託金磚國家（BRICS）及中東、亞洲合作夥伴網絡，將「綠色水電/伴生氣 + 模塊化智算中心」標準向全球輸出。而 NEO AI 算力矩陣將作為這一龐大實體算力網絡的統一交易市場、價值結算中樞與全球生態入口，引領 BitRiver 邁入「綠色能源驅動普惠 AI」的全新十年。",
     nav_chain_beta: "內測",
     chain_coming_soon: "NEOC（New Energy Ore Chain）即將啟動公測",
+    chain_tag_whitepaper: "NEOC白皮書",
+    chain_tag_explorer: "區塊鏈瀏覽器",
+    chain_tag_bridge: "跨鏈橋",
+    chain_tag_developer: "開發者",
+    chain_tag_token: "Token",
+    chain_tag_nft: "NFTs",
+    chain_tag_api: "API",
+    chain_tag_more: "更多",
+    chain_tag_toast: "敬請期待",
 };

@@ -1362,4 +1362,13 @@ window.i18nData['ja'] = {
     about_p5_i3: "1 GW 級のエネルギー・知能コンピューティング超大型园区と BRICS 越境コンピューティングネットワークの構築：今後数年、BitRiver はシベリアおよび極東地域で総容量 1 GW（1000 メガワット）超の次世代エネルギーコンピューティング複合体の建設を継続し、国家電力網のピークカット・バレーフィリングの柔軟な負荷調整機能を担う計画です。同時に BRICS 諸国および中東・アジアのパートナーネットワークに依拠し、「グリーン水力/随伴ガス + モジュール式知能コンピューティングセンター」の標準を世界へ輸出します。そして NEO AI コンピューティングパワーマトリックスは、この巨大な実体コンピューティングネットワークの統一取引市場、価値決済ハブ、世界のエコシステム入口として、BitRiver を「グリーンエネルギーが駆動するインクルーシブ AI」の新たな 10 年へと導きます。",
     nav_chain_beta: "ベータ",
     chain_coming_soon: "NEOC（New Energy Ore Chain）のパブリックベータを近日公開予定",
+    chain_tag_whitepaper: "NEOC Whitepaper",
+    chain_tag_explorer: "Block Explorer",
+    chain_tag_bridge: "Cross-Chain Bridge",
+    chain_tag_developer: "Developers",
+    chain_tag_token: "Token",
+    chain_tag_nft: "NFTs",
+    chain_tag_api: "API",
+    chain_tag_more: "More",
+    chain_tag_toast: "Coming soon",
 };
