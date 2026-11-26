@@ -3563,3 +3563,125 @@ body.agent-active .bottom-nav-pill {
 .about-points { display: flex; flex-direction: column; gap: 8px; }
 .about-points li { position: relative; padding-left: 14px; font-size: 10.5px; color: var(--org-sub); line-height: 1.68; }
 .about-points li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 2px; background: #f97316; }
+
+/* ===== 公链 DeFi（nc- 作用域） ===== */
+.nc-card { background: rgba(255,255,255,0.84); border: 1px solid #fed7aa; border-radius: 20px; padding: 16px; margin-bottom: 14px; box-shadow: 0 10px 30px -18px rgba(249,115,22,0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.nc-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.nc-card-title { font-size: 14px; font-weight: 900; color: #1e293b; line-height: 1.2; }
+.nc-card-sub { font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 3px; display: flex; align-items: center; gap: 5px; }
+.nc-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 900; color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.nc-chip-muted { color: #64748b; background: #f1f5f9; border-color: #e2e8f0; }
+
+.nc-bridge-chains { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 10px; margin-bottom: 12px; }
+.nc-chain-pill { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 900; color: #0f172a; flex: 1; justify-content: center; padding: 8px 6px; border-radius: 12px; background: #fff; border: 1px solid #e2e8f0; min-width: 0; }
+.nc-chain-pill img { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+.nc-swap-btn { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#f97316,#ea580c); color: #fff; font-size: 12px; display: flex; align-items: center; justify-content: center; border: none; box-shadow: 0 6px 14px -6px rgba(234,88,12,0.8); transition: transform .3s; cursor: pointer; flex-shrink: 0; }
+.nc-swap-btn:active { transform: rotate(180deg) scale(.92); }
+
+.nc-field { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 9px 11px; margin-bottom: 9px; }
+.nc-field-receive { background: #fff7ed; border-color: #fed7aa; }
+.nc-field-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.nc-field-top label { font-size: 9.5px; font-weight: 800; color: #64748b; }
+.nc-field-bal { font-size: 9px; font-weight: 700; color: #94a3b8; white-space: nowrap; }
+.nc-field-bal b { color: #475569; }
+.nc-field-row { display: flex; align-items: center; gap: 8px; }
+.nc-field-row input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font-size: 17px; font-weight: 900; color: #0f172a; padding: 0; }
+.nc-field-row input::placeholder { color: #cbd5e1; font-weight: 700; }
+.nc-field-row.nc-readonly #ncBridgeReceive { flex: 1; font-size: 17px; font-weight: 900; color: #0f172a; }
+.nc-token-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 900; color: #334155; background: #fff; border: 1px solid #e2e8f0; border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
+.nc-token-tag img { width: 16px; height: 16px; object-fit: contain; }
+
+.nc-kv-list { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 12px; }
+.nc-kv { display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-weight: 700; color: #94a3b8; }
+.nc-kv b { color: #334155; font-weight: 900; }
+.nc-kv-total { font-size: 11px; }
+.nc-kv-total b { color: #ea580c; font-size: 14px; }
+
+.nc-btn { width: 100%; border: none; border-radius: 14px; padding: 13px 14px; font-size: 12.5px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 7px; cursor: pointer; transition: transform .15s, box-shadow .2s; }
+.nc-btn-primary { background: linear-gradient(135deg,#f97316,#ea580c); color: #fff; box-shadow: 0 10px 22px -12px rgba(234,88,12,0.9); }
+.nc-btn-sell { background: linear-gradient(135deg,#10b981,#059669); box-shadow: 0 10px 22px -12px rgba(5,150,105,0.9); }
+.nc-btn:active { transform: scale(.97); }
+.nc-note { font-size: 9px; color: #94a3b8; text-align: center; margin-top: 8px; line-height: 1.5; }
+
+.nc-pair { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.nc-pair-icons { position: relative; width: 38px; height: 32px; flex-shrink: 0; }
+.nc-pair-icons img { position: absolute; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; object-fit: contain; background: #fff; }
+.nc-pair-icons img:first-child { left: 0; top: 0; z-index: 2; }
+.nc-pair-icons img:last-child { right: 0; bottom: 0; }
+.nc-price-box { text-align: right; flex-shrink: 0; }
+.nc-price-box b { display: block; font-size: 19px; font-weight: 900; color: #0f172a; letter-spacing: -0.02em; }
+.nc-change { font-size: 10px; font-weight: 900; }
+.nc-up { color: #059669; }
+.nc-down { color: #dc2626; }
+.nc-highlow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.nc-highlow > div { display: flex; align-items: center; justify-content: space-between; font-size: 9.5px; font-weight: 700; color: #94a3b8; background: #f8fafc; border-radius: 10px; padding: 7px 10px; }
+.nc-highlow b { color: #334155; font-size: 11px; }
+.nc-chart-wrap { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px 10px 6px; margin-bottom: 12px; }
+.nc-chart-head { display: flex; align-items: center; justify-content: space-between; font-size: 9.5px; font-weight: 800; color: #64748b; margin-bottom: 6px; }
+.nc-chart-tag { background: #eef2ff; color: #4338ca; padding: 2px 7px; border-radius: 6px; font-size: 8.5px; }
+#ncCandle { width: 100%; height: 150px; display: block; }
+.nc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.nc-stat { background: #fff; border: 1px solid #eef2f7; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
+.nc-stat span { font-size: 8.5px; font-weight: 800; color: #94a3b8; }
+.nc-stat b { font-size: 11.5px; font-weight: 900; color: #334155; }
+.nc-stat-wide { grid-column: 1 / -1; }
+.nc-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.18); animation: ncPulse 1.6s infinite; flex-shrink: 0; }
+@keyframes ncPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .55; transform: scale(.85); } }
+.nc-source { border-top: 1px dashed #e2e8f0; padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.nc-source-main { display: flex; align-items: flex-start; gap: 6px; font-size: 9px; font-weight: 800; color: #64748b; line-height: 1.5; }
+.nc-source-main i { color: #f97316; margin-top: 2px; }
+.nc-source-sub { font-size: 8.5px; color: #94a3b8; font-weight: 600; line-height: 1.5; }
+.nc-source-sub b { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #475569; }
+
+.nc-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #f1f5f9; border-radius: 12px; padding: 4px; margin-bottom: 12px; }
+.nc-tab { border: none; background: transparent; border-radius: 9px; padding: 8px; font-size: 11px; font-weight: 900; color: #64748b; cursor: pointer; transition: all .2s; }
+.nc-tab.active { background: #fff; color: #ea580c; box-shadow: 0 2px 8px rgba(15,23,42,0.08); }
+.nc-orders { margin-top: 14px; border-top: 1px dashed #e2e8f0; padding-top: 12px; }
+.nc-orders-head { display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-weight: 900; color: #334155; margin-bottom: 8px; }
+.nc-orders-head button { border: none; background: transparent; font-size: 9px; font-weight: 800; color: #94a3b8; cursor: pointer; text-decoration: underline; }
+#ncOrderList { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+.nc-order { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #f8fafc; border-radius: 10px; padding: 8px 10px; font-size: 9.5px; }
+.nc-order-main { display: flex; flex-direction: column; gap: 2px; }
+.nc-order-side { font-weight: 900; font-size: 10px; }
+.nc-order-meta { color: #94a3b8; font-weight: 700; }
+.nc-order-amt { text-align: right; font-weight: 900; color: #334155; }
+.nc-order-empty { text-align: center; font-size: 9.5px; color: #94a3b8; padding: 14px 0; }
+.nc-flash { position: fixed; left: 50%; bottom: 96px; transform: translate(-50%, 12px); background: #0f172a; color: #fff; font-size: 11px; font-weight: 800; padding: 10px 18px; border-radius: 999px; z-index: 120; opacity: 0; transition: all .24s ease; box-shadow: 0 12px 30px -12px rgba(15,23,42,.6); pointer-events: none; white-space: nowrap; }
+.nc-flash-in { opacity: 1; transform: translate(-50%, 0); }
+.nc-flash-warn { background: #dc2626; }
+
+/* 跨链代币选择与单向锁定 */
+.nc-token-field { position: relative; }
+button.nc-token-tag { cursor: pointer; font-family: inherit; line-height: 1; }
+button.nc-token-tag:active { transform: scale(.96); }
+.nc-token-caret { font-size: 8px; color: #94a3b8; margin-left: 1px; }
+.nc-token-static { cursor: default; }
+.nc-token-menu { position: absolute; right: 11px; top: calc(100% - 6px); z-index: 30; min-width: 116px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 14px 32px -14px rgba(15,23,42,.35); padding: 6px; display: flex; flex-direction: column; gap: 2px; }
+.nc-token-menu.hidden { display: none; }
+.nc-token-option { display: flex; align-items: center; gap: 8px; border: none; background: transparent; border-radius: 9px; padding: 8px 10px; font-size: 11px; font-weight: 900; color: #334155; cursor: pointer; }
+.nc-token-option:hover, .nc-token-option:active { background: #fff7ed; }
+.nc-token-option img { width: 18px; height: 18px; object-fit: contain; }
+.nc-swap-locked { background: linear-gradient(135deg,#fdba74,#f97316); box-shadow: none; animation: none; }
+.nc-swap-locked:active { transform: scale(.94); }
+
+/* 最近交易状态标记 */
+.nc-orders-live { display: inline-flex; align-items: center; gap: 5px; font-size: 9px; font-weight: 800; color: #059669; }
+
+/* 盘口与全网最近成交 */
+.nc-board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.nc-board-col { min-width: 0; background: #fff; border: 1px solid #eef2f7; border-radius: 12px; padding: 8px 9px; }
+.nc-board-title { font-size: 9px; font-weight: 900; color: #94a3b8; margin-bottom: 6px; }
+.nc-board-list { display: flex; flex-direction: column; gap: 3px; }
+.nc-ob-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 9px; font-weight: 800; font-family: ui-monospace, Menlo, monospace; }
+.nc-ob-price { flex-shrink: 0; }
+.nc-ob-amt { color: #64748b; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nc-recent { border-top: 1px dashed #e2e8f0; padding-top: 10px; }
+.nc-recent-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 10px; font-weight: 900; color: #334155; margin-bottom: 6px; }
+.nc-recent-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; font-size: 8px; font-weight: 800; color: #94a3b8; flex: 1; max-width: 62%; }
+.nc-recent-cols span { text-align: right; }
+.nc-recent-cols span:first-child { text-align: left; }
+#ncRecentTrades { display: flex; flex-direction: column; gap: 4px; max-height: 240px; overflow-y: auto; }
+.nc-recent-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; font-size: 9px; font-weight: 800; font-family: ui-monospace, Menlo, monospace; }
+.nc-recent-price { text-align: left; }
+.nc-recent-amt { text-align: right; color: #475569; }
+.nc-recent-time { text-align: right; color: #94a3b8; font-weight: 600; }

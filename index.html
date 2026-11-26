@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20261123c">
+    <link rel="stylesheet" href="style.css?v=20261126e">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -1217,6 +1217,197 @@
 
     </div>
 
+<div id="page-trade" class="page-view hidden">
+        <section class="nc-card nc-bridge" id="ncBridge">
+            <div class="nc-card-head">
+                <div>
+                    <h3 class="nc-card-title" data-i18n="nc_bridge_title">跨链桥</h3>
+                    <p class="nc-card-sub" data-i18n="nc_bridge_sub">BSC → NEOC 资产跨链</p>
+                </div>
+                <span class="nc-chip"><i class="fas fa-bolt"></i><span data-i18n="nc_bridge_beta">Beta</span></span>
+            </div>
+
+            <div class="nc-bridge-chains">
+                <div class="nc-chain-pill">
+                    <img src="assets/BNB.webp" alt="BSC" loading="lazy">
+                    <span>BSC</span>
+                </div>
+                <button type="button" class="nc-swap-btn nc-swap-locked" onclick="ncBridgeSwap()" aria-label="switch">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="nc-chain-pill">
+                    <img src="assets/neoc.webp" alt="NEOC" loading="lazy">
+                    <span>NEOC</span>
+                </div>
+            </div>
+
+            <div class="nc-field nc-token-field">
+                <div class="nc-field-top">
+                    <label data-i18n="nc_bridge_you_send">发送</label>
+                    <span class="nc-field-bal"><span data-i18n="nc_bridge_balance">余额</span>: <b id="ncBridgeBal">--</b></span>
+                </div>
+                <div class="nc-field-row">
+                    <input id="ncBridgeAmount" type="number" inputmode="decimal" placeholder="0.00" oninput="ncBridgeCalc()">
+                    <button type="button" class="nc-token-tag" onclick="ncToggleTokenMenu(event)">
+                        <img id="ncBridgeTokenIcon" src="assets/NRY.webp" alt="NRY" loading="lazy">
+                        <span id="ncBridgeTokenSym">NRY</span>
+                        <i class="fas fa-chevron-down nc-token-caret"></i>
+                    </button>
+                </div>
+                <div class="nc-token-menu hidden" id="ncTokenMenu">
+                    <button type="button" class="nc-token-option" onclick="ncPickToken('NRY')">
+                        <img src="assets/NRY.webp" alt="NRY" loading="lazy"><span>NRY</span>
+                    </button>
+                    <button type="button" class="nc-token-option" onclick="ncPickToken('USDT')">
+                        <img src="assets/USDT.webp" alt="USDT" loading="lazy"><span>USDT</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="nc-field nc-field-receive">
+                <div class="nc-field-top">
+                    <label data-i18n="nc_bridge_you_receive">接收（预计）</label>
+                </div>
+                <div class="nc-field-row nc-readonly">
+                    <span id="ncBridgeReceive">0.00</span>
+                    <span class="nc-token-tag nc-token-static">
+                        <img id="ncBridgeRecvIcon" src="assets/NRY.webp" alt="NRY" loading="lazy">
+                        <span id="ncBridgeRecvSym">NRY</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="nc-kv-list">
+                <div class="nc-kv"><span data-i18n="nc_bridge_rate">兑换比例</span><b>1 : 1</b></div>
+                <div class="nc-kv"><span data-i18n="nc_bridge_min_receive">最少接收</span><b id="ncBridgeMin">0.00</b></div>
+            </div>
+
+            <button type="button" class="nc-btn nc-btn-primary" id="ncBridgeBtn" onclick="ncBridgeSubmit()">
+                <i class="fas fa-paper-plane"></i><span data-i18n="nc_bridge_btn">开始跨链</span>
+            </button>
+        </section>
+
+        <section class="nc-card nc-market" id="ncMarket">
+            <div class="nc-card-head">
+                <div class="nc-pair">
+                    <span class="nc-pair-icons">
+                        <img src="assets/NRY.webp" alt="NRY" loading="lazy">
+                        <img src="assets/USDT.webp" alt="USDT" loading="lazy">
+                    </span>
+                    <div>
+                        <h3 class="nc-card-title">NRY / USDT</h3>
+                        <p class="nc-card-sub"><span class="nc-live-dot"></span><span data-i18n="nc_market_chain">NEOC 公链 · 实时</span></p>
+                    </div>
+                </div>
+                <div class="nc-price-box">
+                    <b id="ncPrice">0.007542</b>
+                    <span id="ncChange" class="nc-change nc-up">+2.86%</span>
+                </div>
+            </div>
+
+            <div class="nc-highlow">
+                <div><span data-i18n="nc_high">24h 最高</span><b>0.008204</b></div>
+                <div><span data-i18n="nc_low">24h 最低</span><b>0.006482</b></div>
+            </div>
+
+            <div class="nc-chart-wrap">
+                <div class="nc-chart-head">
+                    <span data-i18n="nc_chart_title">价格走势</span>
+                    <span class="nc-chart-tag" data-i18n="nc_chart_5m">5分钟</span>
+                </div>
+                <canvas id="ncCandle" height="150"></canvas>
+            </div>
+
+            <div class="nc-stats">
+                <div class="nc-stat"><span data-i18n="nc_holders">持币地址</span><b id="ncHolders">12,846</b></div>
+                <div class="nc-stat"><span data-i18n="nc_vol">24h 成交量</span><b id="ncVol">1,284,930</b></div>
+                <div class="nc-stat"><span data-i18n="nc_buys">24h 买入</span><b id="ncBuys">3,421</b></div>
+                <div class="nc-stat"><span data-i18n="nc_sells">24h 卖出</span><b id="ncSells">2,987</b></div>
+                <div class="nc-stat"><span data-i18n="nc_trades">24h 笔数</span><b id="ncTrades">6,408</b></div>
+                <div class="nc-stat"><span data-i18n="nc_change">24h 涨跌</span><b id="ncChangeStat" class="nc-up">+2.86%</b></div>
+                <div class="nc-stat nc-stat-wide"><span data-i18n="nc_liquidity">池子流动性</span><b id="ncLiquidity">30,932,685.46</b></div>
+            </div>
+
+            <div class="nc-source">
+                <p class="nc-source-main"><i class="fas fa-circle-info"></i><span data-i18n="nc_data_source">数据来源：NEOC 链上 Swap 事件实时统计</span></p>
+                <p class="nc-source-sub" data-i18n="nc_data_note">统计区块 135583880 – 135775880，约每 10 分钟刷新一次</p>
+                <p class="nc-source-sub"><span data-i18n="nc_data_updated">更新时间</span> <b id="ncUpdated">--:--:--</b></p>
+            </div>
+        </section>
+
+        <section class="nc-card nc-trade" id="ncTradeCard">
+            <div class="nc-card-head">
+                <div>
+                    <h3 class="nc-card-title" data-i18n="nc_trade_title">交易</h3>
+                    <p class="nc-card-sub" data-i18n="nc_trade_sub">NRY / USDT 即时兑换</p>
+                </div>
+                <span class="nc-chip nc-chip-muted" data-i18n="nc_trade_demo">模拟</span>
+            </div>
+
+            <div class="nc-tabs">
+                <button type="button" id="ncTabBuy" class="nc-tab active" onclick="ncSetSide('buy')" data-i18n="nc_buy">买入</button>
+                <button type="button" id="ncTabSell" class="nc-tab" onclick="ncSetSide('sell')" data-i18n="nc_sell">卖出</button>
+            </div>
+
+            <div class="nc-field">
+                <div class="nc-field-top">
+                    <label data-i18n="nc_price">价格 (USDT)</label>
+                </div>
+                <div class="nc-field-row">
+                    <input id="ncOrderPrice" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
+                    <span class="nc-token-tag"><img src="assets/USDT.webp" alt="USDT" loading="lazy">USDT</span>
+                </div>
+            </div>
+
+            <div class="nc-field">
+                <div class="nc-field-top">
+                    <label data-i18n="nc_amount">数量 (NRY)</label>
+                    <span class="nc-field-bal"><span data-i18n="nc_available">可用</span>: <b id="ncAvail">—</b></span>
+                </div>
+                <div class="nc-field-row">
+                    <input id="ncOrderAmount" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
+                    <span class="nc-token-tag"><img src="assets/NRY.webp" alt="NRY" loading="lazy">NRY</span>
+                </div>
+            </div>
+
+            <div class="nc-kv-list">
+                <div class="nc-kv nc-kv-total"><span data-i18n="nc_total">合计</span><b><span id="ncOrderTotal">0.00</span> USDT</b></div>
+            </div>
+
+            <button type="button" class="nc-btn nc-btn-primary" id="ncOrderBtn" onclick="ncSubmitOrder()">
+                <span data-i18n="nc_trade_btn_buy">买入 NRY</span>
+            </button>
+
+            <div class="nc-orders">
+                <div class="nc-orders-head">
+                    <span data-i18n="nc_orders_title">最近交易</span>
+                    <span class="nc-orders-live"><span class="nc-live-dot"></span><span data-i18n="nc_orders_live">实时</span></span>
+                </div>
+                <div class="nc-board">
+                    <div class="nc-board-col">
+                        <div class="nc-board-title"><span data-i18n="nc_bids">买单</span></div>
+                        <div id="ncBids" class="nc-board-list"></div>
+                    </div>
+                    <div class="nc-board-col">
+                        <div class="nc-board-title"><span data-i18n="nc_asks">卖单</span></div>
+                        <div id="ncAsks" class="nc-board-list"></div>
+                    </div>
+                </div>
+                <div class="nc-recent">
+                    <div class="nc-recent-head">
+                        <span data-i18n="nc_recent_trades">最近成交</span>
+                        <span class="nc-recent-cols">
+                            <span data-i18n="nc_col_price">价格</span>
+                            <span data-i18n="nc_col_amount">数量</span>
+                            <span data-i18n="nc_col_time">时间</span>
+                        </span>
+                    </div>
+                    <div id="ncRecentTrades"></div>
+                </div>
+            </div>
+        </section>
+</div>
+
 <div id="page-agent" class="page-view hidden">
     <div class="fbs-agent-wrap">
 
@@ -2284,11 +2475,13 @@
                 <i class="fas fa-chevron-left"></i><span data-i18n="back_home">返回首页</span>
             </button>
         </div>
+
         <section class="glass-card p-6 text-center">
             <img src="assets/neoc.webp" alt="NEOC" class="w-16 h-16 object-contain mx-auto mb-4 block" loading="lazy">
             <p class="text-base font-black text-slate-900 mb-1" data-i18n="chain_coming_soon">NEOC（New Energy Ore Chain）即将启动公测</p>
             <p class="text-sm font-bold text-slate-500" data-i18n="building_sub">敬请期待😄😄</p>
         </section>
+
         <div class="mx-auto w-full max-w-[520px] text-left mb-6">
             <div class="grid grid-cols-2 gap-x-5 gap-y-5">
                 <div>
@@ -2342,6 +2535,10 @@
                 <i class="fas fa-robot"></i>
                 <span data-i18n="nav_agent">Agent</span>
             </button>
+            <button onclick="switchPage('trade')" id="nav-trade" class="nav-item">
+                <i class="fas fa-right-left"></i>
+                <span data-i18n="nav_trade">交易</span>
+            </button>
 
             <button onclick="switchPage('mine')" id="nav-mine" class="nav-item">
                 <i class="fas fa-microchip"></i>
@@ -2354,7 +2551,7 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20261124b"></script>
+<script src="js/lang/zh-CN.js?v=20261126e"></script>
 <script src="js/i18n-core.js?v=20261123a"></script>
 <script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
@@ -2364,6 +2561,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
+<script src="js/nry-chain.js?v=20261126e"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2386,7 +2584,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261124b';
+    window.APP_JS_VERSION = '20261126e';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
