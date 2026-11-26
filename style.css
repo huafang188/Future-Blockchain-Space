@@ -3599,6 +3599,7 @@ body.agent-active .bottom-nav-pill {
 .nc-field-row { display: flex; align-items: center; gap: 8px; }
 .nc-field-row input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font-size: 17px; font-weight: 900; color: #0f172a; padding: 0; }
 .nc-field-row input::placeholder { color: #cbd5e1; font-weight: 700; }
+.nc-field-row input[readonly] { color: #64748b; cursor: default; }
 .nc-field-row.nc-readonly #ncBridgeReceive { flex: 1; font-size: 17px; font-weight: 900; color: #0f172a; }
 .nc-token-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 900; color: #334155; background: #fff; border: 1px solid #e2e8f0; border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
 .nc-token-tag img { width: 16px; height: 16px; object-fit: contain; }

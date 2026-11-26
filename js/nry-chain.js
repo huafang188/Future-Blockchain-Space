@@ -778,7 +778,7 @@
             if (uEl) uEl.textContent = clock();
         }
         var priceInput = $('ncOrderPrice');
-        if (priceInput && !priceInput.value) priceInput.value = state.price.toFixed(6);
+        if (priceInput) priceInput.value = state.price.toFixed(6);
         syncNryGlobalPrice();
     }
 

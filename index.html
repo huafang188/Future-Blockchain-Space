@@ -1377,7 +1377,7 @@
                     <label data-i18n="nc_price">价格 (NUSD)</label>
                 </div>
                 <div class="nc-field-row">
-                    <input id="ncOrderPrice" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
+                    <input id="ncOrderPrice" type="number" inputmode="decimal" placeholder="0.00" readonly oninput="ncOrderCalc()">
                     <span class="nc-token-tag"><img src="assets/nusd.webp" alt="NUSD" loading="lazy">NUSD</span>
                 </div>
             </div>
@@ -2606,7 +2606,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
-<script src="js/nry-chain.js?v=20261126z"></script>
+<script src="js/nry-chain.js?v=20261126aa"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2629,7 +2629,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261126z';
+    window.APP_JS_VERSION = '20261126aa';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
