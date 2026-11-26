@@ -69,7 +69,7 @@
         viewCount: 10,
         viewOffset: 0,
         side: 'buy',
-        usdtBal: 8642.5,
+        nusdBal: 8642.5,
         nryBal: 12480
     };
 
@@ -921,7 +921,7 @@
             btn.classList.toggle('nc-btn-sell', side === 'sell');
         }
         var av = $('ncAvail');
-        if (av) av.textContent = side === 'buy' ? nfmt(state.usdtBal, 2) + ' USDT' : nfmt(state.nryBal, 2) + ' NRY';
+        if (av) av.textContent = side === 'buy' ? nfmt(state.nusdBal, 2) + ' NUSD' : nfmt(state.nryBal, 2) + ' NRY';
         window.ncOrderCalc();
     };
 
@@ -942,7 +942,7 @@
             return;
         }
         var total = p * a;
-        if (state.side === 'buy' && total > state.usdtBal) {
+        if (state.side === 'buy' && total > state.nusdBal) {
             flash(t('nc_trade_fail_balance', '余额不足'), false);
             return;
         }
@@ -951,11 +951,11 @@
             return;
         }
         if (state.side === 'buy') {
-            state.usdtBal -= total;
+            state.nusdBal -= total;
             state.nryBal += a;
         } else {
             state.nryBal -= a;
-            state.usdtBal += total;
+            state.nusdBal += total;
         }
         var amt = $('ncOrderAmount');
         if (amt) amt.value = '';

@@ -1305,10 +1305,10 @@
                 <div class="nc-pair">
                     <span class="nc-pair-icons">
                         <img src="assets/NRY.webp" alt="NRY" loading="lazy">
-                        <img src="assets/USDT.webp" alt="USDT" loading="lazy">
+                        <img src="assets/nusd.webp" alt="NUSD" loading="lazy">
                     </span>
                     <div>
-                        <h3 class="nc-card-title">NRY / USDT</h3>
+                        <h3 class="nc-card-title">NRY / NUSD</h3>
                         <p class="nc-card-sub"><span class="nc-live-dot"></span><span data-i18n="nc_market_chain">NEOC 公链 · 实时</span></p>
                     </div>
                 </div>
@@ -1363,7 +1363,7 @@
             <div class="nc-card-head">
                 <div>
                     <h3 class="nc-card-title" data-i18n="nc_trade_title">交易</h3>
-                    <p class="nc-card-sub" data-i18n="nc_trade_sub">NRY / USDT 即时兑换</p>
+                    <p class="nc-card-sub" data-i18n="nc_trade_sub">NRY / NUSD 即时兑换</p>
                 </div>
             </div>
 
@@ -1374,11 +1374,11 @@
 
             <div class="nc-field">
                 <div class="nc-field-top">
-                    <label data-i18n="nc_price">价格 (USDT)</label>
+                    <label data-i18n="nc_price">价格 (NUSD)</label>
                 </div>
                 <div class="nc-field-row">
                     <input id="ncOrderPrice" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
-                    <span class="nc-token-tag"><img src="assets/USDT.webp" alt="USDT" loading="lazy">USDT</span>
+                    <span class="nc-token-tag"><img src="assets/nusd.webp" alt="NUSD" loading="lazy">NUSD</span>
                 </div>
             </div>
 
@@ -1394,7 +1394,7 @@
             </div>
 
             <div class="nc-kv-list">
-                <div class="nc-kv nc-kv-total"><span data-i18n="nc_total">合计</span><b><span id="ncOrderTotal">0.00</span> USDT</b></div>
+                <div class="nc-kv nc-kv-total"><span data-i18n="nc_total">合计</span><b><span id="ncOrderTotal">0.00</span> NUSD</b></div>
             </div>
 
             <button type="button" class="nc-btn nc-btn-primary" id="ncOrderBtn" onclick="ncSubmitOrder()">
@@ -2606,7 +2606,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
-<script src="js/nry-chain.js?v=20261126x"></script>
+<script src="js/nry-chain.js?v=20261126y"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2629,7 +2629,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261126x';
+    window.APP_JS_VERSION = '20261126y';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
