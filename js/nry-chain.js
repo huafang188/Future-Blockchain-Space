@@ -949,6 +949,16 @@
         if (avNry) avNry.textContent = nfmt(tradeBalance('NRY'), 2) + ' NRY';
         var avNusd = $('ncAvailNusd');
         if (avNusd) avNusd.textContent = nfmt(tradeBalance('NUSD'), 2) + ' NUSD';
+        var priceField = $('ncFieldPrice');
+        var amountField = $('ncFieldAmount');
+        if (priceField && amountField && priceField.parentNode === amountField.parentNode) {
+            var parent = priceField.parentNode;
+            if (side === 'buy') {
+                if (priceField.nextElementSibling !== amountField) parent.insertBefore(priceField, amountField);
+            } else {
+                if (amountField.nextElementSibling !== priceField) parent.insertBefore(amountField, priceField);
+            }
+        }
         window.ncOrderCalc();
     };
 
