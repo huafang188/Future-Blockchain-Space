@@ -258,10 +258,7 @@ export function mountModalHandlers() {
         const symbols = Object.keys(tokenConfig).filter(s => s !== 'BNB');
         window.showModal("transfer", `
             <div class="space-y-4 text-left">
-                <div class="flex items-start gap-2 p-3 bg-blue-50 rounded-2xl border border-blue-100">
-                    <i class="fa-solid fa-circle-info text-blue-500 text-xs mt-0.5"></i>
-                    <span class="text-[11px] font-bold text-blue-700 leading-relaxed">站内转账：代币将从你的余额划转至对方账户，仅支持站内已注册用户，每笔消耗 GAS 费 0.0001 BNB</span>
-                </div>
+
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
                     <img id="trfLogo" src="${tokenConfig[symbols[0]].logo}" class="w-8 h-8 object-contain rounded-full">
                     <select id="trfToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
