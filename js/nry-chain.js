@@ -66,7 +66,7 @@
         hourly: [],
         hourlyStamp: '',
         candleCache: {},
-        viewCount: 10,
+
         viewOffset: 0,
         side: 'buy',
         submitting: false
@@ -684,10 +684,18 @@
         refreshMarketFeed();
     }
 
-    function viewData() {
+    var CANDLE_BODY = 7;
+    var CANDLE_GAP = 1.2;
+    var CANDLE_STEP = CANDLE_BODY + CANDLE_GAP;
+
+    function visibleCount(plotW) {
+        return Math.max(8, Math.floor(plotW / CANDLE_STEP));
+    }
+
+    function viewData(plotW) {
         var data = state.candles;
         if (!data || !data.length) return [];
-        var count = Math.max(1, state.viewCount);
+        var count = visibleCount(plotW);
         var maxOff = Math.max(0, data.length - count);
         if (state.viewOffset > maxOff) state.viewOffset = maxOff;
         if (state.viewOffset < 0) state.viewOffset = 0;
@@ -711,12 +719,12 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, w, h);
 
-        var data = viewData();
-        if (!data.length) return;
-
         var padT = 10, padB = 18, padL = 2, padR = 44;
         var plotW = Math.max(20, w - padL - padR);
         var plotH = h - padT - padB;
+
+        var data = viewData(plotW);
+        if (!data.length) return;
 
         var lo = Infinity, hi = -Infinity;
         for (var i = 0; i < data.length; i++) {
@@ -745,8 +753,8 @@
             ctx.fillText(val.toFixed(6), padL + plotW + 6, gy + 3);
         }
 
-        var step = plotW / data.length;
-        var bw = Math.max(1.6, Math.min(6, step * 0.62));
+        var step = CANDLE_STEP;
+        var bw = CANDLE_BODY;
         for (var j = 0; j < data.length; j++) {
             var d = data[j];
             var cx = padL + step * j + step / 2;
@@ -1145,10 +1153,10 @@
             if (!dragging) return;
             var rect = cv.getBoundingClientRect();
             var plotW = Math.max(20, rect.width - 46);
-            var candleW = plotW / Math.max(1, state.viewCount);
+            var count = visibleCount(plotW);
             var dx = e.clientX - startX;
-            var delta = Math.round(-dx / candleW);
-            var maxOff = Math.max(0, state.candles.length - state.viewCount);
+            var delta = Math.round(-dx / CANDLE_STEP);
+            var maxOff = Math.max(0, state.candles.length - count);
             state.viewOffset = Math.max(0, Math.min(maxOff, startOff + delta));
             renderCandles();
         });
