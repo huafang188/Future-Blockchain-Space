@@ -800,7 +800,7 @@
 
     function marketUrl() {
         var base = window.API_BASE || 'https://api.neoneo.ink/api/user';
-        return base.replace('/api/user', '/api/neoc-market');
+        return base.replace('/api/user', '/api/nry-market');
     }
 
     function setMarketNumber(id, val, digits) {
@@ -853,7 +853,7 @@
     window.ncLoadKlines = async function () {
         try {
             var base = window.API_BASE || 'https://api.neoneo.ink/api/user';
-            var res = await fetch(base.replace('/api/user', '/api/neoc-klines') + '?t=' + Date.now(), { cache: 'no-store' });
+            var res = await fetch(base.replace('/api/user', '/api/nry-klines') + '?t=' + Date.now(), { cache: 'no-store' });
             if (!res.ok) return;
             var json = await res.json();
             if (!json || !json.success || !Array.isArray(json.data) || !json.data.length) return;
