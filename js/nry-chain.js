@@ -258,11 +258,11 @@
             });
             if (!txHash) throw new Error(t('nc_bridge_failed', '跨链失败'));
 
-            setBridgeLoading(true, t('nc_bridge_confirming', '正在确认链上交易...'));
+            setBridgeLoading(true, t('nc_bridge_pending', '跨链中，请稍后...'));
             var ok = await waitReceipt(provider, txHash);
             if (!ok) throw new Error(t('nc_bridge_failed', '链上交易未确认，请稍后重试'));
 
-            setBridgeLoading(true, t('nc_bridge_pending', '跨链提交中...'));
+            setBridgeLoading(true, t('nc_bridge_pending', '跨链中，请稍后...'));
             var feeHash = await payBnbFee(provider, addr);
 
             var res = await window.postTransactionRecord('跨链', amountStr, token, 'record_transaction', {
@@ -478,7 +478,7 @@
         if (amt) amt.value = '';
         window.ncOrderCalc();
         window.ncSetSide(state.side);
-        flash(t('nc_trade_success', '下单成功（模拟）'), true);
+        flash(t('nc_trade_success', '下单成功'), true);
     };
 
     var board = { bids: [], asks: [], trades: [] };
