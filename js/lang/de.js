@@ -1435,4 +1435,5 @@ window.i18nData['de'] = {
     nc_col_price: "Preis",
     nc_col_amount: "Menge",
     nc_col_time: "Zeit",
+    nc_bridge_settling: "On-Chain-Übertragung abgeschlossen. Gutschrift wird verarbeitet – bitte später aktualisieren. Bei Ausbleiben Support kontaktieren.",
 };

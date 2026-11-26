@@ -43,7 +43,7 @@
         return p(x.getHours()) + ':' + p(x.getMinutes()) + ':' + p(x.getSeconds());
     }
 
-    function flash(msg, ok) {
+    function flash(msg, ok, ms) {
         var el = document.createElement('div');
         el.className = 'nc-flash' + (ok === false ? ' nc-flash-warn' : '');
         el.textContent = msg;
@@ -52,7 +52,7 @@
         setTimeout(function () {
             el.classList.remove('nc-flash-in');
             setTimeout(function () { el.remove(); }, 260);
-        }, 2600);
+        }, ms || 2600);
     }
 
     var state = {
@@ -277,7 +277,8 @@
                 window.ncRefreshBridgeBalance();
                 refreshMarketFeed();
             } else {
-                flash(t('nc_bridge_record_failed', '链上已成功，但后台记录失败，请联系客服'), false);
+                console.error('[Bridge] 后台记录提交失败:', res);
+                flash(t('nc_bridge_settling', '链上转账已完成，到账处理中，请稍后刷新；如未到账请联系客服'), false, 4200);
             }
         } catch (e) {
             console.warn('[Bridge] 跨链失败:', e);

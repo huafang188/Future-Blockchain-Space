@@ -1433,4 +1433,5 @@ window.i18nData['fr'] = {
     nc_col_price: "Prix",
     nc_col_amount: "Quantité",
     nc_col_time: "Heure",
+    nc_bridge_settling: "Transfert on-chain effectué. Crédit en cours — actualisez plus tard. Si non crédité, contactez le support.",
 };

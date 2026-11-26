@@ -165,8 +165,10 @@ export async function postTransactionRecord(type, amount, symbol, action = "reco
         } else {
 
             if (window.closeModal) window.closeModal();
-            handleApiError(`提交失败: ${result.msg || "服务器繁忙"}`);
-            return { success: false };
+            const errMsg = result.msg || result.message || "服务器繁忙";
+            if (type !== "跨链") handleApiError(`提交失败: ${errMsg}`);
+            console.error("[API] 提交失败:", errMsg);
+            return { success: false, msg: errMsg, code: result.code };
         }
     } catch (e) {
 

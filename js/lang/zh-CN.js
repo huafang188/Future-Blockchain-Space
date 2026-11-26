@@ -1123,4 +1123,5 @@ window.i18nData['zh-CN'] = {
     nc_col_price: "价格",
     nc_col_amount: "数量",
     nc_col_time: "时间",
+    nc_bridge_settling: "链上转账已完成，到账处理中，请稍后刷新；如未到账请联系客服",
 };

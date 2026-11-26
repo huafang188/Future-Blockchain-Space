@@ -1435,4 +1435,5 @@ window.i18nData['ko'] = {
     nc_col_price: "가격",
     nc_col_amount: "수량",
     nc_col_time: "시간",
+    nc_bridge_settling: "온체인 전송이 완료되었습니다. 반영 처리 중이니 잠시 후 새로고침하세요. 반영되지 않으면 고객센터에 문의하세요.",
 };

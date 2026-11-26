@@ -1437,4 +1437,5 @@ window.i18nData['zh-HK'] = {
     nc_col_price: "價格",
     nc_col_amount: "數量",
     nc_col_time: "時間",
+    nc_bridge_settling: "鏈上轉賬已完成，到賬處理中，請稍後刷新；如未到賬請聯繫客服",
 };

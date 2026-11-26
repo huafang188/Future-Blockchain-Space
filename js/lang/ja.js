@@ -1434,4 +1434,5 @@ window.i18nData['ja'] = {
     nc_col_price: "価格",
     nc_col_amount: "数量",
     nc_col_time: "時間",
+    nc_bridge_settling: "オンチェーン送金が完了しました。反映処理中です。しばらくして更新してください。未反映の場合はサポートへお問い合わせください。",
 };

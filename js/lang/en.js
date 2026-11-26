@@ -1515,4 +1515,5 @@ window.i18nData['en'] = {
     nc_col_price: "Price",
     nc_col_amount: "Amount",
     nc_col_time: "Time",
+    nc_bridge_settling: "On-chain transfer complete. Crediting in progress—refresh shortly; contact support if not credited.",
 };

@@ -3685,3 +3685,4 @@ button.nc-token-tag:active { transform: scale(.96); }
 .nc-recent-price { text-align: left; }
 .nc-recent-amt { text-align: right; color: #475569; }
 .nc-recent-time { text-align: right; color: #94a3b8; font-weight: 600; }
+.nc-flash { max-width: 86vw; white-space: normal; text-align: center; line-height: 1.5; border-radius: 16px; }

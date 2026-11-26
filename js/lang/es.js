@@ -1432,4 +1432,5 @@ window.i18nData['es'] = {
     nc_col_price: "Precio",
     nc_col_amount: "Cantidad",
     nc_col_time: "Hora",
+    nc_bridge_settling: "Transferencia on-chain completada. Abono en proceso: actualiza más tarde. Si no se acredita, contacta con soporte.",
 };
