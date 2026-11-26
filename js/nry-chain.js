@@ -793,6 +793,22 @@
         renderTrades();
     }
 
+    /* ---------- 首页公链入口弹窗 ---------- */
+
+    window.openChainMenu = function () {
+        var m = $('chainMenuModal');
+        if (m) m.classList.remove('hidden');
+    };
+
+    window.closeChainMenu = function () {
+        var m = $('chainMenuModal');
+        if (m) m.classList.add('hidden');
+    };
+
+    window.chainFeatureSoon = function () {
+        flash(t('cm_soon', '即将开放'), false);
+    };
+
     /* ---------- 启动 ---------- */
 
     function init() {

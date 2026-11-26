@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20261126j">
+    <link rel="stylesheet" href="style.css?v=20261126p">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -173,9 +173,9 @@
             <div class="relative">
                 <div class="w-16 h-16 border-4 border-orange-300 rounded-full"></div>
                 <div class="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-orange-400 rounded-full animate-spin"></div>
-                <img src="assets/NRY.webp" alt="NRY Logo" class="absolute inset-2 w-12 h-12 object-contain loading-logo rounded-full" />
+                <img src="assets/neoc.webp" alt="NEOC Logo" class="absolute inset-2 w-12 h-12 object-contain loading-logo rounded-full" />
             </div>
-            <p class="mt-4 text-orange-400 font-bold text-sm" data-i18n="loading">加载中...</p>
+            <p class="mt-4 text-orange-400 font-bold text-sm" data-i18n="loading">NEOC启动中</p>
         </div>
     </div>
 
@@ -220,7 +220,7 @@
     <header class="relative z-50 bg-white/20 backdrop-blur-xl border-b border-slate-100/20 px-4 py-3">
         <div class="max-w-xl mx-auto flex justify-start items-center gap-4">
 <div class="flex items-center gap-3">
-    <img src="assets/NRY.webp" alt="Logo" class="w-10 h-10 bg-white rounded-full shadow-md border border-slate-100 object-contain p-1 logo-bounce">
+    <img src="assets/neoc.webp" alt="NEOC" class="w-10 h-10 bg-white rounded-full shadow-md border border-slate-100 object-contain p-1">
 
     <div>
         <h1 id="headerTitle" class="text-[15px] font-black tracking-tighter title-gradient" data-i18n="title">
@@ -264,8 +264,9 @@
 
             <div class="fbs-neo-bg" aria-hidden="true">
                 <span class="fbs-neo-letter">N</span>
-                <span class="fbs-neo-letter">R</span>
-                <span class="fbs-neo-letter">Y</span>
+                <span class="fbs-neo-letter">E</span>
+                <span class="fbs-neo-letter">O</span>
+                <span class="fbs-neo-letter">C</span>
             </div>
             <div class="floating-particles">
                 <div class="particle"></div>
@@ -339,8 +340,8 @@
                 <i class="fas fa-server text-lg text-orange-400"></i>
                 <span class="text-[10px] font-black text-slate-700" data-i18n="nav_device">设备</span>
             </button>
-            <button type="button" onclick="switchPage('chain')" class="relative flex flex-col items-center justify-center gap-1.5 aspect-square rounded-full transition-transform active:scale-95">
-                <span class="absolute -top-0.5 right-1 text-[8px] font-black text-white bg-orange-500 px-1.5 py-0.5 rounded-full leading-none shadow-sm" data-i18n="nav_chain_beta">内测</span>
+            <button type="button" onclick="openChainMenu()" class="relative flex flex-col items-center justify-center gap-1.5 aspect-square rounded-full transition-transform active:scale-95">
+                <span class="absolute -top-0.5 right-1 text-[8px] font-black text-white bg-emerald-500 px-1.5 py-0.5 rounded-full leading-none shadow-sm" data-i18n="nav_chain_beta">公测</span>
                 <i class="fas fa-link text-lg text-orange-400"></i>
                 <span class="text-[10px] font-black text-slate-700" data-i18n="nav_chain">公链</span>
             </button>
@@ -2120,7 +2121,7 @@
                 </div>
                 <div id="history-panel" class="space-y-2">
                     <div id="historyList" class="space-y-2">
-                        <div class="p-10 text-center text-slate-300 text-[10px] italic" data-i18n="loading">加载中...</div>
+                        <div class="p-10 text-center text-slate-300 text-[10px] italic" data-i18n="loading_placeholder">加载中...</div>
                     </div>
                 </div>
 
@@ -2536,6 +2537,28 @@
     </div>
     </main>
 
+    <div id="chainMenuModal" class="nc-chain-modal hidden">
+        <div class="nc-chain-modal-bg" onclick="closeChainMenu()"></div>
+        <div class="nc-chain-modal-box">
+            <div class="nc-chain-modal-head">
+                <h3 data-i18n="cm_title">NEOC 公链</h3>
+                <button type="button" class="nc-chain-modal-close" onclick="closeChainMenu()" aria-label="close">&times;</button>
+            </div>
+            <div class="nc-chain-modal-grid">
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-file-lines"></i><span data-i18n="chain_tag_whitepaper">白皮书</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-magnifying-glass"></i><span data-i18n="chain_tag_explorer">区块链浏览器</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-link"></i><span data-i18n="cm_neoc">NEOC</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-coins"></i><span data-i18n="chain_tag_token">Token</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-plug"></i><span data-i18n="chain_tag_api">API</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-code"></i><span data-i18n="chain_tag_developer">开发者</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-wallet"></i><span data-i18n="cm_wallet">钱包</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-arrows-left-right"></i><span data-i18n="chain_tag_bridge">跨链桥</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-chart-line"></i><span data-i18n="cm_exchange">交易所</span></button>
+                <button type="button" onclick="chainFeatureSoon()"><i class="fas fa-file-code"></i><span data-i18n="cm_source">源代码</span></button>
+            </div>
+        </div>
+    </div>
+
     <div class="nav-wrapper">
         <nav class="bottom-nav-pill">
             <button onclick="switchPage('home')" id="nav-home" class="nav-item active">
@@ -2562,7 +2585,7 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20261126k"></script>
+<script src="js/lang/zh-CN.js?v=20261126r"></script>
 <script src="js/i18n-core.js?v=20261123a"></script>
 <script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
@@ -2572,7 +2595,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
-<script src="js/nry-chain.js?v=20261126k"></script>
+<script src="js/nry-chain.js?v=20261126l"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2595,7 +2618,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261126k';
+    window.APP_JS_VERSION = '20261126r';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {

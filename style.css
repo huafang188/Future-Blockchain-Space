@@ -465,7 +465,7 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 /* ============================================================
-   🌀 橙色立体动态背景：3D 立体旋转的 NRY 大写字母
+   🌀 橙色立体动态背景：3D 立体旋转的 NEOC 大写字母
    ============================================================ */
 .fbs-neo-bg {
     position: absolute;
@@ -499,44 +499,56 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 }
 
 .fbs-neo-letter:nth-child(1) {
-    font-size: 170px;
-    animation: fbsNeo3D1 18s linear infinite;
+    font-size: 150px;
+    animation: fbsNeo4D1 18s linear infinite;
 }
 .fbs-neo-letter:nth-child(2) {
-    font-size: 170px;
-    animation: fbsNeo3D2 18s linear infinite;
-    animation-delay: -6s;
+    font-size: 150px;
+    animation: fbsNeo4D2 18s linear infinite;
+    animation-delay: -4.5s;
 }
 .fbs-neo-letter:nth-child(3) {
-    font-size: 170px;
-    animation: fbsNeo3D3 18s linear infinite;
-    animation-delay: -12s;
+    font-size: 150px;
+    animation: fbsNeo4D3 18s linear infinite;
+    animation-delay: -9s;
+}
+.fbs-neo-letter:nth-child(4) {
+    font-size: 150px;
+    animation: fbsNeo4D4 18s linear infinite;
+    animation-delay: -13.5s;
 }
 
-/* 三个字母各自绕 Y 轴旋转 + X 轴倾斜，形成立体翻滚效果 */
-@keyframes fbsNeo3D1 {
-    0%   { transform: translate3d(-200%, -50%, -120px) rotateY(0deg) rotateX(12deg) scale(0.85); opacity: 0.25; }
-    35%  { transform: translate3d(-150%, -50%, -20px)  rotateY(180deg) rotateX(-8deg) scale(1.1); opacity: 0.85; }
-    70%  { transform: translate3d(-90%, -50%, -200px)  rotateY(360deg) rotateX(15deg) scale(0.95); opacity: 0.5; }
-    100% { transform: translate3d(-200%, -50%, -120px) rotateY(720deg) rotateX(12deg) scale(0.85); opacity: 0.25; }
+/* 四个字母各自绕 Y 轴旋转 + X 轴倾斜，形成立体翻滚效果 */
+@keyframes fbsNeo4D1 {
+    0%   { transform: translate3d(-210%, -50%, -120px) rotateY(0deg) rotateX(12deg) scale(0.85); opacity: 0.25; }
+    35%  { transform: translate3d(-175%, -50%, -20px)  rotateY(180deg) rotateX(-8deg) scale(1.1); opacity: 0.85; }
+    70%  { transform: translate3d(-130%, -50%, -200px) rotateY(360deg) rotateX(15deg) scale(0.95); opacity: 0.5; }
+    100% { transform: translate3d(-210%, -50%, -120px) rotateY(720deg) rotateX(12deg) scale(0.85); opacity: 0.25; }
 }
-@keyframes fbsNeo3D2 {
-    0%   { transform: translate3d(-50%, -50%, -80px)  rotateY(0deg)   rotateX(0deg)   scale(1); opacity: 0.55; }
-    35%  { transform: translate3d(-50%, -45%, 20px)   rotateY(180deg) rotateX(-10deg) scale(1.18); opacity: 0.95; }
-    70%  { transform: translate3d(-50%, -55%, -160px)  rotateY(360deg) rotateX(12deg)  scale(1.02); opacity: 0.6; }
-    100% { transform: translate3d(-50%, -50%, -80px)  rotateY(720deg) rotateX(0deg)   scale(1); opacity: 0.55; }
+@keyframes fbsNeo4D2 {
+    0%   { transform: translate3d(-105%, -50%, -80px)  rotateY(0deg)   rotateX(0deg)   scale(1); opacity: 0.55; }
+    35%  { transform: translate3d(-105%, -45%, 20px)   rotateY(180deg) rotateX(-10deg) scale(1.18); opacity: 0.95; }
+    70%  { transform: translate3d(-105%, -55%, -160px) rotateY(360deg) rotateX(12deg)  scale(1.02); opacity: 0.6; }
+    100% { transform: translate3d(-105%, -50%, -80px)  rotateY(720deg) rotateX(0deg)   scale(1); opacity: 0.55; }
 }
-@keyframes fbsNeo3D3 {
-    0%   { transform: translate3d(100%, -50%, -120px) rotateY(0deg)   rotateX(-12deg) scale(0.85); opacity: 0.25; }
-    35%  { transform: translate3d(50%, -50%, -20px)    rotateY(180deg) rotateX(8deg)   scale(1.1);  opacity: 0.85; }
-    70%  { transform: translate3d(-10%, -50%, -200px)  rotateY(360deg) rotateX(-15deg) scale(0.95); opacity: 0.5; }
-    100% { transform: translate3d(100%, -50%, -120px)  rotateY(720deg) rotateX(-12deg) scale(0.85); opacity: 0.25; }
+@keyframes fbsNeo4D3 {
+    0%   { transform: translate3d(0%, -50%, -120px)   rotateY(0deg)   rotateX(-12deg) scale(0.85); opacity: 0.25; }
+    35%  { transform: translate3d(0%, -50%, -20px)    rotateY(180deg) rotateX(8deg)   scale(1.1);  opacity: 0.85; }
+    70%  { transform: translate3d(0%, -50%, -200px)   rotateY(360deg) rotateX(-15deg) scale(0.95); opacity: 0.5; }
+    100% { transform: translate3d(0%, -50%, -120px)   rotateY(720deg) rotateX(-12deg) scale(0.85); opacity: 0.25; }
+}
+@keyframes fbsNeo4D4 {
+    0%   { transform: translate3d(105%, -50%, -120px) rotateY(0deg)   rotateX(-12deg) scale(0.85); opacity: 0.25; }
+    35%  { transform: translate3d(105%, -50%, -20px)  rotateY(180deg) rotateX(8deg)   scale(1.1);  opacity: 0.85; }
+    70%  { transform: translate3d(105%, -50%, -200px) rotateY(360deg) rotateX(-15deg) scale(0.95); opacity: 0.5; }
+    100% { transform: translate3d(105%, -50%, -120px) rotateY(720deg) rotateX(-12deg) scale(0.85); opacity: 0.25; }
 }
 
 @media (max-width: 480px) {
     .fbs-neo-letter:nth-child(1),
     .fbs-neo-letter:nth-child(2),
-    .fbs-neo-letter:nth-child(3) { font-size: 120px; }
+    .fbs-neo-letter:nth-child(3),
+    .fbs-neo-letter:nth-child(4) { font-size: 105px; }
     @keyframes fbsNeo3D1 {
         0%   { transform: translate3d(-180%, -50%, -100px) rotateY(0deg)   rotateX(12deg)  scale(0.85); opacity: 0.25; }
         35%  { transform: translate3d(-130%, -50%, -20px)  rotateY(180deg) rotateX(-8deg)  scale(1.05); opacity: 0.85; }
@@ -3697,3 +3709,20 @@ button.nc-chain-select { width: 100%; cursor: pointer; font-family: inherit; }
 .nc-chain-option img { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
 .nc-chain-option.is-active { background: #fff7ed; color: #ea580c; }
 .nc-chain-menu { min-width: 140px; }
+
+/* 首页公链入口弹窗 */
+.nc-chain-modal { position: fixed; inset: 0; z-index: 130; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.nc-chain-modal.hidden { display: none; }
+.nc-chain-modal-bg { position: absolute; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+.nc-chain-modal-box { position: relative; width: 100%; max-width: 400px; background: #fff; border-radius: 22px; padding: 18px; box-shadow: 0 24px 60px -24px rgba(15,23,42,.5); animation: ncModalIn .22s ease; }
+@keyframes ncModalIn { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
+.nc-chain-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.nc-chain-modal-head h3 { font-size: 16px; font-weight: 900; color: #0f172a; }
+.nc-chain-modal-close { border: none; background: #f1f5f9; color: #64748b; width: 30px; height: 30px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.nc-chain-modal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.nc-chain-modal-grid button { display: flex; align-items: center; gap: 8px; border: 1px solid #eef2f7; background: #f8fafc; border-radius: 12px; padding: 11px 12px; font-size: 11px; font-weight: 900; color: #334155; cursor: pointer; transition: all .18s; text-align: left; }
+.nc-chain-modal-grid button:active { transform: scale(.97); background: #fff7ed; border-color: #fed7aa; }
+.nc-chain-modal-grid i { color: #f97316; width: 16px; text-align: center; flex-shrink: 0; }
+
+/* 提示气泡需高于弹窗遮罩 */
+.nc-flash { z-index: 9999; }
