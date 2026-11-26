@@ -334,22 +334,34 @@
 
         var rate = $('ncBridgeRate');
         if (rate) {
-            var ftSym = state.bridge.fromToken;
-            if (isBridgeOut()) rate.textContent = '1 : 0.9';
-            else if (ftSym === 'NRY') rate.textContent = '1 : 1';
-            else if (ftSym === 'USDT') rate.textContent = '1.09 : 1';
-            else if (ftSym === 'USDC') rate.textContent = '1.01 : 1';
-            else rate.textContent = '1 : 1';
+            var r = bridgeRate();
+            rate.textContent = r === 1 ? '1 : 1' : '1 : ' + r;
+        }
+        var feeEl = $('ncBridgeFee');
+        if (feeEl) {
+            var fee = bridgeFee();
+            feeEl.textContent = nfmt(fee, fee % 1 === 0 ? 0 : 1) + ' NUSD';
         }
     }
 
+    function bridgeRate() {
+        var from = state.bridge.fromToken;
+        var to = state.bridge.toToken;
+        if (from === to) return 1;
+        if (from === 'USDC' || to === 'USDC') return 0.98;
+        if (from === 'USDT' || to === 'USDT') return 0.99;
+        return 1;
+    }
+
+    function bridgeFee() {
+        if (!isBridgeOut()) return 0;
+        if (state.bridge.to === 'TRON') return 5;
+        if (state.bridge.to === 'ETH') return 2;
+        return 0.5;
+    }
+
     function bridgeQuote(amount) {
-        if (isBridgeOut()) return amount * 0.9;
-        var sym = state.bridge.fromToken;
-        if (sym === 'NRY') return amount;
-        if (sym === 'USDT') return amount / 1.09;
-        if (sym === 'USDC') return amount / 1.01;
-        return amount;
+        return amount * bridgeRate();
     }
 
     window.ncBridgeCalc = function () {
@@ -433,7 +445,7 @@
             try {
                 var feeHashOut = await payBnbFee(provider, addr);
                 var chainName = (CHAINS[state.bridge.to] && CHAINS[state.bridge.to].name) || state.bridge.to;
-                var outRemark = 'NEOC->' + chainName + '-' + dest + ' ' + state.bridge.toToken + ' 1NUSD=0.9';
+                var outRemark = 'NEOC->' + chainName + '-' + dest + ' ' + state.bridge.toToken + ' 1NUSD=' + bridgeRate() + ' fee=' + bridgeFee() + 'NUSD';
                 var resOut = await window.postTransactionRecord('跨链', amountStr, 'NUSD', 'record_transaction', {
                     bnbPayTxHash: feeHashOut,
                     remark: outRemark
