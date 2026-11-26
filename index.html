@@ -1375,22 +1375,23 @@
 
             <div class="nc-field">
                 <div class="nc-field-top">
-                    <label data-i18n="nc_price">价格 (NUSD)</label>
+                    <label data-i18n="nc_amount">数量 (NRY)</label>
+                    <span class="nc-field-bal"><span data-i18n="nc_available">可用</span>: <b id="ncAvailNry">—</b></span>
                 </div>
                 <div class="nc-field-row">
-                    <input id="ncOrderPrice" type="number" inputmode="decimal" placeholder="0.00" readonly oninput="ncOrderCalc()">
-                    <span class="nc-token-tag"><img src="assets/nusd.webp" alt="NUSD" loading="lazy">NUSD</span>
+                    <input id="ncOrderAmount" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
+                    <span class="nc-token-tag"><img src="assets/NRY.webp" alt="NRY" loading="lazy">NRY</span>
                 </div>
             </div>
 
             <div class="nc-field">
                 <div class="nc-field-top">
-                    <label data-i18n="nc_amount">数量 (NRY)</label>
-                    <span class="nc-field-bal"><span data-i18n="nc_available">可用</span>: <b id="ncAvail">—</b></span>
+                    <label data-i18n="nc_price">价格 (NUSD)</label>
+                    <span class="nc-field-bal"><span data-i18n="nc_available">可用</span>: <b id="ncAvailNusd">—</b></span>
                 </div>
                 <div class="nc-field-row">
-                    <input id="ncOrderAmount" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
-                    <span class="nc-token-tag"><img src="assets/NRY.webp" alt="NRY" loading="lazy">NRY</span>
+                    <input id="ncOrderPrice" type="number" inputmode="decimal" placeholder="0.00" readonly oninput="ncOrderCalc()">
+                    <span class="nc-token-tag"><img src="assets/nusd.webp" alt="NUSD" loading="lazy">NUSD</span>
                 </div>
             </div>
 
@@ -2607,7 +2608,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
-<script src="js/nry-chain.js?v=20261126ab"></script>
+<script src="js/nry-chain.js?v=20261126ac"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2630,7 +2631,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261126ab';
+    window.APP_JS_VERSION = '20261126ac';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {

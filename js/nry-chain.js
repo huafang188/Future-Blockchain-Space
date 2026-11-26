@@ -945,8 +945,10 @@
             label.textContent = side === 'buy' ? t('nc_trade_btn_buy', '买入 NRY') : t('nc_trade_btn_sell', '卖出 NRY');
             btn.classList.toggle('nc-btn-sell', side === 'sell');
         }
-        var av = $('ncAvail');
-        if (av) av.textContent = side === 'buy' ? nfmt(tradeBalance('NUSD'), 2) + ' NUSD' : nfmt(tradeBalance('NRY'), 2) + ' NRY';
+        var avNry = $('ncAvailNry');
+        if (avNry) avNry.textContent = nfmt(tradeBalance('NRY'), 2) + ' NRY';
+        var avNusd = $('ncAvailNusd');
+        if (avNusd) avNusd.textContent = nfmt(tradeBalance('NUSD'), 2) + ' NUSD';
         window.ncOrderCalc();
     };
 
