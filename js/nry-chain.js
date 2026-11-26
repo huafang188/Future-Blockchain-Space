@@ -780,6 +780,20 @@
         }
         var priceInput = $('ncOrderPrice');
         if (priceInput && !priceInput.value) priceInput.value = state.price.toFixed(6);
+        syncNryGlobalPrice();
+    }
+
+    function syncNryGlobalPrice() {
+        if (!state.klineReady) return;
+        if (!window.currentPrices) window.currentPrices = {};
+        window.currentPrices['NRY'] = state.price;
+        var priceEl = document.getElementById('price_NRY');
+        if (priceEl) priceEl.textContent = '$' + state.price.toFixed(6);
+        var nryBal = parseFloat(window.userBalances && window.userBalances.NRY) || 0;
+        var valEl = document.getElementById('val_NRY');
+        if (valEl) valEl.textContent = '$' + (nryBal * state.price).toFixed(6);
+        var infoEl = document.getElementById('nryPriceInfo');
+        if (infoEl) infoEl.textContent = '1 NRY ≈ $' + state.price.toFixed(4);
     }
 
     /* ---------- NEOC 行情表格数据 ---------- */
@@ -860,6 +874,7 @@
                 state.price24Open = built[Math.max(0, built.length - 24)].o;
                 renderCandles();
                 renderPrice();
+                if (window.renderTokenList && window.userBalances) window.renderTokenList(window.userBalances);
             }
         } catch (e) {
             console.warn('[Kline] 读取失败:', e && e.message);
