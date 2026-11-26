@@ -106,8 +106,7 @@ export function refreshAssetDisplay(balances = {}) {
 
     Object.keys(tokenConfig).forEach(symbol => {
         const priceKey = symbol.toUpperCase();
-        let unitPrice = parseFloat(livePrices[priceKey]) || 0;
-        if (symbol === 'NUSD' && !unitPrice) unitPrice = parseFloat(livePrices['USDT']) || 1;
+        let unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[priceKey]) || 0);
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         totalValUSD += currentTokenValue;
@@ -254,7 +253,7 @@ export function renderTokenList(balances = {}) {
         const config = tokenConfig[symbol];
 
         const priceKey = symbol.toUpperCase();
-        let unitPrice = parseFloat(livePrices[priceKey]) || 0;
+        let unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[priceKey]) || 0);
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
 
@@ -293,7 +292,7 @@ export function renderTokenList(balances = {}) {
         // 带动画更新各个代币的价格、余额和价值
         Object.keys(tokenConfig).forEach(symbol => {
             if (HIDDEN_TOKENS.includes(symbol)) return;
-            const unitPrice = parseFloat(livePrices[symbol.toUpperCase()]) || 0;
+            const unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[symbol.toUpperCase()]) || 0);
             const balance = parseFloat(balances[symbol] || 0);
             const currentTokenValue = balance * unitPrice;
 
