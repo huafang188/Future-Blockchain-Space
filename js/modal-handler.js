@@ -254,6 +254,45 @@ export function mountModalHandlers() {
         }
     };
 
+    window.openTransferModal = function() {
+        const symbols = Object.keys(tokenConfig).filter(s => s !== 'BNB');
+        window.showModal("transfer", `
+            <div class="space-y-4 text-left">
+                <div class="flex items-start gap-2 p-3 bg-blue-50 rounded-2xl border border-blue-100">
+                    <i class="fa-solid fa-circle-info text-blue-500 text-xs mt-0.5"></i>
+                    <span class="text-[11px] font-bold text-blue-700 leading-relaxed">站内转账：代币将从你的余额划转至对方账户，仅支持站内已注册用户，每笔消耗 GAS 费 0.0001 BNB</span>
+                </div>
+                <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <img id="trfLogo" src="${tokenConfig[symbols[0]].logo}" class="w-8 h-8 object-contain rounded-full">
+                    <select id="trfToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
+                            onchange="if(tokenConfig[this.value]){document.getElementById('trfLogo').src = tokenConfig[this.value].logo;} window.updateTrfBalanceHint();">
+                        ${symbols.map(symbol => 
+                            `<option value="${symbol}" ${symbol === symbols[0] ? 'selected' : ''}>${symbol}</option>`
+                        ).join('')}
+                    </select>
+                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
+                </div>
+                <div class="px-1 -mb-2">
+                    <span id="trfBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.000000</span>
+                </div>
+                <input type="text" id="trfTo" placeholder="对方钱包地址 (0x...)" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <input type="number" id="trfAmount" placeholder="转账数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <button type="button" onclick="window.doTransferSignature()" class="action-btn w-full mt-2">确认转账</button>
+            </div>`);
+
+        setTimeout(() => window.updateTrfBalanceHint(), 50);
+    };
+
+    window.updateTrfBalanceHint = function() {
+        const symbol = document.getElementById('trfToken')?.value || 'NEO';
+        const balances = window.userBalances || {};
+        const balance = parseFloat(balances[symbol] || 0).toFixed(6);
+        const hintEl = document.getElementById('trfBalanceHint');
+        if (hintEl) {
+            hintEl.textContent = `可用余额：${balance} ${symbol}`;
+        }
+    };
+
 window.openExchangeModal = function() {
         const tokens = getChainTokens().swap;
         window.showModal("exchange", `

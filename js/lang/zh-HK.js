@@ -177,6 +177,8 @@ window.i18nData['zh-HK'] = {
     assets_list: "資產列表",
     recharge: "充值",
     withdraw: "提幣",
+    transfer: "轉賬",
+
     exchange: "兌換",
     team_title: "我的團隊",
     my_identity: "我的身份",

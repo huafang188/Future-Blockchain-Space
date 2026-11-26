@@ -178,6 +178,8 @@ window.i18nData['ja'] = {
     assets_list: "資産リスト",
     recharge: "入金",
     withdraw: "出金",
+    transfer: "送金",
+
     exchange: "スワップ",
     team_title: "マイチーム",
     my_identity: "私の身分",

@@ -177,6 +177,8 @@ window.i18nData['mn'] = {
     assets_list: "Хөрөнгийн жагсаалт",
     recharge: "Оруулах",
     withdraw: "Гаргах",
+    transfer: "Шилжүүлэх",
+
     exchange: "Солих",
     team_title: "Миний баг",
     my_identity: "Миний эрхэм",

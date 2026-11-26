@@ -178,6 +178,8 @@ window.i18nData['ar'] = {
     assets_list: "قائمة الأصول",
     recharge: "إيداع",
     withdraw: "سحب",
+    transfer: "تحويل",
+
     exchange: "تبديل",
     team_title: "فريقي",
     my_identity: "هويتي",

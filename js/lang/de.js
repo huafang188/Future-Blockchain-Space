@@ -178,6 +178,8 @@ window.i18nData['de'] = {
     assets_list: "Vermögensliste",
     recharge: "Einzahlen",
     withdraw: "Auszahlen",
+    transfer: "Überweisen",
+
     exchange: "Swap",
     team_title: "Mein Team",
     my_identity: "Meine Identität",

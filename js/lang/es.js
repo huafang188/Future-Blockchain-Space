@@ -178,6 +178,8 @@ window.i18nData['es'] = {
     assets_list: "Lista de Activos",
     recharge: "Depósito",
     withdraw: "Retiro",
+    transfer: "Transferir",
+
     exchange: "Canje (Swap)",
     swap_slippage: "Deslizamiento/Comisión",
     swap_from: "Canje de",

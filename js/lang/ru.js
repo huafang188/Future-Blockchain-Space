@@ -178,6 +178,8 @@ window.i18nData['ru'] = {
     assets_list: "Список активов",
     recharge: "Пополнение",
     withdraw: "Вывод",
+    transfer: "Перевод",
+
     exchange: "Обмен (Swap)",
     team_title: "Моя команда",
     my_identity: "Мой статус",

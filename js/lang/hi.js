@@ -177,6 +177,8 @@ window.i18nData['hi'] = {
     assets_list: "संपत्ति सूची",
     recharge: "रिचार्ज",
     withdraw: "निकासी",
+    transfer: "स्थानांतरण",
+
     exchange: "एक्सचेंज",
     team_title: "मेरी टीम",
     my_identity: "मेरी पहचान",

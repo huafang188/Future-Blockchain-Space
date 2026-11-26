@@ -177,6 +177,8 @@ window.i18nData['el'] = {
     assets_list: "Λίστα Περιουσιακών",
     recharge: "Κατάθεση",
     withdraw: "Ανάληψη",
+    transfer: "Μεταφορά",
+
     exchange: "Ανταλλαγή",
     team_title: "Η Ομάδα Μου",
     my_identity: "Η Ταυτότητά Μου",

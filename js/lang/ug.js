@@ -178,6 +178,8 @@ window.i18nData['ug'] = {
     assets_list: "مۈلۈك تىزىملىكى",
     recharge: "قاچىلاش",
     withdraw: "پۇل چىقىرىش",
+    transfer: "يۆتكەش",
+
     exchange: "ئالماشتۇرۇش",
     team_title: "مېنىڭ كوماندام",
     my_identity: "مېنىڭ كىملىكىم",

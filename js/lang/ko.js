@@ -178,6 +178,8 @@ window.i18nData['ko'] = {
     assets_list: "자산 목록",
     recharge: "충전",
     withdraw: "출금",
+    transfer: "이체",
+
     exchange: "스왑",
     team_title: "내 팀",
     my_identity: "내 신분",

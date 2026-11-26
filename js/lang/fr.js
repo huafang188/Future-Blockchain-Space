@@ -178,6 +178,8 @@ window.i18nData['fr'] = {
     assets_list: "Liste des Actifs",
     recharge: "Dépôt",
     withdraw: "Retrait",
+    transfer: "Transfert",
+
     exchange: "Échange (Swap)",
     team_title: "Mon Équipe",
     my_identity: "Mon Identité",

@@ -178,6 +178,8 @@ window.i18nData['zh-CN'] = {
     assets_list: "资产列表",
     recharge: "充值",
     withdraw: "提现",
+    transfer: "转账",
+
     exchange: "兑换",
     team_title: "我的团队",
     my_identity: "我的身份",
