@@ -3631,7 +3631,8 @@ body.agent-active .bottom-nav-pill {
 .nc-chart-wrap { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px 10px 6px; margin-bottom: 12px; }
 .nc-chart-head { display: flex; align-items: center; justify-content: space-between; font-size: 9.5px; font-weight: 800; color: #64748b; margin-bottom: 6px; }
 .nc-chart-tag { background: #eef2ff; color: #4338ca; padding: 2px 7px; border-radius: 6px; font-size: 8.5px; }
-#ncCandle { width: 100%; height: 150px; display: block; }
+#ncCandle { width: 100%; height: 150px; display: block; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+#ncCandle.nc-dragging { cursor: grabbing; }
 .nc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 .nc-stat { background: #fff; border: 1px solid #eef2f7; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
 .nc-stat span { font-size: 8.5px; font-weight: 800; color: #94a3b8; }

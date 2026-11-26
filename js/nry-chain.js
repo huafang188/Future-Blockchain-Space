@@ -66,6 +66,8 @@
         hourly: [],
         hourlyStamp: '',
         candleCache: {},
+        viewCount: 10,
+        viewOffset: 0,
         side: 'buy',
         usdtBal: 8642.5,
         nryBal: 12480
@@ -621,8 +623,9 @@
         var arr = state.candles;
         if (!arr.length) return;
         var last = arr[arr.length - 1];
-        var span = Math.max(last.h - last.l, state.price * 0.00003);
-        var next = clampRange(last.c + rand(-span * 0.1, span * 0.1), last.l, last.h);
+        var lo = last.l, hi = last.h;
+        var span = Math.max(hi - lo, state.price * 0.00003);
+        var next = clampRange(state.price + rand(-span * 0.25, span * 0.25), lo, hi);
         last.c = next;
         state.price = next;
         renderCandles();
@@ -670,6 +673,18 @@
         refreshMarketFeed();
     }
 
+    function viewData() {
+        var data = state.candles;
+        if (!data || !data.length) return [];
+        var count = Math.max(1, state.viewCount);
+        var maxOff = Math.max(0, data.length - count);
+        if (state.viewOffset > maxOff) state.viewOffset = maxOff;
+        if (state.viewOffset < 0) state.viewOffset = 0;
+        var end = data.length - state.viewOffset;
+        var start = Math.max(0, end - count);
+        return data.slice(start, end);
+    }
+
     function drawCandles() {
         var cv = $('ncCandle');
         if (!cv) return;
@@ -685,7 +700,7 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, w, h);
 
-        var data = state.candles;
+        var data = viewData();
         if (!data.length) return;
 
         var padT = 10, padB = 18, padL = 2, padR = 44;
@@ -835,11 +850,13 @@
             state.hourlyStamp = stamp;
             state.klineReady = true;
             state.candleCache = {};
+            state.viewOffset = 0;
             var built = buildRangeCandles(state.range);
             if (built && built.length) {
                 state.candles = built;
                 state.candleCache[state.range] = built;
-                state.price = built[built.length - 1].c;
+                var lc = built[built.length - 1];
+                state.price = lc.l + Math.random() * Math.max(lc.h - lc.l, 0.000001);
                 state.price24Open = built[Math.max(0, built.length - 24)].o;
                 renderCandles();
                 renderPrice();
@@ -852,6 +869,7 @@
     window.ncSetRange = function (range) {
         if (!PERIODS[range]) return;
         state.range = range;
+        state.viewOffset = 0;
         var btns = document.querySelectorAll('.nc-range-btn');
         for (var i = 0; i < btns.length; i++) {
             btns[i].classList.toggle('active', btns[i].getAttribute('data-range') === range);
@@ -1041,6 +1059,36 @@
         flash(t('cm_soon', '即将开放'), false);
     };
 
+    function bindCandleSwipe() {
+        var cv = $('ncCandle');
+        if (!cv) return;
+        var dragging = false, startX = 0, startOff = 0;
+        cv.addEventListener('pointerdown', function (e) {
+            dragging = true;
+            startX = e.clientX;
+            startOff = state.viewOffset;
+            try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+            cv.classList.add('nc-dragging');
+            e.preventDefault();
+        });
+        cv.addEventListener('pointermove', function (e) {
+            if (!dragging) return;
+            var rect = cv.getBoundingClientRect();
+            var plotW = Math.max(20, rect.width - 46);
+            var candleW = plotW / Math.max(1, state.viewCount);
+            var dx = e.clientX - startX;
+            var delta = Math.round(-dx / candleW);
+            var maxOff = Math.max(0, state.candles.length - state.viewCount);
+            state.viewOffset = Math.max(0, Math.min(maxOff, startOff + delta));
+            renderCandles();
+        });
+        function endDrag() {
+            if (dragging) { dragging = false; cv.classList.remove('nc-dragging'); }
+        }
+        cv.addEventListener('pointerup', endDrag);
+        cv.addEventListener('pointercancel', endDrag);
+    }
+
     /* ---------- 启动 ---------- */
 
     function init() {
@@ -1089,6 +1137,7 @@
         } else {
             window.addEventListener('resize', drawCandles);
         }
+        bindCandleSwipe();
     }
 
     window.addEventListener('onLanguageChanged', function () {
