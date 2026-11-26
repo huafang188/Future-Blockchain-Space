@@ -552,6 +552,7 @@ function renderTeamOverview() {
     renderIdentityWeight();
 }
 
+window.API_BASE = API_BASE;
 window.fetchUserData = fetchUserData;
 window.postTransactionRecord = postTransactionRecord;
 window.submitBindInviter = submitBindInviter;

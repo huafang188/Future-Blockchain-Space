@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20261126p">
+    <link rel="stylesheet" href="style.css?v=20261126u">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -1319,16 +1319,8 @@
             </div>
 
             <div class="nc-highlow">
-                <div><span data-i18n="nc_high">24h 最高</span><b>0.008204</b></div>
-                <div><span data-i18n="nc_low">24h 最低</span><b>0.006482</b></div>
-            </div>
-
-            <div class="nc-chart-wrap">
-                <div class="nc-chart-head">
-                    <span data-i18n="nc_chart_title">价格走势</span>
-                    <span class="nc-chart-tag" data-i18n="nc_chart_5m">5分钟</span>
-                </div>
-                <canvas id="ncCandle" height="150"></canvas>
+                <div><span data-i18n="nc_high">24h 最高</span><b id="ncHigh">0.008204</b></div>
+                <div><span data-i18n="nc_low">24h 最低</span><b id="ncLow">0.006482</b></div>
             </div>
 
             <div class="nc-stats">
@@ -1342,9 +1334,28 @@
             </div>
 
             <div class="nc-source">
-                <p class="nc-source-main"><i class="fas fa-circle-info"></i><span data-i18n="nc_data_source">数据来源：NEOC 链上 Swap 事件实时统计</span></p>
-                <p class="nc-source-sub" data-i18n="nc_data_note">统计区块 135583880 – 135775880，约每 10 分钟刷新一次</p>
+                <p class="nc-source-main"><i class="fas fa-circle-info"></i><span data-i18n="nc_data_source">数据来源：NEOC 官方行情配置</span></p>
+                <p class="nc-source-sub" data-i18n="nc_data_note">数据由后台表格配置，约每分钟同步一次</p>
                 <p class="nc-source-sub"><span data-i18n="nc_data_updated">更新时间</span> <b id="ncUpdated">--:--:--</b></p>
+            </div>
+
+            <div class="nc-chart-wrap">
+                <div class="nc-chart-head">
+                    <span data-i18n="nc_chart_title">价格走势</span>
+                    <div class="nc-range">
+                        <button type="button" class="nc-range-btn" data-range="1m" onclick="ncSetRange('1m')"><span data-i18n="nc_chart_1m">1分钟</span></button>
+                        <button type="button" class="nc-range-btn active" data-range="5m" onclick="ncSetRange('5m')"><span data-i18n="nc_chart_5m">5分钟</span></button>
+                        <button type="button" class="nc-range-btn" data-range="15m" onclick="ncSetRange('15m')"><span data-i18n="nc_chart_15m">15分钟</span></button>
+                        <button type="button" class="nc-range-btn" data-range="30m" onclick="ncSetRange('30m')"><span data-i18n="nc_chart_30m">30分钟</span></button>
+                        <button type="button" class="nc-range-btn" data-range="1h" onclick="ncSetRange('1h')"><span data-i18n="nc_chart_1h">1小时</span></button>
+                        <button type="button" class="nc-range-btn" data-range="4h" onclick="ncSetRange('4h')"><span data-i18n="nc_chart_4h">4小时</span></button>
+                        <button type="button" class="nc-range-btn" data-range="12h" onclick="ncSetRange('12h')"><span data-i18n="nc_chart_12h">12小时</span></button>
+                        <button type="button" class="nc-range-btn" data-range="1d" onclick="ncSetRange('1d')"><span data-i18n="nc_chart_1d">24小时</span></button>
+                        <button type="button" class="nc-range-btn" data-range="1w" onclick="ncSetRange('1w')"><span data-i18n="nc_chart_1w">1周</span></button>
+                        <button type="button" class="nc-range-btn" data-range="1M" onclick="ncSetRange('1M')"><span data-i18n="nc_chart_1M">1月</span></button>
+                    </div>
+                </div>
+                <canvas id="ncCandle" height="150"></canvas>
             </div>
         </section>
 
@@ -2585,7 +2596,7 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20261126r"></script>
+<script src="js/lang/zh-CN.js?v=20261126u"></script>
 <script src="js/i18n-core.js?v=20261123a"></script>
 <script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
@@ -2595,7 +2606,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
-<script src="js/nry-chain.js?v=20261126l"></script>
+<script src="js/nry-chain.js?v=20261126u"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2618,7 +2629,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261126r';
+    window.APP_JS_VERSION = '20261126u';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
@@ -2654,7 +2665,7 @@
 
 <script type="module" src="js/config.js?v=20261126j"></script>
 <script type="module" src="js/calculations.js?v=20260928k"></script>
-<script type="module" src="js/api-service.js?v=20261126j"></script>
+<script type="module" src="js/api-service.js?v=20261126u"></script>
 <script type="module" src="js/wallet-utils.js?v=20260928k"></script>
 <script type="module" src="js/ui-render.js?v=20261126j"></script>
 <script type="module" src="js/modal-handler.js?v=20260928k"></script>

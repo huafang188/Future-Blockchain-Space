@@ -60,6 +60,12 @@
         price24Open: 0.007332,
         candles: [],
         bridge: { from: 'BSC', to: 'NEOC', fromToken: 'NRY', toToken: 'NRY' },
+        range: '5m',
+        marketOverride: false,
+        klineReady: false,
+        hourly: [],
+        hourlyStamp: '',
+        candleCache: {},
         side: 'buy',
         usdtBal: 8642.5,
         nryBal: 12480
@@ -510,17 +516,133 @@
 
     /* ---------- 蜡烛图 ---------- */
 
+    var PERIODS = {
+        '1m': { vol: 0.000022, count: 42 },
+        '5m': { vol: 0.000055, count: 42 },
+        '15m': { vol: 0.000085, count: 42 },
+        '30m': { vol: 0.00011, count: 42 },
+        '1h': { vol: 0.00016, count: 48 },
+        '4h': { vol: 0.00023, count: 48 },
+        '12h': { vol: 0.0003, count: 48 },
+        '1d': { vol: 0.00035, count: 48 },
+        '1w': { vol: 0.00045, count: 52 },
+        '1M': { vol: 0.00055, count: 52 }
+    };
+
+    var RANGE_CFG = {
+        '1m': { sub: 60, count: 120 },
+        '5m': { sub: 12, count: 120 },
+        '15m': { sub: 4, count: 96 },
+        '30m': { sub: 2, count: 96 },
+        '1h': { agg: 1, count: 120 },
+        '4h': { agg: 4, count: 120 },
+        '12h': { agg: 12, count: 90 },
+        '1d': { agg: 24, count: 90 },
+        '1w': { agg: 168, count: 60 },
+        '1M': { agg: 720, count: 48 }
+    };
+    var HOUR_MS = 3600000;
+
+    function clampRange(v, lo, hi) {
+        if (v < lo) return lo;
+        if (v > hi) return hi;
+        return v;
+    }
+
+    function hashStr(str) {
+        var h = 2166136261;
+        for (var i = 0; i < str.length; i++) {
+            h ^= str.charCodeAt(i);
+            h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+    }
+
+    function mulberry32(a) {
+        return function () {
+            a |= 0; a = a + 0x6D2B79F5 | 0;
+            var t = Math.imul(a ^ a >>> 15, 1 | a);
+            t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+    }
+
+    function refineHour(hour, sub) {
+        var rnd = mulberry32(hashStr(String(hour.t) + ':' + sub));
+        var range = Math.max(hour.h - hour.l, hour.c * 0.0001);
+        var out = [];
+        var prev = hour.o;
+        for (var i = 0; i < sub; i++) {
+            var target = hour.o + (hour.c - hour.o) * ((i + 1) / sub);
+            var c = clampRange(target + (rnd() - 0.5) * range * 0.5, hour.l, hour.h);
+            var hi = Math.min(hour.h, Math.max(prev, c) + rnd() * range * 0.25);
+            var lo = Math.max(hour.l, Math.min(prev, c) - rnd() * range * 0.25);
+            out.push({ t: hour.t + i * (HOUR_MS / sub), o: prev, h: hi, l: lo, c: c });
+            prev = c;
+        }
+        out[0].o = hour.o;
+        out[out.length - 1].c = hour.c;
+        out[Math.floor(rnd() * sub)].h = hour.h;
+        out[Math.floor(rnd() * sub)].l = hour.l;
+        return out;
+    }
+
+    function buildRangeCandles(range) {
+        var hours = state.hourly;
+        if (!hours || !hours.length) return null;
+        var cfg = RANGE_CFG[range] || RANGE_CFG['5m'];
+        var src = [];
+        if (cfg.agg) {
+            var bucket = cfg.agg * HOUR_MS;
+            var cur = null;
+            for (var i = 0; i < hours.length; i++) {
+                var h = hours[i];
+                var k = Math.floor(h.t / bucket);
+                if (!cur || cur.k !== k) {
+                    if (cur) src.push({ t: cur.t, o: cur.o, h: cur.h, l: cur.l, c: cur.c });
+                    cur = { k: k, t: h.t, o: h.o, h: h.h, l: h.l, c: h.c };
+                } else {
+                    if (h.h > cur.h) cur.h = h.h;
+                    if (h.l < cur.l) cur.l = h.l;
+                    cur.c = h.c;
+                }
+            }
+            if (cur) src.push({ t: cur.t, o: cur.o, h: cur.h, l: cur.l, c: cur.c });
+        } else {
+            var need = Math.ceil(cfg.count / cfg.sub);
+            var use = hours.slice(-need);
+            for (var j = 0; j < use.length; j++) src = src.concat(refineHour(use[j], cfg.sub));
+        }
+        if (src.length > cfg.count) src = src.slice(-cfg.count);
+        return src.map(function (x) { return { t: x.t, o: x.o, h: x.h, l: x.l, c: x.c }; });
+    }
+
+    function tickLiveCandle() {
+        var arr = state.candles;
+        if (!arr.length) return;
+        var last = arr[arr.length - 1];
+        var span = Math.max(last.h - last.l, state.price * 0.00003);
+        var next = clampRange(last.c + rand(-span * 0.1, span * 0.1), last.l, last.h);
+        last.c = next;
+        state.price = next;
+        renderCandles();
+        renderPrice();
+    }
+
     function seedCandles() {
         var arr = [];
         var p = 0.00752;
         var target = 0.00755;
-        for (var i = 0; i < 42; i++) {
+        var cfg = PERIODS[state.range] || PERIODS['5m'];
+        var count = cfg.count;
+        var vol = cfg.vol;
+        for (var i = 0; i < count; i++) {
             var o = p;
             var pull = (target - o) * 0.06;
-            var drift = pull + rand(-0.00005, 0.000055);
+            var drift = pull + rand(-vol, vol * 1.1);
             var c = clamp(o + drift);
-            var h = clamp(Math.max(o, c) + rand(0, 0.00007));
-            var l = clamp(Math.min(o, c) - rand(0, 0.00007));
+            var h = clamp(Math.max(o, c) + rand(0, vol * 1.3));
+            var l = clamp(Math.min(o, c) - rand(0, vol * 1.3));
             arr.push({ o: o, h: h, l: l, c: c });
             p = c;
         }
@@ -530,6 +652,7 @@
     }
 
     function tickCandle() {
+        if (state.klineReady) { tickLiveCandle(); return; }
         var last = state.candles[state.candles.length - 1];
         var base = last ? last.c : state.price;
         var pull = (0.00755 - base) * 0.05;
@@ -627,8 +750,43 @@
             pEl.classList.remove('nc-up', 'nc-down');
             pEl.classList.add(chg >= 0 ? 'nc-up' : 'nc-down');
         }
-        var txt = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
-        var cls = chg >= 0 ? 'nc-up' : 'nc-down';
+        if (!state.marketOverride) {
+            var txt = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+            var cls = chg >= 0 ? 'nc-up' : 'nc-down';
+            ['ncChange', 'ncChangeStat'].forEach(function (id) {
+                var el = $(id);
+                if (!el) return;
+                el.textContent = txt;
+                el.classList.remove('nc-up', 'nc-down');
+                el.classList.add(cls);
+            });
+            var uEl = $('ncUpdated');
+            if (uEl) uEl.textContent = clock();
+        }
+        var priceInput = $('ncOrderPrice');
+        if (priceInput && !priceInput.value) priceInput.value = state.price.toFixed(6);
+    }
+
+    /* ---------- NEOC 行情表格数据 ---------- */
+
+    function marketUrl() {
+        var base = window.API_BASE || 'https://api.neoneo.ink/api/user';
+        return base.replace('/api/user', '/api/neoc-market');
+    }
+
+    function setMarketNumber(id, val, digits) {
+        var el = $(id);
+        if (!el) return;
+        var n = parseFloat(String(val).replace(/,/g, ''));
+        if (isNaN(n)) { el.textContent = String(val); return; }
+        el.textContent = digits === 0 ? n.toLocaleString('en-US') : n.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    }
+
+    function applyMarketChange(val) {
+        var v = parseFloat(String(val).replace('%', ''));
+        if (isNaN(v)) return;
+        var txt = (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+        var cls = v >= 0 ? 'nc-up' : 'nc-down';
         ['ncChange', 'ncChangeStat'].forEach(function (id) {
             var el = $(id);
             if (!el) return;
@@ -636,11 +794,85 @@
             el.classList.remove('nc-up', 'nc-down');
             el.classList.add(cls);
         });
-        var uEl = $('ncUpdated');
-        if (uEl) uEl.textContent = clock();
-        var priceInput = $('ncOrderPrice');
-        if (priceInput && !priceInput.value) priceInput.value = state.price.toFixed(6);
     }
+
+    window.ncLoadMarket = async function () {
+        try {
+            var res = await fetch(marketUrl() + '?t=' + Date.now(), { cache: 'no-store' });
+            if (!res.ok) return;
+            var json = await res.json();
+            if (!json || !json.success || !json.data) return;
+            var d = json.data;
+            var has = function (k) { return d[k] != null && String(d[k]).trim() !== ''; };
+            if (has('high24h')) setMarketNumber('ncHigh', d.high24h, 6);
+            if (has('low24h')) setMarketNumber('ncLow', d.low24h, 6);
+            if (has('holders')) setMarketNumber('ncHolders', d.holders, 0);
+            if (has('volume24h')) setMarketNumber('ncVol', d.volume24h, 2);
+            if (has('buys24h')) setMarketNumber('ncBuys', d.buys24h, 0);
+            if (has('sells24h')) setMarketNumber('ncSells', d.sells24h, 0);
+            if (has('trades24h')) setMarketNumber('ncTrades', d.trades24h, 0);
+            if (has('change24h')) applyMarketChange(d.change24h);
+            if (has('liquidity')) setMarketNumber('ncLiquidity', d.liquidity, 2);
+            var uEl = $('ncUpdated');
+            if (uEl) uEl.textContent = has('updated') ? d.updated : clock();
+            state.marketOverride = true;
+        } catch (e) {
+            console.warn('[Market] 行情表格读取失败:', e && e.message);
+        }
+    };
+
+    window.ncLoadKlines = async function () {
+        try {
+            var base = window.API_BASE || 'https://api.neoneo.ink/api/user';
+            var res = await fetch(base.replace('/api/user', '/api/neoc-klines') + '?t=' + Date.now(), { cache: 'no-store' });
+            if (!res.ok) return;
+            var json = await res.json();
+            if (!json || !json.success || !Array.isArray(json.data) || !json.data.length) return;
+            var lastRow = json.data[json.data.length - 1];
+            var stamp = json.data.length + ':' + lastRow.t + ':' + lastRow.c;
+            if (stamp === state.hourlyStamp) return;
+            state.hourly = json.data;
+            state.hourlyStamp = stamp;
+            state.klineReady = true;
+            state.candleCache = {};
+            var built = buildRangeCandles(state.range);
+            if (built && built.length) {
+                state.candles = built;
+                state.candleCache[state.range] = built;
+                state.price = built[built.length - 1].c;
+                state.price24Open = built[Math.max(0, built.length - 24)].o;
+                renderCandles();
+                renderPrice();
+            }
+        } catch (e) {
+            console.warn('[Kline] 读取失败:', e && e.message);
+        }
+    };
+
+    window.ncSetRange = function (range) {
+        if (!PERIODS[range]) return;
+        state.range = range;
+        var btns = document.querySelectorAll('.nc-range-btn');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.toggle('active', btns[i].getAttribute('data-range') === range);
+        }
+        if (state.klineReady) {
+            if (!state.candleCache[range]) state.candleCache[range] = buildRangeCandles(range) || [];
+            state.candles = state.candleCache[range];
+            if (state.candles.length) state.price = state.candles[state.candles.length - 1].c;
+            renderCandles();
+            renderPrice();
+            return;
+        }
+        if (state.candleCache[range]) {
+            state.candles = state.candleCache[range];
+        } else {
+            seedCandles();
+            state.candleCache[range] = state.candles;
+        }
+        renderCandles();
+        renderPrice();
+    };
 
     /* ---------- 交易 ---------- */
 
@@ -813,8 +1045,11 @@
 
     function init() {
         seedCandles();
+        state.candleCache[state.range] = state.candles;
         renderCandles();
         renderPrice();
+        window.ncLoadMarket();
+        window.ncLoadKlines();
         renderBridge();
         window.ncBridgeCalc();
         window.ncSetSide('buy');
@@ -827,6 +1062,12 @@
         if (pEl) pEl.value = state.price.toFixed(6);
 
         setInterval(tickCandle, 4000);
+        setInterval(function () {
+            if (document.visibilityState === 'visible') window.ncLoadMarket();
+        }, 60000);
+        setInterval(function () {
+            if (document.visibilityState === 'visible') window.ncLoadKlines();
+        }, 300000);
         setInterval(function () {
             if (document.visibilityState === 'visible') {
                 window.ncRefreshBridgeBalance();

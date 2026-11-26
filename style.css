@@ -3726,3 +3726,15 @@ button.nc-chain-select { width: 100%; cursor: pointer; font-family: inherit; }
 
 /* 提示气泡需高于弹窗遮罩 */
 .nc-flash { z-index: 9999; }
+
+/* K 线周期切换 */
+.nc-range { display: flex; gap: 6px; margin-top: 10px; }
+.nc-range-btn { border: 1px solid #e2e8f0; background: #fff; color: #64748b; font-size: 9.5px; font-weight: 900; padding: 5px 12px; border-radius: 999px; cursor: pointer; transition: all .18s; }
+.nc-range-btn.active { background: #fff7ed; border-color: #fdba74; color: #ea580c; }
+
+/* K 线周期：横向滚动细胶囊，随图表一起 */
+.nc-chart-head { gap: 8px; }
+.nc-chart-head > span { flex-shrink: 0; }
+.nc-range { margin: 0; flex: 1; min-width: 0; gap: 4px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.nc-range::-webkit-scrollbar { display: none; }
+.nc-range-btn { flex-shrink: 0; padding: 3px 8px; font-size: 8.5px; }
