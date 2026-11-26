@@ -1412,6 +1412,7 @@ window.i18nData['ja'] = {
     nc_orders_clear: "クリア",
     nc_orders_empty: "取引はありません",
     nc_trade_success: "注文が完了しました",
+    nc_trade_failed: "注文に失敗しました",
     nc_trade_fail_balance: "残高不足",
     nc_enter_amount: "数量を入力してください",
     nc_bridge_rate: "交換レート",

@@ -1415,6 +1415,7 @@ window.i18nData['zh-HK'] = {
     nc_orders_clear: "清空",
     nc_orders_empty: "暫無交易",
     nc_trade_success: "下單成功",
+    nc_trade_failed: "下單失敗",
     nc_trade_fail_balance: "餘額不足",
     nc_enter_amount: "請輸入數量",
     nc_bridge_rate: "兌換比例",

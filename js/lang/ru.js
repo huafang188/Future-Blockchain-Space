@@ -1411,6 +1411,7 @@ window.i18nData['ru'] = {
     nc_orders_clear: "Очистить",
     nc_orders_empty: "Сделок пока нет",
     nc_trade_success: "Ордер размещён",
+    nc_trade_failed: "Не удалось разместить ордер",
     nc_trade_fail_balance: "Недостаточно средств",
     nc_enter_amount: "Введите количество",
     nc_bridge_rate: "Курс",

@@ -1412,6 +1412,7 @@ window.i18nData['it'] = {
     nc_orders_clear: "Svuota",
     nc_orders_empty: "Nessuna operazione",
     nc_trade_success: "Ordine inviato",
+    nc_trade_failed: "Ordine non riuscito",
     nc_trade_fail_balance: "Saldo insufficiente",
     nc_enter_amount: "Inserisci una quantità",
     nc_bridge_rate: "Tasso",

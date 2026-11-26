@@ -1411,6 +1411,7 @@ window.i18nData['fr'] = {
     nc_orders_clear: "Effacer",
     nc_orders_empty: "Aucune transaction",
     nc_trade_success: "Ordre passé",
+    nc_trade_failed: "Échec de l'ordre",
     nc_trade_fail_balance: "Solde insuffisant",
     nc_enter_amount: "Veuillez saisir une quantité",
     nc_bridge_rate: "Taux",

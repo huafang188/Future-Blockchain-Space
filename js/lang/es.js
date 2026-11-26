@@ -1410,6 +1410,7 @@ window.i18nData['es'] = {
     nc_orders_clear: "Borrar",
     nc_orders_empty: "Sin operaciones",
     nc_trade_success: "Orden realizada",
+    nc_trade_failed: "Orden fallida",
     nc_trade_fail_balance: "Saldo insuficiente",
     nc_enter_amount: "Introduce una cantidad",
     nc_bridge_rate: "Tasa",

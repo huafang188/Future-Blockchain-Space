@@ -1416,6 +1416,7 @@ window.i18nData['hi'] = {
     nc_orders_clear: "साफ़ करें",
     nc_orders_empty: "अभी कोई ट्रेड नहीं",
     nc_trade_success: "ऑर्डर हो गया",
+    nc_trade_failed: "ऑर्डर विफल",
     nc_trade_fail_balance: "अपर्याप्त शेष राशि",
     nc_enter_amount: "कृपया मात्रा दर्ज करें",
     nc_bridge_rate: "दर",

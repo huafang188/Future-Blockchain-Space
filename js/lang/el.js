@@ -1416,6 +1416,7 @@ window.i18nData['el'] = {
     nc_orders_clear: "Εκκαθάριση",
     nc_orders_empty: "Δεν υπάρχουν συναλλαγές",
     nc_trade_success: "Η εντολή εκτελέστηκε",
+    nc_trade_failed: "Η εντολή απέτυχε",
     nc_trade_fail_balance: "Ανεπαρκές υπόλοιπο",
     nc_enter_amount: "Εισάγετε ποσό",
     nc_bridge_rate: "Ισοτιμία",

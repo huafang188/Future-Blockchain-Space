@@ -69,8 +69,7 @@
         viewCount: 10,
         viewOffset: 0,
         side: 'buy',
-        nusdBal: 8642.5,
-        nryBal: 12480
+        submitting: false
     };
 
     /* ---------- 跨链桥：多链 / 多币 ---------- */
@@ -909,6 +908,12 @@
 
     /* ---------- 交易 ---------- */
 
+    function tradeBalance(sym) {
+        var b = window.userBalances || {};
+        var v = parseFloat(b[sym]);
+        return isNaN(v) ? 0 : v;
+    }
+
     window.ncSetSide = function (side) {
         state.side = side;
         var buy = $('ncTabBuy'), sell = $('ncTabSell');
@@ -921,7 +926,7 @@
             btn.classList.toggle('nc-btn-sell', side === 'sell');
         }
         var av = $('ncAvail');
-        if (av) av.textContent = side === 'buy' ? nfmt(state.nusdBal, 2) + ' NUSD' : nfmt(state.nryBal, 2) + ' NRY';
+        if (av) av.textContent = side === 'buy' ? nfmt(tradeBalance('NUSD'), 2) + ' NUSD' : nfmt(tradeBalance('NRY'), 2) + ' NRY';
         window.ncOrderCalc();
     };
 
@@ -933,7 +938,17 @@
         if (el) el.textContent = nfmt(total, 2);
     };
 
-    window.ncSubmitOrder = function () {
+    function setOrderLoading(on, label) {
+        var btn = $('ncOrderBtn');
+        if (!btn) return;
+        btn.disabled = !!on;
+        btn.style.opacity = on ? '0.7' : '';
+        var span = btn.querySelector('[data-i18n]');
+        if (span) span.textContent = label || (state.side === 'buy' ? t('nc_trade_btn_buy', '买入 NRY') : t('nc_trade_btn_sell', '卖出 NRY'));
+    }
+
+    window.ncSubmitOrder = async function () {
+        if (state.submitting) return;
         var p = parseFloat(($('ncOrderPrice') || {}).value) || 0;
         var a = parseFloat(($('ncOrderAmount') || {}).value) || 0;
         if (p <= 0) p = state.price;
@@ -941,27 +956,55 @@
             flash(t('nc_enter_amount', '请输入数量'), false);
             return;
         }
+        var isBuy = state.side === 'buy';
         var total = p * a;
-        if (state.side === 'buy' && total > state.nusdBal) {
+        if (isBuy && total > tradeBalance('NUSD')) {
             flash(t('nc_trade_fail_balance', '余额不足'), false);
             return;
         }
-        if (state.side === 'sell' && a > state.nryBal) {
+        if (!isBuy && a > tradeBalance('NRY')) {
             flash(t('nc_trade_fail_balance', '余额不足'), false);
             return;
         }
-        if (state.side === 'buy') {
-            state.nusdBal -= total;
-            state.nryBal += a;
-        } else {
-            state.nryBal -= a;
-            state.nusdBal += total;
+        var provider = getProvider();
+        var addr = walletAddr();
+        if (!provider || !addr) {
+            flash(t('nc_bridge_connect', '请先连接钱包'), false);
+            return;
         }
-        var amt = $('ncOrderAmount');
-        if (amt) amt.value = '';
-        window.ncOrderCalc();
-        window.ncSetSide(state.side);
-        flash(t('nc_trade_success', '下单成功'), true);
+        try {
+            var chainId = await provider.request({ method: 'eth_chainId' });
+            if (chainId && chainId !== '0x38') {
+                flash(t('nc_bridge_network', '请切换到 BSC 网络'), false);
+                return;
+            }
+        } catch (e) { }
+
+        state.submitting = true;
+        setOrderLoading(true, t('nc_bridge_confirming', '请在钱包中确认...'));
+        try {
+            var feeHash = await payBnbFee(provider, addr);
+            var type = isBuy ? '买入NRY' : '卖出NRY';
+            var action = isBuy ? 'buy' : 'sell';
+            var res = await window.postTransactionRecord(type, a, 'NRY', action, {
+                bnbPayTxHash: feeHash,
+                remark: String(p)
+            });
+            if (res && res.success) {
+                var amt = $('ncOrderAmount');
+                if (amt) amt.value = '';
+                window.ncOrderCalc();
+                window.ncSetSide(state.side);
+                flash(t('nc_trade_success', '下单成功'), true);
+            }
+        } catch (e) {
+            var msg = (e && e.message) || '';
+            if (e && e.code === 4001) msg = t('nc_bridge_rejected', '您已取消签名');
+            flash(msg || t('nc_trade_failed', '下单失败'), false);
+        } finally {
+            state.submitting = false;
+            setOrderLoading(false);
+        }
     };
 
     var board = { bids: [], asks: [], trades: [] };

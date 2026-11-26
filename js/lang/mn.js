@@ -1417,6 +1417,7 @@ window.i18nData['mn'] = {
     nc_orders_clear: "Цэвэрлэх",
     nc_orders_empty: "Арилжаа байхгүй",
     nc_trade_success: "Захиалга биеллээ",
+    nc_trade_failed: "Захиалга амжилтгүй",
     nc_trade_fail_balance: "Үлдэгдэл хүрэлцэхгүй",
     nc_enter_amount: "Хэмжээ оруулна уу",
     nc_bridge_rate: "Ханш",

@@ -1101,6 +1101,7 @@ window.i18nData['zh-CN'] = {
     nc_orders_clear: "清空",
     nc_orders_empty: "暂无交易",
     nc_trade_success: "下单成功",
+    nc_trade_failed: "下单失败",
     nc_trade_fail_balance: "余额不足",
     nc_enter_amount: "请输入数量",
     nc_bridge_rate: "兑换比例",

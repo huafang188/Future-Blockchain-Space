@@ -1417,6 +1417,7 @@ window.i18nData['ar'] = {
     nc_orders_clear: "مسح",
     nc_orders_empty: "لا توجد تداولات",
     nc_trade_success: "تم تنفيذ الأمر",
+    nc_trade_failed: "فشل تنفيذ الأمر",
     nc_trade_fail_balance: "الرصيد غير كافٍ",
     nc_enter_amount: "يرجى إدخال كمية",
     nc_bridge_rate: "السعر",

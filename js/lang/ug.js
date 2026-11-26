@@ -1482,6 +1482,7 @@ window.i18nData['ug'] = {
     nc_orders_clear: "تازىلاش",
     nc_orders_empty: "سودا يوق",
     nc_trade_success: "زاكاز بېرىلدى",
+    nc_trade_failed: "زاكاز مەغلۇپ بولدى",
     nc_trade_fail_balance: "قالدۇق يېتىشمەيدۇ",
     nc_enter_amount: "مىقدار كىرگۈزۈڭ",
     nc_bridge_rate: "ئالماشتۇرۇش نىسبىتى",

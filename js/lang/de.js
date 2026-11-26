@@ -1413,6 +1413,7 @@ window.i18nData['de'] = {
     nc_orders_clear: "Leeren",
     nc_orders_empty: "Noch keine Trades",
     nc_trade_success: "Order platziert",
+    nc_trade_failed: "Order fehlgeschlagen",
     nc_trade_fail_balance: "Guthaben unzureichend",
     nc_enter_amount: "Bitte Menge eingeben",
     nc_bridge_rate: "Kurs",

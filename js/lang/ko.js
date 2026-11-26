@@ -1413,6 +1413,7 @@ window.i18nData['ko'] = {
     nc_orders_clear: "지우기",
     nc_orders_empty: "거래 없음",
     nc_trade_success: "주문 완료",
+    nc_trade_failed: "주문 실패",
     nc_trade_fail_balance: "잔액 부족",
     nc_enter_amount: "수량을 입력하세요",
     nc_bridge_rate: "환율",
