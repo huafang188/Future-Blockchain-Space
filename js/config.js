@@ -142,6 +142,6 @@ export const tokenConfig = {
     'NEA': { logo: 'assets/NEA.webp', chartUrl: '' },
     'NRY': { logo: 'assets/NRY.webp', chartUrl: '' },
     'NCL': { logo: 'assets/NCL.webp', chartUrl: '' },
-    'USDT': { logo: 'assets/USDT.webp', chartUrl: '' },
+    'NUSD': { logo: 'assets/nusd.webp', chartUrl: '' },
     'BNB': { logo: 'assets/BNB.webp', chartUrl: '' }
 };

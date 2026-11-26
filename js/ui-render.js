@@ -107,6 +107,7 @@ export function refreshAssetDisplay(balances = {}) {
     Object.keys(tokenConfig).forEach(symbol => {
         const priceKey = symbol.toUpperCase();
         let unitPrice = parseFloat(livePrices[priceKey]) || 0;
+        if (symbol === 'NUSD' && !unitPrice) unitPrice = parseFloat(livePrices['USDT']) || 1;
         const balance = parseFloat(balances[symbol] || 0);
         const currentTokenValue = balance * unitPrice;
         totalValUSD += currentTokenValue;

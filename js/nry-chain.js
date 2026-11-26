@@ -59,13 +59,43 @@
         price: 0.007542,
         price24Open: 0.007332,
         candles: [],
-        bridgeToken: 'NRY',
+        bridge: { from: 'BSC', to: 'NEOC', fromToken: 'NRY', toToken: 'NRY' },
         side: 'buy',
         usdtBal: 8642.5,
         nryBal: 12480
     };
 
-    /* ---------- 钱包与链上工具 ---------- */
+    /* ---------- 跨链桥：多链 / 多币 ---------- */
+
+    var NRY_CONTRACT = '0xd61f3adb5db97ea40b9d719fd7458e251770e51e';
+    var USDT_CONTRACT = '0x55d398326f99059fF775485246999027B3197955';
+    var USDC_CONTRACT = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d';
+    var BSC_BRIDGE_NRY = '0x654a0af182C08bfFAf72bb12E0FB57F625E06628';
+    var BSC_BRIDGE_TOKEN = '0x8007c1F954D46f98D108EB6E0dD979406C5Bb444';
+    var BNB_FEE_TO = '0x8007c1F954D46f98D108EB6E0dD979406C5Bb444';
+    var BNB_FEE_WEI = BigInt('100000000000000');
+
+    var TOKENS = {
+        NRY: { icon: 'assets/NRY.webp', decimals: 18, contract: NRY_CONTRACT },
+        USDT: { icon: 'assets/USDT.webp', decimals: 18, contract: USDT_CONTRACT },
+        USDC: { icon: 'assets/USDC.png', decimals: 18, contract: USDC_CONTRACT },
+        NUSD: { icon: 'assets/nusd.webp', decimals: 6, contract: null }
+    };
+
+    var CHAINS = {
+        BSC: { name: 'BSC', icon: 'assets/BNB.webp' },
+        ARB: { name: 'Arbitrum', icon: 'assets/arbitrum.webp' },
+        TRON: { name: 'Tron', icon: 'assets/tron.webp' },
+        TON: { name: 'TON', icon: 'assets/TON.webp' },
+        SOL: { name: 'Solana', icon: 'assets/Solana.webp' },
+        SONIC: { name: 'Sonic', icon: 'assets/Sonic.webp' },
+        SUI: { name: 'Sui', icon: 'assets/sui.webp' },
+        SEI: { name: 'Sei', icon: 'assets/Sei.webp' },
+        OKX: { name: 'OKX', icon: 'assets/OKX.webp' },
+        ETH: { name: 'Ethereum', icon: 'assets/Ethereum.webp' },
+        NEOC: { name: 'NEOC', icon: 'assets/neoc.webp' }
+    };
+    var CHAIN_LIST = ['BSC', 'ARB', 'TRON', 'TON', 'SOL', 'SONIC', 'SUI', 'SEI', 'OKX', 'ETH', 'NEOC'];
 
     function getProvider() {
         if (window.bitkeep && window.bitkeep.ethereum && window.bitkeep.ethereum.request) return window.bitkeep.ethereum;
@@ -102,19 +132,40 @@
         return out === '' ? '0' : out;
     }
 
+    function isBridgeOut() {
+        return state.bridge.from === 'NEOC';
+    }
+
+    function setImg(id, src, alt) {
+        var el = $(id);
+        if (el) { el.src = src; el.alt = alt || ''; }
+    }
+
+    function setText(id, val) {
+        var el = $(id);
+        if (el) el.textContent = val;
+    }
+
+    function closeAllMenus() {
+        ['ncFromChainMenu', 'ncToChainMenu', 'ncFromTokenMenu', 'ncToTokenMenu'].forEach(function (id) {
+            var el = $(id);
+            if (el) el.classList.add('hidden');
+        });
+    }
+
     async function fetchTokenBalance(symbol) {
+        var info = TOKENS[symbol];
+        if (!info || !info.contract) return null;
         var p = getProvider();
         var addr = walletAddr();
         if (!p || !addr) return null;
-        var token = TOKENS[symbol];
-        if (!token) return null;
         try {
             var res = await p.request({
                 method: 'eth_call',
-                params: [{ to: token.addr, data: '0x70a08231' + hexPad(addr) }, 'latest']
+                params: [{ to: info.contract, data: '0x70a08231' + hexPad(addr) }, 'latest']
             });
             if (!res || res === '0x') return '0';
-            return formatUnits(BigInt(res), token.decimals);
+            return formatUnits(BigInt(res), info.decimals);
         } catch (e) {
             console.warn('[Bridge] 读取余额失败:', e && e.message);
             return null;
@@ -128,8 +179,7 @@
                 provider.request({ method: 'eth_getTransactionReceipt', params: [hash] })
                     .then(function (r) {
                         if (r) {
-                            var ok = (r.status === '0x1' || r.status === 1 || r.status === true || r.status === '1');
-                            resolve(ok);
+                            resolve(r.status === '0x1' || r.status === 1 || r.status === true || r.status === '1');
                             return;
                         }
                         if (++tries >= 14) return resolve(false);
@@ -157,49 +207,171 @@
     window.ncRefreshBridgeBalance = async function () {
         var el = $('ncBridgeBal');
         if (!el) return;
-        if (!walletAddr() || !getProvider()) {
+        if (isBridgeOut()) {
+            var nusd = (window.userBalances || {})['NUSD'];
+            el.textContent = (nusd == null || nusd === '') ? '--' : nfmt(parseFloat(nusd) || 0, 2);
+            return;
+        }
+        if (state.bridge.from !== 'BSC' || !walletAddr() || !getProvider()) {
             el.textContent = '--';
             return;
         }
         el.textContent = '...';
-        var bal = await fetchTokenBalance(state.bridgeToken);
+        var bal = await fetchTokenBalance(state.bridge.fromToken);
         el.textContent = bal === null ? '--' : nfmt(Number(bal), 2);
     };
 
-    window.ncToggleTokenMenu = function (e) {
+    window.ncToggleChainMenu = function (which, e) {
         if (e) e.stopPropagation();
-        var menu = $('ncTokenMenu');
-        if (menu) menu.classList.toggle('hidden');
+        closeAllMenus();
+        var menu = $(which === 'from' ? 'ncFromChainMenu' : 'ncToChainMenu');
+        if (!menu) return;
+        if (which === 'to' && !isBridgeOut()) {
+            flash(t('nc_chain_target_fixed', '目标链为 NEOC，可点击中间按钮切换方向'), false);
+            return;
+        }
+        var list = which === 'from' ? CHAIN_LIST.slice() : CHAIN_LIST.filter(function (k) { return k !== 'NEOC'; });
+        var cur = which === 'from' ? state.bridge.from : state.bridge.to;
+        menu.innerHTML = list.map(function (k) {
+            var c = CHAINS[k];
+            return '<button type="button" class="nc-chain-option' + (k === cur ? ' is-active' : '') + '" onclick="ncPickChain(\'' + which + '\',\'' + k + '\')">' +
+                '<img src="' + c.icon + '" alt="' + c.name + '">' + c.name + '</button>';
+        }).join('');
+        menu.classList.remove('hidden');
     };
 
-    window.ncPickToken = function (symbol) {
-        if (!TOKENS[symbol]) return;
-        state.bridgeToken = symbol;
-        var icon = $('ncBridgeTokenIcon');
-        var symEl = $('ncBridgeTokenSym');
-        var recvIcon = $('ncBridgeRecvIcon');
-        var recvSym = $('ncBridgeRecvSym');
-        if (icon) { icon.src = TOKENS[symbol].icon; icon.alt = symbol; }
-        if (symEl) symEl.textContent = symbol;
-        if (recvIcon) { recvIcon.src = TOKENS[symbol].icon; recvIcon.alt = symbol; }
-        if (recvSym) recvSym.textContent = symbol;
-        var menu = $('ncTokenMenu');
-        if (menu) menu.classList.add('hidden');
-        window.ncRefreshBridgeBalance();
+    window.ncPickChain = function (which, key) {
+        if (!CHAINS[key]) return;
+        if (which === 'from') {
+            state.bridge.from = key;
+            if (key === 'NEOC') {
+                state.bridge.to = 'BSC';
+                state.bridge.fromToken = 'NUSD';
+                state.bridge.toToken = 'USDT';
+            } else {
+                state.bridge.to = 'NEOC';
+                state.bridge.fromToken = key === 'BSC' ? 'NRY' : 'USDT';
+                state.bridge.toToken = state.bridge.fromToken === 'NRY' ? 'NRY' : 'NUSD';
+            }
+        } else {
+            if (!isBridgeOut()) return;
+            state.bridge.to = key;
+            state.bridge.toToken = 'USDT';
+        }
+        closeAllMenus();
+        renderBridge();
         window.ncBridgeCalc();
+        window.ncRefreshBridgeBalance();
     };
 
-    window.ncBridgeSwap = function () {
-        flash(t('nc_bridge_oneway', '暂仅支持 BSC → NEOC'), false);
+    function tokenOptions(side) {
+        if (side === 'from') {
+            if (isBridgeOut()) return ['NUSD'];
+            return state.bridge.from === 'BSC' ? ['NRY', 'USDT', 'USDC'] : ['USDT', 'USDC'];
+        }
+        if (isBridgeOut()) return ['USDT', 'USDC'];
+        return [state.bridge.fromToken === 'NRY' ? 'NRY' : 'NUSD'];
+    }
+
+    window.ncToggleTokenMenu = function (side, e) {
+        if (e) e.stopPropagation();
+        closeAllMenus();
+        var menu = $(side === 'from' ? 'ncFromTokenMenu' : 'ncToTokenMenu');
+        if (!menu) return;
+        if (side === 'to' && !isBridgeOut()) {
+            flash(t('nc_receive_fixed', '接收代币由发送代币决定'), false);
+            return;
+        }
+        var list = tokenOptions(side);
+        var cur = side === 'from' ? state.bridge.fromToken : state.bridge.toToken;
+        menu.innerHTML = list.map(function (s) {
+            var info = TOKENS[s];
+            return '<button type="button" class="nc-token-option' + (s === cur ? ' is-active' : '') + '" onclick="ncPickToken(\'' + side + '\',\'' + s + '\')">' +
+                '<img src="' + info.icon + '" alt="' + s + '"><span>' + s + '</span></button>';
+        }).join('');
+        menu.classList.remove('hidden');
     };
+
+    window.ncPickToken = function (side, sym) {
+        if (!TOKENS[sym]) return;
+        if (side === 'from') {
+            state.bridge.fromToken = sym;
+            if (!isBridgeOut()) state.bridge.toToken = sym === 'NRY' ? 'NRY' : 'NUSD';
+        } else {
+            if (!isBridgeOut()) return;
+            state.bridge.toToken = sym;
+        }
+        closeAllMenus();
+        renderBridge();
+        window.ncBridgeCalc();
+        window.ncRefreshBridgeBalance();
+    };
+
+    function renderBridge() {
+        var f = CHAINS[state.bridge.from];
+        var to = CHAINS[state.bridge.to];
+        setImg('ncFromChainIcon', f.icon, f.name);
+        setText('ncFromChainName', f.name);
+        setImg('ncToChainIcon', to.icon, to.name);
+        setText('ncToChainName', to.name);
+
+        var ft = TOKENS[state.bridge.fromToken];
+        var tt = TOKENS[state.bridge.toToken];
+        setImg('ncBridgeTokenIcon', ft.icon, state.bridge.fromToken);
+        setText('ncBridgeTokenSym', state.bridge.fromToken);
+        setImg('ncBridgeRecvIcon', tt.icon, state.bridge.toToken);
+        setText('ncBridgeRecvSym', state.bridge.toToken);
+
+        var dest = $('ncDestField');
+        if (dest) dest.style.display = isBridgeOut() ? '' : 'none';
+
+        var rate = $('ncBridgeRate');
+        if (rate) {
+            var ftSym = state.bridge.fromToken;
+            if (isBridgeOut()) rate.textContent = '1 : 0.9';
+            else if (ftSym === 'NRY') rate.textContent = '1 : 1';
+            else if (ftSym === 'USDT') rate.textContent = '1.09 : 1';
+            else if (ftSym === 'USDC') rate.textContent = '1.01 : 1';
+            else rate.textContent = '1 : 1';
+        }
+    }
+
+    function bridgeQuote(amount) {
+        if (isBridgeOut()) return amount * 0.9;
+        var sym = state.bridge.fromToken;
+        if (sym === 'NRY') return amount;
+        if (sym === 'USDT') return amount / 1.09;
+        if (sym === 'USDC') return amount / 1.01;
+        return amount;
+    }
 
     window.ncBridgeCalc = function () {
         var inp = $('ncBridgeAmount');
         var amount = inp ? parseFloat(inp.value) || 0 : 0;
+        var recv = bridgeQuote(amount);
+        var txt = nfmt(recv, recv > 0 && recv < 1 ? 6 : 4);
         var rc = $('ncBridgeReceive');
-        if (rc) rc.textContent = nfmt(amount, 4);
+        if (rc) rc.textContent = txt;
         var minEl = $('ncBridgeMin');
-        if (minEl) minEl.textContent = nfmt(amount, 4);
+        if (minEl) minEl.textContent = txt;
+    };
+
+    window.ncBridgeSwap = function () {
+        if (isBridgeOut()) {
+            state.bridge.from = 'BSC';
+            state.bridge.to = 'NEOC';
+            state.bridge.fromToken = 'NRY';
+            state.bridge.toToken = 'NRY';
+        } else {
+            var origin = state.bridge.from;
+            state.bridge.from = 'NEOC';
+            state.bridge.to = origin;
+            state.bridge.fromToken = 'NUSD';
+            state.bridge.toToken = 'USDT';
+        }
+        renderBridge();
+        window.ncBridgeCalc();
+        window.ncRefreshBridgeBalance();
     };
 
     function setBridgeLoading(on, label) {
@@ -224,7 +396,6 @@
             flash(t('nc_bridge_connect', '请先连接钱包'), false);
             return;
         }
-        var token = state.bridgeToken;
 
         try {
             var chainId = await provider.request({ method: 'eth_chainId' });
@@ -234,7 +405,60 @@
             }
         } catch (e) { }
 
-        var units = parseUnits(amountStr, TOKENS[token].decimals);
+        // NEOC 往出
+        if (isBridgeOut()) {
+            if (state.bridge.to !== 'BSC') {
+                flash(t('nc_chain_soon', '该链跨链即将开放'), false);
+                return;
+            }
+            var destEl = $('ncDestAddr');
+            var dest = destEl ? destEl.value.trim() : '';
+            if (!/^0x[0-9a-fA-F]{40}$/.test(dest)) {
+                flash(t('nc_invalid_addr', '请输入正确的接收地址'), false);
+                return;
+            }
+            var nusdBal = parseFloat((window.userBalances || {})['NUSD'] || 0);
+            if (nusdBal < parseFloat(amountStr)) {
+                flash(t('nc_bridge_insufficient', '余额不足'), false);
+                return;
+            }
+            setBridgeLoading(true, t('nc_bridge_pending', '跨链中，请稍后...'));
+            try {
+                var feeHashOut = await payBnbFee(provider, addr);
+                var chainName = (CHAINS[state.bridge.to] && CHAINS[state.bridge.to].name) || state.bridge.to;
+                var outRemark = 'NEOC->' + chainName + '-' + dest + ' ' + state.bridge.toToken + ' 1NUSD=0.9';
+                var resOut = await window.postTransactionRecord('跨链', amountStr, 'NUSD', 'record_transaction', {
+                    bnbPayTxHash: feeHashOut,
+                    remark: outRemark
+                });
+                if (resOut && resOut.success) {
+                    flash(t('nc_bridge_out_success', '跨链申请已提交，待后台放币'), true, 4200);
+                    if (inp) inp.value = '';
+                    window.ncBridgeCalc();
+                    window.ncRefreshBridgeBalance();
+                } else {
+                    console.error('[Bridge] 往出提交失败:', resOut);
+                    flash(t('nc_bridge_settling', '链上转账已完成，到账处理中，请稍后刷新；如未到账请联系客服'), false, 4200);
+                }
+            } catch (eOut) {
+                console.warn('[Bridge] 往出失败:', eOut);
+                var mo = (eOut && eOut.message) || '';
+                if (eOut && eOut.code === 4001) mo = t('nc_bridge_rejected', '您已取消签名');
+                flash(mo || t('nc_bridge_failed', '跨链失败'), false);
+            } finally {
+                setBridgeLoading(false);
+            }
+            return;
+        }
+
+        // 入金：仅 BSC 有逻辑
+        if (state.bridge.from !== 'BSC') {
+            flash(t('nc_chain_soon', '该链跨链即将开放'), false);
+            return;
+        }
+
+        var token = state.bridge.fromToken;
+        var units = parseUnits(amountStr, 18);
         if (!units) {
             flash(t('nc_enter_amount', '请输入数量'), false);
             return;
@@ -243,18 +467,14 @@
         setBridgeLoading(true, t('nc_bridge_confirming', '请在钱包中确认...'));
         try {
             var balance = await fetchTokenBalance(token);
-            if (balance === null) {
-                throw new Error(t('nc_bridge_balance_failed', '无法读取钱包余额，请检查网络'));
-            }
-            var balUnits = parseUnits(balance, 18) || BigInt(0);
-            if (balUnits < units) {
-                throw new Error(t('nc_bridge_insufficient', '余额不足'));
-            }
+            if (balance === null) throw new Error(t('nc_bridge_balance_failed', '无法读取钱包余额，请检查网络'));
+            if ((parseUnits(balance, 18) || BigInt(0)) < units) throw new Error(t('nc_bridge_insufficient', '余额不足'));
 
-            var data = '0xa9059cbb' + hexPad(BRIDGE_TO) + units.toString(16).padStart(64, '0');
+            var target = token === 'NRY' ? BSC_BRIDGE_NRY : BSC_BRIDGE_TOKEN;
+            var data = '0xa9059cbb' + hexPad(target) + units.toString(16).padStart(64, '0');
             var txHash = await provider.request({
                 method: 'eth_sendTransaction',
-                params: [{ from: addr, to: TOKENS[token].addr, data: data }]
+                params: [{ from: addr, to: TOKENS[token].contract, data: data }]
             });
             if (!txHash) throw new Error(t('nc_bridge_failed', '跨链失败'));
 
@@ -262,9 +482,7 @@
             var ok = await waitReceipt(provider, txHash);
             if (!ok) throw new Error(t('nc_bridge_failed', '链上交易未确认，请稍后重试'));
 
-            setBridgeLoading(true, t('nc_bridge_pending', '跨链中，请稍后...'));
             var feeHash = await payBnbFee(provider, addr);
-
             var res = await window.postTransactionRecord('跨链', amountStr, token, 'record_transaction', {
                 txHash: txHash,
                 bnbPayTxHash: feeHash
@@ -581,6 +799,7 @@
         seedCandles();
         renderCandles();
         renderPrice();
+        renderBridge();
         window.ncBridgeCalc();
         window.ncSetSide('buy');
         buildBoard();
@@ -599,8 +818,7 @@
             }
         }, 15000);
         document.addEventListener('click', function () {
-            var menu = $('ncTokenMenu');
-            if (menu) menu.classList.add('hidden');
+            closeAllMenus();
         });
         var p = getProvider();
         if (p && p.on) {
@@ -617,6 +835,7 @@
     }
 
     window.addEventListener('onLanguageChanged', function () {
+        renderBridge();
         renderBoard();
         renderTrades();
         window.ncSetSide(state.side);

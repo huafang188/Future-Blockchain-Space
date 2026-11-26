@@ -53,7 +53,7 @@
 
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Orbitron:wght@700;900&display=swap">
-    <link rel="stylesheet" href="style.css?v=20261126g">
+    <link rel="stylesheet" href="style.css?v=20261126j">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         tailwind.config = {
@@ -1222,22 +1222,30 @@
             <div class="nc-card-head">
                 <div>
                     <h3 class="nc-card-title" data-i18n="nc_bridge_title">跨链桥</h3>
-                    <p class="nc-card-sub" data-i18n="nc_bridge_sub">BSC → NEOC 资产跨链</p>
+                    <p class="nc-card-sub" data-i18n="nc_bridge_sub">多链 ↔ NEOC 资产跨链</p>
                 </div>
                 <span class="nc-chip"><i class="fas fa-bolt"></i><span data-i18n="nc_bridge_beta">Beta</span></span>
             </div>
 
             <div class="nc-bridge-chains">
-                <div class="nc-chain-pill">
-                    <img src="assets/BNB.webp" alt="BSC" loading="lazy">
-                    <span>BSC</span>
+                <div class="nc-chain-slot">
+                    <button type="button" class="nc-chain-pill nc-chain-select" onclick="ncToggleChainMenu('from', event)">
+                        <img id="ncFromChainIcon" src="assets/BNB.webp" alt="BSC" loading="lazy">
+                        <span id="ncFromChainName">BSC</span>
+                        <i class="fas fa-chevron-down nc-token-caret"></i>
+                    </button>
+                    <div class="nc-chain-menu hidden" id="ncFromChainMenu"></div>
                 </div>
-                <button type="button" class="nc-swap-btn nc-swap-locked" onclick="ncBridgeSwap()" aria-label="switch">
-                    <i class="fas fa-arrow-right"></i>
+                <button type="button" class="nc-swap-btn" onclick="ncBridgeSwap()" aria-label="switch">
+                    <i class="fas fa-arrow-right-arrow-left"></i>
                 </button>
-                <div class="nc-chain-pill">
-                    <img src="assets/neoc.webp" alt="NEOC" loading="lazy">
-                    <span>NEOC</span>
+                <div class="nc-chain-slot">
+                    <button type="button" class="nc-chain-pill nc-chain-select" onclick="ncToggleChainMenu('to', event)">
+                        <img id="ncToChainIcon" src="assets/neoc.webp" alt="NEOC" loading="lazy">
+                        <span id="ncToChainName">NEOC</span>
+                        <i class="fas fa-chevron-down nc-token-caret"></i>
+                    </button>
+                    <div class="nc-chain-menu hidden" id="ncToChainMenu"></div>
                 </div>
             </div>
 
@@ -1248,38 +1256,42 @@
                 </div>
                 <div class="nc-field-row">
                     <input id="ncBridgeAmount" type="number" inputmode="decimal" placeholder="0.00" oninput="ncBridgeCalc()">
-                    <button type="button" class="nc-token-tag" onclick="ncToggleTokenMenu(event)">
+                    <button type="button" class="nc-token-tag" onclick="ncToggleTokenMenu('from', event)">
                         <img id="ncBridgeTokenIcon" src="assets/NRY.webp" alt="NRY" loading="lazy">
                         <span id="ncBridgeTokenSym">NRY</span>
                         <i class="fas fa-chevron-down nc-token-caret"></i>
                     </button>
                 </div>
-                <div class="nc-token-menu hidden" id="ncTokenMenu">
-                    <button type="button" class="nc-token-option" onclick="ncPickToken('NRY')">
-                        <img src="assets/NRY.webp" alt="NRY" loading="lazy"><span>NRY</span>
-                    </button>
-                    <button type="button" class="nc-token-option" onclick="ncPickToken('USDT')">
-                        <img src="assets/USDT.webp" alt="USDT" loading="lazy"><span>USDT</span>
-                    </button>
-                </div>
+                <div class="nc-token-menu hidden" id="ncFromTokenMenu"></div>
             </div>
 
-            <div class="nc-field nc-field-receive">
+            <div class="nc-field nc-field-receive nc-token-field">
                 <div class="nc-field-top">
                     <label data-i18n="nc_bridge_you_receive">接收（预计）</label>
                 </div>
                 <div class="nc-field-row nc-readonly">
-                    <span id="ncBridgeReceive">0.00</span>
-                    <span class="nc-token-tag nc-token-static">
+                    <span id="ncBridgeReceive">0.0000</span>
+                    <button type="button" class="nc-token-tag" onclick="ncToggleTokenMenu('to', event)">
                         <img id="ncBridgeRecvIcon" src="assets/NRY.webp" alt="NRY" loading="lazy">
                         <span id="ncBridgeRecvSym">NRY</span>
-                    </span>
+                        <i class="fas fa-chevron-down nc-token-caret"></i>
+                    </button>
+                </div>
+                <div class="nc-token-menu hidden" id="ncToTokenMenu"></div>
+            </div>
+
+            <div class="nc-field" id="ncDestField" style="display:none">
+                <div class="nc-field-top">
+                    <label data-i18n="nc_dest_addr">接收地址</label>
+                </div>
+                <div class="nc-field-row">
+                    <input id="ncDestAddr" type="text" placeholder="0x..." autocomplete="off" spellcheck="false">
                 </div>
             </div>
 
             <div class="nc-kv-list">
-                <div class="nc-kv"><span data-i18n="nc_bridge_rate">兑换比例</span><b>1 : 1</b></div>
-                <div class="nc-kv"><span data-i18n="nc_bridge_min_receive">最少接收</span><b id="ncBridgeMin">0.00</b></div>
+                <div class="nc-kv"><span data-i18n="nc_bridge_rate">兑换比例</span><b id="ncBridgeRate">1 : 1</b></div>
+                <div class="nc-kv"><span data-i18n="nc_bridge_min_receive">最少接收</span><b id="ncBridgeMin">0.0000</b></div>
             </div>
 
             <button type="button" class="nc-btn nc-btn-primary" id="ncBridgeBtn" onclick="ncBridgeSubmit()">
@@ -2550,7 +2562,7 @@
         </nav>
     </div>
 
-<script src="js/lang/zh-CN.js?v=20261126i"></script>
+<script src="js/lang/zh-CN.js?v=20261126k"></script>
 <script src="js/i18n-core.js?v=20261123a"></script>
 <script src="js/navigation.js?v=20260928p"></script>
 <script src="js/chat-agent.js?v=20260928k"></script>
@@ -2560,7 +2572,7 @@
 <script src="js/studio.js?v=20260928n"></script>
     <script src="js/device-configurator.js?v=20261223"></script>
 <script src="js/market.js?v=20260928k"></script>
-<script src="js/nry-chain.js?v=20261126i"></script>
+<script src="js/nry-chain.js?v=20261126k"></script>
 
 <script type="module">
     // 按需加载其他语言文件
@@ -2583,7 +2595,7 @@
     };
 
     // JS 资源版本号：手机端强制刷新缓存（每次发版更新此值即可）
-    window.APP_JS_VERSION = '20261126i';
+    window.APP_JS_VERSION = '20261126k';
 
     window.loadLanguage = function(lang) {
         return new Promise((resolve, reject) => {
@@ -2617,11 +2629,11 @@
     };
 </script>
 
-<script type="module" src="js/config.js?v=20260928k"></script>
+<script type="module" src="js/config.js?v=20261126j"></script>
 <script type="module" src="js/calculations.js?v=20260928k"></script>
-<script type="module" src="js/api-service.js?v=20261126i"></script>
+<script type="module" src="js/api-service.js?v=20261126j"></script>
 <script type="module" src="js/wallet-utils.js?v=20260928k"></script>
-<script type="module" src="js/ui-render.js?v=20260928k"></script>
+<script type="module" src="js/ui-render.js?v=20261126j"></script>
 <script type="module" src="js/modal-handler.js?v=20260928k"></script>
 <script type="module" src="js/action-executor.js?v=20260928k"></script>
 <script type="module" src="js/app-init.js?v=20260928k"></script>

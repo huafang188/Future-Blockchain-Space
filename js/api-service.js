@@ -286,6 +286,10 @@ export async function fetchUserData(address, options = {}) {
         }
 
         window.userBalances = data.balances || {};
+        // 「用户余额」表 USDT 列已改名 NUSD：为提现/兑换等旧界面保留 USDT 别名
+        if (window.userBalances && window.userBalances.NUSD != null && window.userBalances.USDT == null) {
+            window.userBalances.USDT = window.userBalances.NUSD;
+        }
 
         if (window.renderTokenList) {
             window.renderTokenList(data.balances || {});
