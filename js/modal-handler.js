@@ -231,7 +231,7 @@ export function mountModalHandlers() {
                     <span id="trfBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.000000</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="text" id="trfTo" placeholder="对方钱包地址 (0x...)" class="flex-1 min-w-0 p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                    <input type="text" id="trfTo" placeholder="对方钱包地址 (neo...)" class="flex-1 min-w-0 p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                     <button type="button" onclick="window.openScanner()" class="shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-500 border border-slate-100 hover:bg-slate-100 transition-colors" data-i18n="scan" title="扫码">
                         <i class="fa-solid fa-qrcode text-lg"></i>
                     </button>
@@ -259,6 +259,7 @@ export function mountModalHandlers() {
             alert("请先连接钱包");
             return;
         }
+        const neoAddr = (typeof window.encodeNeoAddress === 'function' ? window.encodeNeoAddress(address) : '') || address;
         window.showModal("receive", `
             <div class="space-y-4 text-left">
                 <div class="flex flex-col items-center gap-2">
@@ -268,11 +269,11 @@ export function mountModalHandlers() {
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" data-i18n="scan_tip">扫码向我转账</p>
                 </div>
                 <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                    <span id="receiveAddrText" class="flex-1 min-w-0 text-xs font-black text-slate-700 break-all">${address}</span>
-                    <button type="button" onclick="window.copyAddress('${address}', this)" class="shrink-0 px-3 py-2 rounded-xl bg-orange-500 text-white text-xs font-bold" data-i18n="copy">复制</button>
+                    <span id="receiveAddrText" class="flex-1 min-w-0 text-xs font-black text-slate-700 break-all">${neoAddr}</span>
+                    <button type="button" onclick="window.copyAddress('${neoAddr}', this)" class="shrink-0 px-3 py-2 rounded-xl bg-orange-500 text-white text-xs font-bold" data-i18n="copy">复制</button>
                 </div>
             </div>`);
-        setTimeout(function() { window.renderReceiveQr(address); }, 60);
+        setTimeout(function() { window.renderReceiveQr(neoAddr); }, 60);
     };
 
     window.renderReceiveQr = function(text) {

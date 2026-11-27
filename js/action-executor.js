@@ -709,7 +709,7 @@ window.doTransferSignature = async function() {
     const toAddress = String(document.getElementById('trfTo')?.value || '').trim();
     if (!symbol) return alert("请选择转账代币");
     if (!amount || parseFloat(amount) <= 0) return alert("请输入转账数量");
-    if (!/^0x[0-9a-fA-F]{40}$/.test(toAddress)) return alert("请输入正确的对方钱包地址 (0x...)");
+    if (typeof window.decodeNeoAddress !== 'function' || !window.decodeNeoAddress(toAddress)) return alert("请输入正确的对方钱包地址 (neo...)");
     await executeSignatureAction("转账", amount, symbol, "transfer", { toAddress });
 };
 

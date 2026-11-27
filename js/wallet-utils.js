@@ -1,4 +1,75 @@
 
+// ===== neo 地址编解码（0x 地址 <-> neo 开头地址，base58 可逆编码，纯字节实现，不依赖 BigInt） =====
+const BASE58_CHARS = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const BASE58_MAP = {};
+for (let i = 0; i < BASE58_CHARS.length; i++) BASE58_MAP[BASE58_CHARS[i]] = i;
+
+function bytesToBase58(bytes) {
+    const digits = [0];
+    for (let i = 0; i < bytes.length; i++) {
+        let carry = bytes[i];
+        for (let j = 0; j < digits.length; j++) {
+            carry += digits[j] << 8;
+            digits[j] = carry % 58;
+            carry = (carry / 58) | 0;
+        }
+        while (carry > 0) {
+            digits.push(carry % 58);
+            carry = (carry / 58) | 0;
+        }
+    }
+    let out = '';
+    for (let k = 0; k < bytes.length && bytes[k] === 0; k++) out += '1';
+    for (let m = digits.length - 1; m >= 0; m--) out += BASE58_CHARS[digits[m]];
+    return out;
+}
+
+function base58ToBytes(str) {
+    const bytes = [0];
+    for (let i = 0; i < str.length; i++) {
+        const val = BASE58_MAP[str[i]];
+        if (val === undefined) return null;
+        let carry = val;
+        for (let j = 0; j < bytes.length; j++) {
+            carry += bytes[j] * 58;
+            bytes[j] = carry & 0xff;
+            carry = carry >> 8;
+        }
+        while (carry > 0) {
+            bytes.push(carry & 0xff);
+            carry = carry >> 8;
+        }
+    }
+    for (let k = 0; k < str.length && str[k] === '1'; k++) bytes.push(0);
+    bytes.reverse();
+    return bytes;
+}
+
+export function encodeNeoAddress(addr) {
+    const hex = String(addr || '').trim().toLowerCase().replace(/^0x/, '');
+    if (!/^[0-9a-f]{40}$/.test(hex)) return '';
+    const bytes = [];
+    for (let i = 0; i < 40; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+    return 'neo' + bytesToBase58(bytes);
+}
+
+export function decodeNeoAddress(neoAddr) {
+    const s = String(neoAddr || '').trim();
+    if (!s.toLowerCase().startsWith('neo')) return '';
+    const body = s.slice(3);
+    if (!body || !/^[1-9A-HJ-NP-Za-km-z]+$/.test(body)) return '';
+    const bytes = base58ToBytes(body);
+    if (!bytes || bytes.length !== 20) return '';
+    let hex = '';
+    for (let i = 0; i < bytes.length; i++) {
+        hex += ('0' + bytes[i].toString(16)).slice(-2);
+    }
+    return '0x' + hex;
+}
+
+window.encodeNeoAddress = encodeNeoAddress;
+window.decodeNeoAddress = decodeNeoAddress;
+
 export function mountWalletClickHandler() {
 
     let isProcessing = false;
@@ -282,7 +353,8 @@ export function finishLogin() {
 export function updateWalletUI(addr) {
     const el = document.getElementById('walletAddr');
     if (el) {
-        const displayAddr = addr.slice(0, 6) + '...' + addr.slice(-4);
+        const neoAddr = encodeNeoAddress(addr) || addr;
+        const displayAddr = neoAddr.slice(0, 6) + '...' + neoAddr.slice(-4);
         el.innerText = displayAddr;
         el.removeAttribute('data-i18n');
         el.className = "cursor-pointer font-black bg-emerald-50 text-emerald-600 px-4 py-2 rounded-full text-[10px] border border-emerald-100 mb-4 inline-block transition-transform active:scale-95 focus:outline-none";
