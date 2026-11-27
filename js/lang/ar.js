@@ -1464,4 +1464,9 @@ window.i18nData['ar'] = {
     nc_chart_1d: "24س",
     nc_chart_1w: "أسبوع",
     nc_chart_1M: "شهر",
+
+    receive: "Receive",
+    scan: "Scan",
+    scan_tip: "Scan to receive",
+    copy: "Copy",
 };

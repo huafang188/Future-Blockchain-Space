@@ -1529,4 +1529,9 @@ window.i18nData['ug'] = {
     nc_chart_1d: "24سائەت",
     nc_chart_1w: "1ھەپتە",
     nc_chart_1M: "1ئاي",
+
+    receive: "Receive",
+    scan: "Scan",
+    scan_tip: "Scan to receive",
+    copy: "Copy",
 };

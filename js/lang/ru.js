@@ -1458,4 +1458,9 @@ window.i18nData['ru'] = {
     nc_chart_1d: "24ч",
     nc_chart_1w: "1н",
     nc_chart_1M: "1М",
+
+    receive: "Receive",
+    scan: "Scan",
+    scan_tip: "Scan to receive",
+    copy: "Copy",
 };

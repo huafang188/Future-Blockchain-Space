@@ -1462,4 +1462,9 @@ window.i18nData['zh-HK'] = {
     nc_chart_1d: "24小時",
     nc_chart_1w: "1週",
     nc_chart_1M: "1月",
+
+    receive: "收款",
+    scan: "掃碼",
+    scan_tip: "掃碼向我轉賬",
+    copy: "複製",
 };

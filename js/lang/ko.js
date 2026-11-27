@@ -1460,4 +1460,9 @@ window.i18nData['ko'] = {
     nc_chart_1d: "24시간",
     nc_chart_1w: "1주",
     nc_chart_1M: "1개월",
+
+    receive: "Receive",
+    scan: "Scan",
+    scan_tip: "Scan to receive",
+    copy: "Copy",
 };

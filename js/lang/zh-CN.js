@@ -1148,4 +1148,9 @@ window.i18nData['zh-CN'] = {
     nc_chart_1d: "24小时",
     nc_chart_1w: "1周",
     nc_chart_1M: "1月",
+
+    receive: "收款",
+    scan: "扫码",
+    scan_tip: "扫码向我转账",
+    copy: "复制",
 };

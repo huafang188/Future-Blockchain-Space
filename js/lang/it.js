@@ -1459,4 +1459,9 @@ window.i18nData['it'] = {
     nc_chart_1d: "24 h",
     nc_chart_1w: "1 sett.",
     nc_chart_1M: "1 mese",
+
+    receive: "Receive",
+    scan: "Scan",
+    scan_tip: "Scan to receive",
+    copy: "Copy",
 };

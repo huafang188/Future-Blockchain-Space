@@ -230,7 +230,12 @@ export function mountModalHandlers() {
                 <div class="px-1 -mb-2">
                     <span id="trfBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.000000</span>
                 </div>
-                <input type="text" id="trfTo" placeholder="对方钱包地址 (0x...)" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                <div class="flex items-center gap-2">
+                    <input type="text" id="trfTo" placeholder="对方钱包地址 (0x...)" class="flex-1 min-w-0 p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
+                    <button type="button" onclick="window.openScanner()" class="shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-500 border border-slate-100 hover:bg-slate-100 transition-colors" data-i18n="scan" title="扫码">
+                        <i class="fa-solid fa-qrcode text-lg"></i>
+                    </button>
+                </div>
                 <input type="number" id="trfAmount" placeholder="转账数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
                 <button type="button" onclick="window.doTransferSignature()" class="action-btn w-full mt-2">确认转账</button>
             </div>`);
@@ -246,6 +251,174 @@ export function mountModalHandlers() {
         if (hintEl) {
             hintEl.textContent = `可用余额：${balance} ${symbol}`;
         }
+    };
+
+    window.openReceiveModal = function() {
+        const address = String(localStorage.getItem('fbs_address') || '').trim();
+        if (!address) {
+            alert("请先连接钱包");
+            return;
+        }
+        window.showModal("receive", `
+            <div class="space-y-4 text-left">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                        <canvas id="receiveQrCanvas" width="240" height="240"></canvas>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" data-i18n="scan_tip">扫码向我转账</p>
+                </div>
+                <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                    <span id="receiveAddrText" class="flex-1 min-w-0 text-xs font-black text-slate-700 break-all">${address}</span>
+                    <button type="button" onclick="window.copyAddress('${address}', this)" class="shrink-0 px-3 py-2 rounded-xl bg-orange-500 text-white text-xs font-bold" data-i18n="copy">复制</button>
+                </div>
+            </div>`);
+        setTimeout(function() { window.renderReceiveQr(address); }, 60);
+    };
+
+    window.renderReceiveQr = function(text) {
+        const canvas = document.getElementById('receiveQrCanvas');
+        if (!canvas) return;
+        try {
+            if (!window.qrcode) throw new Error('qrcode 库未加载');
+            const qr = window.qrcode(0, 'H');
+            qr.addData(text);
+            qr.make();
+            const n = qr.getModuleCount();
+            const size = canvas.width;
+            const ctx = canvas.getContext('2d');
+            const cell = size / n;
+            ctx.clearRect(0, 0, size, size);
+
+            const dotColor = '#16a34a';
+
+            for (let r = 0; r < n; r++) {
+                for (let c = 0; c < n; c++) {
+                    if (!qr.isDark(r, c)) continue;
+                    const inFinder =
+                        (r < 8 && c < 8) ||
+                        (r < 8 && c >= n - 8) ||
+                        (r >= n - 8 && c < 8);
+                    const cx = c * cell + cell / 2;
+                    const cy = r * cell + cell / 2;
+                    if (inFinder) {
+                        ctx.fillStyle = dotColor;
+                        ctx.fillRect(c * cell, r * cell, cell, cell);
+                    } else {
+                        ctx.fillStyle = dotColor;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, cell * 0.42, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            drawCenterLogo(ctx, size);
+        } catch (e) {
+            console.error('[ReceiveQR] 渲染失败', e);
+        }
+    };
+
+    function drawCenterLogo(ctx, size) {
+        const cx = size / 2;
+        const cy = size / 2;
+        const logoRadius = size * 0.13;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(cx, cy, logoRadius * 1.15, 0, Math.PI * 2);
+        ctx.fill();
+
+        const img = new Image();
+        img.onload = function() {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, logoRadius, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(img, cx - logoRadius, cy - logoRadius, logoRadius * 2, logoRadius * 2);
+            ctx.restore();
+        };
+        img.src = 'assets/neoc.webp';
+    }
+
+    window.openScanner = function() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert("当前浏览器不支持摄像头扫码，请手动输入地址");
+            return;
+        }
+        let layer = document.getElementById('scanOverlay');
+        if (!layer) {
+            layer = document.createElement('div');
+            layer.id = 'scanOverlay';
+            layer.style.cssText = 'position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;background:rgba(0,0,0,0.9);';
+            layer.innerHTML = `
+                <div style="position:relative;width:280px;height:280px;border-radius:20px;background:#000;overflow:hidden;flex-shrink:0;">
+                    <video id="scanVideo" playsinline muted autoplay style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+                    <div id="scanHint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;pointer-events:none;background:rgba(0,0,0,0.25);">将二维码对准取景框</div>
+                </div>
+                <button type="button" onclick="window.stopScanner()" style="padding:12px 24px;border-radius:16px;background:#fff;color:#334155;font-size:14px;font-weight:700;border:none;cursor:pointer;">取消</button>`;
+            document.body.appendChild(layer);
+        }
+        layer.style.display = 'flex';
+        window._scanning = true;
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(function(stream) {
+                window._scanStream = stream;
+                const v = document.getElementById('scanVideo');
+                if (v) {
+                    v.srcObject = stream;
+                    v.play().catch(function() {});
+                    window._scanRaf = requestAnimationFrame(scanLoop);
+                }
+            })
+            .catch(function(err) {
+                window._scanning = false;
+                window.stopScanner();
+                alert("无法访问摄像头：" + (err && err.message ? err.message : err));
+            });
+    };
+
+    function scanLoop() {
+        if (!window._scanning) return;
+        const video = document.getElementById('scanVideo');
+        if (video && video.readyState === video.HAVE_ENOUGH_DATA && video.videoWidth) {
+            const w = video.videoWidth;
+            const h = video.videoHeight;
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, w, h);
+            let imageData = null;
+            try {
+                imageData = ctx.getImageData(0, 0, w, h);
+            } catch (e) {
+                imageData = null;
+            }
+            if (imageData && window.jsQR) {
+                const code = window.jsQR(imageData.data, w, h, { inversionAttempts: 'dontInvert' });
+                if (code && code.data) {
+                    const addr = String(code.data).trim();
+                    window.stopScanner();
+                    const input = document.getElementById('trfTo');
+                    if (input) input.value = addr;
+                    return;
+                }
+            }
+        }
+        window._scanRaf = requestAnimationFrame(scanLoop);
+    }
+
+    window.stopScanner = function() {
+        window._scanning = false;
+        if (window._scanRaf) {
+            cancelAnimationFrame(window._scanRaf);
+            window._scanRaf = null;
+        }
+        if (window._scanStream) {
+            window._scanStream.getTracks().forEach(function(t) { t.stop(); });
+            window._scanStream = null;
+        }
+        const layer = document.getElementById('scanOverlay');
+        if (layer) layer.style.display = 'none';
     };
 
 window.openExchangeModal = function() {

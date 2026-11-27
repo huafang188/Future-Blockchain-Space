@@ -1459,4 +1459,9 @@ window.i18nData['ja'] = {
     nc_chart_1d: "24時間",
     nc_chart_1w: "1週",
     nc_chart_1M: "1月",
+
+    receive: "Receive",
+    scan: "Scan",
+    scan_tip: "Scan to receive",
+    copy: "Copy",
 };
