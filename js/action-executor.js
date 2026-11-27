@@ -702,12 +702,6 @@ window.doChainPay = async function(bizType) {
     await executeOnChainTransfer(bizType, "USDT", amount, target);
 };
 
-window.doWithdrawSignature = async function() {
-    const symbol = document.getElementById('witToken')?.value;
-    const amount = document.getElementById('witAmount')?.value;
-    if (!amount || parseFloat(amount) <= 0) return alert("请输入提现数量");
-    await executeSignatureAction("提现", amount, symbol, "record_transaction");
-};
 
 window.doTransferSignature = async function() {
     const symbol = document.getElementById('trfToken')?.value;

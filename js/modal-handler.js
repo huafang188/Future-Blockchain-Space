@@ -202,9 +202,7 @@ export function mountModalHandlers() {
 
     const CHAIN_TOKENS = {
         'BSC': {
-            withdraw: ['NRY', 'NCL'],
             swap: ['NRY', 'USDT', 'NCL']
-
         }
     };
 
@@ -213,46 +211,6 @@ export function mountModalHandlers() {
         return CHAIN_TOKENS[chain] || CHAIN_TOKENS['BSC'];
     }
 
-    window.openWithdrawModal = function() {
-        const tokens = getChainTokens().withdraw;
-        window.showModal("withdraw", `
-            <div class="space-y-4 text-left">
-                <div class="flex items-start gap-2 p-3 bg-amber-50 rounded-2xl border border-amber-100">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-500 text-xs mt-0.5"></i>
-                    <span class="text-[11px] font-bold text-amber-700 leading-relaxed" data-i18n="withdraw_warning">提现到账时间为两小时以内，请勿重复提交，避免链上拥堵延迟到账</span>
-                </div>
-                <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <img id="witLogo" src="${tokenConfig[tokens[0]].logo}" class="w-8 h-8 object-contain rounded-full">
-                    <select id="witToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                            onchange="if(tokenConfig[this.value]){document.getElementById('witLogo').src = tokenConfig[this.value].logo;} window.updateWitBalanceHint();">
-                        ${tokens.map(symbol => 
-                            `<option value="${symbol}" ${symbol === tokens[0] ? 'selected' : ''}>${symbol}</option>`
-                        ).join('')}
-                    </select>
-                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-300"></i>
-                </div>
-                <div class="px-1 -mb-2">
-                    <span class="text-[11px] font-bold text-amber-600" data-i18n="withdraw_fee">手续费：5%</span>
-                </div>
-                <div class="px-1">
-                    <span id="witBalanceHint" class="text-[11px] font-bold text-slate-700">可用余额：0.000000 USDT</span>
-                </div>
-                <input type="number" id="witAmount" placeholder="提现数量" class="w-full p-4 bg-slate-50 rounded-2xl font-black border-none outline-none">
-                <button type="button" onclick="window.doWithdrawSignature()" class="action-btn w-full mt-2 !from-red-500">确认提现签名</button>
-            </div>`);
-
-        setTimeout(() => window.updateWitBalanceHint(), 50);
-    };
-
-    window.updateWitBalanceHint = function() {
-        const symbol = document.getElementById('witToken')?.value || 'USDT';
-        const balances = window.userBalances || {};
-        const balance = parseFloat(balances[symbol] || 0).toFixed(6);
-        const hintEl = document.getElementById('witBalanceHint');
-        if (hintEl) {
-            hintEl.textContent = `可用余额：${balance} ${symbol}`;
-        }
-    };
 
     window.openTransferModal = function() {
         const symbols = Object.keys(tokenConfig).filter(s => s !== 'BNB');
@@ -485,21 +443,6 @@ window.openExchangeModal = function() {
         window.calcSwap();
     };
 
-    window.updateWithdrawTokens = function() {
-        const select = document.getElementById('witToken');
-        if (!select) return;
-        const tokens = getChainTokens().withdraw;
-        const currentVal = select.value;
-        select.innerHTML = tokens.map(symbol => 
-            `<option value="${symbol}" ${symbol === currentVal ? 'selected' : ''}>${symbol}</option>`
-        ).join('');
-
-        if (!tokens.includes(currentVal)) {
-            select.value = tokens[0];
-            document.getElementById('witLogo').src = tokenConfig[tokens[0]].logo;
-        }
-        window.updateWitBalanceHint();
-    };
 
     window.updateSwapTokens = function() {
         const fromSelect = document.getElementById('sFromToken');

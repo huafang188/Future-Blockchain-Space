@@ -98,6 +98,13 @@
         if (isNaN(n)) return usdtLogo(LOGO_CLS) + '--';
         return usdtLogo(LOGO_CLS) + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
     }
+    function fmtNusdLogo(val) {
+        var s = (val === null || val === undefined) ? '' : String(val).trim();
+        if (!s) return nusdLogo(LOGO_CLS) + '--';
+        var n = parseFloat(s.replace(/[^0-9.\-]/g, ''));
+        if (isNaN(n)) return nusdLogo(LOGO_CLS) + '--';
+        return nusdLogo(LOGO_CLS) + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
     function fmtNryLogo(val) {
         var s = (val === null || val === undefined) ? '' : String(val).trim();
         if (!s) return nryLogo(LOGO_CLS) + '--';
@@ -147,9 +154,9 @@
         window.nryMiningData = data || null;
         if (!data || !data.user) {
             set('nry_identity', '--');
-            set('nry_stake', fmtUsdtLogo(null));
-            set('nry_hashrate', fmtUsdtLogo(null));
-            set('nry_income', fmtUsdtLogo(null));
+            set('nry_stake', fmtNusdLogo(null));
+            set('nry_hashrate', fmtNusdLogo(null));
+            set('nry_income', fmtNusdLogo(null));
             set('nry_withdrawn', fmtNryLogo(null));
             set('nry_pending', fmtNryLogo(null));
 
@@ -167,9 +174,9 @@
             if (vMatch) idEl.classList.add('v' + vMatch[1].toLowerCase());
             else idEl.classList.add('v0');
         }
-        animateValue('nry_stake', u.stake, fmtUsdtLogo);
-        animateValue('nry_hashrate', u.hashrate, fmtUsdtLogo);
-        animateValue('nry_income', u.income, fmtUsdtLogo);
+        animateValue('nry_stake', u.stake, fmtNusdLogo);
+        animateValue('nry_hashrate', u.hashrate, fmtNusdLogo);
+        animateValue('nry_income', u.income, fmtNusdLogo);
         animateValue('nry_withdrawn', u.withdrawn, fmtNryLogo);
         animateValue('nry_pending', u.pending, fmtNryLogo);
 
@@ -304,8 +311,7 @@
     });
 
     var NRY_CONTRACT = '0xD61F3ADB5dB97eA40b9D719fD7458e251770e51e';
-    var NRY_STAKE_ADDR = '0x0fA3E973539a9E7b204185dae8F4b1d23aD61A13';
-    var USDT_STAKE_ADDR = '0x8007c1F954D46f98D108EB6E0dD979406C5Bb444';
+
     var USDT_BSC = '0x55d398326f99059ff775485246999027b3197955';
     var PRIVATE_POOL_ADDR = '0xa59Ee12770664e002E6e0dDcAC447707AD873F33';
     var SWAP_PROXY = 'https://api.neoneo.ink/api/swap-proxy'; 
@@ -343,6 +349,10 @@
         return '<img src="assets/USDT.webp" alt="USDT" class="' + (cls || 'w-5 h-5 object-contain rounded-full') + '" onerror="this.src=\'assets/head_logo.webp\'">';
     }
 
+    function nusdLogo(cls) {
+        return '<img src="assets/nusd.webp" alt="NUSD" class="' + (cls || 'w-5 h-5 object-contain rounded-full') + '" onerror="this.src=\'assets/head_logo.webp\'">';
+    }
+
     function getNryPrice() {
         var prices = window.currentPrices || {};
         return parseFloat(prices['NRY']) || 0;
@@ -358,10 +368,10 @@
                     <span class="text-[9px] font-bold text-slate-500" id="nryPriceInfo">${priceText}</span>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_stake_label">质押价值 (USDT)</p>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_stake_label">质押价值 (NUSD)</p>
                     <div class="flex items-center gap-2">
                         <input type="number" id="nryStakeAmount" placeholder="100" step="any" min="100" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none" oninput="updateStakeNryDisplay()">
-                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${usdtLogo()}<span class="text-xs font-black">USDT</span></div>
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${nusdLogo()}<span class="text-xs font-black">NUSD</span></div>
                     </div>
                 </div>
                 <div id="nryStakeNryDisplay" class="flex items-center justify-between px-3 py-2 bg-orange-50 rounded-xl">
@@ -375,23 +385,23 @@
                 <div class="grid grid-cols-5 gap-1.5">
                     <button type="button" onclick="setNryStakeAmount('100')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">100</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
                     <button type="button" onclick="setNryStakeAmount('500')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">500</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
                     <button type="button" onclick="setNryStakeAmount('1000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">1K</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
                     <button type="button" onclick="setNryStakeAmount('5000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">5K</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
                     <button type="button" onclick="setNryStakeAmount('10000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">10K</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
                 </div>
                 <button type="button" onclick="window.doStakeNry()" class="action-btn w-full mt-1">
@@ -401,12 +411,12 @@
         setTimeout(updateStakeNryDisplay, 100);
     };
     window.updateStakeNryDisplay = function () {
-        var usdtAmount = parseFloat(document.getElementById('nryStakeAmount') && document.getElementById('nryStakeAmount').value) || 0;
+        var nusdAmount = parseFloat(document.getElementById('nryStakeAmount') && document.getElementById('nryStakeAmount').value) || 0;
         var price = getNryPrice();
         var nryEl = document.getElementById('nryStakeNryValue');
         if (nryEl) {
-            if (price > 0 && usdtAmount > 0) {
-                var nryAmount = usdtAmount / price;
+            if (price > 0 && nusdAmount > 0) {
+                var nryAmount = nusdAmount / price;
                 nryEl.textContent = nryAmount.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' NRY';
             } else {
                 nryEl.textContent = '--';
@@ -418,29 +428,31 @@
         if (el) { el.value = v; updateStakeNryDisplay(); }
     };
     window.doStakeNry = async function () {
-        var usdtAmount = parseFloat(document.getElementById('nryStakeAmount') && document.getElementById('nryStakeAmount').value);
-        if (!usdtAmount || usdtAmount <= 0) { alert('请输入质押价值'); return; }
-        if (usdtAmount < 100) { alert('最低质押价值为 100 USDT'); return; }
+        var nusdAmount = parseFloat(document.getElementById('nryStakeAmount') && document.getElementById('nryStakeAmount').value);
+        if (!nusdAmount || nusdAmount <= 0) { alert('请输入质押价值'); return; }
+        if (nusdAmount < 100) { alert('最低质押价值为 100 NUSD'); return; }
         var price = getNryPrice();
         if (price <= 0) { alert('NRY 价格未加载，请稍后重试'); return; }
-        var nryAmount = usdtAmount / price;
-        if (!window.executeOnChainTransfer) { alert('提交模块未加载，请刷新页面重试'); return; }
-        await window.executeOnChainTransfer('质押NRY', 'NRY', String(nryAmount), NRY_STAKE_ADDR, { remark: usdtAmount + ' USDT' });
+        var nryAmount = nusdAmount / price;
+        var nryBal = parseFloat((window.userBalances || {})['NRY'] || 0);
+        if (nryAmount > nryBal) { alert('NRY 余额不足\n\n需质押：' + nryAmount.toFixed(2) + ' NRY\n可用余额：' + nryBal.toFixed(2) + ' NRY'); return; }
+        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeSignatureAction('质押NRY', String(nryAmount), 'NRY', 'record_transaction', { remark: nusdAmount + ' NUSD' });
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
-    window.stakeUsdt = function () {
-        window.showModal('nry_btn_stake_usdt', `
+    window.stakeNusd = function () {
+        window.showModal('nry_btn_stake_nusd', `
             <div class="space-y-3 text-left">
                 <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
                     <i class="fa-solid fa-circle-info text-slate-400 text-[10px]"></i>
-                    <span class="text-[9px] font-bold text-slate-500" data-i18n="nry_stake_usdt_tip">直接质押 USDT，算力 = 质押 × 2</span>
+                    <span class="text-[9px] font-bold text-slate-500" data-i18n="nry_stake_nusd_tip">直接质押 NUSD，算力 = 质押 × 2</span>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_stake_usdt_label">质押数量 (USDT)</p>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1.5 px-1" data-i18n="nry_stake_nusd_label">质押数量 (NUSD)</p>
                     <div class="flex items-center gap-2">
-                        <input type="number" id="usdtStakeAmount" placeholder="100" step="any" min="100" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
-                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${usdtLogo()}<span class="text-xs font-black">USDT</span></div>
+                        <input type="number" id="nusdStakeAmount" placeholder="100" step="any" min="100" class="flex-1 px-3 py-2 bg-slate-50 rounded-xl font-black text-sm border-none outline-none">
+                        <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl shrink-0">${nusdLogo()}<span class="text-xs font-black">NUSD</span></div>
                     </div>
                 </div>
                 <div class="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl">
@@ -448,42 +460,44 @@
                     <span class="text-sm font-black text-orange-400">5%</span>
                 </div>
                 <div class="grid grid-cols-5 gap-1.5">
-                    <button type="button" onclick="setUsdtStakeAmount('100')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                    <button type="button" onclick="setNusdStakeAmount('100')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">100</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
-                    <button type="button" onclick="setUsdtStakeAmount('500')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                    <button type="button" onclick="setNusdStakeAmount('500')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">500</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
-                    <button type="button" onclick="setUsdtStakeAmount('1000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                    <button type="button" onclick="setNusdStakeAmount('1000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">1K</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
-                    <button type="button" onclick="setUsdtStakeAmount('5000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                    <button type="button" onclick="setNusdStakeAmount('5000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">5K</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
-                    <button type="button" onclick="setUsdtStakeAmount('10000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
+                    <button type="button" onclick="setNusdStakeAmount('10000')" class="flex flex-col items-center py-2 bg-slate-100 rounded-xl">
                         <span class="text-[10px] font-black text-slate-600">10K</span>
-                        <span class="text-[7px] text-slate-400">USDT</span>
+                        <span class="text-[7px] text-slate-400">NUSD</span>
                     </button>
                 </div>
-                <button type="button" onclick="window.doStakeUsdt()" class="action-btn w-full mt-1">
+                <button type="button" onclick="window.doStakeNusd()" class="action-btn w-full mt-1">
                     <span data-i18n="nry_stake_confirm">确认质押</span>
                 </button>
             </div>`);
     };
-    window.setUsdtStakeAmount = function (v) {
-        var el = document.getElementById('usdtStakeAmount');
+    window.setNusdStakeAmount = function (v) {
+        var el = document.getElementById('nusdStakeAmount');
         if (el) el.value = v;
     };
-    window.doStakeUsdt = async function () {
-        var usdtAmount = parseFloat(document.getElementById('usdtStakeAmount') && document.getElementById('usdtStakeAmount').value);
-        if (!usdtAmount || usdtAmount <= 0) { alert('请输入质押数量'); return; }
-        if (usdtAmount < 100) { alert('最低质押数量为 100 USDT'); return; }
-        if (!window.executeOnChainTransfer) { alert('提交模块未加载，请刷新页面重试'); return; }
-        await window.executeOnChainTransfer('质押NRY（USDT）', 'USDT', String(usdtAmount), USDT_STAKE_ADDR, { remark: usdtAmount + ' USDT' });
+    window.doStakeNusd = async function () {
+        var nusdAmount = parseFloat(document.getElementById('nusdStakeAmount') && document.getElementById('nusdStakeAmount').value);
+        if (!nusdAmount || nusdAmount <= 0) { alert('请输入质押数量'); return; }
+        if (nusdAmount < 100) { alert('最低质押数量为 100 NUSD'); return; }
+        var nusdBal = parseFloat((window.userBalances || {})['NUSD'] || 0);
+        if (nusdAmount > nusdBal) { alert('NUSD 余额不足\n\n需质押：' + nusdAmount.toFixed(2) + ' NUSD\n可用余额：' + nusdBal.toFixed(2) + ' NUSD'); return; }
+        if (!window.executeSignatureAction) { alert('提交模块未加载，请刷新页面重试'); return; }
+        await window.executeSignatureAction('质押NUSD', String(nusdAmount), 'NUSD', 'record_transaction', {});
         setTimeout(function () { window.refreshNryMining && window.refreshNryMining(); }, 2000);
     };
 
