@@ -324,6 +324,24 @@ export function renderTokenList(balances = {}) {
 }
 
 /**
+ * 重算并更新总资产价值（与资产列表价值保持一致）
+ * 供 K 线实时价格波动时同步调用
+ */
+export function updateTotalValue(balances) {
+    const livePrices = window.currentPrices || {};
+    const src = balances || window.userBalances || {};
+    const HIDDEN_TOKENS = ['BNB'];
+    let totalValUSD = 0;
+    Object.keys(tokenConfig).forEach(symbol => {
+        if (HIDDEN_TOKENS.includes(symbol)) return;
+        const unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[symbol.toUpperCase()]) || 0);
+        const balance = parseFloat(src[symbol] || 0);
+        totalValUSD += balance * unitPrice;
+    });
+    updateNumberWithAnimation('totalValue', totalValUSD, { decimals: 2, splitDecimal: true });
+}
+
+/**
  * 获取代币 Logo
  */
 function getTokenLogo(symbol) {
@@ -659,6 +677,7 @@ function renderPriceCharts() {
 window.renderStatsPage = renderStatsPage;
 window.renderTokenList = renderTokenList;
 window.renderHistory = renderHistory;
+window.updateTotalValue = updateTotalValue;
 
 window.renderPriceCharts = renderPriceCharts;
 window.updateNeoPriceDisplay = updateNeoPriceDisplay;

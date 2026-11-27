@@ -66,6 +66,7 @@
         hourly: [],
         hourlyStamp: '',
         candleCache: {},
+        currentHourKey: null,
 
         viewOffset: 0,
         side: 'buy',
@@ -600,8 +601,18 @@
         return out;
     }
 
+    function visibleHours() {
+        var now = Date.now();
+        var arr = state.hourly || [];
+        var out = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].t <= now) out.push(arr[i]);
+        }
+        return out;
+    }
+
     function buildRangeCandles(range) {
-        var hours = state.hourly;
+        var hours = visibleHours();
         if (!hours || !hours.length) return null;
         var cfg = RANGE_CFG[range] || RANGE_CFG['5m'];
         var src = [];
@@ -666,7 +677,16 @@
     }
 
     function tickCandle() {
-        if (state.klineReady) { tickLiveCandle(); return; }
+        if (state.klineReady) {
+            var vh = visibleHours();
+            var lastT = vh.length ? vh[vh.length - 1].t : null;
+            if (lastT !== state.currentHourKey) {
+                rebuildFromHourly();
+            } else {
+                tickLiveCandle();
+            }
+            return;
+        }
         var last = state.candles[state.candles.length - 1];
         var base = last ? last.c : state.price;
         var pull = (0.00755 - base) * 0.05;
@@ -813,6 +833,7 @@
         if (valEl) valEl.textContent = '$' + (nryBal * state.price).toFixed(6);
         var infoEl = document.getElementById('nryPriceInfo');
         if (infoEl) infoEl.textContent = '1 NRY ≈ $' + state.price.toFixed(4);
+        if (window.updateTotalValue) window.updateTotalValue();
     }
 
     /* ---------- NEOC 行情表格数据 ---------- */
@@ -869,6 +890,27 @@
         }
     };
 
+    function rebuildFromHourly() {
+        var built = buildRangeCandles(state.range);
+        if (!built || !built.length) return;
+        var vh = visibleHours();
+        var newKey = vh.length ? vh[vh.length - 1].t : null;
+        var changed = newKey !== state.currentHourKey;
+        state.currentHourKey = newKey;
+        state.candleCache = {};
+        state.viewOffset = 0;
+        state.candles = built;
+        state.candleCache[state.range] = built;
+        if (changed) {
+            var lc = built[built.length - 1];
+            state.price = lc.l + Math.random() * Math.max(lc.h - lc.l, 0.000001);
+        }
+        state.price24Open = built[Math.max(0, built.length - 24)].o;
+        renderCandles();
+        renderPrice();
+        if (window.renderTokenList && window.userBalances) window.renderTokenList(window.userBalances);
+    }
+
     window.ncLoadKlines = async function () {
         try {
             var base = window.API_BASE || 'https://api.neoneo.ink/api/user';
@@ -878,23 +920,10 @@
             if (!json || !json.success || !Array.isArray(json.data) || !json.data.length) return;
             var lastRow = json.data[json.data.length - 1];
             var stamp = json.data.length + ':' + lastRow.t + ':' + lastRow.c;
-            if (stamp === state.hourlyStamp) return;
             state.hourly = json.data;
             state.hourlyStamp = stamp;
             state.klineReady = true;
-            state.candleCache = {};
-            state.viewOffset = 0;
-            var built = buildRangeCandles(state.range);
-            if (built && built.length) {
-                state.candles = built;
-                state.candleCache[state.range] = built;
-                var lc = built[built.length - 1];
-                state.price = lc.l + Math.random() * Math.max(lc.h - lc.l, 0.000001);
-                state.price24Open = built[Math.max(0, built.length - 24)].o;
-                renderCandles();
-                renderPrice();
-                if (window.renderTokenList && window.userBalances) window.renderTokenList(window.userBalances);
-            }
+            rebuildFromHourly();
         } catch (e) {
             console.warn('[Kline] 读取失败:', e && e.message);
         }
