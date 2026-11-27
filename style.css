@@ -150,6 +150,10 @@ body.keyboard-open.agent-active .fbs-agent-wrap {
 
 .nav-item i { font-size: 20px !important; margin-bottom: 2px; }
 .nav-item span { font-size: 9px !important; font-weight: 600; }
+.bottom-nav-icon { width: 20px; height: 20px; object-fit: contain; margin-bottom: 2px; display: block; background: transparent; }
+.bottom-nav-icon-color { display: none; }
+.nav-item.active .bottom-nav-icon-gray { display: none; }
+.nav-item.active .bottom-nav-icon-color { display: block; }
 
 /* --- 3. 矿机卡片 (左上角布局 + 2x2 网格) --- */
 .miner-card {
