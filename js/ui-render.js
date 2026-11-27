@@ -1,5 +1,12 @@
 import { tokenConfig } from './config.js';
 
+// 资产列表展示配置：NEOC 作为原生币置顶展示。
+// 不加入 tokenConfig，避免影响转账/兑换/质押等处的代币下拉。
+const ASSET_CONFIG = {
+    'NEOC': { logo: 'assets/neoc.webp', chartUrl: '' },
+    ...tokenConfig
+};
+
 function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -247,10 +254,10 @@ export function renderTokenList(balances = {}) {
     let totalValUSD = 0;
     let html = '';
 
-    // 遍历 tokenConfig 确保显示顺序一致
-    Object.keys(tokenConfig).forEach(symbol => {
+    // 遍历资产配置确保显示顺序一致（NEOC 置顶）
+    Object.keys(ASSET_CONFIG).forEach(symbol => {
         if (HIDDEN_TOKENS.includes(symbol)) return;
-        const config = tokenConfig[symbol];
+        const config = ASSET_CONFIG[symbol];
 
         const priceKey = symbol.toUpperCase();
         let unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[priceKey]) || 0);
@@ -290,7 +297,7 @@ export function renderTokenList(balances = {}) {
         }
 
         // 带动画更新各个代币的价格、余额和价值
-        Object.keys(tokenConfig).forEach(symbol => {
+        Object.keys(ASSET_CONFIG).forEach(symbol => {
             if (HIDDEN_TOKENS.includes(symbol)) return;
             const unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[symbol.toUpperCase()]) || 0);
             const balance = parseFloat(balances[symbol] || 0);
@@ -332,7 +339,7 @@ export function updateTotalValue(balances) {
     const src = balances || window.userBalances || {};
     const HIDDEN_TOKENS = ['BNB'];
     let totalValUSD = 0;
-    Object.keys(tokenConfig).forEach(symbol => {
+    Object.keys(ASSET_CONFIG).forEach(symbol => {
         if (HIDDEN_TOKENS.includes(symbol)) return;
         const unitPrice = symbol === 'NUSD' ? 1 : (parseFloat(livePrices[symbol.toUpperCase()]) || 0);
         const balance = parseFloat(src[symbol] || 0);

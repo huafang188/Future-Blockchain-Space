@@ -7,3 +7,6 @@ GAS-3.js
 GAS-4.js
 GAS-5.js
 GAS-6.js
+
+# NEOC 只读 RPC 节点（独立目录，不推送）
+neoc-rpc/
