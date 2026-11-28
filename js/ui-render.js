@@ -450,17 +450,17 @@ export function renderHistory(history = []) {
 
         return `
         <div class="flex items-center justify-between p-4 mb-2 bg-white/50 rounded-2xl border border-slate-50 hover:border-blue-100 transition-all">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 ${isPositive ? 'bg-emerald-50' : 'bg-blue-50'} rounded-xl flex items-center justify-center border border-white text-[18px]">
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-9 h-9 ${isPositive ? 'bg-emerald-50' : 'bg-blue-50'} rounded-xl flex items-center justify-center border border-white text-[18px] shrink-0">
                     ${tokenLogo}
                 </div>
-                <div>
+                <div class="min-w-0">
                     <p class="text-[11px] font-black text-slate-800 tracking-tight">${translatedType}</p>
                     <p class="text-[8px] text-slate-400 font-bold uppercase">${time}</p>
-                    ${note ? `<p class="text-[8px] text-purple-500 font-bold">${note}</p>` : ''}
+                    ${note ? `<p class="text-[8px] text-slate-500 font-bold break-all">${note}</p>` : ''}
                 </div>
             </div>
-            <div class="text-right">
+            <div class="text-right shrink-0">
                 <p class="text-xs font-black ${isPositive ? 'text-emerald-500' : 'text-slate-800'}">${displayAmount} ${symbol}</p>
                 <p class="text-[8px] font-bold uppercase tracking-tighter" style="${statusStyle}">${translatedStatus}</p>
             </div>
