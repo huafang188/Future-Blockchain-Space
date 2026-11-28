@@ -1303,16 +1303,18 @@
 
         <section class="nc-card nc-market" id="ncMarket">
             <div class="nc-card-head">
-                <div class="nc-pair">
-                    <span class="nc-pair-icons">
+                <button type="button" class="nc-pair nc-pair-select" onclick="ncTogglePairMenu(event)">
+                    <span class="nc-pair-icons" id="ncPairIcons">
                         <img src="assets/NRY.webp" alt="NRY" loading="lazy">
                         <img src="assets/nusd.webp" alt="NUSD" loading="lazy">
                     </span>
                     <div>
-                        <h3 class="nc-card-title">NRY / NUSD</h3>
+                        <h3 class="nc-card-title" id="ncPairTitle">NRY / NUSD</h3>
                         <p class="nc-card-sub"><span class="nc-live-dot"></span><span data-i18n="nc_market_chain">NEOC 公链 · 实时</span></p>
                     </div>
-                </div>
+                    <i class="fas fa-chevron-down nc-pair-caret"></i>
+                </button>
+                <div class="nc-token-menu nc-pair-menu hidden" id="ncPairMenu"></div>
                 <div class="nc-price-box">
                     <b id="ncPrice">0.007542</b>
                     <span id="ncChange" class="nc-change nc-up">+2.86%</span>
@@ -1364,7 +1366,7 @@
             <div class="nc-card-head">
                 <div>
                     <h3 class="nc-card-title" data-i18n="nc_trade_title">交易</h3>
-                    <p class="nc-card-sub" data-i18n="nc_trade_sub">NRY / NUSD 即时兑换</p>
+                    <p class="nc-card-sub" id="ncTradeSub" data-i18n="nc_trade_sub">NRY / NUSD 即时兑换</p>
                 </div>
             </div>
 
@@ -1386,12 +1388,12 @@
 
             <div class="nc-field" id="ncFieldAmount">
                 <div class="nc-field-top">
-                    <label data-i18n="nc_amount">数量 (NRY)</label>
+                    <label id="ncAmountLabel" data-i18n="nc_amount">数量 (NRY)</label>
                     <span class="nc-field-bal"><span data-i18n="nc_available">可用</span>: <b id="ncAvailNry">—</b></span>
                 </div>
                 <div class="nc-field-row">
                     <input id="ncOrderAmount" type="number" inputmode="decimal" placeholder="0.00" oninput="ncOrderCalc()">
-                    <span class="nc-token-tag"><img src="assets/NRY.webp" alt="NRY" loading="lazy">NRY</span>
+                    <span class="nc-token-tag" id="ncAmountTag"><img src="assets/NRY.webp" alt="NRY" loading="lazy">NRY</span>
                 </div>
             </div>
 

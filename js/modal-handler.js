@@ -213,14 +213,15 @@ export function mountModalHandlers() {
 
 
     window.openTransferModal = function() {
-        const symbols = Object.keys(tokenConfig).filter(s => s !== 'BNB');
+        const transferTokens = { ...tokenConfig, NEOC: { logo: 'assets/neoc.webp', chartUrl: '' } };
+        const symbols = Object.keys(transferTokens).filter(s => s !== 'BNB');
         window.showModal("transfer", `
             <div class="space-y-4 text-left">
 
                 <div class="flex items-center gap-2 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                    <img id="trfLogo" src="${tokenConfig[symbols[0]].logo}" class="w-8 h-8 object-contain rounded-full">
+                    <img id="trfLogo" src="${transferTokens[symbols[0]].logo}" class="w-8 h-8 object-contain rounded-full">
                     <select id="trfToken" class="flex-1 font-black text-base text-left bg-transparent outline-none cursor-pointer"
-                            onchange="if(tokenConfig[this.value]){document.getElementById('trfLogo').src = tokenConfig[this.value].logo;} window.updateTrfBalanceHint();">
+                            onchange="if(window.__trfTokens[this.value]){document.getElementById('trfLogo').src = window.__trfTokens[this.value].logo;} window.updateTrfBalanceHint();">
                         ${symbols.map(symbol => 
                             `<option value="${symbol}" ${symbol === symbols[0] ? 'selected' : ''}>${symbol}</option>`
                         ).join('')}
@@ -240,6 +241,7 @@ export function mountModalHandlers() {
                 <button type="button" onclick="window.doTransferSignature()" class="action-btn w-full mt-2">确认转账</button>
             </div>`);
 
+        window.__trfTokens = transferTokens;
         setTimeout(() => window.updateTrfBalanceHint(), 50);
     };
 
@@ -267,6 +269,7 @@ export function mountModalHandlers() {
                         <canvas id="receiveQrCanvas" width="240" height="240"></canvas>
                     </div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" data-i18n="scan_tip">扫码向我转账</p>
+                    <p class="text-[9px] font-bold text-orange-500" data-i18n="nc_receive_only_chain">仅支持New Energy Ore Chain资产</p>
                 </div>
                 <div class="flex items-center gap-2 p-3 bg-slate-50 rounded-2xl border border-slate-100">
                     <span id="receiveAddrText" class="flex-1 min-w-0 text-xs font-black text-slate-700 break-all">${neoAddr}</span>

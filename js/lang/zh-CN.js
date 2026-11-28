@@ -1152,5 +1152,6 @@ window.i18nData['zh-CN'] = {
     receive: "收款",
     scan: "扫码",
     scan_tip: "扫码向我转账",
+    nc_receive_only_chain: "仅支持New Energy Ore Chain资产",
     copy: "复制",
 };

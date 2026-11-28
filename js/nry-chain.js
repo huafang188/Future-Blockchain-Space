@@ -68,6 +68,7 @@
         candleCache: {},
         currentHourKey: null,
 
+        pairSymbol: 'NRY',
         viewOffset: 0,
         side: 'buy',
         submitting: false
@@ -104,6 +105,14 @@
         NEOC: { name: 'NEOC', icon: 'assets/neoc.webp' }
     };
     var CHAIN_LIST = ['BSC', 'ARB', 'TRON', 'TON', 'SOL', 'SONIC', 'SUI', 'SEI', 'OKX', 'ETH', 'NEOC'];
+
+    var EXCHANGE_COINS = {
+        NRY: { icon: 'assets/NRY.webp' },
+        NEO: { icon: 'assets/NEO.webp' },
+        NCL: { icon: 'assets/NCL.webp' },
+        NEOC: { icon: 'assets/neoc.webp' }
+    };
+    var EXCHANGE_ORDER = ['NRY', 'NEO', 'NCL', 'NEOC'];
 
     function getProvider() {
         if (window.bitkeep && window.bitkeep.ethereum && window.bitkeep.ethereum.request) return window.bitkeep.ethereum;
@@ -155,11 +164,77 @@
     }
 
     function closeAllMenus() {
-        ['ncFromChainMenu', 'ncToChainMenu', 'ncFromTokenMenu', 'ncToTokenMenu'].forEach(function (id) {
+        ['ncFromChainMenu', 'ncToChainMenu', 'ncFromTokenMenu', 'ncToTokenMenu', 'ncPairMenu'].forEach(function (id) {
             var el = $(id);
             if (el) el.classList.add('hidden');
         });
     }
+
+    function pairText(key, fb) {
+        return t(key, fb).split('NRY').join(state.pairSymbol);
+    }
+
+    function renderPair() {
+        var sym = state.pairSymbol;
+        var info = EXCHANGE_COINS[sym] || EXCHANGE_COINS.NRY;
+        var icons = $('ncPairIcons');
+        if (icons) {
+            icons.innerHTML = '<img src="' + info.icon + '" alt="' + sym + '" loading="lazy">' +
+                '<img src="assets/nusd.webp" alt="NUSD" loading="lazy">';
+        }
+        setText('ncPairTitle', sym + ' / NUSD');
+        var sub = $('ncTradeSub');
+        if (sub) sub.textContent = pairText('nc_trade_sub', 'NRY / NUSD 即时兑换');
+        var amtLabel = $('ncAmountLabel');
+        if (amtLabel) amtLabel.textContent = pairText('nc_amount', '数量 (NRY)');
+        var amtTag = $('ncAmountTag');
+        if (amtTag) {
+            amtTag.innerHTML = '<img src="' + info.icon + '" alt="' + sym + '" loading="lazy">' + sym;
+        }
+    }
+
+    window.ncTogglePairMenu = function (e) {
+        if (e) e.stopPropagation();
+        var menu = $('ncPairMenu');
+        if (!menu) return;
+        if (!menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+            return;
+        }
+        closeAllMenus();
+        var cur = state.pairSymbol;
+        menu.innerHTML = EXCHANGE_ORDER.map(function (s) {
+            var c = EXCHANGE_COINS[s];
+            return '<button type="button" class="nc-token-option' + (s === cur ? ' is-active' : '') + '" onclick="ncPickPair(\'' + s + '\')">' +
+                '<img src="' + c.icon + '" alt="' + s + '"><span>' + s + '</span></button>';
+        }).join('');
+        menu.classList.remove('hidden');
+    };
+
+    window.ncPickPair = function (sym) {
+        if (!EXCHANGE_COINS[sym]) return;
+        if (sym === state.pairSymbol) { closeAllMenus(); return; }
+        state.pairSymbol = sym;
+        state.hourly = [];
+        state.hourlyStamp = '';
+        state.klineReady = false;
+        state.marketOverride = false;
+        state.candleCache = {};
+        state.currentHourKey = null;
+        state.viewOffset = 0;
+        state.price24Open = 0;
+        state.candles = [];
+        var live = (window.currentPrices && window.currentPrices[sym]);
+        state.price = (live && live > 0) ? live : 0.007542;
+        closeAllMenus();
+        renderPair();
+        renderPrice();
+        window.ncSetSide(state.side);
+        renderCandles();
+        refreshMarketFeed();
+        window.ncLoadMarket();
+        window.ncLoadKlines();
+    };
 
     async function fetchTokenBalance(symbol) {
         var info = TOKENS[symbol];
@@ -687,6 +762,7 @@
             }
             return;
         }
+        if (state.pairSymbol !== 'NRY') return;
         var last = state.candles[state.candles.length - 1];
         var base = last ? last.c : state.price;
         var pull = (0.00755 - base) * 0.05;
@@ -798,7 +874,7 @@
 
     function renderPrice() {
         var pEl = $('ncPrice');
-        var chg = (state.price - state.price24Open) / state.price24Open * 100;
+        var chg = state.price24Open ? (state.price - state.price24Open) / state.price24Open * 100 : 0;
         if (pEl) {
             pEl.textContent = state.price.toFixed(6);
             pEl.classList.remove('nc-up', 'nc-down');
@@ -824,6 +900,7 @@
 
     function syncNryGlobalPrice() {
         if (!state.klineReady) return;
+        if (state.pairSymbol !== 'NRY') return;
         if (!window.currentPrices) window.currentPrices = {};
         window.currentPrices['NRY'] = state.price;
         var priceEl = document.getElementById('price_NRY');
@@ -867,7 +944,7 @@
 
     window.ncLoadMarket = async function () {
         try {
-            var res = await fetch(marketUrl() + '?t=' + Date.now(), { cache: 'no-store' });
+            var res = await fetch(marketUrl() + '?symbol=' + state.pairSymbol + '&t=' + Date.now(), { cache: 'no-store' });
             if (!res.ok) return;
             var json = await res.json();
             if (!json || !json.success || !json.data) return;
@@ -914,7 +991,7 @@
     window.ncLoadKlines = async function () {
         try {
             var base = window.API_BASE || 'https://api.neoneo.ink/api/user';
-            var res = await fetch(base.replace('/api/user', '/api/nry-klines') + '?t=' + Date.now(), { cache: 'no-store' });
+            var res = await fetch(base.replace('/api/user', '/api/nry-klines') + '?symbol=' + state.pairSymbol + '&t=' + Date.now(), { cache: 'no-store' });
             if (!res.ok) return;
             var json = await res.json();
             if (!json || !json.success || !Array.isArray(json.data) || !json.data.length) return;
@@ -968,14 +1045,15 @@
         var buy = $('ncTabBuy'), sell = $('ncTabSell');
         if (buy) buy.classList.toggle('active', side === 'buy');
         if (sell) sell.classList.toggle('active', side === 'sell');
+        var sym = state.pairSymbol;
         var btn = $('ncOrderBtn');
         if (btn) {
             var label = btn.querySelector('[data-i18n]') || btn;
-            label.textContent = side === 'buy' ? t('nc_trade_btn_buy', '买入 NRY') : t('nc_trade_btn_sell', '卖出 NRY');
+            label.textContent = side === 'buy' ? pairText('nc_trade_btn_buy', '买入 NRY') : pairText('nc_trade_btn_sell', '卖出 NRY');
             btn.classList.toggle('nc-btn-sell', side === 'sell');
         }
         var avNry = $('ncAvailNry');
-        if (avNry) avNry.textContent = nfmt(tradeBalance('NRY'), 2) + ' NRY';
+        if (avNry) avNry.textContent = nfmt(tradeBalance(sym), 2) + ' ' + sym;
         var avNusd = $('ncAvailNusd');
         if (avNusd) avNusd.textContent = nfmt(tradeBalance('NUSD'), 2) + ' NUSD';
         var priceField = $('ncFieldPrice');
@@ -1005,7 +1083,7 @@
         btn.disabled = !!on;
         btn.style.opacity = on ? '0.7' : '';
         var span = btn.querySelector('[data-i18n]');
-        if (span) span.textContent = label || (state.side === 'buy' ? t('nc_trade_btn_buy', '买入 NRY') : t('nc_trade_btn_sell', '卖出 NRY'));
+        if (span) span.textContent = label || (state.side === 'buy' ? pairText('nc_trade_btn_buy', '买入 NRY') : pairText('nc_trade_btn_sell', '卖出 NRY'));
     }
 
     window.ncSubmitOrder = async function () {
@@ -1018,12 +1096,13 @@
             return;
         }
         var isBuy = state.side === 'buy';
+        var sym = state.pairSymbol;
         var total = p * a;
         if (isBuy && total > tradeBalance('NUSD')) {
             flash(t('nc_trade_fail_balance', '余额不足'), false);
             return;
         }
-        if (!isBuy && a > tradeBalance('NRY')) {
+        if (!isBuy && a > tradeBalance(sym)) {
             flash(t('nc_trade_fail_balance', '余额不足'), false);
             return;
         }
@@ -1045,9 +1124,9 @@
         setOrderLoading(true, t('nc_bridge_confirming', '请在钱包中确认...'));
         try {
             var feeHash = await payBnbFee(provider, addr);
-            var type = isBuy ? '买入NRY' : '卖出NRY';
+            var type = (isBuy ? '买入' : '卖出') + sym;
             var action = isBuy ? 'buy' : 'sell';
-            var res = await window.postTransactionRecord(type, a, 'NRY', action, {
+            var res = await window.postTransactionRecord(type, a, sym, action, {
                 bnbPayTxHash: feeHash,
                 remark: String(p)
             });
@@ -1215,6 +1294,7 @@
         state.candleCache[state.range] = state.candles;
         renderCandles();
         renderPrice();
+        renderPair();
         window.ncLoadMarket();
         window.ncLoadKlines();
         renderBridge();
@@ -1261,6 +1341,7 @@
 
     window.addEventListener('onLanguageChanged', function () {
         renderBridge();
+        renderPair();
         renderBoard();
         renderTrades();
         window.ncSetSide(state.side);

@@ -1463,5 +1463,6 @@ window.i18nData['ja'] = {
     receive: "Receive",
     scan: "Scan",
     scan_tip: "Scan to receive",
+    nc_receive_only_chain: "Only New Energy Ore Chain assets supported",
     copy: "Copy",
 };

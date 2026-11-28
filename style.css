@@ -3582,7 +3582,7 @@ body.agent-active .bottom-nav-pill {
 
 /* ===== 公链 DeFi（nc- 作用域） ===== */
 .nc-card { background: rgba(255,255,255,0.84); border: 1px solid #fed7aa; border-radius: 20px; padding: 16px; margin-bottom: 14px; box-shadow: 0 10px 30px -18px rgba(249,115,22,0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.nc-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.nc-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; position: relative; }
 .nc-card-title { font-size: 14px; font-weight: 900; color: #1e293b; line-height: 1.2; }
 .nc-card-sub { font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 3px; display: flex; align-items: center; gap: 5px; }
 .nc-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 900; color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
@@ -3621,6 +3621,10 @@ body.agent-active .bottom-nav-pill {
 .nc-note { font-size: 9px; color: #94a3b8; text-align: center; margin-top: 8px; line-height: 1.5; }
 
 .nc-pair { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.nc-pair-select { background: transparent; border: none; padding: 0; cursor: pointer; text-align: left; }
+.nc-pair-select:hover .nc-pair-caret { color: #ea580c; }
+.nc-pair-caret { font-size: 10px; color: #cbd5e1; margin-left: 2px; transition: color .2s; }
+.nc-pair-menu { left: 0; right: auto; top: calc(100% - 4px); min-width: 140px; }
 .nc-pair-icons { position: relative; width: 38px; height: 32px; flex-shrink: 0; }
 .nc-pair-icons img { position: absolute; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; object-fit: contain; background: #fff; }
 .nc-pair-icons img:first-child { left: 0; top: 0; z-index: 2; }
@@ -3679,6 +3683,7 @@ button.nc-token-tag:active { transform: scale(.96); }
 .nc-token-option { display: flex; align-items: center; gap: 8px; border: none; background: transparent; border-radius: 9px; padding: 8px 10px; font-size: 11px; font-weight: 900; color: #334155; cursor: pointer; }
 .nc-token-option:hover, .nc-token-option:active { background: #fff7ed; }
 .nc-token-option img { width: 18px; height: 18px; object-fit: contain; }
+.nc-token-option.is-active { background: #fff7ed; color: #ea580c; }
 .nc-swap-locked { background: linear-gradient(135deg,#fdba74,#f97316); box-shadow: none; animation: none; }
 .nc-swap-locked:active { transform: scale(.94); }
 
