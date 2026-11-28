@@ -206,7 +206,7 @@
         menu.innerHTML = EXCHANGE_ORDER.map(function (s) {
             var c = EXCHANGE_COINS[s];
             return '<button type="button" class="nc-token-option' + (s === cur ? ' is-active' : '') + '" onclick="ncPickPair(\'' + s + '\')">' +
-                '<img src="' + c.icon + '" alt="' + s + '"><span>' + s + '</span></button>';
+                '<img src="' + c.icon + '" alt="' + s + '"><span>' + s + '/NUSD</span></button>';
         }).join('');
         menu.classList.remove('hidden');
     };
@@ -877,12 +877,14 @@
         var chg = state.price24Open ? (state.price - state.price24Open) / state.price24Open * 100 : 0;
         if (pEl) {
             pEl.textContent = state.price.toFixed(6);
-            pEl.classList.remove('nc-up', 'nc-down');
-            pEl.classList.add(chg >= 0 ? 'nc-up' : 'nc-down');
         }
         if (!state.marketOverride) {
             var txt = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
             var cls = chg >= 0 ? 'nc-up' : 'nc-down';
+            if (pEl) {
+                pEl.classList.remove('nc-up', 'nc-down');
+                pEl.classList.add(cls);
+            }
             ['ncChange', 'ncChangeStat'].forEach(function (id) {
                 var el = $(id);
                 if (!el) return;
@@ -940,6 +942,11 @@
             el.classList.remove('nc-up', 'nc-down');
             el.classList.add(cls);
         });
+        var pEl = $('ncPrice');
+        if (pEl) {
+            pEl.classList.remove('nc-up', 'nc-down');
+            pEl.classList.add(cls);
+        }
     }
 
     window.ncLoadMarket = async function () {

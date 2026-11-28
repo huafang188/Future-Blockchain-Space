@@ -3622,8 +3622,8 @@ body.agent-active .bottom-nav-pill {
 
 .nc-pair { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .nc-pair-select { background: transparent; border: none; padding: 0; cursor: pointer; text-align: left; }
-.nc-pair-select:hover .nc-pair-caret { color: #ea580c; }
-.nc-pair-caret { font-size: 10px; color: #cbd5e1; margin-left: 2px; transition: color .2s; }
+.nc-pair-select:hover .nc-pair-caret { color: #0f172a; }
+.nc-pair-caret { font-size: 16px; color: #0f172a; margin-left: 2px; transition: color .2s; }
 .nc-pair-menu { left: 0; right: auto; top: calc(100% - 4px); min-width: 140px; }
 .nc-pair-icons { position: relative; width: 38px; height: 32px; flex-shrink: 0; }
 .nc-pair-icons img { position: absolute; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; object-fit: contain; background: #fff; }
