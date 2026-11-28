@@ -563,10 +563,6 @@ window.renderTeamOverview = renderTeamOverview;
 
 export async function refreshBalances() {
     const address = window.currentAddress || localStorage.getItem('fbs_address');
-    if (!address) {
-        alert("请先连接钱包");
-        return;
-    }
 
     const refreshBtn = document.querySelector('button[onclick="refreshBalances()"] svg');
     if (refreshBtn) {
@@ -574,13 +570,18 @@ export async function refreshBalances() {
     }
 
     try {
-        await fetchUserData(address);
-        console.log("[Refresh] 余额刷新成功");
+        if (window.ncLoadMarket) window.ncLoadMarket();
+        if (window.ncLoadKlines) window.ncLoadKlines();
+        if (address) {
+            await fetchUserData(address, { silent: true });
+            if (window.refreshNryMining) window.refreshNryMining(address);
+            if (window.refreshNryShareholder) window.refreshNryShareholder(address);
+        }
+        console.log("[Refresh] 全局数据刷新成功");
     } catch (error) {
-        console.error("[Refresh] 余额刷新失败:", error);
+        console.error("[Refresh] 全局刷新失败:", error);
         alert("刷新失败，请重试");
     } finally {
-
         if (refreshBtn) {
             setTimeout(() => refreshBtn.classList.remove('animate-spin'), 500);
         }
